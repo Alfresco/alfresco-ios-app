@@ -131,7 +131,7 @@
         }
         else
         {
-            [self markAsNotTopLevelSyncNodeInfoWithIdentifier:folder.identifier];
+            [self removeTopLevelNodeFlagFomNodeWithIdentifier:folder.identifier];
         }
         
         if (completionBlock != NULL)
@@ -165,7 +165,7 @@
     [realm commitWriteTransaction];
 }
 
-- (void)markAsNotTopLevelSyncNodeInfoWithIdentifier:(NSString *)nodeIdentifier
+- (void)removeTopLevelNodeFlagFomNodeWithIdentifier:(NSString *)nodeIdentifier
 {
     RLMRealm *realm = [RLMRealm defaultRealm];
     RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:nodeIdentifier ifNotExistsCreateNew:NO inRealm:realm];
