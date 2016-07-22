@@ -18,7 +18,6 @@
 
 #import "RealmSyncManager+Refresh.h"
 #import "RealmSyncManager+Internal.h"
-#import "AlfrescoNode+Sync.h"
 
 @implementation RealmSyncManager (Refresh)
 
@@ -184,7 +183,8 @@
             [self.fileManager removeItemAtPath:filePath error:&deleteError];
             
             // Remove sync status.
-            [self removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
+            SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+            [syncOpQM removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
             
             // Remove RealmSyncError object if exists.
             RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:node.syncNodeInfoId ifNotExistsCreateNew:NO inRealm:realm];
@@ -211,7 +211,8 @@
         }
     }
     
-    [self downloadContentsForNodes:array withCompletionBlock:nil];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+    [syncOpQM downloadContentsForNodes:array withCompletionBlock:nil];
 }
 
 @end

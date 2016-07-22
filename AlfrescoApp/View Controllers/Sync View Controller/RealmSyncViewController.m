@@ -29,6 +29,7 @@
 #import "FailedTransferDetailViewController.h"
 #import "FileFolderCollectionViewCell.h"
 #import "ALFSwipeToDeleteGestureRecognizer.h"
+#import "AlfrescoNode+Sync.h"
 
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 
@@ -197,7 +198,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
             return;
         }
         
-        NSString *filePath = [syncManager contentPathForNode:(AlfrescoDocument *)selectedNode];
+        NSString *filePath = [selectedNode contentPath];
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         if (filePath)
         {

@@ -167,8 +167,8 @@
     
     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
     FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
-    BOOL isTopLevelNode = [syncManager isTopLevelSyncNode:node];
+    BOOL isSyncOn = [node isNodeInSyncList];
+    BOOL isTopLevelNode = [node isTopLevelSyncNode];
     
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
@@ -297,7 +297,7 @@
         {
             NSString *analyticsLabel = nil;
             
-            if([[RealmSyncManager sharedManager] isNodeInSyncList:nodeToDelete])
+            if([nodeToDelete isNodeInSyncList])
             {
                 [[RealmSyncManager sharedManager] deleteNodeFromSync:nodeToDelete deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally) {
                     dispatch_async(dispatch_get_main_queue(), ^{

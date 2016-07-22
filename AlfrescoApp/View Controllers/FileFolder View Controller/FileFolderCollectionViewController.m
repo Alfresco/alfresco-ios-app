@@ -535,7 +535,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             }
             else
             {
-                NSString *contentPath = [[RealmSyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)selectedNode];
+                NSString *contentPath = [selectedNode contentPath];
                 if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
                 {
                     contentPath = nil;

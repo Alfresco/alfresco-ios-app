@@ -20,7 +20,6 @@
 
 @interface SyncOperation ()
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
-@property (nonatomic, strong) AlfrescoDocument *document;
 @property (nonatomic, strong) AlfrescoRequest *syncRequest;
 @property (nonatomic, strong) NSStream *stream;
 @property (nonatomic, strong) AlfrescoBOOLCompletionBlock downloadCompletionBlock;
