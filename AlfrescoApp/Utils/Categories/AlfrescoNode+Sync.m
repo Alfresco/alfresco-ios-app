@@ -19,6 +19,8 @@
 #import "AlfrescoNode+Sync.h"
 #import "SyncConstants.h"
 #import "RealmManager.h"
+#import "AccountManager.h"
+#import "RealmSyncManager+Internal.h"
 
 @implementation AlfrescoNode (Sync)
 
@@ -67,8 +69,8 @@
     NSString *newNodePath = nil;
     if(nodeInfo && (nodeInfo.isFolder == NO))
     {
-        NSString *syncDirectory = [[AlfrescoFileManager sharedManager] syncFolderPath];
-        newNodePath = [syncDirectory stringByAppendingPathComponent:nodeInfo.syncContentPath];
+        NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
+        newNodePath = [[[RealmSyncManager sharedManager] syncContentDirectoryPathForAccountWithId:selectedAccountIdentifier] stringByAppendingPathComponent:nodeInfo.syncContentPath];
     }
     
     return newNodePath;
