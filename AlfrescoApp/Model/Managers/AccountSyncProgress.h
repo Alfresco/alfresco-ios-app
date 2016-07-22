@@ -17,6 +17,7 @@
  ******************************************************************************/
   
 extern NSString * const kSyncProgressSizeKey;
+extern NSString * const kSyncOperationCount;
 
 @interface AccountSyncProgress : NSObject
 

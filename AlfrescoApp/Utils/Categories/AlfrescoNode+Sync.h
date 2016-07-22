@@ -21,8 +21,14 @@
 @interface AlfrescoNode (Sync)
 
 - (NSString *)syncIdentifier;
-+ (NSArray *)syncIdentifiersForNodes:(NSArray *)nodes;
 - (NSString *)syncNameInRealm:(RLMRealm *)realm;
 - (NSDate *)lastDownloadedDateInRealm:(RLMRealm *)realm;
+- (NSString *)contentPath;
+- (BOOL)isTopLevelSyncNode;
+- (BOOL)isNodeInSyncList;
+- (BOOL)isNodeInSyncListInRealm:(RLMRealm *)realm;
+
++ (NSArray *)syncIdentifiersForNodes:(NSArray *)nodes;
++ (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId inRealm:(RLMRealm *)realm;
 
 @end

@@ -18,7 +18,6 @@
 
 #import "RealmSyncManager+Refresh.h"
 #import "RealmSyncManager+Internal.h"
-#import "AlfrescoNode+Sync.h"
 
 @implementation RealmSyncManager (Refresh)
 
@@ -26,8 +25,8 @@
 
 - (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-#warning : The queue should cancel the sync operations. To be implemented ASAP.
-    [self suspendSyncProcess:YES];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+    [syncOpQM cancelDownloadOperations:YES uploadOperations:YES];
     
     // STEP 1 - Mark all top level nodes as pending sync status.
     [self markTopLevelNodesAsPending];
@@ -195,14 +194,15 @@
                 else
                 {
                     // Remove file.
-                    NSString *filePath = node.syncContentPath;
+                    NSString *filePath = [node.alfrescoNode contentPath];
                     NSError *deleteError;
                     [self.fileManager removeItemAtPath:filePath error:&deleteError];
                 }
             }
             
             // Remove sync status.
-            [self removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId inSyncNodesStatus:self.syncNodesStatus];
+            SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+            [syncOpQM removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
             
             // Remove RealmSyncError object if exists.
             RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:node.syncNodeInfoId ifNotExistsCreateNew:NO inRealm:realm];
@@ -237,10 +237,9 @@
         }
     }
     
-    [self downloadContentsForNodes:nodesToDownloadArray withCompletionBlock:nil];
-    [self uploadContentsForNodes:nodesToUploadArray withCompletionBlock:nil];
-    
-    [self suspendSyncProcess:NO];
+    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+    [syncOpQM downloadContentsForNodes:nodesToDownloadArray withCompletionBlock:nil];
+    [syncOpQM uploadContentsForNodes:nodesToUploadArray withCompletionBlock:nil];
 }
 
 @end

@@ -402,7 +402,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     {
         SyncNodeStatus *nodeStatus = notification.object;
         self.nodeStatus = nodeStatus;
-        self.isTopLevelSyncNode = [[RealmSyncManager sharedManager] isTopLevelSyncNode:self.node];
+        self.isTopLevelSyncNode = [self.node isTopLevelSyncNode];
         NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.isSyncNode && nodeStatus.status != SyncStatusRemoved)
@@ -442,7 +442,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     AlfrescoNode *node = (AlfrescoNode *)notification.object;
     if ([node.identifier isEqualToString:self.node.identifier])
     {
-        self.isTopLevelSyncNode = [[RealmSyncManager sharedManager] isTopLevelSyncNode:self.node];
+        self.isTopLevelSyncNode = [self.node isTopLevelSyncNode];
         [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:YES isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
     }
 }
@@ -452,7 +452,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     AlfrescoNode *node = (AlfrescoNode *)notification.object;
     if ([node.identifier isEqualToString:self.node.identifier])
     {
-        self.isTopLevelSyncNode = [[RealmSyncManager sharedManager] isTopLevelSyncNode:self.node];
+        self.isTopLevelSyncNode = [self.node isTopLevelSyncNode];
         [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:NO isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
     }
 }

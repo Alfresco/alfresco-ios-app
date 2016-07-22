@@ -21,14 +21,8 @@
 #import "SyncConstants.h"
 #import "SyncNodeStatus.h"
 #import "RealmManager.h"
-
-@protocol RealmSyncManagerProgressDelegate <NSObject>
-
-@optional
-- (void)numberOfSyncOperationsInProgress:(NSInteger)numberOfOperations;
-- (void)totalSizeToSync:(unsigned long long)totalSize syncedSize:(unsigned long long)syncedSize;
-
-@end
+#import "SyncOperationQueueManager.h"
+#import "AlfrescoNode+Sync.h"
 
 @protocol RealmSyncManagerSyncDisabledDelegate <NSObject>
 
@@ -56,9 +50,6 @@ typedef NS_ENUM(NSInteger, DeleteRule)
  * Sync Utilities
  */
 - (BOOL)isCurrentlySyncing;
-- (BOOL)isNodeInSyncList:(AlfrescoNode *)node;
-- (BOOL)isNodeInSyncList:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
-- (BOOL)isTopLevelSyncNode:(AlfrescoNode *)node;
 - (void)cancelAllSyncOperations;
 
 /**
@@ -68,8 +59,6 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 - (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
 - (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
-- (NSString *)contentPathForNode:(AlfrescoDocument *)document;
-- (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId inRealm:(RLMRealm *)realm;
 
 /**
  * Sync operations
@@ -81,7 +70,6 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 - (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder;
 - (void)didUploadNewVersionForDocument:(AlfrescoDocument *)document updatedDocument:(AlfrescoDocument *)updatedDocument fromPath:(NSString *)path;
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
-- (void)suspendSyncProcess:(BOOL)shouldSuspend;
 
 /**
  * Sync Feature

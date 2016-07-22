@@ -18,6 +18,8 @@
   
 @interface SyncOperation : NSOperation
 
+@property (nonatomic, strong) AlfrescoDocument *document;
+
 - (id)initWithDocumentFolderService:(id)documentFolderService
                    downloadDocument:(AlfrescoDocument *)document
                        outputStream:outputStream

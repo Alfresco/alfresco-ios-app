@@ -19,6 +19,7 @@
 #import "AccountSyncProgress.h"
 
 NSString * const kSyncProgressSizeKey = @"syncProgressSize";
+NSString * const kSyncOperationCount = @"operationCount";
 
 @implementation AccountSyncProgress
 
@@ -31,4 +32,5 @@ NSString * const kSyncProgressSizeKey = @"syncProgressSize";
     }
     return self;
 }
+
 @end

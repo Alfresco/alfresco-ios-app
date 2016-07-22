@@ -185,7 +185,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     if([AccountManager sharedManager].selectedAccount.isSyncOn == NO)
         return;
     
-    BOOL isSynced = [[RealmSyncManager sharedManager] isNodeInSyncList:self.document];
+    BOOL isSynced = [self.document isNodeInSyncList];
     
     NSString *actionIdentifier = isSynced ? kActionCollectionIdentifierUnsync : kActionCollectionIdentifierSync;
     NSString *titleKey = isSynced ? NSLocalizedString(@"action.unsync", @"Unsync Action") : NSLocalizedString(@"action.sync", @"Sync Action");

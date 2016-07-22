@@ -428,7 +428,7 @@
     AlfrescoRequest *request = nil;
     DocumentPreviewManager *previewManager = [DocumentPreviewManager sharedManager];
 
-    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync || [[RealmSyncManager sharedManager] isNodeInSyncList:self.node])
+    if (self.documentLocation == InAppDocumentLocationLocalFiles || self.documentLocation == InAppDocumentLocationSync || [self.node isNodeInSyncList])
     {
         displayOpenInBlock(documentPath);
     }
@@ -514,7 +514,7 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.node];
                     [UniversalDevice clearDetailViewController];
                     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-                    if ([syncManager isNodeInSyncList:weakSelf.node])
+                    if ([weakSelf.node isNodeInSyncList])
                     {
                         [syncManager deleteNodeFromSync:weakSelf.node deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally) {
                             
