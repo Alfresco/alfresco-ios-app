@@ -237,9 +237,11 @@
         }
     }
     
-    SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
-    [syncOpQM downloadContentsForNodes:nodesToDownloadArray withCompletionBlock:nil];
-    [syncOpQM uploadContentsForNodes:nodesToUploadArray withCompletionBlock:nil];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+        [syncOpQM downloadContentsForNodes:nodesToDownloadArray withCompletionBlock:nil];
+        [syncOpQM uploadContentsForNodes:nodesToUploadArray withCompletionBlock:nil];
+    });
 }
 
 @end
