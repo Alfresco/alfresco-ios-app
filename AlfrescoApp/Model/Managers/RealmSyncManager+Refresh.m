@@ -89,6 +89,12 @@
     
     self.nodeChildrenRequestsCount = 0;
     
+    if (topLevelFolders.count == 0 && completionBlock)
+    {
+        completionBlock(YES);
+        return;
+    }
+    
     for (RealmSyncNodeInfo *node in topLevelFolders)
     {
         AlfrescoFolder *folder = (AlfrescoFolder *)node.alfrescoNode;
