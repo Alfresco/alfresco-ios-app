@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NodePickerFileFolderListViewController">
@@ -17,13 +18,15 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="nDq-sW-bG5" customClass="ALFTableView">
-                    <rect key="frame" x="0.0" y="46" width="320" height="522"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="BJI-ep-fhY" id="B5S-dO-DVN"/>
+                        <outlet property="delegate" destination="BJI-ep-fhY" id="1jE-aL-Jpa"/>
+                    </connections>
                 </tableView>
-                <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="VVJ-ZV-at9">
+                <searchBar hidden="YES" contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="VVJ-ZV-at9">
                     <rect key="frame" x="0.0" y="2" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="2Vq-vk-Z1E"/>
@@ -35,13 +38,11 @@
                 <constraint firstAttribute="bottom" secondItem="nDq-sW-bG5" secondAttribute="bottom" id="2ku-TQ-3O3"/>
                 <constraint firstItem="VVJ-ZV-at9" firstAttribute="top" secondItem="BJI-ep-fhY" secondAttribute="top" constant="2" id="HJU-JG-aub"/>
                 <constraint firstAttribute="trailing" secondItem="VVJ-ZV-at9" secondAttribute="trailing" id="Tz7-GR-mLF"/>
-                <constraint firstItem="nDq-sW-bG5" firstAttribute="top" secondItem="VVJ-ZV-at9" secondAttribute="bottom" id="YPG-g2-Lr6"/>
                 <constraint firstItem="VVJ-ZV-at9" firstAttribute="leading" secondItem="BJI-ep-fhY" secondAttribute="leading" id="bcX-ti-6bC"/>
+                <constraint firstItem="nDq-sW-bG5" firstAttribute="top" secondItem="BJI-ep-fhY" secondAttribute="top" id="fMa-kZ-58t"/>
                 <constraint firstItem="nDq-sW-bG5" firstAttribute="leading" secondItem="BJI-ep-fhY" secondAttribute="leading" id="sI2-kt-nI9"/>
                 <constraint firstAttribute="trailing" secondItem="nDq-sW-bG5" secondAttribute="trailing" id="tbe-5S-TaC"/>
             </constraints>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
         <searchDisplayController id="r1P-pH-Ysx">
             <connections>

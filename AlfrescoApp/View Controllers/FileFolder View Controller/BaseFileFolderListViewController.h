@@ -18,7 +18,6 @@
   
 #import "ParentListViewController.h"
 #import "AlfrescoNodeCell.h"
-#import "SyncManager.h"
 #import "FavouriteManager.h"
 #import "ThumbnailManager.h"
 

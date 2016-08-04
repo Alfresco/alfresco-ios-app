@@ -28,7 +28,7 @@
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
-
+#import "SyncManager.h"
 #import "FailedTransferDetailViewController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>

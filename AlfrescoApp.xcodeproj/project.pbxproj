@@ -96,6 +96,8 @@
 		2329C4941CE48C3B001AAB62 /* alfrescoColourLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */; };
 		23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		23A681E21CA2A1E200E90D89 /* BulletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A681E11CA2A1E200E90D89 /* BulletView.m */; };
+		23A829241D48C75100A44281 /* NodePickerSyncedContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A829231D48C75100A44281 /* NodePickerSyncedContentViewController.m */; };
+		23A8292A1D48D63900A44281 /* NodePickerSyncedContentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23A829291D48D63900A44281 /* NodePickerSyncedContentViewController.xib */; };
 		23B2B2A21CA1A4FD00A8196C /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B2B2A01CA1A4FD00A8196C /* PinViewController.m */; };
 		23B2B2A31CA1A4FD00A8196C /* PinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */; };
 		23B462E01CA590AA009C13EB /* PinBulletsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B462DF1CA590AA009C13EB /* PinBulletsView.m */; };
@@ -103,6 +105,7 @@
 		23BE0D711D390D8400369EC9 /* RealmSyncManager+Refresh.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE0D701D390D8400369EC9 /* RealmSyncManager+Refresh.m */; };
 		23BE84D61CE9C3B200FA5BCB /* TouchIDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */; };
 		23BE84D71CE9C3B200FA5BCB /* TouchIDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */; };
+		23D2B9B91D4A553E00215431 /* BaseNodePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D2B9B81D4A553E00215431 /* BaseNodePickerViewController.m */; };
 		23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
@@ -1005,6 +1008,9 @@
 		231A0B4E1CABCCCD0029A10E /* SecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityManager.m; sourceTree = "<group>"; };
 		23A681E01CA2A1E200E90D89 /* BulletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletView.h; sourceTree = "<group>"; };
 		23A681E11CA2A1E200E90D89 /* BulletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletView.m; sourceTree = "<group>"; };
+		23A829221D48C75100A44281 /* NodePickerSyncedContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerSyncedContentViewController.h; sourceTree = "<group>"; };
+		23A829231D48C75100A44281 /* NodePickerSyncedContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodePickerSyncedContentViewController.m; sourceTree = "<group>"; };
+		23A829291D48D63900A44281 /* NodePickerSyncedContentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodePickerSyncedContentViewController.xib; sourceTree = "<group>"; };
 		23B2B29F1CA1A4FD00A8196C /* PinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinViewController.h; sourceTree = "<group>"; };
 		23B2B2A01CA1A4FD00A8196C /* PinViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PinViewController.m; sourceTree = "<group>"; };
 		23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PinViewController.xib; sourceTree = "<group>"; };
@@ -1015,6 +1021,8 @@
 		23BE0D701D390D8400369EC9 /* RealmSyncManager+Refresh.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RealmSyncManager+Refresh.m"; sourceTree = "<group>"; };
 		23BE84D41CE9C3B200FA5BCB /* TouchIDManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchIDManager.h; sourceTree = "<group>"; };
 		23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchIDManager.m; sourceTree = "<group>"; };
+		23D2B9B71D4A553E00215431 /* BaseNodePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNodePickerViewController.h; sourceTree = "<group>"; };
+		23D2B9B81D4A553E00215431 /* BaseNodePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNodePickerViewController.m; sourceTree = "<group>"; };
 		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
 		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
 		23FBC9FB1D3D11DD00E935B2 /* RealmSyncManager+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RealmSyncManager+Internal.h"; sourceTree = "<group>"; };
@@ -2056,6 +2064,9 @@
 				0876A03618D99FF60035370A /* NodePickerFavoritesViewController.h */,
 				0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */,
 				0876A03818D99FF60035370A /* NodePickerFavoritesViewController.xib */,
+				23A829221D48C75100A44281 /* NodePickerSyncedContentViewController.h */,
+				23A829231D48C75100A44281 /* NodePickerSyncedContentViewController.m */,
+				23A829291D48D63900A44281 /* NodePickerSyncedContentViewController.xib */,
 				0876A03918D99FF60035370A /* NodePickerFileFolderListViewController.h */,
 				0876A03A18D99FF60035370A /* NodePickerFileFolderListViewController.m */,
 				0876A03B18D99FF60035370A /* NodePickerFileFolderListViewController.xib */,
@@ -2065,6 +2076,8 @@
 				0876A03F18D99FF60035370A /* NodePickerScopeViewController.m */,
 				0876A04018D99FF60035370A /* NodePickerSitesViewController.h */,
 				0876A04118D99FF60035370A /* NodePickerSitesViewController.m */,
+				23D2B9B71D4A553E00215431 /* BaseNodePickerViewController.h */,
+				23D2B9B81D4A553E00215431 /* BaseNodePickerViewController.m */,
 			);
 			path = "Node Picker ViewController";
 			sourceTree = "<group>";
@@ -4701,6 +4714,7 @@
 				2B9C608E1C9714F400898161 /* ic_sync_focus.png in Resources */,
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				738BE9591A962AA7006264E5 /* SmallThumbnailImageMapping.plist in Resources */,
+				23A8292A1D48D63900A44281 /* NodePickerSyncedContentViewController.xib in Resources */,
 				73B95AB417A68B7E0099FB84 /* site-action-favorite@2x.png in Resources */,
 				2BFE12971AC2E734000EB19D /* circle_tick.png in Resources */,
 				271DC76A189C2D250059D1B2 /* status-restricted.png in Resources */,
@@ -5005,6 +5019,7 @@
 				73BE41EC18F2AFF500DB8912 /* DocumentPreviewManager.m in Sources */,
 				7399A00417F9A794005B8648 /* RootRevealViewController.m in Sources */,
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
+				23A829241D48C75100A44281 /* NodePickerSyncedContentViewController.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
 				73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */,
 				0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */,
@@ -5028,6 +5043,7 @@
 				73B9584717A6750F0099FB84 /* FileURLHandler.m in Sources */,
 				0876A05F18D9A9E30035370A /* PeoplePicker.m in Sources */,
 				231A0B4F1CABCCCD0029A10E /* SecurityManager.m in Sources */,
+				23D2B9B91D4A553E00215431 /* BaseNodePickerViewController.m in Sources */,
 				73BA7CBE191D1F5100E866E3 /* AlfrescoCache.xcdatamodeld in Sources */,
 				7367CFC01AB1D23C00A1B484 /* UITextField+RightAlignmentSpacingFix.m in Sources */,
 				080828A6184DEDCC000524A3 /* AccountCertificate.m in Sources */,

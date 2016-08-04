@@ -47,27 +47,13 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(cancelButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
-    
-    [self.tableView setEditing:YES];
-    [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
-    
-    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
-    self.tableView.contentInset = edgeInset;
-    self.tableView.contentInset = edgeInset;
+    [self setupTableView];
+    [self setupCancelButton];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(deselectAllSelectedNodes:)
                                                  name:kAlfrescoPickerDeselectAllNotification
                                                object:nil];
-}
-
-- (void)cancelButtonPressed:(id)sender
-{
-    [self.nodePicker cancel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -87,6 +73,23 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 }
 
 #pragma mark - Private Functions
+
+- (void) setupTableView
+{
+    [self.tableView setEditing:YES];
+    [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
+    
+    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
+    self.tableView.contentInset = edgeInset;
+}
+
+- (void)setupCancelButton
+{
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                  target:self.nodePicker
+                                                                                  action:@selector(cancel)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
+}
 
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
 {

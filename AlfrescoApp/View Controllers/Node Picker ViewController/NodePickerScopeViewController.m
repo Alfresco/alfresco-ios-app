@@ -21,8 +21,9 @@
 #import "NodePickerFileFolderListViewController.h"
 #import "NodePickerSitesViewController.h"
 #import "NodePickerFavoritesViewController.h"
-#import "SyncManager.h"
+#import "AccountManager.h"
 #import "NodePickerScopeCell.h"
+#import "NodePickerSyncedContentViewController.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -59,9 +60,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     UINib *cellNib = [UINib nibWithNibName:@"NodePickerScopeCell" bundle:nil];
     [self.tableView registerNib:cellNib forCellReuseIdentifier:kNodePickerScopeCellIdentifier];
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(cancelButtonPressed:)];
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self.nodePicker action:@selector(cancel)];
     self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
@@ -71,11 +70,6 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     
     [self.nodePicker hideMultiSelectToolBar];
     self.navigationItem.hidesBackButton = YES;
-}
-
-- (void)cancelButtonPressed:(id)sender
-{
-    [self.nodePicker cancel];
 }
 
 - (void)configureScopeView
@@ -102,15 +96,28 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                             associatedObject:sitesListViewController];
     [self.tableViewData addObject:sitesItem];
     
-    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-    NodePickerFavoritesViewController *syncViewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:nil session:self.session nodePickerController:self.nodePicker];
-    MainMenuItem *syncItem = [[MainMenuItem alloc] initWithIdentifier:kAlfrescoMainMenuItemSyncIdentifier
-                                                                title:NSLocalizedString(isSyncOn ? @"sync.title" : @"favourites.title", @"Sites")
-                                                                 image:[UIImage imageNamed:isSyncOn ? @"mainmenu-sync.png" : @"mainmenu-favourites.png"]
+    NodePickerFavoritesViewController *favoritesViewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:nil session:self.session nodePickerController:self.nodePicker];
+    MainMenuItem *favoritesItem = [[MainMenuItem alloc] initWithIdentifier:kAlfrescoMainMenuItemFavoritesIdentifier
+                                                                title:NSLocalizedString(@"favourites.title", @"Favorites")
+                                                                 image:[UIImage imageNamed:@"mainmenu-favourites.png"]
                                                            description:nil
                                                            displayType:MainMenuDisplayTypeDetail
-                                                      associatedObject:syncViewController];
-    [self.tableViewData addObject:syncItem];
+                                                      associatedObject:favoritesViewController];
+    [self.tableViewData addObject:favoritesItem];
+    
+    if([AccountManager sharedManager].selectedAccount.isSyncOn)
+    {
+        NodePickerSyncedContentViewController *syncedContentViewController = [[NodePickerSyncedContentViewController alloc] initWithParentNode:nil session:self.session nodePickerController:self.nodePicker];
+        
+        MainMenuItem *syncItem = [[MainMenuItem alloc] initWithIdentifier:kAlfrescoMainMenuItemSyncIdentifier
+                                                                    title:NSLocalizedString(@"sync.title", @"SyncedContent")
+                                                                    image:[UIImage imageNamed:@"mainmenu-sync.png"]
+                                                              description:nil
+                                                              displayType:MainMenuDisplayTypeDetail
+                                                         associatedObject:syncedContentViewController];
+
+        [self.tableViewData addObject:syncItem];
+    }
 }
 
 #pragma mark - Table view data source
