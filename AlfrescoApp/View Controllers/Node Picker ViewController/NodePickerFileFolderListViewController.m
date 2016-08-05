@@ -210,7 +210,6 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     [cell setupCellWithNode:currentNode session:self.session];
     
     cell.progressBar.hidden = YES;
-    [cell removeNotifications];
     
     if ([self.nodePicker isNodeSelected:currentNode])
     {

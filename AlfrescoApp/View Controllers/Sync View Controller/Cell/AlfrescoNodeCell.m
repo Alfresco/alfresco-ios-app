@@ -200,6 +200,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)setupCellWithNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session
 {
+    [self registerForNotifications];
+    
     BOOL isNodeInSyncList = [node isNodeInSyncList];
     SyncNodeStatus *nodeStatus = [[RealmSyncManager sharedManager] syncStatusForNodeWithId:node.identifier];
     

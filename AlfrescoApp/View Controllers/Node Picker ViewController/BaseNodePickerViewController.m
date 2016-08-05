@@ -121,4 +121,10 @@ static CGFloat const kCellHeight = 64.0f;
     [self.tableView reloadData];
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AlfrescoNodeCell *nodeCell = (AlfrescoNodeCell *)cell;
+    [nodeCell removeNotifications];
+}
+
 @end
