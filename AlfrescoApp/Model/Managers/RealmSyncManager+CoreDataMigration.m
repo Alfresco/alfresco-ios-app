@@ -96,7 +96,7 @@
     }
     
     BOOL hasCoreDataMigrationOccured = [[[NSUserDefaults standardUserDefaults] objectForKey:kHasCoreDataMigrationOccurred] boolValue];
-    BOOL shouldShowSyncInfoPanelResult = ((![[NSUserDefaults standardUserDefaults] objectForKey:kWasSyncInfoPanelShown]) && isSyncEnabled && hasCoreDataMigrationOccured);    return YES;
+    BOOL shouldShowSyncInfoPanelResult = ((![[NSUserDefaults standardUserDefaults] objectForKey:kWasSyncInfoPanelShown]) && isSyncEnabled && hasCoreDataMigrationOccured);
     return shouldShowSyncInfoPanelResult;
 }
 
