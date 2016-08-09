@@ -28,9 +28,9 @@
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
 #import "TextFileViewController.h"
-#import "SyncManager.h"
+#import "RealmSyncManager.h"
 #import "FailedTransferDetailViewController.h"
-
+#import "AlfrescoNode+Sync.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 static CGFloat const kCellHeight = 64.0f;
@@ -659,7 +659,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     else
     {
-        SyncManager *syncManager = [SyncManager sharedManager];
+        RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
         SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:selectedNode.identifier];
         
         switch (nodeStatus.status)
@@ -1057,7 +1057,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 }
                 else
                 {
-                    NSString *contentPath = [[SyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)selectedNode];
+                    NSString *contentPath = [selectedNode contentPath];
                     if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
                     {
                         contentPath = nil;
@@ -1342,9 +1342,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
-    SyncManager *syncManager = [SyncManager sharedManager];
     AlfrescoNode *node = self.tableViewData[indexPath.row];
-    NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
+    NSString *errorDescription = [[RealmSyncManager sharedManager] syncErrorDescriptionForNode:node];
     
     if (IS_IPAD)
     {
@@ -1379,7 +1378,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)retrySyncAndCloseRetryPopover
 {
-    [[SyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
+    [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
     [self.retrySyncPopover dismissPopoverAnimated:YES];
     self.retrySyncNode = nil;
     self.retrySyncPopover = nil;
