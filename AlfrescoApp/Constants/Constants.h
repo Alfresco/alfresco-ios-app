@@ -302,6 +302,7 @@ extern NSString * const kAlfrescoConfigProfileDidChangeForAccountKey;
 extern NSString * const kAlfrescoMainMenuItemAccountsIdentifier;
 extern NSString * const kAlfrescoMainMenuItemCompanyHomeIdentifier;
 extern NSString * const kAlfrescoMainMenuItemSitesIdentifier;
+extern NSString * const kAlfrescoMainMenuItemFavoritesIdentifier;
 extern NSString * const kAlfrescoMainMenuItemSyncIdentifier;
 extern NSString * const kAlfrescoMainMenuItemSettingsIdentifier;
 extern NSString * const kAlfrescoMainMenuItemHelpIdentifier;

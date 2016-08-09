@@ -24,6 +24,7 @@
 
 @protocol RepositoryCollectionViewDataSourceDelegate <NSObject>
 
+@optional
 - (BaseCollectionViewFlowLayout *)currentSelectedLayout;
 - (id<CollectionViewCellAccessoryViewDelegate>)cellAccessoryViewDelegate;
 

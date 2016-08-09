@@ -55,6 +55,10 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     
     self.title = NSLocalizedString(@"main.menu.profile.selection.title", @"Profile Title");
     
+    UIBarButtonItem *saveBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save)];
+    self.navigationItem.rightBarButtonItem = saveBarButton;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
     [self loadData];
 }
 
@@ -65,29 +69,63 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEditActiveProfile];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
+#pragma mark - Private Methods
+
+- (void)save
 {
-    [super viewDidDisappear:animated];
-    
-    // Has the profile changed?
     if (![self.originallySelectedProfileIdentifier isEqualToString:self.currentlySelectedProfile.identifier])
     {
         // Only show the notification if the change was for the currently selected account
         if ([[AccountManager sharedManager].selectedAccount.accountIdentifier isEqualToString:self.account.accountIdentifier])
         {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigProfileDidChangeNotification
-                                                                object:self.currentlySelectedProfile
-                                                              userInfo:@{kAlfrescoConfigProfileDidChangeForAccountKey : self.account}];
-            
-            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
-                                                              action:kAnalyticsEventActionSwitch
-                                                               label:kAnalyticsEventLabelProfile
-                                                               value:@1];
+            [[AppConfigurationManager sharedManager] isViewOfType:kAlfrescoConfigViewTypeSync presentInProfile:self.currentlySelectedProfile forAccount:[AccountManager sharedManager].selectedAccount completionBlock:^(BOOL isViewPresent, NSError *error) {
+                if(!error)
+                {
+                    if(isViewPresent)
+                    {
+                        [self didSelectNewProfile];
+                    }
+                    else
+                    {
+                        [self showDisableSyncAlert];
+                    }
+                }
+            }];
         }
     }
 }
 
-#pragma mark - Private Methods
+- (void)showDisableSyncAlert
+{
+    // Prevent appearance of the alert if sync is already not available.
+    if ([AccountManager sharedManager].selectedAccount.isSyncOn == NO)
+    {
+        return;
+    }
+    
+    UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.disablesync.title", @"Disable sync?") message:NSLocalizedString(@"action.disablesync.message", @"This will disable sync") preferredStyle:UIAlertControllerStyleAlert];
+    [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil]];
+    [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.disablesync.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self didSelectNewProfile];
+    }]];
+    
+    [self presentViewController:confirmAlert animated:YES completion:nil];
+}
+
+- (void)didSelectNewProfile
+{
+    self.originallySelectedProfileIdentifier = self.currentlySelectedProfile.identifier;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigProfileDidChangeNotification
+                                                        object:self.currentlySelectedProfile
+                                                      userInfo:@{kAlfrescoConfigProfileDidChangeForAccountKey : self.account}];
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                      action:kAnalyticsEventActionSwitch
+                                                       label:kAnalyticsEventLabelProfile
+                                                       value:@1];
+}
 
 - (void)loadData
 {
@@ -197,6 +235,8 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     
     AlfrescoProfileConfig *selectedProfile = self.tableViewData[indexPath.row];
     self.currentlySelectedProfile = selectedProfile;
+    
+    self.navigationItem.rightBarButtonItem.enabled = ![self.originallySelectedProfileIdentifier isEqualToString:self.currentlySelectedProfile.identifier];
 }
 
 @end

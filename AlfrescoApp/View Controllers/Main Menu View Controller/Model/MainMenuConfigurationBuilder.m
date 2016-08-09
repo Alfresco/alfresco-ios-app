@@ -19,7 +19,6 @@
 #import "MainMenuConfigurationBuilder.h"
 #import "AlfrescoConfigService.h"
 #import "ActivitiesViewController.h"
-#import "FileFolderListViewController.h"
 #import "DownloadsViewController.h"
 #import "TaskViewController.h"
 #import "FilteredTaskViewController.h"

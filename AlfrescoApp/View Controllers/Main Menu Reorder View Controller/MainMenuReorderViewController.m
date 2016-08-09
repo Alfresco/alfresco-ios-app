@@ -211,13 +211,21 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         {
             self.isSyncPresent = YES;
             self.isSyncVisible = YES;
+            break;
         }
     }
+    
+    if (self.isSyncPresent)
+    {
+        return;
+    }
+    
     for(MainMenuItem *item in self.hiddenItems)
     {
         if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
         {
             self.isSyncPresent = YES;
+            break;
         }
     }
 }
@@ -225,12 +233,13 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 - (void)moveSyncMenuItemToVisibleItems
 {
     MainMenuItem *syncMenuItem = nil;
-    for(int i = 0; i < self.hiddenItems.count; i++)
+    
+    for(MainMenuItem *item in self.hiddenItems)
     {
-        MainMenuItem *item = self.hiddenItems[i];
         if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
         {
             syncMenuItem = item;
+            break;
         }
     }
     
@@ -238,9 +247,8 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     {
         [self.hiddenItems removeObject:syncMenuItem];
         [self.visibleItems addObject:syncMenuItem];
+        [self.tableView reloadData];
     }
-    
-    [self.tableView reloadData];
 }
 
 - (void)enableSync
@@ -259,55 +267,61 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 
 - (void)save
 {
-    // If the order or visibility has changed
-    if (![self.oldData isEqualToArray:self.visibleItems])
+    // If the order or visibility has not changed or sync item is not present
+    if ([self.oldData isEqualToArray:self.visibleItems] || self.isSyncPresent == NO)
     {
-        if(self.isSyncPresent)
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    
+    if(self.isSyncVisible)
+    {
+        //check if the sync menu item is now in the hidden items
+        BOOL syncWasMovedToHiddedItems = NO;
+        for(MainMenuItem *item in self.hiddenItems)
         {
-            if(self.isSyncVisible)
+            if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
             {
-                //check if the sync menu item is now in the hidden items
-                BOOL syncWasMovedToHiddedItems = NO;
-                for(MainMenuItem *item in self.hiddenItems)
-                {
-                    if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
-                    {
-                        syncWasMovedToHiddedItems = YES;
-                    }
-                }
-                
-                if(syncWasMovedToHiddedItems)
-                {
-                    UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.disablesync.title", @"Disable sync?") message:NSLocalizedString(@"action.disablesync.message", @"This will disable sync") preferredStyle:UIAlertControllerStyleAlert];
-                    [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-                        [self moveSyncMenuItemToVisibleItems];
-                    }]];
-                    [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.disablesync.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                        [self disableSync];
-                    }]];
-                    
-                    [self presentViewController:confirmAlert animated:YES completion:nil];
-                }
+                syncWasMovedToHiddedItems = YES;
+                break;
             }
-            else
-            {
-                //check if the sync menu item is now in the visible items
-                for(MainMenuItem *item in self.visibleItems)
-                {
-                    if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
-                    {
-                        [self enableSync];
-                        break;
-                    }
-                }
-                [self.navigationController popViewControllerAnimated:YES];
-            }
+        }
+        
+        if(syncWasMovedToHiddedItems)
+        {
+            [self showDisableSyncAlert];
+        }
+        else
+        {
+            [self.navigationController popViewControllerAnimated:YES];
         }
     }
     else
     {
+        //check if the sync menu item is now in the visible items
+        for(MainMenuItem *item in self.visibleItems)
+        {
+            if([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+            {
+                [self enableSync];
+                break;
+            }
+        }
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+- (void)showDisableSyncAlert
+{
+    UIAlertController *confirmAlert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.disablesync.title", @"Disable sync?") message:NSLocalizedString(@"action.disablesync.message", @"This will disable sync") preferredStyle:UIAlertControllerStyleAlert];
+    [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        [self moveSyncMenuItemToVisibleItems];
+    }]];
+    [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.disablesync.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [self disableSync];
+    }]];
+    
+    [self presentViewController:confirmAlert animated:YES completion:nil];
 }
 
 #pragma mark - UITableViewDataSourceDelegate Methods

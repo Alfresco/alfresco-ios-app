@@ -18,19 +18,16 @@
 
 #import "NodePickerFileFolderListViewController.h"
 #import "ConnectivityManager.h"
-#import "SyncManager.h"
-#import "ThumbnailManager.h"
-#import "FavouriteManager.h"
 #import "AlfrescoNodeCell.h"
 #import "AccountManager.h"
 #import "LoginManager.h"
+#import "NodePickerScopeViewController.h"
 
-static CGFloat const kCellHeight = 64.0f;
 static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('cmis:name:%@') AND IN_TREE('%@')";
 
-@interface NodePickerFileFolderListViewController ()
+@interface NodePickerFileFolderListViewController () <UISearchControllerDelegate>
 
-@property (nonatomic, weak) NodePicker *nodePicker;
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 @end
 
@@ -56,38 +53,36 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     
     [self createAlfrescoServicesWithSession:self.session];
     [self loadContentOfFolder];
-    self.searchController = self.searchController;
+    
+    self.definesPresentationContext = YES;
+    
+    UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    searchController.searchBar.delegate = self;
+    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.hidesNavigationBarDuringPresentation = YES;
+    searchController.delegate = self;
+    self.searchController = searchController;
+    
+    // search bar
+    UIView *view = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.searchBar = searchController.searchBar;
+    self.searchBar.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, 44.0f);
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+    self.searchBar.backgroundColor = [UIColor whiteColor];
+    
+    UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
+    self.tableView.tableHeaderView = self.searchBar;
+    [self.tableView setEditing:YES];
+    [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
     
     if (self.displayFolder)
     {
         self.title = self.displayFolder.name;
     }
-    
-    if (self.nodePicker.mode == NodePickerModeMultiSelect)
-    {
-        [self.tableView setEditing:YES];
-        [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
-    }
-    
-    self.edgesForExtendedLayout = UIRectEdgeNone;
-    UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, kPickerMultiSelectToolBarHeight, 0.0);
-    self.tableView.contentInset = edgeInset;
-    
-    [self.tableView setEditing:YES];
-    [self.tableView setAllowsMultipleSelectionDuringEditing:YES];
-    
-    UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
-    
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(cancelButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(deselectAllSelectedNodes:)
-                                                 name:kAlfrescoPickerDeselectAllNotification
-                                               object:nil];
+        
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deselectAllSelectedNodes:) name:kAlfrescoPickerDeselectAllNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -108,10 +103,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)cancelButtonPressed:(id)sender
-{
-    [self.nodePicker cancel];
-}
+#pragma mark - Private methods
 
 - (void)loadContentOfFolder
 {
@@ -189,6 +181,12 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     }
 }
 
+- (AlfrescoNode *)nodeForIndexPath:(NSIndexPath *)indexPath
+{
+    AlfrescoNode *currentNode = self.isDisplayingSearch ? self.searchResults[indexPath.row] : self.tableViewData[indexPath.row];
+    return currentNode;
+}
+
 #pragma mark - Notification Methods
 
 - (void)deselectAllSelectedNodes:(id)sender
@@ -198,44 +196,20 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 
 #pragma mark - TableView Delegates and Datasource
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return (self.isDisplayingSearch) ? self.searchResults.count : self.tableViewData.count;
-}
-
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self.nodePicker isSelectionEnabledForNode:self.tableViewData[indexPath.row]];
+    AlfrescoNode *currentNode = [self nodeForIndexPath:indexPath];
+    return [self.nodePicker isSelectionEnabledForNode:currentNode];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNodeCell *cell = (AlfrescoNodeCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    AlfrescoNode *currentNode = nil;
-    if (self.isDisplayingSearch)
-    {
-        currentNode = self.searchResults[indexPath.row];
-    }
-    else
-    {
-        currentNode = self.tableViewData[indexPath.row];
-    }
-    
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    [cell updateStatusIconsIsSyncNode:NO isFavoriteNode:NO animate:NO];
-    [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        
-        [cell updateStatusIconsIsSyncNode:NO isFavoriteNode:isFavorite animate:NO];
-    }];
+    AlfrescoNode *currentNode = [self nodeForIndexPath:indexPath];
+    [cell setupCellWithNode:currentNode session:self.session];
     
     cell.progressBar.hidden = YES;
-    [cell removeNotifications];
-    
-    if (currentNode.isFolder)
-    {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
     
     if ([self.nodePicker isNodeSelected:currentNode])
     {
@@ -243,67 +217,6 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     }
     
     return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *selectedNode = nil;
-    if (self.isDisplayingSearch)
-    {
-        selectedNode = self.searchResults[indexPath.row];
-    }
-    else
-    {
-        selectedNode = self.tableViewData[indexPath.row];
-    }
-    
-    if (selectedNode.isFolder)
-    {
-        if (self.nodePicker.type == NodePickerTypeFolders && self.nodePicker.mode == NodePickerModeSingleSelect)
-        {
-            [self.nodePicker selectNode:selectedNode];
-        }
-
-        NodePickerFileFolderListViewController *browserViewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode
-                                                                                                                     folderDisplayName:selectedNode.title
-                                                                                                                               session:self.session
-                                                                                                                  nodePickerController:self.nodePicker];
-        [self.navigationController pushViewController:browserViewController animated:YES];
-    }
-    else
-    {
-        if (self.nodePicker.type == NodePickerTypeDocuments && self.nodePicker.mode == NodePickerModeSingleSelect)
-        {
-            [self.nodePicker deselectAllNodes];
-            [self.nodePicker selectNode:selectedNode];
-            [self.nodePicker pickingNodesComplete];
-        }
-        else
-        {
-            [self.nodePicker selectNode:selectedNode];
-        }
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *selectedNode = nil;
-    if (self.isDisplayingSearch)
-    {
-        selectedNode = self.searchResults[indexPath.row];
-    }
-    else
-    {
-        selectedNode = self.tableViewData[indexPath.row];
-    }
-    
-    [self.nodePicker deselectNode:selectedNode];
-    [self.tableView reloadData];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return kCellHeight;
 }
 
 #pragma mark - Searchbar Delegate
@@ -338,6 +251,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     self.searchResults = nil;
+    self.isDisplayingSearch = NO;
     [self.tableView reloadData];
 }
 

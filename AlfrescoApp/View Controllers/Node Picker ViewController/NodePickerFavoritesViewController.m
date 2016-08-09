@@ -17,19 +17,13 @@
  ******************************************************************************/
  
 #import "NodePickerFavoritesViewController.h"
-#import "SyncManager.h"
-#import "FavouriteManager.h"
+#import "RealmSyncManager.h"
 #import "NodePickerFileFolderListViewController.h"
 #import "AlfrescoNodeCell.h"
-#import "ThumbnailManager.h"
-
-static CGFloat const kCellHeight = 64.0f;
 
 @interface NodePickerFavoritesViewController ()
 
-@property (nonatomic) AlfrescoFolder *parentNode;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
-@property (nonatomic, weak) NodePicker *nodePicker;
 
 @end
 
@@ -42,8 +36,8 @@ static CGFloat const kCellHeight = 64.0f;
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
     if (self)
     {
-        _parentNode = node;
-        _nodePicker = nodePicker;
+        self.parentNode = node;
+        self.nodePicker = nodePicker;
     }
     return self;
 }
@@ -53,20 +47,12 @@ static CGFloat const kCellHeight = 64.0f;
     [super viewDidLoad];
     
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-    [self loadSyncNodesForFolder:self.parentNode];
+    [self loadFavoritesNodesForFolder:self.parentNode];
     self.allowsPullToRefresh = NO;
     
     self.title = [self listTitle];
     
-    UINib *nib = [UINib nibWithNibName:@"AlfrescoNodeCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:[AlfrescoNodeCell cellIdentifier]];
-    
     [self updateSelectFolderButton];
-    
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                  target:self
-                                                                                  action:@selector(cancelButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = cancelButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -86,11 +72,6 @@ static CGFloat const kCellHeight = 64.0f;
     [self.tableView reloadData];
 }
 
-- (void)cancelButtonPressed:(id)sender
-{
-    [self.nodePicker cancel];
-}
-
 - (void)updateSelectFolderButton
 {
     if (self.nodePicker.type == NodePickerTypeFolders)
@@ -104,48 +85,25 @@ static CGFloat const kCellHeight = 64.0f;
 
 #pragma mark - Private Methods
 
-- (void)loadSyncNodesForFolder:(AlfrescoNode *)folder
+- (void)loadFavoritesNodesForFolder:(AlfrescoNode *)folder
 {
-    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-    
-    if (isSyncOn)
-    {
-        NSMutableArray *syncNodes = [[SyncManager sharedManager] topLevelSyncNodesOrNodesInFolder:self.parentNode];
-        
+    [self showHUD];
+    [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
+        [self hideHUD];
         if (self.nodePicker.type == NodePickerTypeFolders)
         {
-            self.tableViewData = [self foldersInNodes:syncNodes];
+            self.tableViewData = [self foldersInNodes:array];
         }
         else
         {
-            self.tableViewData = syncNodes;
+            self.tableViewData = [array mutableCopy];
         }
-
+        
         BOOL isMultiSelectMode = (self.nodePicker.mode == NodePickerModeMultiSelect) && (self.tableViewData.count > 0);
         self.tableView.editing = isMultiSelectMode;
         self.tableView.allowsMultipleSelectionDuringEditing = isMultiSelectMode;
         [self.tableView reloadData];
-    }
-    else
-    {
-        [self showHUD];
-        [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
-            [self hideHUD];
-            if (self.nodePicker.type == NodePickerTypeFolders)
-            {
-                self.tableViewData = [self foldersInNodes:array];
-            }
-            else
-            {
-                self.tableViewData = [array mutableCopy];
-            }
-            
-            BOOL isMultiSelectMode = (self.nodePicker.mode == NodePickerModeMultiSelect) && (self.tableViewData.count > 0);
-            self.tableView.editing = isMultiSelectMode;
-            self.tableView.allowsMultipleSelectionDuringEditing = isMultiSelectMode;
-            [self.tableView reloadData];
-        }];
-    }
+    }];
 }
 
 - (NSMutableArray *)foldersInNodes:(NSArray *)nodes
@@ -157,90 +115,20 @@ static CGFloat const kCellHeight = 64.0f;
 
 - (NSString *)listTitle
 {
-    NSString *title = @"";
-    BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-    
-    if (self.parentNode)
-    {
-        title = self.parentNode.name;
-    }
-    else
-    {
-        title = isSyncOn ? NSLocalizedString(@"sync.title", @"Sync Title") : NSLocalizedString(@"favourites.title", @"Favorites Title");
-    }
-    
-    self.tableView.emptyMessage = isSyncOn ? NSLocalizedString(@"sync.empty", @"No Synced Content") : NSLocalizedString(@"favourites.empty", @"No Favorites");
+    self.tableView.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
+    NSString *title = self.parentNode ? self.parentNode.name : NSLocalizedString(@"favourites.title", @"Favorites Title");
     return title;
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.tableViewData.count;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return kCellHeight;
-}
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [self.nodePicker isSelectionEnabledForNode:self.tableViewData[indexPath.row]];
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNodeCell *nodeCell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
-    
-    SyncManager *syncManager = [SyncManager sharedManager];
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+    AlfrescoNodeCell *nodeCell = (AlfrescoNodeCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     AlfrescoNode *node = self.tableViewData[indexPath.row];
-    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     
-    [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
-    BOOL isSyncOn = [syncManager isNodeInSyncList:node];
-    
-    [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:NO animate:NO];
-    [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        
-        [nodeCell updateStatusIconsIsSyncNode:isSyncOn isFavoriteNode:isFavorite animate:NO];
-    }];
-    
-    if (node.isFolder)
-    {
-        [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
-        nodeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    else if (node.isDocument)
-    {
-        nodeCell.accessoryType = UITableViewCellAccessoryNone;
-        
-        AlfrescoDocument *document = (AlfrescoDocument *)node;
-        ThumbnailManager *thumbnailManager = [ThumbnailManager sharedManager];
-        UIImage *thumbnail = [thumbnailManager thumbnailForDocument:document renditionType:kRenditionImageDocLib];
-        
-        if (thumbnail)
-        {
-            [nodeCell.image setImage:thumbnail withFade:NO];
-        }
-        else
-        {
-            [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
-            [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                if (image)
-                {
-                    AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
-                    if (updateCell)
-                    {
-                        [updateCell.image setImage:image withFade:YES];
-                    }
-                }
-            }];
-        }
-    }
+    [nodeCell setupCellWithNode:node session:self.session];
     
     if ([self.nodePicker isNodeSelected:node])
     {
@@ -248,52 +136,6 @@ static CGFloat const kCellHeight = 64.0f;
     }
     
     return nodeCell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *selectedNode = self.tableViewData[indexPath.row];
-    
-    if (selectedNode.isFolder)
-    {
-        BOOL isSyncOn = [[SyncManager sharedManager] isSyncPreferenceOn];
-        UIViewController *viewController = nil;
-        
-        if (isSyncOn)
-        {
-            viewController = [[NodePickerFavoritesViewController alloc] initWithParentNode:(AlfrescoFolder *)selectedNode session:self.session nodePickerController:self.nodePicker];
-            
-        }
-        else
-        {
-            viewController = [[NodePickerFileFolderListViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode
-                                                                          folderDisplayName:selectedNode.title
-                                                                                    session:self.session
-                                                                       nodePickerController:self.nodePicker];
-        }
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-    else
-    {
-        if (self.nodePicker.type == NodePickerTypeDocuments && self.nodePicker.mode == NodePickerModeSingleSelect)
-        {
-            [self.nodePicker deselectAllNodes];
-            [self.nodePicker selectNode:selectedNode];
-            [self.nodePicker pickingNodesComplete];
-        }
-        else
-        {
-            [self.nodePicker selectNode:selectedNode];
-        }
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    AlfrescoNode *selectedNode = selectedNode = self.tableViewData[indexPath.row];
-    
-    [self.nodePicker deselectNode:selectedNode];
-    [self.tableView reloadData];
 }
 
 @end

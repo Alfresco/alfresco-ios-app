@@ -15,11 +15,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
-#import "ParentListViewController.h"
+
+#import "BaseNodePickerViewController.h"
 #import "NodePicker.h"
 
-@interface NodePickerFavoritesViewController : ParentListViewController
+@interface NodePickerFavoritesViewController : BaseNodePickerViewController
 
 - (instancetype)initWithParentNode:(AlfrescoFolder *)node
                            session:(id<AlfrescoSession>)session

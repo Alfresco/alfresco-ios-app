@@ -32,5 +32,6 @@
 - (void)removeNotifications;
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus;
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate;
+- (void)setupCellWithNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session;
 
 @end

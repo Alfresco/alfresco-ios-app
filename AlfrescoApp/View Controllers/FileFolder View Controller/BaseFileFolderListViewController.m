@@ -18,6 +18,7 @@
  
 #import "BaseFileFolderListViewController.h"
 #import "PreferenceManager.h"
+#import "RealmSyncManager.h"
 
 @interface BaseFileFolderListViewController ()
 
@@ -80,7 +81,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNodeCell *cell = [tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
+    AlfrescoNodeCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier]];
     
     // config the cell here...
     AlfrescoNode *currentNode = nil;
@@ -93,22 +94,12 @@
         currentNode = [self.tableViewData objectAtIndex:indexPath.row];
     }
     
-    SyncManager *syncManager = [SyncManager sharedManager];
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
+    [cell setupCellWithNode:currentNode session:self.session];
     
-    BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
-    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-    [cell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
-    [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
-    
-    [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        
-        [cell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
-    }];
-    
-    if ([currentNode isKindOfClass:[AlfrescoFolder class]])
+    if (currentNode.isFolder)
     {
         [cell.image setImage:smallImageForType(@"folder") withFade:NO];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     else
     {

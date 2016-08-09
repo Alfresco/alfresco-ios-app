@@ -18,11 +18,16 @@
  
 #import "AlfrescoNodeCell.h"
 #import "SyncNodeStatus.h"
+#import "RealmSyncManager.h"
+#import "AlfrescoNode+Sync.h"
+#import "FavouriteManager.h"
 
 static NSString * const kAlfrescoNodeCellIdentifier = @"AlfrescoNodeCellIdentifier";
 
 static CGFloat const kFavoriteIconWidth = 14.0f;
 static CGFloat const kFavoriteIconRightSpace = 8.0f;
+static CGFloat const kTopLevelIconWidth = 14.0f;
+static CGFloat const kTopLevelIconRightSpace = 8.0f;
 static CGFloat const kSyncIconWidth = 14.0f;
 static CGFloat const kSyncIconRightSpace = 8.0f;
 
@@ -33,19 +38,24 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) SyncNodeStatus *nodeStatus;
 @property (nonatomic, assign) BOOL isFavorite;
+@property (nonatomic, assign) BOOL isTopLevelNode;
 @property (nonatomic, assign) BOOL isSyncNode;
 @property (nonatomic, strong) NSString *nodeDetails;
 
-@property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 @property (nonatomic, strong) IBOutlet UIImageView *favoriteStatusImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *topLevelStatusImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *syncStatusImageView;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconWidthConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLevelIconWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconWidthConstraint;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconRightSpaceConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLevelIconRightSpaceConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconRightSpaceConstraint;
 
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *favoriteIconTopSpaceConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLevelIconTopSpaceConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconTopSpaceConstraint;
 
 @end
@@ -76,6 +86,14 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
                                              selector:@selector(didRemoveNodeFromFavorites:)
                                                  name:kFavouritesDidRemoveNodeNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didAddNodeToSync:)
+                                                 name:kTopLevelSyncDidAddNodeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRemoveNodeFromSync:)
+                                                 name:kTopLevelSyncDidRemoveNodeNotification
+                                               object:nil];
 }
 
 - (void)removeNotifications
@@ -93,44 +111,22 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)updateStatusIconsIsSyncNode:(BOOL)isSyncNode isFavoriteNode:(BOOL)isFavorite animate:(BOOL)animate
 {
-    self.isSyncNode = isSyncNode;
     self.isFavorite = isFavorite;
+    self.isTopLevelNode = [self.node isTopLevelSyncNode];
+    self.isSyncNode = isSyncNode;
     
-    self.syncStatusImageView.image = nil;
-    self.syncStatusImageView.highlightedImage = nil;
     self.favoriteStatusImageView.image = nil;
     self.favoriteStatusImageView.highlightedImage = nil;
+    self.topLevelStatusImageView.image = nil;
+    self.topLevelStatusImageView.highlightedImage = nil;
+    self.syncStatusImageView.image = nil;
+    self.syncStatusImageView.highlightedImage = nil;
     
     void (^updateStatusIcons)(void) = ^{
+        [self updateFavoriteIcon];
+        [self updateTopLevelIcon];
+        [self updateSyncedStatusIcon];
         
-        if (self.isFavorite)
-        {
-            self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
-            self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
-            
-            self.favoriteIconWidthConstraint.constant = kFavoriteIconWidth;
-            self.favoriteIconRightSpaceConstraint.constant = kFavoriteIconRightSpace;
-            self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
-        }
-        else
-        {
-            self.favoriteIconWidthConstraint.constant = 0;
-            self.favoriteIconRightSpaceConstraint.constant = 0;
-            self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
-        }
-        
-        if (self.isSyncNode)
-        {
-            self.syncIconWidthConstraint.constant = kSyncIconWidth;
-            self.syncIconRightSpaceConstraint.constant = kSyncIconRightSpace;
-            self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
-        }
-        else
-        {
-            self.syncIconWidthConstraint.constant = 0;
-            self.syncIconRightSpaceConstraint.constant = 0;
-            self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
-        }
         [self layoutIfNeeded];
     };
     
@@ -146,6 +142,75 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
     
     [self updateCellWithNodeStatus:self.nodeStatus propertyChanged:kSyncStatus];
+}
+
+- (void)updateFavoriteIcon
+{
+    if (self.isFavorite)
+    {
+        self.favoriteStatusImageView.image = [UIImage imageNamed:@"status-favourite.png"];
+        self.favoriteStatusImageView.highlightedImage = [UIImage imageNamed:@"status-favourite-highlighted.png"];
+        
+        self.favoriteIconWidthConstraint.constant = kFavoriteIconWidth;
+        self.favoriteIconRightSpaceConstraint.constant = kFavoriteIconRightSpace;
+        self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+    }
+    else
+    {
+        self.favoriteIconWidthConstraint.constant = 0;
+        self.favoriteIconRightSpaceConstraint.constant = 0;
+        self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+    }
+}
+
+- (void)updateTopLevelIcon
+{
+    if (self.isTopLevelNode)
+    {
+        self.topLevelStatusImageView.image = [UIImage imageNamed:@"status-synced.png"];
+        self.topLevelStatusImageView.highlightedImage = [UIImage imageNamed:@"status-synced-highlighted.png"];
+        
+        self.topLevelIconWidthConstraint.constant = kTopLevelIconWidth;
+        self.topLevelIconRightSpaceConstraint.constant = kTopLevelIconRightSpace;
+        self.topLevelIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+    }
+    else
+    {
+        self.topLevelIconWidthConstraint.constant = 0;
+        self.topLevelIconRightSpaceConstraint.constant = 0;
+        self.topLevelIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+    }
+}
+
+- (void)updateSyncedStatusIcon
+{
+    if (self.isSyncNode)
+    {
+        self.syncIconWidthConstraint.constant = kSyncIconWidth;
+        self.syncIconRightSpaceConstraint.constant = kSyncIconRightSpace;
+        self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+    }
+    else
+    {
+        self.syncIconWidthConstraint.constant = 0;
+        self.syncIconRightSpaceConstraint.constant = 0;
+        self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+    }
+}
+
+- (void)setupCellWithNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session
+{
+    [self registerForNotifications];
+    
+    BOOL isNodeInSyncList = [node isNodeInSyncList];
+    SyncNodeStatus *nodeStatus = [[RealmSyncManager sharedManager] syncStatusForNodeWithId:node.identifier];
+    
+    [self updateCellInfoWithNode:node nodeStatus:nodeStatus];
+    [self updateStatusIconsIsSyncNode:isNodeInSyncList isFavoriteNode:NO animate:NO];
+    
+    [[FavouriteManager sharedManager] isNodeFavorite:node session:session completionBlock:^(BOOL isFavorite, NSError *error) {
+        [self updateStatusIconsIsSyncNode:isNodeInSyncList isFavoriteNode:isFavorite animate:NO];
+    }];
 }
 
 + (NSString *)cellIdentifier
@@ -194,6 +259,26 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     {
         self.isFavorite = NO;
         [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:NO animate:YES];
+    }
+}
+
+- (void)didAddNodeToSync:(NSNotification *)notification
+{
+    AlfrescoNode *node = (AlfrescoNode *)notification.object;
+    if ([node.identifier isEqualToString:self.node.identifier])
+    {
+        self.isTopLevelNode = [self.node isTopLevelSyncNode];
+        [self updateStatusIconsIsSyncNode:YES isFavoriteNode:self.isFavorite animate:YES];
+    }
+}
+
+- (void)didRemoveNodeFromSync:(NSNotification *)notification
+{
+    AlfrescoNode *node = (AlfrescoNode *)notification.object;
+    if ([node.identifier isEqualToString:self.node.identifier])
+    {
+        self.isTopLevelNode = [self.node isTopLevelSyncNode];
+        [self updateStatusIconsIsSyncNode:NO isFavoriteNode:self.isFavorite animate:YES];
     }
 }
 
@@ -268,37 +353,37 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     }
     else
     {
-    self.accessoryType = UITableViewCellAccessoryNone;
-    
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *buttonImage;
-    
-    switch (status)
-    {
-        case SyncStatusLoading:
-            buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            button.tintColor = [UIColor appTintColor];
-            break;
-            
-        case SyncStatusFailed:
-            buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-            button.tintColor = [UIColor syncFailedColor];
-            break;
-            
-        default:
+        self.accessoryType = UITableViewCellAccessoryNone;
+        
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        UIImage *buttonImage;
+        
+        switch (status)
+        {
+            case SyncStatusLoading:
+                buttonImage = [[UIImage imageNamed:@"sync-button-stop.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                button.tintColor = [UIColor appTintColor];
+                break;
+                
+            case SyncStatusFailed:
+                buttonImage = [[UIImage imageNamed:@"sync-button-error.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                button.tintColor = [UIColor syncFailedColor];
+                break;
+                
+            default:
                 [self setAccessoryView:nil];
-            break;
+                break;
+        }
+        
+        if (buttonImage)
+        {
+            [button setFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
+            [button setImage:buttonImage forState:UIControlStateNormal];
+            [button setShowsTouchWhenHighlighted:YES];
+            [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+            [self setAccessoryView:button];
+        }
     }
-
-    if (buttonImage)
-    {
-        [button setFrame:CGRectMake(0, 0, buttonImage.size.width, buttonImage.size.height)];
-        [button setImage:buttonImage forState:UIControlStateNormal];
-        [button setShowsTouchWhenHighlighted:YES];
-        [button addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-        [self setAccessoryView:button];
-    }
-}
 }
 
 - (void)updateNodeDetails:(SyncNodeStatus *)nodeStatus

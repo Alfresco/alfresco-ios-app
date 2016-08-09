@@ -48,7 +48,7 @@
 - (void)updateCellInfoWithNode:(AlfrescoNode *)node nodeStatus:(SyncNodeStatus *)nodeStatus;
 - (void)updateStatusIconsIsFavoriteNode:(BOOL)isFavorite isSyncNode:(BOOL)isSyncNode isTopLevelSyncNode:(BOOL)isTopLevelSyncNode animate:(BOOL)animate;
 
-- (void) showDeleteAction:(BOOL) showDelete animated:(BOOL)animated;
+- (void) showDeleteAction:(BOOL)showDelete animated:(BOOL)animated;
 - (void) revealActionViewWithAmount:(CGFloat)amount;
 - (void) resetView;
 - (void) showEditMode:(BOOL)showEdit animated:(BOOL)animated;
