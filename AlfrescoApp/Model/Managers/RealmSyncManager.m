@@ -128,12 +128,7 @@
             cancelBlock();
         }]];
         [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.pendingoperations.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            SyncOperationQueueManager *syncOpQM = self.syncQueues[account.accountIdentifier];
-            [syncOpQM cancelDownloadOperations:YES uploadOperations:YES];
-            [self deleteRealmForAccount:account];
-            account.isSyncOn = NO;
-            [[AccountManager sharedManager] saveAccountsToKeychain];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+            [self cleanUpAccount:account cancelOperationsType:CancelAllOperations];
             completionBlock();
         }]];
         
@@ -141,18 +136,34 @@
     }
     else
     {
-        [self deleteRealmForAccount:account];
-        account.isSyncOn = NO;
-        [[AccountManager sharedManager] saveAccountsToKeychain];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+        [self cleanUpAccount:account cancelOperationsType:CancelOperationsNone];
         completionBlock();
     }
 }
 
 - (void)disableSyncForAccountFromConfig:(UserAccount *)account
 {
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[account.accountIdentifier];
-    [syncOpQM cancelDownloadOperations:YES uploadOperations:NO];
+    [self cleanUpAccount:account cancelOperationsType:CancelDownloadOperations];
+}
+
+- (void)cleanUpAccount:(UserAccount *)account cancelOperationsType:(CancelOperationsType)cancelType
+{
+    if (cancelType != CancelOperationsNone)
+    {
+        SyncOperationQueueManager *syncOpQM = self.syncQueues[account.accountIdentifier];
+        [syncOpQM cancelOperationsType:cancelType];
+    }
+    
+    //Clean sync statuses in FileFolderCollectionViewCells and AlfrescoNodeCells.
+    NSArray *alfrescoNodes = [[RealmManager sharedManager] alfrescoNodesForSyncNodesInRealm:[RLMRealm defaultRealm]];
+    if (alfrescoNodes.count)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidRemoveNodeNotification object:alfrescoNodes];
+    }
+    
+    //Empty syncNodesStatus dictionary.
+    self.syncNodesStatus = [NSMutableDictionary dictionary];
+    
     [self deleteRealmForAccount:account];
     account.isSyncOn = NO;
     [[AccountManager sharedManager] saveAccountsToKeychain];
@@ -353,14 +364,14 @@
 {
     for (SyncOperationQueueManager *syncOpQM in self.syncQueues.allValues)
     {
-        [syncOpQM cancelDownloadOperations:YES uploadOperations:YES];
+        [syncOpQM cancelOperationsType:CancelAllOperations];
     }
 }
 
 - (void)cancelAllDownloadOperationsForAccountWithId:(NSString *)accountId
 {
     SyncOperationQueueManager *syncOpQM = self.syncQueues[accountId];
-    [syncOpQM cancelDownloadOperations:YES uploadOperations:NO];
+    [syncOpQM cancelOperationsType:CancelDownloadOperations];
 }
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier

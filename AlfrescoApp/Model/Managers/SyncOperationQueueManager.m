@@ -382,8 +382,12 @@
 }
 
 #pragma mark - Cancel operations
-- (void)cancelDownloadOperations:(BOOL)shouldCancelDownloadOperations uploadOperations:(BOOL)shouldCancelUploadOperations
+
+- (void)cancelOperationsType:(CancelOperationsType)cancelType
 {
+    BOOL shouldCancelDownloadOperations = cancelType & CancelDownloadOperations;
+    BOOL shouldCancelUploadOperations = cancelType & CancelUploadOperations;
+
     [self.syncOperationQueue setSuspended:YES];
     NSArray *syncDocumentIdentifiers = [self.syncOperations allKeys];
     

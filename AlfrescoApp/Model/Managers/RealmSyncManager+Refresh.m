@@ -26,7 +26,7 @@
 - (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
-    [syncOpQM cancelDownloadOperations:YES uploadOperations:YES];
+    [syncOpQM cancelOperationsType:CancelAllOperations];
     
     // STEP 1 - Mark all top level nodes as pending sync status.
     [self markTopLevelNodesAsPending];

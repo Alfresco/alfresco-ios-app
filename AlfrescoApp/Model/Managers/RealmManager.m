@@ -203,6 +203,22 @@
     return results;
 }
 
+- (NSArray *)alfrescoNodesForSyncNodesInRealm:(RLMRealm *)realm
+{
+    RLMResults *allRealmSyncNodes = [self allSyncNodesInRealm:realm];
+    NSMutableArray *alfrescoNodes = [NSMutableArray array];
+    
+    for (RealmSyncNodeInfo *realmSyncNodeInfo in allRealmSyncNodes)
+    {
+        if (realmSyncNodeInfo.alfrescoNode)
+        {
+            [alfrescoNodes addObject:realmSyncNodeInfo.alfrescoNode.identifier];
+        }
+    }
+
+    return alfrescoNodes;
+}
+
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account
 {
     [RLMRealmConfiguration setDefaultConfiguration:[self configForName:account.accountIdentifier]];

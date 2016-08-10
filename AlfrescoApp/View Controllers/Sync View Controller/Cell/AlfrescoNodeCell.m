@@ -274,8 +274,31 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)didRemoveNodeFromSync:(NSNotification *)notification
 {
-    AlfrescoNode *node = (AlfrescoNode *)notification.object;
-    if ([node.identifier isEqualToString:self.node.identifier])
+    __block NSString *nodeIdentifier = nil;
+    
+    if ([notification.object isKindOfClass:[AlfrescoNode class]])
+    {
+        nodeIdentifier = ((AlfrescoNode *)notification.object).identifier;
+    }
+    else if ([notification.object isKindOfClass:[NSArray class]])
+    {
+        NSArray *array = (NSArray *)notification.object;
+        
+        [array enumerateObjectsUsingBlock:^(NSString * _Nonnull aNodeIdentifier, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([aNodeIdentifier isEqualToString:self.node.identifier])
+            {
+                nodeIdentifier = aNodeIdentifier;
+                *stop = YES;
+            }
+        }];
+    }
+    
+    if (nodeIdentifier == nil)
+    {
+        return;
+    }
+    
+    if ([nodeIdentifier isEqualToString:self.node.identifier])
     {
         self.isTopLevelNode = [self.node isTopLevelSyncNode];
         [self updateStatusIconsIsSyncNode:NO isFavoriteNode:self.isFavorite animate:YES];
