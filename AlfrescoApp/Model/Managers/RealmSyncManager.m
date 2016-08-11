@@ -154,13 +154,6 @@
         [syncOpQM cancelOperationsType:cancelType];
     }
     
-    //Clean sync statuses in FileFolderCollectionViewCells and AlfrescoNodeCells.
-    NSArray *alfrescoNodes = [[RealmManager sharedManager] alfrescoNodesForSyncNodesInRealm:[RLMRealm defaultRealm]];
-    if (alfrescoNodes.count)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidRemoveNodeNotification object:alfrescoNodes];
-    }
-    
     //Empty syncNodesStatus dictionary.
     self.syncNodesStatus = [NSMutableDictionary dictionary];
     
@@ -177,6 +170,7 @@
     [self realmForAccount:account.accountIdentifier];
     if(account == [AccountManager sharedManager].selectedAccount)
     {
+        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:account];
         [self.syncDisabledDelegate syncFeatureStatusChanged:YES];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
