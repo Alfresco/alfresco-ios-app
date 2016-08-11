@@ -278,7 +278,12 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
     if ([node.identifier isEqualToString:self.node.identifier])
     {
         self.isTopLevelNode = [self.node isTopLevelSyncNode];
-        [self updateStatusIconsIsSyncNode:NO isFavoriteNode:self.isFavorite animate:YES];
+        
+        //The node could be in another top level folder. In this case, we should only remove the top level and mentain the synced flag.
+        RealmSyncNodeInfo *realmSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
+        self.isSyncNode = realmSyncNodeInfo != nil;
+        
+        [self updateStatusIconsIsSyncNode:self.isSyncNode isFavoriteNode:self.isFavorite animate:YES];
     }
 }
 
