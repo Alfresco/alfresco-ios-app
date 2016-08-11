@@ -111,8 +111,13 @@
     nodeStatus.status = SyncStatusLoading;
     nodeStatus.activityType = SyncActivityTypeDownload;
     
-    
     NSArray *folderChildren = self.syncNodesInfo[[folder syncIdentifier]];
+    
+    if (folderChildren.count == 0)
+    {
+        nodeStatus.status = SyncStatusSuccessful;
+    }
+    
     for(AlfrescoNode *subNode in folderChildren)
     {
         if(subNode.isFolder)
