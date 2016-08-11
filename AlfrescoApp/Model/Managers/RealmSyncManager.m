@@ -260,6 +260,15 @@
     {
         if (nodeInfo)
         {
+            if (nodeInfo.isTopLevelSyncNode && nodeInfo.parentNode)
+            {
+                RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+                [backgroundRealm beginWriteTransaction];
+                nodeInfo.isTopLevelSyncNode = NO;
+                [backgroundRealm commitWriteTransaction];
+                return;
+            }
+            
             [arrayToDelete addObject:nodeInfo];
         }
         
@@ -305,6 +314,15 @@
     
     if(folderInfo)
     {
+        if (folderInfo.isTopLevelSyncNode && folderInfo.parentNode)
+        {
+            RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+            [backgroundRealm beginWriteTransaction];
+            folderInfo.isTopLevelSyncNode = NO;
+            [backgroundRealm commitWriteTransaction];
+            return;
+        }
+        
         [arrayToDelete addObject:folderInfo];
     }
     RLMLinkingObjects *subNodes = folderInfo.nodes;
