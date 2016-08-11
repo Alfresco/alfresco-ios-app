@@ -41,8 +41,6 @@
 - (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm;
 - (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm;
 
-- (NSArray *)alfrescoNodesForSyncNodesInRealm:(RLMRealm *)realm;
-
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 - (void)resetDefaultRealmConfiguration;
 
