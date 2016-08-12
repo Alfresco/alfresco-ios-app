@@ -34,14 +34,16 @@
     // STEP 2 - Invalidate the parent/child hierarchy in the database.
     [self invalidateParentChildHierarchy];
     
+    NSMutableArray *arrayOfDocumentsToDownload = [NSMutableArray new];
+    NSMutableArray *arrayOfDocumentsToUpload = [NSMutableArray new];
     // STEP 3 - Recursively request child folders from the server and update the database structure to match.
-    [self rebuildDataBaseWithCompletionBlock:^(BOOL completed)
+    [self rebuildDataBaseWithArrayOfFilesToDownload:arrayOfDocumentsToDownload arrayOfFilesToUpload:arrayOfDocumentsToUpload withCompletionBlock:^(BOOL completed)
     {
         // STEP 4 - Remove any synced content that is no longer within a sync set.
         [self cleanDataBaseOfUnwantedNodes];
         
         // STEP 5 - Start downloading any new content that appears inside the sync set.
-        [self startDownloadingNewContent];
+        [self startNetworkOperationsForDownloadArray:arrayOfDocumentsToDownload andForUploadArray:arrayOfDocumentsToUpload];
         
         if (completionBlock)
         {
@@ -82,10 +84,10 @@
     [realm commitWriteTransaction];
 }
 
-- (void)rebuildDataBaseWithCompletionBlock:(void (^)(BOOL completed))completionBlock
+- (void)rebuildDataBaseWithArrayOfFilesToDownload:(NSMutableArray *)arrayToDownload arrayOfFilesToUpload:(NSMutableArray *)arrayToUpload withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     RLMRealm *realm = self.mainThreadRealm;
-    RLMResults *topLevelFolders = [[RealmManager sharedManager] topLevelFoldersInRealm:realm];
+    RLMResults *topLevelFolders = [[RealmManager sharedManager] topLevelSyncNodesInRealm:realm];
     
     self.nodeChildrenRequestsCount = 0;
     
@@ -97,21 +99,28 @@
     
     for (RealmSyncNodeInfo *node in topLevelFolders)
     {
-        AlfrescoFolder *folder = (AlfrescoFolder *)node.alfrescoNode;
-        
-        [self retrieveNodeHierarchyForFolder:folder withCompletionBlock:^(BOOL completed){
-            if(self.nodeChildrenRequestsCount == 0)
-            {
-                if(completionBlock)
+        if(node.isFolder)
+        {
+            AlfrescoFolder *folder = (AlfrescoFolder *)node.alfrescoNode;
+            
+            [self retrieveNodeHierarchyForFolder:folder withArrayOfFilesToDownload:arrayToDownload arrayOfFilesToUpload:arrayToUpload withCompletionBlock:^(BOOL completed) {
+                if(self.nodeChildrenRequestsCount == 0)
                 {
-                    completionBlock(completed);
+                    if(completionBlock)
+                    {
+                        completionBlock(completed);
+                    }
                 }
-            }
-        }];
+            }];
+        }
+        else
+        {
+            [self handleNodeSyncActionAndStatus:node.alfrescoNode parentNode:nil shouldDownloadArray:arrayToDownload shouldUploadArray:arrayToUpload];
+        }
     }
 }
 
-- (void)retrieveNodeHierarchyForFolder:(AlfrescoFolder *)folder withCompletionBlock:(void (^)(BOOL completed))completionBlock
+- (void)retrieveNodeHierarchyForFolder:(AlfrescoFolder *)folder withArrayOfFilesToDownload:(NSMutableArray *)arrayToDownload arrayOfFilesToUpload:(NSMutableArray *)arrayToUpload withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     self.nodeChildrenRequestsCount++;
     
@@ -120,22 +129,30 @@
         
         if (array)
         {
-            for (AlfrescoNode *childNode in array)
+            if(array.count == 0)
             {
-                [self updateDataBaseForChildNode:childNode withParent:folder];
-                
-                if (childNode.isFolder)
+                SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[folder syncIdentifier]];
+                nodeStatus.status = SyncStatusSuccessful;
+            }
+            else
+            {
+                for (AlfrescoNode *childNode in array)
                 {
-                    [self retrieveNodeHierarchyForFolder:(AlfrescoFolder *)childNode withCompletionBlock:^(BOOL completed){
-                        if (completionBlock != NULL)
-                        {
-                            completionBlock(YES);
-                        }
-                    }];
+                    [self handleNodeSyncActionAndStatus:childNode parentNode:folder shouldDownloadArray:arrayToDownload shouldUploadArray:arrayToUpload];
+                    
+                    if (childNode.isFolder)
+                    {
+                        [self retrieveNodeHierarchyForFolder:(AlfrescoFolder *)childNode withArrayOfFilesToDownload:arrayToDownload arrayOfFilesToUpload:arrayToUpload withCompletionBlock:^(BOOL completed) {
+                            if (completionBlock != NULL)
+                            {
+                                completionBlock(YES);
+                            }
+                        }];
+                    }
                 }
             }
         }
-        else
+        else if(error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
         {
             [self removeTopLevelNodeFlagFomNodeWithIdentifier:folder.identifier];
         }
@@ -147,7 +164,7 @@
     }];
 }
 
-- (void)updateDataBaseForChildNode:(AlfrescoNode *)childNode withParent:(AlfrescoNode *)parentNode
+- (void)updateDataBaseForChildNode:(AlfrescoNode *)childNode withParent:(AlfrescoNode *)parentNode updateStatus:(BOOL)shouldUpdateStatus
 {
     NSString *childNodeIdentifier = [childNode syncIdentifier];
     
@@ -165,10 +182,18 @@
     }
     
     childSyncNodeInfo.isFolder = childNode.isFolder;
-    childSyncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:childNode];
     childSyncNodeInfo.title = childNode.name;
     
     [realm commitWriteTransaction];
+    
+    if(shouldUpdateStatus)
+    {
+        [realm beginWriteTransaction];
+        childSyncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:childNode];
+        [realm commitWriteTransaction];
+        SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[childNode syncIdentifier]];
+        nodeStatus.status = SyncStatusSuccessful;
+    }
 }
 
 - (void)removeTopLevelNodeFlagFomNodeWithIdentifier:(NSString *)nodeIdentifier
@@ -220,34 +245,56 @@
     }
 }
 
-- (void)startDownloadingNewContent
+- (void)startNetworkOperationsForDownloadArray:(NSMutableArray *)arrayToDownload andForUploadArray:(NSMutableArray *)arrayToUpload
 {
-    RLMRealm *realm = [RealmSyncManager sharedManager].mainThreadRealm;
-    RLMResults *allDocumentNodes = [[RealmManager sharedManager] allDocumentsInRealm:realm];
-    
-    NSMutableArray *nodesToDownloadArray = [NSMutableArray array];
-    NSMutableArray *nodesToUploadArray = [NSMutableArray array];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
+        [syncOpQM downloadContentsForNodes:arrayToDownload withCompletionBlock:nil];
+        [syncOpQM uploadContentsForNodes:arrayToUpload withCompletionBlock:nil];
+    });
+}
 
-    for (RealmSyncNodeInfo *document in allDocumentNodes)
+- (BOOL)determineFileActionForNode:(AlfrescoNode *)node shouldDownloadArray:(NSMutableArray *)shouldDownloadArray shouldUploadArray:(NSMutableArray *)shouldUploadArray
+{
+    BOOL shouldUpdateStatus = NO;
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RealmSyncNodeInfo *childSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    if(childSyncNodeInfo)
     {
-        if (document.alfrescoNode)
+        AlfrescoNode *localNode = childSyncNodeInfo.alfrescoNode;
+        if(childSyncNodeInfo.isRemovedFromSyncHasLocalChanges)
         {
-            if (document.isRemovedFromSyncHasLocalChanges)
+            [shouldUploadArray addObject:node];
+        }
+        else
+        {
+            NSComparisonResult compareResult = [localNode.modifiedAt compare:node.modifiedAt];
+            if(compareResult == NSOrderedAscending)
             {
-                [nodesToUploadArray addObject:document.alfrescoNode];
+                [shouldDownloadArray addObject:node];
+            }
+            else if(compareResult == NSOrderedDescending)
+            {
+                [shouldUploadArray addObject:localNode];
             }
             else
             {
-                [nodesToDownloadArray addObject:document.alfrescoNode];
+                shouldUpdateStatus = YES;
             }
         }
     }
+    else
+    {
+        [shouldDownloadArray addObject:node];
+    }
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        SyncOperationQueueManager *syncOpQM = [self currentOperationQueueManager];
-        [syncOpQM downloadContentsForNodes:nodesToDownloadArray withCompletionBlock:nil];
-        [syncOpQM uploadContentsForNodes:nodesToUploadArray withCompletionBlock:nil];
-    });
+    return shouldUpdateStatus;
+}
+
+- (void)handleNodeSyncActionAndStatus:(AlfrescoNode *)node parentNode:(AlfrescoNode *)parentNode shouldDownloadArray:(NSMutableArray *)arrayToDownload shouldUploadArray:(NSMutableArray *)arrayToUpload
+{
+    BOOL shouldUpdateStatus = [self determineFileActionForNode:node shouldDownloadArray:arrayToDownload shouldUploadArray:arrayToUpload];
+    [self updateDataBaseForChildNode:node withParent:parentNode updateStatus:shouldUpdateStatus];
 }
 
 @end
