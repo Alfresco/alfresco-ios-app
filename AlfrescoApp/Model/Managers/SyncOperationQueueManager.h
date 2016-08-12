@@ -27,6 +27,13 @@
 
 @end
 
+typedef NS_ENUM(NSUInteger, CancelOperationsType) {
+    CancelOperationsNone,
+    CancelDownloadOperations,
+    CancelUploadOperations,
+    CancelAllOperations,
+};
+
 @interface SyncOperationQueueManager : NSObject
 
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
@@ -46,7 +53,7 @@
 - (void)uploadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
-- (void)cancelDownloadOperations:(BOOL)shouldCancelDownloadOperations uploadOperations:(BOOL)shouldCancelUploadOperations;
+- (void)cancelOperationsType:(CancelOperationsType)cancelType;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
 
 - (BOOL)isCurrentlySyncing;
