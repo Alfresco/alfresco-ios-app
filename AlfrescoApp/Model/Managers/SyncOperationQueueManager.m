@@ -111,8 +111,13 @@
     nodeStatus.status = SyncStatusLoading;
     nodeStatus.activityType = SyncActivityTypeDownload;
     
-    
     NSArray *folderChildren = self.syncNodesInfo[[folder syncIdentifier]];
+    
+    if (folderChildren.count == 0)
+    {
+        nodeStatus.status = SyncStatusSuccessful;
+    }
+    
     for(AlfrescoNode *subNode in folderChildren)
     {
         if(subNode.isFolder)
@@ -382,8 +387,12 @@
 }
 
 #pragma mark - Cancel operations
-- (void)cancelDownloadOperations:(BOOL)shouldCancelDownloadOperations uploadOperations:(BOOL)shouldCancelUploadOperations
+
+- (void)cancelOperationsType:(CancelOperationsType)cancelType
 {
+    BOOL shouldCancelDownloadOperations = cancelType & CancelDownloadOperations;
+    BOOL shouldCancelUploadOperations = cancelType & CancelUploadOperations;
+
     [self.syncOperationQueue setSuspended:YES];
     NSArray *syncDocumentIdentifiers = [self.syncOperations allKeys];
     

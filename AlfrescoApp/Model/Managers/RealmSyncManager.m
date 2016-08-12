@@ -128,12 +128,7 @@
             cancelBlock();
         }]];
         [confirmAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"action.pendingoperations.confirm", @"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            SyncOperationQueueManager *syncOpQM = self.syncQueues[account.accountIdentifier];
-            [syncOpQM cancelDownloadOperations:YES uploadOperations:YES];
-            [self deleteRealmForAccount:account];
-            account.isSyncOn = NO;
-            [[AccountManager sharedManager] saveAccountsToKeychain];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+            [self cleanUpAccount:account cancelOperationsType:CancelAllOperations];
             completionBlock();
         }]];
         
@@ -141,18 +136,27 @@
     }
     else
     {
-        [self deleteRealmForAccount:account];
-        account.isSyncOn = NO;
-        [[AccountManager sharedManager] saveAccountsToKeychain];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+        [self cleanUpAccount:account cancelOperationsType:CancelOperationsNone];
         completionBlock();
     }
 }
 
 - (void)disableSyncForAccountFromConfig:(UserAccount *)account
 {
-    SyncOperationQueueManager *syncOpQM = self.syncQueues[account.accountIdentifier];
-    [syncOpQM cancelDownloadOperations:YES uploadOperations:NO];
+    [self cleanUpAccount:account cancelOperationsType:CancelDownloadOperations];
+}
+
+- (void)cleanUpAccount:(UserAccount *)account cancelOperationsType:(CancelOperationsType)cancelType
+{
+    if (cancelType != CancelOperationsNone)
+    {
+        SyncOperationQueueManager *syncOpQM = self.syncQueues[account.accountIdentifier];
+        [syncOpQM cancelOperationsType:cancelType];
+    }
+    
+    //Empty syncNodesStatus dictionary.
+    self.syncNodesStatus = [NSMutableDictionary dictionary];
+    
     [self deleteRealmForAccount:account];
     account.isSyncOn = NO;
     [[AccountManager sharedManager] saveAccountsToKeychain];
@@ -166,6 +170,7 @@
     [self realmForAccount:account.accountIdentifier];
     if(account == [AccountManager sharedManager].selectedAccount)
     {
+        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:account];
         [self.syncDisabledDelegate syncFeatureStatusChanged:YES];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
@@ -255,6 +260,15 @@
     {
         if (nodeInfo)
         {
+            if (nodeInfo.isTopLevelSyncNode && nodeInfo.parentNode)
+            {
+                RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+                [backgroundRealm beginWriteTransaction];
+                nodeInfo.isTopLevelSyncNode = NO;
+                [backgroundRealm commitWriteTransaction];
+                return;
+            }
+            
             [arrayToDelete addObject:nodeInfo];
         }
         
@@ -300,6 +314,15 @@
     
     if(folderInfo)
     {
+        if (folderInfo.isTopLevelSyncNode && folderInfo.parentNode)
+        {
+            RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+            [backgroundRealm beginWriteTransaction];
+            folderInfo.isTopLevelSyncNode = NO;
+            [backgroundRealm commitWriteTransaction];
+            return;
+        }
+        
         [arrayToDelete addObject:folderInfo];
     }
     RLMLinkingObjects *subNodes = folderInfo.nodes;
@@ -353,14 +376,14 @@
 {
     for (SyncOperationQueueManager *syncOpQM in self.syncQueues.allValues)
     {
-        [syncOpQM cancelDownloadOperations:YES uploadOperations:YES];
+        [syncOpQM cancelOperationsType:CancelAllOperations];
     }
 }
 
 - (void)cancelAllDownloadOperationsForAccountWithId:(NSString *)accountId
 {
     SyncOperationQueueManager *syncOpQM = self.syncQueues[accountId];
-    [syncOpQM cancelDownloadOperations:YES uploadOperations:NO];
+    [syncOpQM cancelOperationsType:CancelDownloadOperations];
 }
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
