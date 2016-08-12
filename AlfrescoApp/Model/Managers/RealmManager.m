@@ -171,6 +171,17 @@
     [realm beginWriteTransaction];
     for(RLMObject *object in objectsToDelete)
     {
+        if ([object isKindOfClass:[RealmSyncNodeInfo class]])
+        {
+            // Delete the associated RealmSyncError, if exists.
+            RealmSyncError *realmSyncError = ((RealmSyncNodeInfo *)object).syncError;
+            
+            if (realmSyncError)
+            {
+                [realm deleteObject:realmSyncError];
+            }
+        }
+        
         [realm deleteObject:object];
     }
     [realm commitWriteTransaction];

@@ -227,7 +227,10 @@
                 }
             }
             
+            // Delete RealmSyncNodeInfo objects
             [[RealmManager sharedManager] deleteRealmObjects:arrayOfNodesToDelete inRealm:backgroundRealm];
+            
+            // Delete files from the disk
             for(NSString *path in arrayOfPathsForFilesToBeDeleted)
             {
                 // No error handling here as we don't want to end up with Sync orphans
