@@ -18,6 +18,7 @@
 
 #import "RealmSyncManager.h"
 #import "AccountManager.h"
+#import "ConnectivityManager.h"
 
 @interface RealmSyncManager()
 
@@ -31,6 +32,8 @@
 @property (nonatomic, strong) RealmManager *realmManager;
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
+
+@property (nonatomic) BOOL lastConnectivityFlag;
 
 - (SyncOperationQueueManager *)currentOperationQueueManager;
 

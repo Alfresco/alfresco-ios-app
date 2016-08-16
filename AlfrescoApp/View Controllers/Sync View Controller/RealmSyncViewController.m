@@ -23,7 +23,6 @@
 #import "UniversalDevice.h"
 #import "PreferenceManager.h"
 #import "AccountManager.h"
-#import "RealmSyncManager+Refresh.h"
 #import "SyncObstaclesViewController.h"
 #import "SyncNavigationViewController.h"
 #import "FailedTransferDetailViewController.h"
