@@ -230,7 +230,7 @@
 		2B2609921B4AD2C100F2F26B /* dots-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */; };
 		2B2BEFEE1D001F7F0090B45B /* FolderCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2BEFED1D001F7F0090B45B /* FolderCollectionViewDataSource.m */; };
 		2B2BEFF51D00824E0090B45B /* DocumentCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2BEFF41D00824E0090B45B /* DocumentCollectionViewDataSource.m */; };
-		2B2D5F341D3F676900428730 /* SyncOperationQueueManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D5F331D3F676900428730 /* SyncOperationQueueManager.m */; };
+		2B2D5F341D3F676900428730 /* SyncOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D5F331D3F676900428730 /* SyncOperationQueue.m */; };
 		2B314C861B7B7D750031E965 /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
 		2B314C8B1B7B8A8A0031E965 /* AlfrescoKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
 		2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */; };
@@ -1190,8 +1190,8 @@
 		2B2BEFED1D001F7F0090B45B /* FolderCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FolderCollectionViewDataSource.m; sourceTree = "<group>"; };
 		2B2BEFF31D00824E0090B45B /* DocumentCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentCollectionViewDataSource.h; sourceTree = "<group>"; };
 		2B2BEFF41D00824E0090B45B /* DocumentCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentCollectionViewDataSource.m; sourceTree = "<group>"; };
-		2B2D5F321D3F676900428730 /* SyncOperationQueueManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperationQueueManager.h; sourceTree = "<group>"; };
-		2B2D5F331D3F676900428730 /* SyncOperationQueueManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperationQueueManager.m; sourceTree = "<group>"; };
+		2B2D5F321D3F676900428730 /* SyncOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperationQueue.h; sourceTree = "<group>"; };
+		2B2D5F331D3F676900428730 /* SyncOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperationQueue.m; sourceTree = "<group>"; };
 		2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParentCollectionViewController.xib; sourceTree = "<group>"; };
 		2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCollectionViewCell.xib; sourceTree = "<group>"; };
 		2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCollectionSectionHeader.xib; sourceTree = "<group>"; };
@@ -3706,8 +3706,8 @@
 				23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */,
 				1DE950781CAC0887009299C8 /* RealmManager.h */,
 				1DE950791CAC0887009299C8 /* RealmManager.m */,
-				2B2D5F321D3F676900428730 /* SyncOperationQueueManager.h */,
-				2B2D5F331D3F676900428730 /* SyncOperationQueueManager.m */,
+				2B2D5F321D3F676900428730 /* SyncOperationQueue.h */,
+				2B2D5F331D3F676900428730 /* SyncOperationQueue.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -4971,7 +4971,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B2D5F341D3F676900428730 /* SyncOperationQueueManager.m in Sources */,
+				2B2D5F341D3F676900428730 /* SyncOperationQueue.m in Sources */,
 				73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */,
 				2BFECF581BB57D660007ABA2 /* SitesTableListViewController.m in Sources */,
 				731901BA18477E4E002C82C1 /* AccountInfo.m in Sources */,

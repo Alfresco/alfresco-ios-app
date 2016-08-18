@@ -33,9 +33,12 @@
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
 
+@property (nonatomic, strong) NSMutableArray *nodesToDownload;
+@property (nonatomic, strong) NSMutableArray *nodesToUpload;
+
 @property (nonatomic) BOOL lastConnectivityFlag;
 
-- (SyncOperationQueueManager *)currentOperationQueueManager;
+- (SyncOperationQueue *)currentOperationQueueManager;
 
 - (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;

@@ -21,7 +21,7 @@
 #import "SyncConstants.h"
 #import "SyncNodeStatus.h"
 #import "RealmManager.h"
-#import "SyncOperationQueueManager.h"
+#import "SyncOperationQueue.h"
 #import "AlfrescoNode+Sync.h"
 
 @protocol RealmSyncManagerSyncDisabledDelegate <NSObject>
