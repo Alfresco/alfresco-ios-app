@@ -64,7 +64,7 @@
 - (NSInteger)numberOfNodesInCollection;
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock;
 - (void)createFolderWithName:(NSString *)folderName;
-- (void)retreiveNextItems:(AlfrescoListingContext *)moreListingContext;
+- (void)retrieveNextItems:(AlfrescoListingContext *)moreListingContext;
 - (AlfrescoPermissions *)permissionsForNode:(AlfrescoNode *)node;
 - (NSArray *)nodeIdentifiersOfCurrentCollection;
 - (void)addAlfrescoNodes:(NSArray *)alfrescoNodes;

@@ -124,7 +124,7 @@
 #pragma mark - Permissions methods
 - (void)retrievePermissionsForNode:(AlfrescoNode *)node
 {
-    [self.documentService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+    [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if (!error)
         {
             [self.nodesPermissions setValue:permissions forKey:node.identifier];
@@ -134,7 +134,7 @@
 
 - (void)retrieveAndSetPermissionsOfCurrentFolder
 {
-    [self.documentService retrievePermissionsOfNode:self.parentNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+    [self.parentNode retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if (permissions)
         {
             self.parentFolderPermissions = permissions;
@@ -377,7 +377,7 @@
     }
 }
 
-- (void)retreiveNextItems:(AlfrescoListingContext *)moreListingContext
+- (void)retrieveNextItems:(AlfrescoListingContext *)moreListingContext
 {
     [self retrieveContentOfFolder:(AlfrescoFolder *)self.parentNode usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [self addMoreToCollectionViewWithPagingResult:pagingResult data:nil error:error];
