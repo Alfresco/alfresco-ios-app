@@ -411,6 +411,11 @@
     NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
     for (AlfrescoNode *node in alfrescoNodes)
     {
+        AlfrescoPermissions *nodePermissions = self.nodesPermissions[node.identifier];
+        if(!nodePermissions)
+        {
+            [self retrievePermissionsForNode:node];
+        }
         // add to the collectionView data source at the correct index
         NSUInteger newIndex = [self.dataSourceCollection indexOfObject:node inSortedRange:NSMakeRange(0, self.dataSourceCollection.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
         [self.dataSourceCollection insertObject:node atIndex:newIndex];
