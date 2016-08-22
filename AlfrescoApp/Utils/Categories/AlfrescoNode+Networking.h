@@ -16,10 +16,9 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AlfrescoNode.h"
-
 @interface AlfrescoNode (Networking)
 
 - (void)retrieveNodePermissionsWithSession:(id<AlfrescoSession>)session withCompletionBlock:(void (^)(AlfrescoPermissions *permissions, NSError *error))completionBlock;
 
 @end
+    

@@ -448,21 +448,17 @@
 - (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
 {
     AlfrescoNode *nodeToDelete = self.dataSourceCollection[indexPath.item];
-    AlfrescoPermissions *permissionsForNodeToDelete = [[RealmSyncManager sharedManager] permissionsForSyncNode:nodeToDelete];
     
-    if (permissionsForNodeToDelete.canDelete)
-    {
-        [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
-            if(success)
+    [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
+        if(success)
+        {
+            if([collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
             {
-                if([collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-                {
-                    BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
-                    [properLayout setSelectedIndexPathForSwipeToDelete:nil];
-                }
+                BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
+                [properLayout setSelectedIndexPathForSwipeToDelete:nil];
             }
-        }];
-    }
+        }
+    }];
 }
 
 #pragma mark - Private methods
