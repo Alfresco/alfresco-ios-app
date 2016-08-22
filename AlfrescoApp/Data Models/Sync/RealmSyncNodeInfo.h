@@ -38,6 +38,7 @@
 //Inverse of parentNode relation
 @property (readonly) RLMLinkingObjects *nodes;
 @property (readonly) AlfrescoNode *alfrescoNode;
+@property (readonly) AlfrescoPermissions *alfrescoPermissions;
 
 @end
 

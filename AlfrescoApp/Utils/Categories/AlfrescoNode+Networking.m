@@ -16,10 +16,22 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "RealmSyncManager.h"
+#import "AlfrescoNode+Networking.h"
 
-@interface RealmSyncManager (Refresh)
+@implementation AlfrescoNode (Networking)
 
-- (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock;
+-(void)retrieveNodePermissionsWithSession:(id<AlfrescoSession>)session withCompletionBlock:(void (^)(AlfrescoPermissions *, NSError *))completionBlock
+{
+    if(session)
+    {
+        AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+        [documentService retrievePermissionsOfNode:self completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+            if(completionBlock)
+            {
+                completionBlock(permissions, error);
+            }
+        }];
+    }
+}
 
 @end

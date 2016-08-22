@@ -21,7 +21,7 @@
 #import "SyncConstants.h"
 #import "SyncNodeStatus.h"
 #import "RealmManager.h"
-#import "SyncOperationQueueManager.h"
+#import "SyncOperationQueue.h"
 #import "AlfrescoNode+Sync.h"
 
 @protocol RealmSyncManagerSyncDisabledDelegate <NSObject>
@@ -45,6 +45,8 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 @property (nonatomic, strong) RLMRealm *mainThreadRealm;
 
 + (RealmSyncManager *)sharedManager;
+
+- (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
 /*
  * Sync Utilities

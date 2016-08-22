@@ -34,7 +34,7 @@ typedef NS_ENUM(NSUInteger, CancelOperationsType) {
     CancelAllOperations,
 };
 
-@interface SyncOperationQueueManager : NSObject
+@interface SyncOperationQueue : NSObject
 
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;

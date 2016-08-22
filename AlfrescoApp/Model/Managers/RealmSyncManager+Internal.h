@@ -18,6 +18,7 @@
 
 #import "RealmSyncManager.h"
 #import "AccountManager.h"
+#import "ConnectivityManager.h"
 
 @interface RealmSyncManager()
 
@@ -32,7 +33,12 @@
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
 
-- (SyncOperationQueueManager *)currentOperationQueueManager;
+@property (nonatomic, strong) NSMutableArray *nodesToDownload;
+@property (nonatomic, strong) NSMutableArray *nodesToUpload;
+
+@property (nonatomic) BOOL lastConnectivityFlag;
+
+- (SyncOperationQueue *)currentOperationQueue;
 
 - (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;

@@ -31,6 +31,7 @@
 - (RealmSyncNodeInfo *)syncNodeInfoForObjectWithId:(NSString *)objectId ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm;
 - (RealmSyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm;
 - (void)updateSyncNodeInfoWithId:(NSString *)objectId withNode:(AlfrescoNode *)node lastDownloadedDate:(NSDate *)downloadedDate syncContentPath:(NSString *)syncContentPath inRealm:(RLMRealm *)realm;
+- (void)savePermissions:(AlfrescoPermissions *)permissions forNode:(AlfrescoNode *)node;
 
 - (RLMRealmConfiguration *)configForName:(NSString *)name;
 - (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm;
