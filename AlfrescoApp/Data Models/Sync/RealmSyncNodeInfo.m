@@ -54,4 +54,9 @@
     return [NSKeyedUnarchiver unarchiveObjectWithData:self.node];
 }
 
+- (AlfrescoPermissions *)alfrescoPermissions
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:self.permissions];
+}
+
 @end

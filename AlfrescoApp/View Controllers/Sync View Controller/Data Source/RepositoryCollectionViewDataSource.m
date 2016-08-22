@@ -124,7 +124,7 @@
 #pragma mark - Permissions methods
 - (void)retrievePermissionsForNode:(AlfrescoNode *)node
 {
-    [self.documentService retrievePermissionsOfNode:node completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+    [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if (!error)
         {
             [self.nodesPermissions setValue:permissions forKey:node.identifier];
@@ -134,7 +134,7 @@
 
 - (void)retrieveAndSetPermissionsOfCurrentFolder
 {
-    [self.documentService retrievePermissionsOfNode:self.parentNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+    [self.parentNode retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if (permissions)
         {
             self.parentFolderPermissions = permissions;
@@ -377,7 +377,7 @@
     }
 }
 
-- (void)retreiveNextItems:(AlfrescoListingContext *)moreListingContext
+- (void)retrieveNextItems:(AlfrescoListingContext *)moreListingContext
 {
     [self retrieveContentOfFolder:(AlfrescoFolder *)self.parentNode usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         [self addMoreToCollectionViewWithPagingResult:pagingResult data:nil error:error];
@@ -411,6 +411,11 @@
     NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
     for (AlfrescoNode *node in alfrescoNodes)
     {
+        AlfrescoPermissions *nodePermissions = self.nodesPermissions[node.identifier];
+        if(!nodePermissions)
+        {
+            [self retrievePermissionsForNode:node];
+        }
         // add to the collectionView data source at the correct index
         NSUInteger newIndex = [self.dataSourceCollection indexOfObject:node inSortedRange:NSMakeRange(0, self.dataSourceCollection.count) options:NSBinarySearchingInsertionIndex usingComparator:comparator];
         [self.dataSourceCollection insertObject:node atIndex:newIndex];
@@ -443,21 +448,17 @@
 - (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
 {
     AlfrescoNode *nodeToDelete = self.dataSourceCollection[indexPath.item];
-    AlfrescoPermissions *permissionsForNodeToDelete = [[RealmSyncManager sharedManager] permissionsForSyncNode:nodeToDelete];
     
-    if (permissionsForNodeToDelete.canDelete)
-    {
-        [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
-            if(success)
+    [self deleteNode:nodeToDelete completionBlock:^(BOOL success) {
+        if(success)
+        {
+            if([collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
             {
-                if([collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
-                {
-                    BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
-                    [properLayout setSelectedIndexPathForSwipeToDelete:nil];
-                }
+                BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
+                [properLayout setSelectedIndexPathForSwipeToDelete:nil];
             }
-        }];
-    }
+        }
+    }];
 }
 
 #pragma mark - Private methods

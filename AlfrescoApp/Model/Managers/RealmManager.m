@@ -156,6 +156,18 @@
     [realm commitWriteTransaction];
 }
 
+- (void)savePermissions:(AlfrescoPermissions *)permissions forNode:(AlfrescoNode *)node
+{
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObjectWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    if(nodeInfo)
+    {
+        [realm beginWriteTransaction];
+        nodeInfo.permissions = [NSKeyedArchiver archivedDataWithRootObject:permissions];
+        [realm commitWriteTransaction];
+    }
+}
+
 - (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm
 {
     if(objectToDelete)

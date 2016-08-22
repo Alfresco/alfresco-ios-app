@@ -96,7 +96,7 @@
         {
             // show more items are loading ...
             self.isLoadingAnotherPage = YES;
-            [self.dataSource retreiveNextItems:moreListingContext];
+            [self.dataSource retrieveNextItems:moreListingContext];
         }
     }
     

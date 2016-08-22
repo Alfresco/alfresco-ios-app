@@ -16,7 +16,7 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "SyncOperationQueueManager.h"
+#import "SyncOperationQueue.h"
 #import "AccountSyncProgress.h"
 #import "AlfrescoNode+Sync.h"
 #import "SyncOperation.h"
@@ -25,7 +25,7 @@
 #import "SyncConstants.h"
 #import "RealmManager.h"
 
-@interface SyncOperationQueueManager()
+@interface SyncOperationQueue()
 
 @property (nonatomic, strong) AccountSyncProgress *syncProgress;
 @property (nonatomic, strong) NSOperationQueue *syncOperationQueue;
@@ -38,7 +38,7 @@
 
 @end
 
-@implementation SyncOperationQueueManager
+@implementation SyncOperationQueue
 
 - (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session syncProgressDelegate:(id<RealmSyncManagerProgressDelegate>)syncProgressDelegate
 {

@@ -86,11 +86,25 @@
 - (void)setupDataSourceCollection:(id<NSFastEnumeration>)collection
 {
     self.dataSourceCollection = [NSMutableArray new];
+    self.nodesPermissions = [NSMutableDictionary new];
     for(RealmSyncNodeInfo *nodeInfo in collection)
     {
         if (nodeInfo.alfrescoNode)
         {
             [self.dataSourceCollection addObject:nodeInfo.alfrescoNode];
+            if(nodeInfo.alfrescoPermissions)
+            {
+                [self.nodesPermissions setObject:nodeInfo.alfrescoPermissions forKey:nodeInfo.alfrescoNode.identifier];
+            }
+            else
+            {
+                [nodeInfo.alfrescoNode retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    if(!error)
+                    {
+                        [[RealmManager sharedManager] savePermissions:permissions forNode:nodeInfo.alfrescoNode];
+                    }
+                }];
+            }
         }
     }
     
