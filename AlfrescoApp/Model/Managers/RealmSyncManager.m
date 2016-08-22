@@ -151,8 +151,8 @@
 {
     if (cancelType != CancelOperationsNone)
     {
-        SyncOperationQueue *syncOpQM = self.syncQueues[account.accountIdentifier];
-        [syncOpQM cancelOperationsType:cancelType];
+        SyncOperationQueue *syncOpQ = self.syncQueues[account.accountIdentifier];
+        [syncOpQ cancelOperationsType:cancelType];
     }
     
     //Empty syncNodesStatus dictionary.
@@ -242,8 +242,8 @@
 
 - (void)handleDocumentForDelete:(AlfrescoNode *)document arrayOfNodesToDelete:(NSMutableArray *)arrayToDelete arrayOfNodesToSaveLocally:(NSMutableArray *)arrayToSave arrayOfPaths:(NSMutableArray *)arrayOfPaths inRealm:(RLMRealm *)realm deleteRule:(DeleteRule)deleteRule
 {
-    SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-    SyncNodeStatus *syncNodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
+    SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+    SyncNodeStatus *syncNodeStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
     syncNodeStatus.totalSize = 0;
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
     
@@ -375,22 +375,22 @@
 
 - (void)cancelAllSyncOperations
 {
-    for (SyncOperationQueue *syncOpQM in self.syncQueues.allValues)
+    for (SyncOperationQueue *syncOpQ in self.syncQueues.allValues)
     {
-        [syncOpQM cancelOperationsType:CancelAllOperations];
+        [syncOpQ cancelOperationsType:CancelAllOperations];
     }
 }
 
 - (void)cancelAllDownloadOperationsForAccountWithId:(NSString *)accountId
 {
-    SyncOperationQueue *syncOpQM = self.syncQueues[accountId];
-    [syncOpQM cancelOperationsType:CancelDownloadOperations];
+    SyncOperationQueue *syncOpQ = self.syncQueues[accountId];
+    [syncOpQ cancelOperationsType:CancelDownloadOperations];
 }
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
 {
-    SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-    [syncOpQM cancelSyncForDocumentWithIdentifier:documentIdentifier];
+    SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+    [syncOpQ cancelSyncForDocumentWithIdentifier:documentIdentifier];
 }
 
 - (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock
@@ -445,11 +445,11 @@
     
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
-        SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
+        SyncOperationQueue *syncOpQ = [self currentOperationQueue];
         
         if (nodeStatus.activityType == SyncActivityTypeDownload)
         {
-            [syncOpQM downloadDocument:document withCompletionBlock:^(BOOL completed) {
+            [syncOpQ downloadDocument:document withCompletionBlock:^(BOOL completed) {
                 if (completionBlock)
                 {
                     completionBlock();
@@ -458,7 +458,7 @@
         }
         else
         {
-            [syncOpQM uploadDocument:document withCompletionBlock:^(BOOL completed) {
+            [syncOpQ uploadDocument:document withCompletionBlock:^(BOOL completed) {
                 if (completionBlock)
                 {
                     completionBlock();
@@ -483,8 +483,8 @@
 
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-    [syncOpQM uploadDocument:document withCompletionBlock:^(BOOL completed) {
+    SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+    [syncOpQ uploadDocument:document withCompletionBlock:^(BOOL completed) {
         if (completionBlock)
         {
             completionBlock(completed);
@@ -508,8 +508,8 @@
             syncNodeInfo.isTopLevelSyncNode = NO;
             [realm commitWriteTransaction];
             
-            SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-            SyncNodeStatus *nodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
+            SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+            SyncNodeStatus *nodeStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
             
             if(node.isDocument)
             {
@@ -580,10 +580,10 @@
     {
         [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
             
-            SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
+            SyncOperationQueue *syncOpQ = [self currentOperationQueue];
             if (node.isFolder == NO)
             {
-                [syncOpQM addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:completionBlock];
+                [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:completionBlock];
             }
             else
             {
@@ -591,8 +591,8 @@
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
                     if(self.nodeChildrenRequestsCount == 0)
                     {
-                        syncOpQM.syncNodesInfo = self.syncNodesInfo;
-                        [syncOpQM addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
+                        syncOpQ.syncNodesInfo = self.syncNodesInfo;
+                        [syncOpQ addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
                         if(completionBlock)
                         {
                             completionBlock(completed);
@@ -671,8 +671,8 @@
     
     if (isModifiedLocally)
     {
-        SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-        SyncNodeStatus *nodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
+        SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+        SyncNodeStatus *nodeStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
         
         AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
         NSError *dateError = nil;
@@ -695,8 +695,8 @@
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
 {
     NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
-    SyncOperationQueue *syncOpQManager = [self currentOperationQueueManager];
-    SyncNodeStatus *nodeStatus = [syncOpQManager syncNodeStatusObjectForNodeWithId:syncNodeId];
+    SyncOperationQueue *syncOpQanager = [self currentOperationQueue];
+    SyncNodeStatus *nodeStatus = [syncOpQanager syncNodeStatusObjectForNodeWithId:syncNodeId];
     return nodeStatus;
 }
 
@@ -780,7 +780,7 @@
     
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:nodeStatus.nodeId ifNotExistsCreateNew:NO inRealm:realm];
     RealmSyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
-    SyncOperationQueue *syncOpQM = self.syncQueues[selectedAccount.accountIdentifier];
+    SyncOperationQueue *syncOpQ = self.syncQueues[selectedAccount.accountIdentifier];
     // update total size for parent folder
     if ([propertyChanged isEqualToString:kSyncTotalSize])
     {
@@ -795,7 +795,7 @@
         else
         {
             // if parent folder is nil - update total size for account
-            SyncNodeStatus *accountSyncStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:selectedAccount.accountIdentifier];
+            SyncNodeStatus *accountSyncStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:selectedAccount.accountIdentifier];
             if (nodeStatus != accountSyncStatus)
             {
                 NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
@@ -809,13 +809,13 @@
         if (parentNodeInfo)
         {
             NSString *parentNodeId = parentNodeInfo.syncNodeInfoId;
-            SyncNodeStatus *parentNodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:parentNodeId];
+            SyncNodeStatus *parentNodeStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:parentNodeId];
             RLMLinkingObjects *subNodes = parentNodeInfo.nodes;
             
             SyncStatus syncStatus = SyncStatusSuccessful;
             for (RealmSyncNodeInfo *subNodeInfo in subNodes)
             {
-                SyncNodeStatus *subNodeStatus = [syncOpQM syncNodeStatusObjectForNodeWithId:subNodeInfo.syncNodeInfoId];
+                SyncNodeStatus *subNodeStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:subNodeInfo.syncNodeInfoId];
                 
                 if (subNodeStatus.status == SyncStatusLoading)
                 {
@@ -954,23 +954,23 @@
 - (void)setProgressDelegate:(id<RealmSyncManagerProgressDelegate>)progressDelegate
 {
     _progressDelegate = progressDelegate;
-    SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-    syncOpQM.progressDelegate = self.progressDelegate;
+    SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+    syncOpQ.progressDelegate = self.progressDelegate;
 }
 
 #pragma mark - Internal methods
-- (SyncOperationQueue *)currentOperationQueueManager
+- (SyncOperationQueue *)currentOperationQueue
 {
-    SyncOperationQueue *syncOpQM = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
-    return syncOpQM;
+    SyncOperationQueue *syncOpQ = self.syncQueues[[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    return syncOpQ;
 }
 
 #pragma mark - Refresh
 
 - (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-    [syncOpQM cancelOperationsType:CancelAllOperations];
+    SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+    [syncOpQ cancelOperationsType:CancelAllOperations];
     
     // STEP 1 - Mark all top level nodes as pending sync status.
     [self markTopLevelNodesAsPending];
@@ -1249,8 +1249,8 @@
             }
             
             // Remove sync status.
-            SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-            [syncOpQM removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
+            SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+            [syncOpQ removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
             
             // Remove RealmSyncError object if exists.
             RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:node.syncNodeInfoId ifNotExistsCreateNew:NO inRealm:realm];
@@ -1265,9 +1265,9 @@
 - (void)startNetworkOperations
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        SyncOperationQueue *syncOpQM = [self currentOperationQueueManager];
-        [syncOpQM downloadContentsForNodes:self.nodesToDownload withCompletionBlock:nil];
-        [syncOpQM uploadContentsForNodes:self.nodesToUpload withCompletionBlock:nil];
+        SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+        [syncOpQ downloadContentsForNodes:self.nodesToDownload withCompletionBlock:nil];
+        [syncOpQ uploadContentsForNodes:self.nodesToUpload withCompletionBlock:nil];
     });
 }
 

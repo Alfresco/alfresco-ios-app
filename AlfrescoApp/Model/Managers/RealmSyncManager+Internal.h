@@ -38,7 +38,7 @@
 
 @property (nonatomic) BOOL lastConnectivityFlag;
 
-- (SyncOperationQueue *)currentOperationQueueManager;
+- (SyncOperationQueue *)currentOperationQueue;
 
 - (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;
