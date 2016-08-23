@@ -114,6 +114,11 @@
     });
 }
 
+- (void)retrieveContentsOfParentNode
+{
+    //Nothing to do as the sync data is available offline - this overrides the method in the parent class
+}
+
 #pragma mark - RealmSyncManagerSyncDisabledDelegate methods
 - (void)syncFeatureStatusChanged:(BOOL)isSyncOn
 {

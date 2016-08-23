@@ -63,6 +63,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     {
         [self disablePullToRefresh];
     }
+    self.hasRequestFinished = NO;
     
     [self adjustCollectionViewForProgressView:nil];
     
