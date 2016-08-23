@@ -40,7 +40,6 @@
 
 - (SyncOperationQueue *)currentOperationQueue;
 
-- (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;
 
 @end
