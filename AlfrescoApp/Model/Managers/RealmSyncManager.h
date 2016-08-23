@@ -86,4 +86,10 @@ typedef NS_ENUM(NSInteger, DeleteRule)
  */
 - (RLMNotificationToken *)notificationTokenForAlfrescoNode:(AlfrescoNode *)node notificationBlock:(void (^)(RLMResults<RealmSyncNodeInfo *> *results, RLMCollectionChange *change, NSError *error))block;
 
+/**
+ * Sync Obstacles
+ */
+- (void)saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)document;
+- (void)presentSyncObstaclesIfNeeded;
+
 @end

@@ -78,6 +78,8 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         [self reloadCollectionView];
         self.didSyncAfterSessionRefresh = YES;
     }
+    
+    [[RealmSyncManager sharedManager] presentSyncObstaclesIfNeeded];
 }
 
 - (void)dealloc

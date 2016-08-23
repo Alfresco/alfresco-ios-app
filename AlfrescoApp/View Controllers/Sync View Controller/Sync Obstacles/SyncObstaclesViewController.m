@@ -17,10 +17,10 @@
  ******************************************************************************/
  
 #import "SyncObstaclesViewController.h"
-#import "SyncManager.h"
 #import "ThumbnailManager.h"
 #import "AlfrescoNodeCell.h"
 #import "SyncConstants.h"
+#import "RealmSyncManager.h"
 
 static NSInteger const kSectionDataIndex = 0;
 static NSInteger const kSectionHeaderIndex = 1;
@@ -112,7 +112,7 @@ static NSString * const kDeletedOnServerSectionHeaderKey = @"sync-errors.deleted
     NSArray *syncObstacles = [[self.errorDictionary objectForKey:kDocumentsDeletedOnServerWithLocalChanges] mutableCopy];
     for (AlfrescoDocument *document in syncObstacles)
     {
-        [[SyncManager sharedManager] saveDeletedFileBeforeRemovingFromSync:document];
+        [[RealmSyncManager sharedManager] saveDeletedFileBeforeRemovingFromSync:document];
     }
 }
 
@@ -269,23 +269,6 @@ static NSString * const kDeletedOnServerSectionHeaderKey = @"sync-errors.deleted
     
     NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:(SyncObstacleTableViewCell *)cell];
     return cellIndexPath;
-}
-- (void)didPressSyncButton:(UIButton *)syncButton
-{
-    NSIndexPath *cellIndexPath = [self indexPathForButtonPressed:syncButton];
-    NSArray *currentErrorArray = self.sectionData[cellIndexPath.section][kSectionDataIndex];
-    AlfrescoDocument *document = currentErrorArray[cellIndexPath.row];
-    [[SyncManager sharedManager] syncFileBeforeRemovingFromSync:document syncToServer:YES];
-    [self reloadTableView];
-}
-
-- (void)didPressSaveToDownloadsButton:(UIButton *)saveButton
-{
-    NSIndexPath *cellIndexPath = [self indexPathForButtonPressed:saveButton];
-    NSArray *currentErrorArray = self.sectionData[cellIndexPath.section][kSectionDataIndex];
-    AlfrescoDocument *document = currentErrorArray[cellIndexPath.row];
-    [[SyncManager sharedManager] syncFileBeforeRemovingFromSync:document syncToServer:NO];
-    [self reloadTableView];
 }
 
 @end

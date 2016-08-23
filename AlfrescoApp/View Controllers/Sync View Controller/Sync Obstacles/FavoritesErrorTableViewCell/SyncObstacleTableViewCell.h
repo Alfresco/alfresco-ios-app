@@ -35,6 +35,7 @@
 
 @protocol SyncObstacleTableViewCellDelegate <NSObject>
 
+@optional
 - (void)didPressSyncButton:(UIButton *)syncButton;
 - (void)didPressSaveToDownloadsButton:(UIButton *)saveButton;
 
