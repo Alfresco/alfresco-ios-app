@@ -355,10 +355,17 @@
     {
         [self.fileManager removeItemAtPath:temporaryPath error:nil];
     }
-    [self.fileManager copyItemAtPath:contentPath toPath:temporaryPath error:nil];
+    
+    if (contentPath)
+    {
+        [self.fileManager copyItemAtPath:contentPath toPath:temporaryPath error:nil];
+    }
     
     [[DownloadManager sharedManager] saveDocument:document contentPath:temporaryPath completionBlock:^(NSString *filePath) {
-        [self.fileManager removeItemAtPath:contentPath error:nil];
+        if (contentPath)
+        {
+            [self.fileManager removeItemAtPath:contentPath error:nil];
+        }
         [self.fileManager removeItemAtPath:temporaryPath error:nil];
         RLMRealm *realm = [RLMRealm defaultRealm];
         [[RealmManager sharedManager] resolvedObstacleForDocument:document inRealm:realm];
@@ -394,35 +401,6 @@
 {
     SyncOperationQueue *syncOpQ = [self currentOperationQueue];
     [syncOpQ cancelSyncForDocumentWithIdentifier:documentIdentifier];
-}
-
-- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock
-{
-    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inRealm:realm];
-    
-    NSMutableArray *syncObstableDeleted = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
-    
-    if (isModifiedLocally)
-    {
-        // check if node is not deleted on server
-        [self.documentFolderService retrieveNodeWithIdentifier:[node syncIdentifier] completionBlock:^(AlfrescoNode *alfrescoNode, NSError *error) {
-            if (error)
-            {
-                [syncObstableDeleted addObject:node];
-            }
-            if (completionBlock != NULL)
-            {
-                completionBlock(YES);
-            }
-        }];
-    }
-    else
-    {
-        if (completionBlock != NULL)
-        {
-            completionBlock(NO);
-        }
-    }
 }
 
 - (BOOL)isCurrentlySyncing
@@ -664,9 +642,7 @@
         
         // getting downloaded file locally updated Date
         NSError *dateError = nil;
-        
-        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
-        NSString *pathToSyncedFile = nodeInfo.syncContentPath;
+        NSString *pathToSyncedFile = [node contentPath];
         NSDictionary *fileAttributes = [self.fileManager attributesOfItemAtPath:pathToSyncedFile error:&dateError];
         localModificationDate = [fileAttributes objectForKey:kAlfrescoFileLastModification];
     }
@@ -968,6 +944,62 @@
     return syncOpQ;
 }
 
+#pragma mark - Sync Obstacles
+
+- (void)presentSyncObstaclesIfNeeded
+{
+    if ([self didEncounterObstaclesDuringSync])
+    {
+        NSDictionary *syncObstacles = @{kSyncObstaclesKey : [self syncObstacles]};
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncObstaclesNotification object:nil userInfo:syncObstacles];
+    }
+}
+
+- (BOOL)didEncounterObstaclesDuringSync
+{
+    BOOL obstacles = NO;
+    
+    // Note: Deliberate property getter bypass
+    NSMutableArray *syncObstableDeleted = [_syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+    NSMutableArray *syncObstacleRemovedFromSync = [_syncObstacles objectForKey:kDocumentsRemovedFromSyncOnServerWithLocalChanges];
+    
+    if(syncObstableDeleted.count > 0 || syncObstacleRemovedFromSync.count > 0)
+    {
+        obstacles = YES;
+    }
+    
+    return obstacles;
+}
+
+- (void)checkForObstaclesInRemovingDownloadForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm completionBlock:(void (^)(BOOL encounteredObstacle))completionBlock
+{
+    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inRealm:realm];
+    
+    NSMutableArray *syncObstableDeleted = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+    
+    if (isModifiedLocally)
+    {
+        // check if node is not deleted on server
+        [self.documentFolderService retrieveNodeWithIdentifier:[node syncIdentifier] completionBlock:^(AlfrescoNode *alfrescoNode, NSError *error) {
+            if (error)
+            {
+                [syncObstableDeleted addObject:node];
+            }
+            if (completionBlock != NULL)
+            {
+                completionBlock(YES);
+            }
+        }];
+    }
+    else
+    {
+        if (completionBlock != NULL)
+        {
+            completionBlock(NO);
+        }
+    }
+}
+
 #pragma mark - Refresh
 
 - (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -982,18 +1014,21 @@
     [self invalidateParentChildHierarchy];
     
     // STEP 3 - Recursively request child folders from the server and update the database structure to match.
-    [self rebuildDataBaseWithCompletionBlock:^(BOOL completed)
-     {
+    [self rebuildDataBaseWithCompletionBlock:^(BOOL completed){
+        
          // STEP 4 - Remove any synced content that is no longer within a sync set.
-         [self cleanDataBaseOfUnwantedNodes];
-         
-         // STEP 5 - Start downloading any new content that appears inside the sync set.
-         [self startNetworkOperations];
-         
-         if (completionBlock)
-         {
-             completionBlock(YES);
-         }
+         [self cleanDataBaseOfUnwantedNodesWithcompletionBlock:^() {
+             
+             // STEP 5 - Start downloading any new content that appears inside the sync set.
+             [self startNetworkOperations];
+             
+             [self presentSyncObstaclesIfNeeded];
+             
+             if (completionBlock)
+             {
+                 completionBlock(YES);
+             }
+         }];
      }];
 }
 
@@ -1226,17 +1261,36 @@
     [realm commitWriteTransaction];
 }
 
-- (void)cleanDataBaseOfUnwantedNodes
+- (void)cleanDataBaseOfUnwantedNodesWithcompletionBlock:(void (^)())completionBlock
 {
     RLMRealm *realm = [RLMRealm defaultRealm];
     RLMResults *allNodes = [[RealmManager sharedManager] allSyncNodesInRealm:realm];
+    __block NSInteger totalChecksForObstacles = allNodes.count;
     
     for (RealmSyncNodeInfo *node in allNodes)
     {
+        [self checkForObstaclesInRemovingDownloadForNode:node.alfrescoNode inRealm:realm completionBlock:^(BOOL encounteredObstacle) {
+            totalChecksForObstacles--;
+            
+            if (encounteredObstacle)
+            {
+                SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[node.alfrescoNode syncIdentifier]];
+                nodeStatus.status = SyncStatusFailed;
+            }
+            
+            if (totalChecksForObstacles == 0)
+            {
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+            }
+        }];
         if (node.parentNode == nil && node.isTopLevelSyncNode == NO)
         {
             if (node.isFolder == NO)
             {
+                
                 if (node.isRemovedFromSyncHasLocalChanges)
                 {
                     // Orphan document with new local version => Copy the file into Local Files prior to deletion.
