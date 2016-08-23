@@ -1286,7 +1286,7 @@
         self.lastConnectivityFlag = hasInternetConnection;
         if(hasInternetConnection)
         {
-            if(([AccountManager sharedManager].allAccounts.count > 0) && ([AccountManager sharedManager].selectedAccount))
+            if([AccountManager sharedManager].selectedAccount)
             {
                 [self refreshWithCompletionBlock:nil];
             }
