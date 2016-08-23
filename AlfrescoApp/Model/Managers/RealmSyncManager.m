@@ -726,7 +726,11 @@
         [syncOperationQueueManager updateSession:session];
     }
     
-    [self refreshWithCompletionBlock:nil];
+    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+    if(hasInternetConnection)
+    {
+        [self refreshWithCompletionBlock:nil];
+    }
 }
 
 - (void)mainMenuConfigurationChanged:(NSNotification *)notification
@@ -1034,7 +1038,7 @@
 
 - (void)markTopLevelNodesAsPending
 {
-    RLMRealm *realm = self.mainThreadRealm;
+    RLMRealm *realm = [RLMRealm defaultRealm];
     // Get all top level nodes.
     RLMResults *allTopLevelNodes = [[RealmManager sharedManager] topLevelSyncNodesInRealm:realm];
     
@@ -1339,7 +1343,10 @@
         self.lastConnectivityFlag = hasInternetConnection;
         if(hasInternetConnection)
         {
-            [self refreshWithCompletionBlock:nil];
+            if([AccountManager sharedManager].selectedAccount)
+            {
+                [self refreshWithCompletionBlock:nil];
+            }
         }
     }
 }

@@ -171,6 +171,7 @@
                 if((CGRectContainsPoint(self.collectionView.bounds, touchPoint)) && (!CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton)))
                 {
                     properLayout.selectedIndexPathForSwipeToDelete = nil;
+                    self.initialCellForSwipeToDelete = nil;
                 }
                 else if(CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton))
                 {
@@ -208,6 +209,10 @@
                     if(indexPath && indexPath.item < self.dataSource.numberOfNodesInCollection)
                     {
                         self.initialCellForSwipeToDelete = indexPath;
+                    }
+                    else if(!indexPath)
+                    {
+                        self.initialCellForSwipeToDelete = nil;
                     }
                 }
             }
