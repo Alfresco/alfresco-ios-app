@@ -29,7 +29,6 @@
 #import "FileFolderCollectionViewCell.h"
 #import "ALFSwipeToDeleteGestureRecognizer.h"
 #import "AlfrescoNode+Sync.h"
-#import "RealmSyncManager+Internal.h"
 
 static CGFloat const kSyncOnSiteRequestsCompletionTimeout = 5.0; // seconds
 

@@ -17,10 +17,10 @@
  ******************************************************************************/
  
 #import "SyncObstaclesViewController.h"
-#import "RealmSyncManager+Internal.h"
 #import "ThumbnailManager.h"
 #import "AlfrescoNodeCell.h"
 #import "SyncConstants.h"
+#import "RealmSyncManager.h"
 
 static NSInteger const kSectionDataIndex = 0;
 static NSInteger const kSectionHeaderIndex = 1;
