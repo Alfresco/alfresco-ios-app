@@ -369,6 +369,13 @@
         [self.fileManager removeItemAtPath:temporaryPath error:nil];
         RLMRealm *realm = [RLMRealm defaultRealm];
         [[RealmManager sharedManager] resolvedObstacleForDocument:document inRealm:realm];
+        
+        RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+        
+        if (syncNodeInfo)
+        {
+            [[RealmManager sharedManager] deleteRealmObject:syncNodeInfo inRealm:realm];
+        }
     }];
     
     // remove document from obstacles dictionary
