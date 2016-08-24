@@ -505,36 +505,6 @@
     if (!nodeStatus && nodeId)
     {
         nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:nodeId];
-        
-        RealmSyncError *realmSyncError = [[RealmManager sharedManager] errorObjectForNodeWithId:nodeId ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
-        
-        if (realmSyncError)
-        {
-            nodeStatus.status = SyncStatusFailed;
-        }
-        else
-        {
-            RealmSyncNodeInfo *realmSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:nodeId ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
-            
-            if (realmSyncNodeInfo)
-            {
-                // Look for file on the disk.
-                if (realmSyncNodeInfo.isFolder == NO)
-                {
-                    AlfrescoNode *node = realmSyncNodeInfo.alfrescoNode;
-                    NSString *contentPath = [node contentPath];
-                    
-                    BOOL fileExists = [self.fileManager fileExistsAtPath:contentPath];
-                    
-                    // We have a RealmSyncNodeInfo object, but the file does not exist on the disk.
-                    if (fileExists == NO)
-                    {
-                        nodeStatus.status = SyncStatusWaiting;
-                    }
-                }
-            }
-        }
-
         [self.syncStatuses setValue:nodeStatus forKey:nodeId];
     }
     
