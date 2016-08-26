@@ -24,6 +24,7 @@
 #import "DownloadManager.h"
 #import "PreferenceManager.h"
 #import "RealmSyncManager+Internal.h"
+#import "AlfrescoNode+Networking.h"
 
 @implementation RealmSyncManager
 
@@ -566,29 +567,30 @@
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
     if (selectedAccount.isSyncOn)
     {
-        [self retrievePermissionsForNodes:@[node] withCompletionBlock:^{
+        SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+        if (node.isFolder == NO)
+        {
+            [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:^(BOOL completed) {
+                completionBlock(completed);
+            }];
+        }
+        else
+        {
+            self.syncNodesInfo = [NSMutableDictionary new];
+            [node saveNodeInRealmUsingSession:self.alfrescoSession];
             
-            SyncOperationQueue *syncOpQ = [self currentOperationQueue];
-            if (node.isFolder == NO)
-            {
-                [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:completionBlock];
-            }
-            else
-            {
-                self.syncNodesInfo = [NSMutableDictionary new];
-                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                    if(self.nodeChildrenRequestsCount == 0)
+            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                if(self.nodeChildrenRequestsCount == 0)
+                {
+                    syncOpQ.syncNodesInfo = self.syncNodesInfo;
+                    [syncOpQ addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
+                    if(completionBlock)
                     {
-                        syncOpQ.syncNodesInfo = self.syncNodesInfo;
-                        [syncOpQ addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
-                        if(completionBlock)
-                        {
-                            completionBlock(completed);
-                        }
+                        completionBlock(completed);
                     }
-                }];
-            }
-        }];
+                }
+            }];
+        }
     }
 }
 
@@ -606,23 +608,20 @@
             {
                 // nodes for each folder are held in with keys folder identifiers
                 nodesInfoForSelectedAccount[[node syncIdentifier]] = array;
-                [self retrievePermissionsForNodes:array withCompletionBlock:^{
-                    
-                    for (AlfrescoNode *node in array)
+                for (AlfrescoNode *node in array)
+                {
+                    if(node.isFolder)
                     {
-                        if(node.isFolder)
-                        {
-                            // recursive call to retrieve nodes hierarchies
-                            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                                
-                                if (completionBlock != NULL)
-                                {
-                                    completionBlock(YES);
-                                }
-                            }];
-                        }
+                        // recursive call to retrieve nodes hierarchies
+                        [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                            
+                            if (completionBlock != NULL)
+                            {
+                                completionBlock(YES);
+                            }
+                        }];
                     }
-                }];
+                }
             }
             else if(error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
             {
@@ -718,6 +717,7 @@
     [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
     
     id<AlfrescoSession> session = notification.object;
+    self.alfrescoSession = session;
     self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
     
     self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
