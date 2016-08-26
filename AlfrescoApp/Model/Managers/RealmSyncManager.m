@@ -1278,6 +1278,12 @@
     RLMResults *allNodes = [[RealmManager sharedManager] allSyncNodesInRealm:realm];
     __block NSInteger totalChecksForObstacles = allNodes.count;
     
+    if (totalChecksForObstacles == 0 && completionBlock)
+    {
+        completionBlock();
+        return;
+    }
+    
     for (RealmSyncNodeInfo *node in allNodes)
     {
         [self checkForObstaclesInRemovingDownloadForNode:node.alfrescoNode inRealm:realm completionBlock:^(BOOL encounteredObstacle) {
