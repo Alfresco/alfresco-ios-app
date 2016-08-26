@@ -21,6 +21,7 @@
 #import "RealmManager.h"
 #import "AccountManager.h"
 #import "RealmSyncManager+Internal.h"
+#import "AlfrescoNode+Networking.h"
 
 @implementation AlfrescoNode (Sync)
 
@@ -110,6 +111,22 @@
         }
     }
     return isInSyncList;
+}
+
+- (void)saveNodeInRealmUsingSession:(id<AlfrescoSession>)session
+{
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RealmSyncNodeInfo *nodeSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
+    if(!nodeSyncInfo.alfrescoNode)
+    {
+        [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self syncIdentifier] withNode:self lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
+    }
+    [self retrieveNodePermissionsWithSession:session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+        if(permissions)
+        {
+            [[RealmManager sharedManager] savePermissions:permissions forNode:self];
+        }
+    }];
 }
 
 + (NSArray *)syncIdentifiersForNodes:(NSArray *)nodes

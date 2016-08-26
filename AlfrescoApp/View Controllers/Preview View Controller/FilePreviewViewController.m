@@ -27,7 +27,7 @@
 #import "DocumentPreviewManager.h"
 #import "FullScreenAnimationController.h"
 #import "ALFPreviewController.h"
-#import "SyncManager.h"
+#import "AlfrescoNode+Sync.h"
 
 static CGFloat const kAnimationFadeSpeed = 0.5f;
 static CGFloat const kAnimationDelayTime = 1.0f;
@@ -521,9 +521,9 @@ static CGFloat sDownloadProgressHeight;
     else
     {
         FilePreviewViewController *presentationViewController = nil;
-        if ([[SyncManager sharedManager] isNodeInSyncList:self.document])
+        if ([self.document isNodeInSyncList])
         {
-            NSString *filePath = [[SyncManager sharedManager] contentPathForNode:self.document];
+            NSString *filePath = [self.document contentPath];
             presentationViewController = [[FilePreviewViewController alloc] initWithFilePath:filePath document:self.document];
         }
         else

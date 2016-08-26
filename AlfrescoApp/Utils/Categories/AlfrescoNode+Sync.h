@@ -27,6 +27,7 @@
 - (BOOL)isTopLevelSyncNode;
 - (BOOL)isNodeInSyncList;
 - (BOOL)isNodeInSyncListInRealm:(RLMRealm *)realm;
+- (void)saveNodeInRealmUsingSession:(id<AlfrescoSession>)session;
 
 + (NSArray *)syncIdentifiersForNodes:(NSArray *)nodes;
 + (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId inRealm:(RLMRealm *)realm;
