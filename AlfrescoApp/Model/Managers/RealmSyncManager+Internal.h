@@ -38,6 +38,7 @@
 @property (nonatomic, strong) NSMutableArray *nodesToUpload;
 
 @property (nonatomic) BOOL lastConnectivityFlag;
+@property (nonatomic) BOOL disableSyncInProgress;
 
 - (SyncOperationQueue *)currentOperationQueue;
 
