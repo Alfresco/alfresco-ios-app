@@ -144,7 +144,11 @@
 
 - (void)disableSyncForAccountFromConfig:(UserAccount *)account
 {
-    [self cleanUpAccount:account cancelOperationsType:CancelDownloadOperations];
+    if (self.disableSyncInProgress == NO)
+    {
+        self.disableSyncInProgress = YES;
+        [self cleanUpAccount:account cancelOperationsType:CancelDownloadOperations];
+    }
 }
 
 - (void)cleanUpAccount:(UserAccount *)account cancelOperationsType:(CancelOperationsType)cancelType
@@ -155,13 +159,23 @@
         [syncOpQ cancelOperationsType:cancelType];
     }
     
-    //Empty syncNodesStatus dictionary.
-    self.syncNodesStatus = [NSMutableDictionary dictionary];
-    
-    [self deleteRealmForAccount:account];
-    account.isSyncOn = NO;
-    [[AccountManager sharedManager] saveAccountsToKeychain];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+    // Determinte and save conflicted files
+    [self cleanDataBaseOfUnwantedNodesWithcompletionBlock:^{
+        NSArray *syncObstacles = [[self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges] mutableCopy];
+        for (AlfrescoDocument *document in syncObstacles)
+        {
+            [[RealmSyncManager sharedManager] saveDeletedFileBeforeRemovingFromSync:document];
+        }
+        //Empty syncNodesStatus dictionary.
+        self.syncNodesStatus = [NSMutableDictionary dictionary];
+        
+        [self deleteRealmForAccount:account];
+        account.isSyncOn = NO;
+        [[AccountManager sharedManager] saveAccountsToKeychain];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
+        
+        self.disableSyncInProgress = NO;
+    }];
 }
 
 - (void)enableSyncForAccount:(UserAccount *)account
