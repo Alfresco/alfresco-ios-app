@@ -17,12 +17,14 @@
  ******************************************************************************/
 
 #import "AlfrescoNode+Networking.h"
+#import "ConnectivityManager.h"
 
 @implementation AlfrescoNode (Networking)
 
 -(void)retrieveNodePermissionsWithSession:(id<AlfrescoSession>)session withCompletionBlock:(void (^)(AlfrescoPermissions *, NSError *))completionBlock
 {
-    if(session)
+    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+    if(hasInternetConnection && session)
     {
         AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         [documentService retrievePermissionsOfNode:self completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {

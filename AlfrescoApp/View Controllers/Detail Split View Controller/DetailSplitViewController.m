@@ -179,8 +179,8 @@ static const CGFloat kAnimationSpeed = 0.2f;
     {
         [UIView animateWithDuration:kAnimationSpeed animations:^{
             CGRect detailFrame = self.detailViewContainer.frame;
+            detailFrame.size.width = detailFrame.size.width + detailFrame.origin.x;
             detailFrame.origin.x = 0;
-            detailFrame.size.width = detailFrame.size.width + kRevealControllerMasterViewWidth;
             self.detailViewContainer.frame = detailFrame;
         } completion:^(BOOL finished) {
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoPagedScrollViewLayoutSubviewsNotification object:nil];

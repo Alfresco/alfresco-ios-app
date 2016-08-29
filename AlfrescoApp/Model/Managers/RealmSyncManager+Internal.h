@@ -24,6 +24,7 @@
 
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentFolderService;
+@property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesStatus;
 @property (atomic, assign) NSInteger nodeChildrenRequestsCount;
 @property (nonatomic, strong) NSMutableDictionary *syncQueues;

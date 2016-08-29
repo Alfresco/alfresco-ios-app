@@ -24,6 +24,7 @@
 #import "UserAccount.h"
 #import "SyncConstants.h"
 #import "RealmManager.h"
+#import "AlfrescoNode+Networking.h"
 
 @interface SyncOperationQueue()
 
@@ -75,16 +76,18 @@
             syncNodeStatus.activityType = SyncActivityTypeDownload;
         }
         
+        [document saveNodeInRealmUsingSession:self.session];
+        RLMRealm *completionRealm = [RLMRealm defaultRealm];
+        [completionRealm refresh];
+        RealmSyncNodeInfo *documentSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:completionRealm];
+        [completionRealm beginWriteTransaction];
+        if(!documentSyncInfo.isTopLevelSyncNode)
+        {
+            documentSyncInfo.isTopLevelSyncNode = isTopLevel;
+        }
+        [completionRealm commitWriteTransaction];
+        
         [weakSelf downloadDocument:document withCompletionBlock:^(BOOL completed){
-            RLMRealm *completionRealm = [RLMRealm defaultRealm];
-            [completionRealm refresh];
-            RealmSyncNodeInfo *documentSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:completionRealm];
-            [completionRealm beginWriteTransaction];
-            if(!documentSyncInfo.isTopLevelSyncNode)
-            {
-                documentSyncInfo.isTopLevelSyncNode = isTopLevel;
-            }
-            [completionRealm commitWriteTransaction];
             if (completionBlock)
             {
                 completionBlock(YES);
@@ -95,16 +98,16 @@
 
 - (void)addFolderToSync:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel
 {
+    
+    [folder saveNodeInRealmUsingSession:self.session];
     RLMRealm *realm = [RLMRealm defaultRealm];
     RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
-    [[RealmManager sharedManager] updateSyncNodeInfoWithId:[folder syncIdentifier] withNode:folder lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
     [realm beginWriteTransaction];
     folderNodeInfo.isFolder = YES;
     if(!folderNodeInfo.isTopLevelSyncNode)
     {
         folderNodeInfo.isTopLevelSyncNode = isTopLevel;
     }
-    
     [realm commitWriteTransaction];
     
     SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[folder syncIdentifier]];
