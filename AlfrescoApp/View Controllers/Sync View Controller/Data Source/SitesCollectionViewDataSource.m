@@ -56,11 +56,7 @@
 {
     __weak typeof(self) weakSelf = self;
     [self.siteService retrieveDocumentLibraryFolderForSite:self.siteShortName completionBlock:^(AlfrescoFolder *documentLibraryFolder, NSError *documentLibraryFolderError) {
-        if (documentLibraryFolderError)
-        {
-            [weakSelf.delegate requestFailedWithError:documentLibraryFolderError stringFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found")];
-        }
-        else
+        if (documentLibraryFolder)
         {
             self.parentNode = documentLibraryFolder;
             [self.siteService retrieveSiteWithShortName:self.siteShortName completionBlock:^(AlfrescoSite *site, NSError *error) {
@@ -68,6 +64,14 @@
             }];
             
             [self retrieveContentsOfParentNode];
+        }
+        else
+        {
+            if (documentLibraryFolderError == nil)
+            {
+                documentLibraryFolderError = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeUnknown];
+            }
+            [weakSelf.delegate requestFailedWithError:documentLibraryFolderError stringFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found")];
         }
     }];
 }
