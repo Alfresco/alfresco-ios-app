@@ -473,22 +473,12 @@ static dispatch_once_t onceToken;
         self.selectedProfile = nil;
         self.session = nil;
     }
-    
-    //delete account folder
-    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
-    NSString *accountIdentifier = accountRemoved.accountIdentifier;
-    NSString *accountSpecificFolderPath = [[fileManager defaultConfigurationFolderPath] stringByAppendingPathComponent:accountIdentifier];
-    
-    if ([fileManager fileExistsAtPath:accountSpecificFolderPath])
-    {
-        NSError *deleteError = nil;
-        [fileManager removeItemAtPath:accountSpecificFolderPath error:&deleteError];
         
-        if (deleteError)
-        {
-            AlfrescoLogError(@"Unable to delete folder at path: %@", accountSpecificFolderPath);
-        }
-    }
+    // Delete account configuration folder.
+    [self deleteSpecificConfigurationFolderForAccount:accountRemoved];
+    
+    // Delete account sync folder
+    [self deleteSpecificSyncFolderForAccount:accountRemoved];
     
     [[AccountManager sharedManager].allAccounts enumerateObjectsUsingBlock:^(UserAccount *account, NSUInteger idx, BOOL *stop){
          AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
@@ -607,6 +597,40 @@ static dispatch_once_t onceToken;
 {
     AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
     return [[fileManager defaultConfigurationFolderPath] stringByAppendingPathComponent:kAlfrescoNoAccountConfigurationFileName];
+}
+
+- (void)deleteSpecificConfigurationFolderForAccount:(UserAccount *)userAccount
+{
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    NSString *accountIdentifier = userAccount.accountIdentifier;
+    NSString *accountConfigurationFolderPath = [[fileManager defaultConfigurationFolderPath] stringByAppendingPathComponent:accountIdentifier];
+    
+    [self deleteAccountSpecificFolder:accountConfigurationFolderPath];
+}
+
+- (void)deleteSpecificSyncFolderForAccount:(UserAccount *)userAccount
+{
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    NSString *accountIdentifier = userAccount.accountIdentifier;
+    NSString *accountSyncFolderPath = [[fileManager syncFolderPath] stringByAppendingPathComponent:accountIdentifier];
+    
+    [self deleteAccountSpecificFolder:accountSyncFolderPath];
+}
+
+- (void)deleteAccountSpecificFolder:(NSString *)folderPath
+{
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    
+    if ([fileManager fileExistsAtPath:folderPath])
+    {
+        NSError *deleteError = nil;
+        [fileManager removeItemAtPath:folderPath error:&deleteError];
+        
+        if (deleteError)
+        {
+            AlfrescoLogError(@"Unable to delete folder at path: %@", folderPath);
+        }
+    }
 }
 
 @end
