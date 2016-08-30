@@ -171,6 +171,8 @@
         self.syncNodesStatus = [NSMutableDictionary dictionary];
         
         [self deleteRealmForAccount:account];
+        [[AppConfigurationManager sharedManager] deleteSpecificSyncFolderForAccount:account];
+        
         account.isSyncOn = NO;
         [[AccountManager sharedManager] saveAccountsToKeychain];
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
