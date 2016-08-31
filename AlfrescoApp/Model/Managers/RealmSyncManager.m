@@ -251,7 +251,10 @@
                 [weakSelf.fileManager removeItemAtPath:path error:nil];
             }
             
-            completionBlock(hasSavedLocally);
+            if(completionBlock)
+            {
+                completionBlock(hasSavedLocally);
+            }
         });
     }
 }

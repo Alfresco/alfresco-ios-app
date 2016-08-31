@@ -439,11 +439,17 @@
             nodeStatus.status = SyncStatusFailed;
             
             RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncDocumentIdentifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
-            RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:syncDocumentIdentifier ifNotExistsCreateNew:YES inRealm:backgroundRealm];
-            [backgroundRealm beginWriteTransaction];
-            syncError.errorCode = kSyncOperationCancelledErrorCode;
-            nodeInfo.syncError = syncError;
-            [backgroundRealm commitWriteTransaction];
+            if(!nodeInfo.invalidated)
+            {
+                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:syncDocumentIdentifier ifNotExistsCreateNew:YES inRealm:backgroundRealm];
+                if(!syncError.invalidated)
+                {
+                    [backgroundRealm beginWriteTransaction];
+                    syncError.errorCode = kSyncOperationCancelledErrorCode;
+                    nodeInfo.syncError = syncError;
+                    [backgroundRealm commitWriteTransaction];
+                }
+            }
             
             [self notifyProgressDelegateAboutNumberOfNodesInProgress];
             self.syncProgress.totalSyncSize -= nodeStatus.totalSize;
