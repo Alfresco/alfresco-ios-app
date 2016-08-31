@@ -100,6 +100,7 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     // Prevent appearance of the alert if sync is already not available.
     if ([AccountManager sharedManager].selectedAccount.isSyncOn == NO)
     {
+        [self didSelectNewProfile];
         return;
     }
     
