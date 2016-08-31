@@ -503,7 +503,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
 }
 
 #pragma mark - Notifications
-//
+
 -(void)profileDidChange:(NSNotification *)notification
 {
     AlfrescoProfileConfig *selectedProfile = notification.object;
