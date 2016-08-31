@@ -168,6 +168,13 @@ static NSInteger const kTagAccountDetailsCell = 4;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Actions
+
 - (void)saveButtonClicked:(id)sender
 {
     if([self validateAccountFieldsValuesForServer])
