@@ -132,6 +132,11 @@ static NSInteger const kTagAccountDetailsCell = 4;
     self.portString = self.account.serverPort;
     self.serviceDocumentString = self.account.serviceDocument;
     self.protocolString = self.account.protocol;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(profileDidChange:)
+                                                 name:kAlfrescoConfigProfileDidChangeNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -146,10 +151,6 @@ static NSInteger const kTagAccountDetailsCell = 4;
                                              selector:@selector(keyboardWillBeHidden:)
                                                  name:UIKeyboardWillHideNotification object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(profileDidChange:)
-                                                 name:kAlfrescoConfigProfileDidChangeNotification
-                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -163,7 +164,8 @@ static NSInteger const kTagAccountDetailsCell = 4;
 {
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)saveButtonClicked:(id)sender
@@ -501,7 +503,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
 }
 
 #pragma mark - Notifications
-
+//
 -(void)profileDidChange:(NSNotification *)notification
 {
     AlfrescoProfileConfig *selectedProfile = notification.object;
