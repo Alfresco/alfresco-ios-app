@@ -60,8 +60,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuConfigurationChanged:) name:kAlfrescoConfigFileDidUpdateNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
-
     }
     
     return self;
@@ -1359,25 +1357,6 @@
         [syncOpQ downloadContentsForNodes:self.nodesToDownload withCompletionBlock:nil];
         [syncOpQ uploadContentsForNodes:self.nodesToUpload withCompletionBlock:nil];
     });
-}
-
-#pragma mark - Reachibility Changed Notification
-
-- (void)reachabilityChanged:(NSNotification *)notification
-{
-    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-    
-    if(hasInternetConnection != self.lastConnectivityFlag)
-    {
-        self.lastConnectivityFlag = hasInternetConnection;
-        if(hasInternetConnection)
-        {
-            if([AccountManager sharedManager].selectedAccount)
-            {
-                [self refreshWithCompletionBlock:nil];
-            }
-        }
-    }
 }
 
 @end
