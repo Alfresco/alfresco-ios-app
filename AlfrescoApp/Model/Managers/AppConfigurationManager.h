@@ -58,4 +58,6 @@
 // Checks if a view is present in the profile
 - (void)isViewOfType:(NSString *)viewType presentInProfile:(AlfrescoProfileConfig *)profile forAccount:(UserAccount *)account completionBlock:(void (^)(BOOL isViewPresent, NSError *error))completionBlock;
 
+- (void)deleteSpecificSyncFolderForAccount:(UserAccount *)userAccount;
+
 @end
