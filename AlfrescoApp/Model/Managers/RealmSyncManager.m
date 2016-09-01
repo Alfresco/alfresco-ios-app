@@ -103,8 +103,18 @@
             if(isViewPresent)
             {
                 [self realmForAccount:changedAccount.accountIdentifier];
-                changedAccount.isSyncOn = YES;
-                [[AccountManager sharedManager] saveAccountsToKeychain];
+                
+                NSArray *visibleItems = [[AppConfigurationManager sharedManager] visibleItemIdentifiersForAccount:changedAccount];
+                
+                [visibleItems enumerateObjectsUsingBlock:^(NSString *visibleItemIdentifier, NSUInteger idx, BOOL * _Nonnull stop) {
+                    if ([visibleItemIdentifier isEqualToString:kSyncViewIdentifier])
+                    {
+                        changedAccount.isSyncOn = YES;
+                        [[AccountManager sharedManager] saveAccountsToKeychain];
+                        *stop = YES;
+                    }
+                }];
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:changedAccount];
                 if([changedAccount.accountIdentifier isEqualToString:[AccountManager sharedManager].selectedAccount.accountIdentifier])
                 {

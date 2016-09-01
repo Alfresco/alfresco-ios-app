@@ -346,3 +346,5 @@ NSString * const kSkypeURLCommunicationTypeCall = @"call";
 NSString * const kSkypeURLCommunicationTypeChat = @"chat";
 NSString * const kSkypeAppStoreiPhoneURL = @"http://itunes.apple.com/app/skype-for-iphone/id304878510?mt=8";
 NSString * const KSkypeAppStoreiPadURL = @"http://itunes.apple.com/app/skype-for-ipad/id442012681?mt=8";
+
+NSString * const kSyncViewIdentifier = @"view-sync-default";
