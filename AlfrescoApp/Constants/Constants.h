@@ -386,3 +386,5 @@ extern NSString * const kSkypeURLCommunicationTypeCall;
 extern NSString * const kSkypeURLCommunicationTypeChat;
 extern NSString * const kSkypeAppStoreiPhoneURL;
 extern NSString * const KSkypeAppStoreiPadURL;
+
+extern NSString * const kSyncViewIdentifier;

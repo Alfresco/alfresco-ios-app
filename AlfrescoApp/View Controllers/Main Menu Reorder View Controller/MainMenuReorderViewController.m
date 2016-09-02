@@ -23,8 +23,6 @@
 
 #import "RealmSyncManager.h"
 
-static NSString * const kSyncViewIdentifier = @"view-sync-default";
-
 typedef NS_ENUM(NSUInteger, MainMenuReorderSections)
 {
     MainMenuReorderSectionsVisible,
