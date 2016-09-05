@@ -113,7 +113,7 @@
     return isInSyncList;
 }
 
-- (void)saveNodeInRealmUsingSession:(id<AlfrescoSession>)session
+- (void)saveNodeInRealmUsingSession:(id<AlfrescoSession>)session isTopLevelNode:(BOOL)isTopLevel
 {
     RLMRealm *realm = [RLMRealm defaultRealm];
     RealmSyncNodeInfo *nodeSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
@@ -121,6 +121,14 @@
     {
         [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self syncIdentifier] withNode:self lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
     }
+    [realm beginWriteTransaction];
+    if(!nodeSyncInfo.isTopLevelSyncNode)
+    {
+        nodeSyncInfo.isTopLevelSyncNode = isTopLevel;
+    }
+    nodeSyncInfo.isFolder = self.isFolder;
+    [realm commitWriteTransaction];
+    
     [self retrieveNodePermissionsWithSession:session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if(permissions)
         {
@@ -150,6 +158,12 @@
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncNodeId ifNotExistsCreateNew:NO inRealm:realm];
     
     return nodeInfo.alfrescoNode;
+}
+
+- (NSString *)syncErrorDescription
+{
+    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:[RealmSyncManager sharedManager].mainThreadRealm];
+    return syncError.errorDescription;
 }
 
 @end

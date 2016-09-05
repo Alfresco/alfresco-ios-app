@@ -666,7 +666,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         {
             case SyncStatusLoading:
             {
-                [syncManager cancelSyncForDocumentWithIdentifier:selectedNode.identifier];
+                [syncManager cancelSyncForDocumentWithIdentifier:selectedNode.identifier completionBlock:nil];
                 break;
             }
             case SyncStatusFailed:
@@ -1343,7 +1343,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
     AlfrescoNode *node = self.tableViewData[indexPath.row];
-    NSString *errorDescription = [[RealmSyncManager sharedManager] syncErrorDescriptionForNode:node];
+    NSString *errorDescription = [node syncErrorDescription];
     
     if (IS_IPAD)
     {

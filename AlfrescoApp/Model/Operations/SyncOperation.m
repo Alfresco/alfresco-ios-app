@@ -144,7 +144,7 @@
 {
     [self.syncRequest cancel];
     [self cancel];
-    [self performSelector:@selector(wakeUpThread) onThread:self.operationThread withObject:nil waitUntilDone:NO];
+    [self performSelector:@selector(wakeUpThread) onThread:self.operationThread withObject:nil waitUntilDone:YES];
 }
 
 - (void)dealloc

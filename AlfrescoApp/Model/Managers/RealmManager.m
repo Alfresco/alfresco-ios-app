@@ -160,7 +160,7 @@
 {
     RLMRealm *realm = [RLMRealm defaultRealm];
     RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObjectWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
-    if(nodeInfo)
+    if(nodeInfo && !nodeInfo.invalidated)
     {
         [realm beginWriteTransaction];
         nodeInfo.permissions = [NSKeyedArchiver archivedDataWithRootObject:permissions];
