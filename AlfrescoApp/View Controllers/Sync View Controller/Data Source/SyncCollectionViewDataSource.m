@@ -96,15 +96,6 @@
             {
                 [self.nodesPermissions setObject:nodeInfo.alfrescoPermissions forKey:nodeInfo.alfrescoNode.identifier];
             }
-            else
-            {
-                [nodeInfo.alfrescoNode retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                    if(!error)
-                    {
-                        [[RealmManager sharedManager] savePermissions:permissions forNode:nodeInfo.alfrescoNode];
-                    }
-                }];
-            }
         }
     }
     
