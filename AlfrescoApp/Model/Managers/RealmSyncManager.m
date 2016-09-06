@@ -265,6 +265,10 @@
                 }
             }
             
+            for(RealmSyncNodeInfo *node in arrayOfNodesToDelete)
+            {
+                [self.currentOperationQueue removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
+            }
             // Delete RealmSyncNodeInfo objects
             [[RealmManager sharedManager] deleteRealmObjects:arrayOfNodesToDelete inRealm:backgroundRealm];
             
