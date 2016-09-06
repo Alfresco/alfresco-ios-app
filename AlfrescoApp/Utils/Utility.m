@@ -825,4 +825,18 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return accountIdentifier;
 }
 
++ (void)showLocalizedAlertWithTitle:(NSString *)title message:(NSString *)message
+{
+    NSString *localizedTitle = NSLocalizedString(title, @"");
+    NSString *localizedMessage = NSLocalizedString(message, @"");
+    NSString *localizedOkButton = NSLocalizedString(@"OK", @"OK");
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:localizedTitle
+                                                        message:localizedMessage
+                                                       delegate:nil
+                                              cancelButtonTitle:localizedOkButton
+                                              otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
 @end

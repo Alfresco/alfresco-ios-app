@@ -170,6 +170,26 @@
 "error.person.profile.no.profile.message" = "Imposible localizar al usuario; %@";
 "error.person.profile.email.failed.title" = "Error de envío";
 "error.person.profile.email.failed.message" = "Imposible enviar el correo electrónico. Inténtelo de nuevo más tarde.";
+// Camera permissions
+"error.camera.denied.title" = "Camera denied title - ES";
+"error.camera.denied.message" = "Camera denied message - ES";
+"error.camera.restricted.title" = "Camera restricted title - ES";
+"error.camera.restricted.message" = "Camera restricted message - ES";
+// Library permissions
+"error.library.denied.title" = "Library denied title - ES";
+"error.library.denied.message" = "Library denied message - ES";
+"error.library.restricted.title" = "Library restricted title - ES";
+"error.library.restricted.message" = "Library restricted message - ES";
+// Microphone permissions
+"error.microphone.denied.title" = "Microphone denied title - ES";
+"error.microphone.denied.message" = "Microphone denied message - ES";
+// Location permissions
+"error.location.denied.title" = "Location denied title - ES";
+"error.location.denied.message" = "Location denied message - ES";
+"error.location.restricted.title" = "Location restricted title - ES";
+"error.location.restricted.message" = "Location restricted message - ES";
+"error.location.disabled.title" = "Location disabled title - ES";
+"error.location.disabled.message" = "Location disabled message - ES";
 
 /**
  * Custom error descriptions

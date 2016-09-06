@@ -170,6 +170,26 @@
 "error.person.profile.no.profile.message" = "Impossible de repérer l'utilisateur ; %@";
 "error.person.profile.email.failed.title" = "L'envoi a échoué";
 "error.person.profile.email.failed.message" = "Impossible d'envoyer l'e-mail. Réessayez plus tard.";
+// Camera permissions
+"error.camera.denied.title" = "Camera denied title - FR";
+"error.camera.denied.message" = "Camera denied message - FR";
+"error.camera.restricted.title" = "Camera restricted title - FR";
+"error.camera.restricted.message" = "Camera restricted message - FR";
+// Library permissions
+"error.library.denied.title" = "Library denied title - FR";
+"error.library.denied.message" = "Library denied message - FR";
+"error.library.restricted.title" = "Library restricted title - FR";
+"error.library.restricted.message" = "Library restricted message - FR";
+// Microphone permissions
+"error.microphone.denied.title" = "Microphone denied title - FR";
+"error.microphone.denied.message" = "Microphone denied message - FR";
+// Location permissions
+"error.location.denied.title" = "Location denied title - FR";
+"error.location.denied.message" = "Location denied message - FR";
+"error.location.restricted.title" = "Location restricted title - FR";
+"error.location.restricted.message" = "Location restricted message - FR";
+"error.location.disabled.title" = "Location disabled title - FR";
+"error.location.disabled.message" = "Location disabled message - FR";
 
 /**
  * Custom error descriptions

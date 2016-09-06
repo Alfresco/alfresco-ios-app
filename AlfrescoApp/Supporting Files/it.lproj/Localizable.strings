@@ -170,6 +170,26 @@
 "error.person.profile.no.profile.message" = "Impossibile trovare l'utente; %@";
 "error.person.profile.email.failed.title" = "Invio non riuscito";
 "error.person.profile.email.failed.message" = "Impossibile inviare l'e-mail. Riprova più tardi.";
+// Camera permissions
+"error.camera.denied.title" = "Camera denied title - IT";
+"error.camera.denied.message" = "Camera denied message - IT";
+"error.camera.restricted.title" = "Camera restricted title - IT";
+"error.camera.restricted.message" = "Camera restricted message - IT";
+// Library permissions
+"error.library.denied.title" = "Library denied title - IT";
+"error.library.denied.message" = "Library denied message - IT";
+"error.library.restricted.title" = "Library restricted title - IT";
+"error.library.restricted.message" = "Library restricted message - IT";
+// Microphone permissions
+"error.microphone.denied.title" = "Microphone denied title - IT";
+"error.microphone.denied.message" = "Microphone denied message - IT";
+// Location permissions
+"error.location.denied.title" = "Location denied title - IT";
+"error.location.denied.message" = "Location denied message - IT";
+"error.location.restricted.title" = "Location restricted title - IT";
+"error.location.restricted.message" = "Location restricted message - IT";
+"error.location.disabled.title" = "Location disabled title - IT";
+"error.location.disabled.message" = "Location disabled message - IT";
 
 /**
  * Custom error descriptions

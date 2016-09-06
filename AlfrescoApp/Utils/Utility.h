@@ -91,5 +91,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (NSString *)helpURLLocaleIdentifierForAppLocale;
 + (NSString *)helpURLLocaleIdentifierForLocale:(NSString *)locale;
 - (NSString *)accountIdentifierForAccount:(UserAccount *)userAccount;
++ (void)showLocalizedAlertWithTitle:(NSString *)title message:(NSString *)message;
 
 @end

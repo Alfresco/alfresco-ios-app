@@ -170,6 +170,26 @@
 "error.person.profile.no.profile.message" = "ユーザー %@ が見つかりません";
 "error.person.profile.email.failed.title" = "送信失敗";
 "error.person.profile.email.failed.message" = "E メールを送信できません。しばらくしてから、やり直してください。";
+// Camera permissions
+"error.camera.denied.title" = "Camera denied title - JA";
+"error.camera.denied.message" = "Camera denied message - JA";
+"error.camera.restricted.title" = "Camera restricted title - JA";
+"error.camera.restricted.message" = "Camera restricted message - JA";
+// Library permissions
+"error.library.denied.title" = "Library denied title - JA";
+"error.library.denied.message" = "Library denied message - JA";
+"error.library.restricted.title" = "Library restricted title - JA";
+"error.library.restricted.message" = "Library restricted message - JA";
+// Microphone permissions
+"error.microphone.denied.title" = "Microphone denied title - JA";
+"error.microphone.denied.message" = "Microphone denied message - JA";
+// Location permissions
+"error.location.denied.title" = "Location denied title - JA";
+"error.location.denied.message" = "Location denied message - JA";
+"error.location.restricted.title" = "Location restricted title - JA";
+"error.location.restricted.message" = "Location restricted message - JA";
+"error.location.disabled.title" = "Location disabled title - JA";
+"error.location.disabled.message" = "Location disabled message - JA";
 
 /**
  * Custom error descriptions

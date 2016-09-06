@@ -67,10 +67,42 @@
 
 - (void)startLocationUpdates
 {
-    if ([CLLocationManager locationServicesEnabled])
+    if ([CLLocationManager locationServicesEnabled] == NO)
     {
-        [self.locationManager startUpdatingLocation];
-        self.trackingLocation = YES;
+        [Utility showLocalizedAlertWithTitle:@"error.location.disabled.title" message:@"error.location.disabled.message"];
+        return;
+    }
+    
+    CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
+    switch (status)
+    {
+        case kCLAuthorizationStatusAuthorizedAlways:
+        {
+            [self.locationManager startUpdatingLocation];
+            self.trackingLocation = YES;
+        }
+            break;
+            
+        case kCLAuthorizationStatusDenied:
+        {
+            [Utility showLocalizedAlertWithTitle:@"error.location.denied.title" message:@"error.location.denied.message"];
+        }
+            break;
+            
+        case kCLAuthorizationStatusNotDetermined:
+        {
+            [self.locationManager requestAlwaysAuthorization];
+        }
+            break;
+            
+        case kCLAuthorizationStatusRestricted:
+        {
+            [Utility showLocalizedAlertWithTitle:@"error.location.restricted.title" message:@"error.location.restricted.message"];
+        }
+            break;
+            
+        default:
+            break;
     }
 }
 
