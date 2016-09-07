@@ -69,7 +69,7 @@
 {
     if ([CLLocationManager locationServicesEnabled] == NO)
     {
-        [Utility showLocalizedAlertWithTitle:@"error.location.disabled.title" message:@"error.location.disabled.message"];
+        [Utility showLocalizedAlertWithTitle:@"permissions.location.disabled.title" message:@"permissions.location.disabled.message"];
         return;
     }
     
@@ -85,7 +85,7 @@
             
         case kCLAuthorizationStatusDenied:
         {
-            [Utility showLocalizedAlertWithTitle:@"error.location.denied.title" message:@"error.location.denied.message"];
+            [Utility showLocalizedAlertWithTitle:@"permissions.location.denied.title" message:@"permissions.location.denied.message"];
         }
             break;
             
@@ -97,7 +97,7 @@
             
         case kCLAuthorizationStatusRestricted:
         {
-            [Utility showLocalizedAlertWithTitle:@"error.location.restricted.title" message:@"error.location.restricted.message"];
+            [Utility showLocalizedAlertWithTitle:@"permissions.location.restricted.title" message:@"permissions.location.restricted.message"];
         }
             break;
             

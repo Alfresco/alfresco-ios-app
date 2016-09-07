@@ -66,14 +66,14 @@
             
         case AVAuthorizationStatusDenied:
         {
-            [Utility showLocalizedAlertWithTitle:@"error.camera.denied.title" message:@"error.camera.denied.message"];
+            [Utility showLocalizedAlertWithTitle:@"permissions.camera.denied.title" message:@"permissions.camera.denied.message"];
             completionBlock(NO);
         }
             break;
             
         case AVAuthorizationStatusRestricted:
         {
-            [Utility showLocalizedAlertWithTitle:@"error.camera.restricted.title" message:@"error.camera.restricted.message"];
+            [Utility showLocalizedAlertWithTitle:@"permissions.camera.restricted.title" message:@"permissions.camera.restricted.message"];
             completionBlock(NO);
         }
             break;
@@ -105,14 +105,14 @@
             
         case PHAuthorizationStatusDenied:
         {
-            [Utility showLocalizedAlertWithTitle:@"error.library.denied.title" message:@"error.library.denied.message"];
+            [Utility showLocalizedAlertWithTitle:@"permissions.library.denied.title" message:@"permissions.library.denied.message"];
             completionBlock(NO);
         }
             break;
             
         case PHAuthorizationStatusRestricted:
         {
-            [Utility showLocalizedAlertWithTitle:@"error.library.restricted.title" message:@"error.library.restricted.message"];
+            [Utility showLocalizedAlertWithTitle:@"permissions.library.restricted.title" message:@"permissions.library.restricted.message"];
             completionBlock(NO);
         }
             break;
@@ -147,7 +147,7 @@
     {
         case AVAudioSessionRecordPermissionDenied:
         {
-            [Utility showLocalizedAlertWithTitle:@"error.microphone.denied.title" message:@"error.microphone.denied.message"];
+            [Utility showLocalizedAlertWithTitle:@"permissions.microphone.denied.title" message:@"permissions.microphone.denied.message"];
             completionBlock(NO);
         }
             break;

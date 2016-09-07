@@ -874,9 +874,7 @@
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephoto", @"Take Photo") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [PermissionChecker requestPermissionForResourceType:ResourceTypeCamera completionBlock:^(BOOL granted) {
             // Start location services
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [PermissionChecker requestPermissionForResourceType:ResourceTypeLocation completionBlock:nil];
-            });
+            [PermissionChecker requestPermissionForResourceType:ResourceTypeLocation completionBlock:nil];
 
             self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
             self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
@@ -893,9 +891,7 @@
             if (granted)
             {
                 // Start location services
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [PermissionChecker requestPermissionForResourceType:ResourceTypeLocation completionBlock:nil];
-                });
+                [PermissionChecker requestPermissionForResourceType:ResourceTypeLocation completionBlock:nil];
                 
                 self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
                 self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];

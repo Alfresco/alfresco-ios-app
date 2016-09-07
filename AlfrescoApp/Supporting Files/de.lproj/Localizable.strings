@@ -170,26 +170,32 @@
 "error.person.profile.no.profile.message" = "Benutzer nicht gefunden; %@";
 "error.person.profile.email.failed.title" = "Senden fehlgeschlagen";
 "error.person.profile.email.failed.message" = "Die E-Mail konnte nicht gesendet werden. Versuchen Sie es später noch einmal.";
+
+/**
+ * Permissions
+ */
 // Camera permissions
-"error.camera.denied.title" = "Camera denied title - DE";
-"error.camera.denied.message" = "Camera denied message - DE";
-"error.camera.restricted.title" = "Camera restricted title - DE";
-"error.camera.restricted.message" = "Camera restricted message - DE";
+"permissions.camera.denied.title" = "Camera denied title - DE";
+"permissions.camera.denied.message" = "Camera denied message - DE";
+"permissions.camera.restricted.title" = "Camera restricted title - DE";
+"permissions.camera.restricted.message" = "Camera restricted message - DE";
 // Library permissions
-"error.library.denied.title" = "Library denied title - DE";
-"error.library.denied.message" = "Library denied message - DE";
-"error.library.restricted.title" = "Library restricted title - DE";
-"error.library.restricted.message" = "Library restricted message - DE";
+"permissions.library.denied.title" = "Library denied title - DE";
+"permissions.library.denied.message" = "Library denied message - DE";
+"permissions.library.restricted.title" = "Library restricted title - DE";
+"permissions.library.restricted.message" = "Library restricted message - DE";
 // Microphone permissions
-"error.microphone.denied.title" = "Microphone denied title - DE";
-"error.microphone.denied.message" = "Microphone denied message - DE";
+"permissions.microphone.denied.title" = "Microphone denied title - DE";
+"permissions.microphone.denied.message" = "Microphone denied message - DE";
 // Location permissions
-"error.location.denied.title" = "Location denied title - DE";
-"error.location.denied.message" = "Location denied message - DE";
-"error.location.restricted.title" = "Location restricted title - DE";
-"error.location.restricted.message" = "Location restricted message - DE";
-"error.location.disabled.title" = "Location disabled title - DE";
-"error.location.disabled.message" = "Location disabled message - DE";
+"permissions.location.denied.title" = "Location denied title - DE";
+"permissions.location.denied.message" = "Location denied message - DE";
+"permissions.location.restricted.title" = "Location restricted title - DE";
+"permissions.location.restricted.message" = "Location restricted message - DE";
+"permissions.location.disabled.title" = "Location disabled title - DE";
+"permissions.location.disabled.message" = "Location disabled message - DE";
+// Settings button
+"permissions.settings.button" = "Open Settings - DE";
 
 /**
  * Custom error descriptions
