@@ -172,6 +172,32 @@
 "error.person.profile.email.failed.message" = "Impossible d'envoyer l'e-mail. Réessayez plus tard.";
 
 /**
+ * Permissions
+ */
+// Camera permissions
+"permissions.camera.denied.title" = "Camera denied title - FR";
+"permissions.camera.denied.message" = "Camera denied message - FR";
+"permissions.camera.restricted.title" = "Camera restricted title - FR";
+"permissions.camera.restricted.message" = "Camera restricted message - FR";
+// Library permissions
+"permissions.library.denied.title" = "Library denied title - FR";
+"permissions.library.denied.message" = "Library denied message - FR";
+"permissions.library.restricted.title" = "Library restricted title - FR";
+"permissions.library.restricted.message" = "Library restricted message - FR";
+// Microphone permissions
+"permissions.microphone.denied.title" = "Microphone denied title - FR";
+"permissions.microphone.denied.message" = "Microphone denied message - FR";
+// Location permissions
+"permissions.location.denied.title" = "Location denied title - FR";
+"permissions.location.denied.message" = "Location denied message - FR";
+"permissions.location.restricted.title" = "Location restricted title - FR";
+"permissions.location.restricted.message" = "Location restricted message - FR";
+"permissions.location.disabled.title" = "Location disabled title - FR";
+"permissions.location.disabled.message" = "Location disabled message - FR";
+// Settings button
+"permissions.settings.button" = "Open Settings - FR";
+
+/**
  * Custom error descriptions
  */
 "error.description.kErrorFileSuffixMaxAttempts" = "Impossible de générer un nom de fichier unique";

@@ -94,6 +94,7 @@
 		231A0B4F1CABCCCD0029A10E /* SecurityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 231A0B4E1CABCCCD0029A10E /* SecurityManager.m */; };
 		2329C48F1CE48C38001AAB62 /* alfrescoColourLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A41844C9F8002C82C1 /* alfrescoColourLogo.png */; };
 		2329C4941CE48C3B001AAB62 /* alfrescoColourLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */; };
+		232D38A81D7D937100B2F2E8 /* PermissionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D38A71D7D937100B2F2E8 /* PermissionChecker.m */; };
 		23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		23A681E21CA2A1E200E90D89 /* BulletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A681E11CA2A1E200E90D89 /* BulletView.m */; };
 		23A829241D48C75100A44281 /* NodePickerSyncedContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A829231D48C75100A44281 /* NodePickerSyncedContentViewController.m */; };
@@ -1006,6 +1007,8 @@
 		1DE9507C1CAE6D09009299C8 /* SyncConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncConstants.m; sourceTree = "<group>"; };
 		231A0B4D1CABCCCD0029A10E /* SecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityManager.h; sourceTree = "<group>"; };
 		231A0B4E1CABCCCD0029A10E /* SecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityManager.m; sourceTree = "<group>"; };
+		232D38A61D7D937100B2F2E8 /* PermissionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionChecker.h; sourceTree = "<group>"; };
+		232D38A71D7D937100B2F2E8 /* PermissionChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PermissionChecker.m; sourceTree = "<group>"; };
 		23A681E01CA2A1E200E90D89 /* BulletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletView.h; sourceTree = "<group>"; };
 		23A681E11CA2A1E200E90D89 /* BulletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletView.m; sourceTree = "<group>"; };
 		23A829221D48C75100A44281 /* NodePickerSyncedContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerSyncedContentViewController.h; sourceTree = "<group>"; };
@@ -3711,6 +3714,8 @@
 				1DE950791CAC0887009299C8 /* RealmManager.m */,
 				2B2D5F321D3F676900428730 /* SyncOperationQueue.h */,
 				2B2D5F331D3F676900428730 /* SyncOperationQueue.m */,
+				232D38A61D7D937100B2F2E8 /* PermissionChecker.h */,
+				232D38A71D7D937100B2F2E8 /* PermissionChecker.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -5182,6 +5187,7 @@
 				2B8366731D06F3C900CC77DC /* NodeCollectionViewDataSource.m in Sources */,
 				2B2BEFEE1D001F7F0090B45B /* FolderCollectionViewDataSource.m in Sources */,
 				7379733718AA8E9B007613B2 /* SyncAccount.m in Sources */,
+				232D38A81D7D937100B2F2E8 /* PermissionChecker.m in Sources */,
 				7390B3631B03681E00E7191F /* AlfrescoActionGroupConfig.m in Sources */,
 				735DDC071B2882EB0091D7B4 /* MainMenuRemoteConfigurationBuilder.m in Sources */,
 				7390B36F1B03681E00E7191F /* AlfrescoProcessConfig.m in Sources */,

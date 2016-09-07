@@ -172,6 +172,32 @@
 "error.person.profile.email.failed.message" = "Die E-Mail konnte nicht gesendet werden. Versuchen Sie es später noch einmal.";
 
 /**
+ * Permissions
+ */
+// Camera permissions
+"permissions.camera.denied.title" = "Camera denied title - DE";
+"permissions.camera.denied.message" = "Camera denied message - DE";
+"permissions.camera.restricted.title" = "Camera restricted title - DE";
+"permissions.camera.restricted.message" = "Camera restricted message - DE";
+// Library permissions
+"permissions.library.denied.title" = "Library denied title - DE";
+"permissions.library.denied.message" = "Library denied message - DE";
+"permissions.library.restricted.title" = "Library restricted title - DE";
+"permissions.library.restricted.message" = "Library restricted message - DE";
+// Microphone permissions
+"permissions.microphone.denied.title" = "Microphone denied title - DE";
+"permissions.microphone.denied.message" = "Microphone denied message - DE";
+// Location permissions
+"permissions.location.denied.title" = "Location denied title - DE";
+"permissions.location.denied.message" = "Location denied message - DE";
+"permissions.location.restricted.title" = "Location restricted title - DE";
+"permissions.location.restricted.message" = "Location restricted message - DE";
+"permissions.location.disabled.title" = "Location disabled title - DE";
+"permissions.location.disabled.message" = "Location disabled message - DE";
+// Settings button
+"permissions.settings.button" = "Open Settings - DE";
+
+/**
  * Custom error descriptions
  */
 "error.description.kErrorFileSuffixMaxAttempts" = "Eindeutiger Dateiname konnte nicht generiert werden.";

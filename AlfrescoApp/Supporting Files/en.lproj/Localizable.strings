@@ -173,6 +173,32 @@
 "error.person.profile.email.failed.message" = "Unable to send the email. Please try again later.";
 
 /**
+ * Permissions
+ */
+// Camera permissions
+"permissions.camera.denied.title" = "Camera denied title";
+"permissions.camera.denied.message" = "Camera denied message";
+"permissions.camera.restricted.title" = "Camera restricted title";
+"permissions.camera.restricted.message" = "Camera restricted message";
+// Library permissions
+"permissions.library.denied.title" = "Library denied title";
+"permissions.library.denied.message" = "Library denied message";
+"permissions.library.restricted.title" = "Library restricted title";
+"permissions.library.restricted.message" = "Library restricted message";
+// Microphone permissions
+"permissions.microphone.denied.title" = "Microphone denied title";
+"permissions.microphone.denied.message" = "Microphone denied message";
+// Location permissions
+"permissions.location.denied.title" = "Location denied title";
+"permissions.location.denied.message" = "Location denied message";
+"permissions.location.restricted.title" = "Location restricted title";
+"permissions.location.restricted.message" = "Location restricted message";
+"permissions.location.disabled.title" = "Location disabled title";
+"permissions.location.disabled.message" = "Location disabled message";
+// Settings button
+"permissions.settings.button" = "Open Settings";
+
+/**
  * Custom error descriptions
  */
 "error.description.kErrorFileSuffixMaxAttempts" = "Couldn't generate a unique filename";

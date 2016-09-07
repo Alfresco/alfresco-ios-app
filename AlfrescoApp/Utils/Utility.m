@@ -825,4 +825,24 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     return accountIdentifier;
 }
 
++ (void)showLocalizedAlertWithTitle:(NSString *)title message:(NSString *)message
+{
+    NSString *localizedTitle = NSLocalizedString(title, @"");
+    NSString *localizedMessage = NSLocalizedString(message, @"");
+    NSString *localizedOkButton = NSLocalizedString(@"OK", @"OK");
+    NSString *localizedOpenSettingsButton = NSLocalizedString(@"permissions.settings.button", @"Open Settings");
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:localizedTitle
+                                                        message:localizedMessage
+                                                       delegate:nil
+                                              cancelButtonTitle:localizedOkButton
+                                              otherButtonTitles:localizedOpenSettingsButton, nil];
+    [alertView showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
+        if (buttonIndex == 1)
+        {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }
+    }];
+}
+
 @end

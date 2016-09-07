@@ -24,5 +24,6 @@
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationUsageDescription = "Ihre Position wird verwendet, um mit diesem Gerät aufgenommene Fotos mit einem Geo-Tag zu versehen.";
+NSLocationAlwaysUsageDescription = "Ihre Position wird verwendet, um mit diesem Gerät aufgenommene Fotos mit einem Geo-Tag zu versehen.";
 NSMicrophoneUsageDescription = "Das Mikrofon wird für Tonaufnahmen verwendet, die dann in das Repository hochgeladen werden können.";
+NSPhotoLibraryUsageDescription = "Library Usage Description String - DE";

@@ -24,5 +24,6 @@
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationUsageDescription = "Se utilizará su ubicación para añadir etiquetas de geolocalización a las fotos tomadas con este dispositivo.";
+NSLocationAlwaysUsageDescription = "Se utilizará su ubicación para añadir etiquetas de geolocalización a las fotos tomadas con este dispositivo.";
 NSMicrophoneUsageDescription = "Se utilizará el micrófono para grabar sonido que podrá cargarse al repositorio.";
+NSPhotoLibraryUsageDescription = "Library Usage Description String - ES";
