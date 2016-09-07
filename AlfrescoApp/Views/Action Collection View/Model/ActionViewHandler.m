@@ -676,11 +676,13 @@
     [[RealmSyncManager sharedManager] addNodeToSync:self.node withCompletionBlock:^(BOOL completed){
         if (completed)
         {
-            NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnsync,
-                                       kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unsync", @"Unsync Action"),
-                                       kActionCollectionItemUpdateItemImageKey : @"actionsheet-unsync.png"};
-            [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierSync userInfo:userInfo];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidAddNodeNotification object:weakSelf.node];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnsync,
+                                           kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unsync", @"Unsync Action"),
+                                           kActionCollectionItemUpdateItemImageKey : @"actionsheet-unsync.png"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierSync userInfo:userInfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidAddNodeNotification object:weakSelf.node];
+            });
         }
     }];
 }
@@ -688,9 +690,7 @@
 - (void)pressedUnsyncActionItem:(ActionCollectionItem *)actionItem
 {
     __weak typeof(self) weakSelf = self;
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    
-    void (^deleteNodeCompletionBlock)() = ^void(){
+    [[RealmSyncManager sharedManager] unsyncNode:self.node withCompletionBlock:^(BOOL completed) {
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierSync,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.sync", @"Sync Action"),
@@ -698,49 +698,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnsync userInfo:userInfo];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTopLevelSyncDidRemoveNodeNotification object:weakSelf.node];
         });
-    };
-    
-    if (self.node.isFolder)
-    {
-        [[RealmSyncManager sharedManager] deleteNodeFromSync:self.node deleteRule:DeleteRuleRootByForceAndKeepTopLevelChildren withCompletionBlock:^(BOOL savedLocally){
-            deleteNodeCompletionBlock();
-        }];
-        return;
-    }
-    
-    void (^deleteNode)() = ^void(){
-        [[RealmSyncManager sharedManager] deleteNodeFromSync:weakSelf.node deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally){
-            deleteNodeCompletionBlock();
-         }];
-    };
-    
-    BOOL isModifiedLocally = [[RealmSyncManager sharedManager] isNodeModifiedSinceLastDownload:weakSelf.node inRealm:realm];
-    
-    if(isModifiedLocally)
-    {
-        RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:weakSelf.node.identifier ifNotExistsCreateNew:NO inRealm:realm];
-        
-        [realm beginWriteTransaction];
-        syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
-        [realm commitWriteTransaction];
-        
-        if (weakSelf.node.isDocument)
-        {
-            [[RealmSyncManager sharedManager] uploadDocument:(AlfrescoDocument *)weakSelf.node withCompletionBlock:^(BOOL completed)
-            {
-                if (completed)
-                {
-                    deleteNode();
-                }
-            }];
-        }
-    }
-    else
-    {
-        [[RealmSyncManager sharedManager] cancelSyncForDocumentWithIdentifier:weakSelf.node.identifier];
-        
-        deleteNode();
-    }
+    }];
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks
