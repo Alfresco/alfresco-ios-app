@@ -265,6 +265,10 @@
                 }
             }
             
+            for(RealmSyncNodeInfo *node in arrayOfNodesToDelete)
+            {
+                [self.currentOperationQueue removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
+            }
             // Delete RealmSyncNodeInfo objects
             [[RealmManager sharedManager] deleteRealmObjects:arrayOfNodesToDelete inRealm:backgroundRealm];
             
@@ -275,7 +279,10 @@
                 [weakSelf.fileManager removeItemAtPath:path error:nil];
             }
             
-            completionBlock(hasSavedLocally);
+            if(completionBlock)
+            {
+                completionBlock(hasSavedLocally);
+            }
         });
     }
 }
@@ -441,10 +448,10 @@
     [syncOpQ cancelOperationsType:CancelDownloadOperations];
 }
 
-- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier completionBlock:(void (^)(void))completionBlock
 {
     SyncOperationQueue *syncOpQ = [self currentOperationQueue];
-    [syncOpQ cancelSyncForDocumentWithIdentifier:documentIdentifier];
+    [syncOpQ cancelSyncForDocumentWithIdentifier:documentIdentifier completionBlock:completionBlock];
 }
 
 - (BOOL)isCurrentlySyncing
@@ -613,7 +620,7 @@
         else
         {
             self.syncNodesInfo = [NSMutableDictionary new];
-            [node saveNodeInRealmUsingSession:self.alfrescoSession];
+            [node saveNodeInRealmUsingSession:self.alfrescoSession isTopLevelNode:YES];
             
             [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
                 if(self.nodeChildrenRequestsCount == 0)
@@ -672,6 +679,73 @@
     }
 }
 
+- (void)unsyncNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL))completionBlock
+{
+    SyncOperationQueue *syncOpQ = self.currentOperationQueue;
+    if(syncOpQ.isCurrentlySyncing)
+    {
+        [syncOpQ pauseSyncing:YES];
+    }
+    
+    if(node.isFolder)
+    {
+        [syncOpQ cancelSyncForFolder:(AlfrescoFolder *)node completionBlock:^{
+            [syncOpQ pauseSyncing:NO];
+            [[RealmSyncManager sharedManager] deleteNodeFromSync:node deleteRule:DeleteRuleRootByForceAndKeepTopLevelChildren withCompletionBlock:^(BOOL savedLocally){
+                if(completionBlock)
+                {
+                    completionBlock(YES);
+                }
+            }];
+        }];
+    }
+    else
+    {
+        void (^deleteNode)() = ^void(){
+            [self deleteNodeFromSync:node deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally){
+                if(completionBlock)
+                {
+                    completionBlock(YES);
+                }
+            }];
+        };
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        BOOL isModifiedLocally = [[RealmSyncManager sharedManager] isNodeModifiedSinceLastDownload:node inRealm:realm];
+        
+        if(isModifiedLocally)
+        {
+            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:node.identifier ifNotExistsCreateNew:NO inRealm:realm];
+            if(!syncNodeInfo.isRemovedFromSyncHasLocalChanges)
+            {
+                [realm beginWriteTransaction];
+                syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
+                [realm commitWriteTransaction];
+            }
+            
+            [syncOpQ pauseSyncing:NO];
+            if(![syncOpQ isCurrentlySyncingNode:node])
+            {
+                [self uploadDocument:(AlfrescoDocument *)node withCompletionBlock:^(BOOL completed){
+                    deleteNode();
+                }];
+            }
+            else if (completionBlock)
+            {
+                completionBlock(YES);
+            }
+            
+        }
+        else
+        {
+            [self cancelSyncForDocumentWithIdentifier:node.identifier completionBlock:^{
+                [syncOpQ pauseSyncing:NO];
+                deleteNode();
+            }];
+        }
+    }
+}
+
 #pragma mark - Sync node information
 - (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
 {
@@ -705,12 +779,6 @@
         }
     }
     return isModifiedLocally;
-}
-
-- (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node
-{
-    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:self.mainThreadRealm];
-    return syncError.errorDescription;
 }
 
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId

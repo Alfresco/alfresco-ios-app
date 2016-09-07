@@ -434,7 +434,7 @@
         {
             case SyncStatusLoading:
             {
-                [syncManager cancelSyncForDocumentWithIdentifier:node.identifier];
+                [syncManager cancelSyncForDocumentWithIdentifier:node.identifier completionBlock:nil];
                 break;
             }
             case SyncStatusFailed:
@@ -454,9 +454,8 @@
 #pragma mark - Retrying Failed Sync Methods
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
-    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
     AlfrescoNode *node = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
-    NSString *errorDescription = [syncManager syncErrorDescriptionForNode:node];
+    NSString *errorDescription = [node syncErrorDescription];
     
     if (IS_IPAD)
     {

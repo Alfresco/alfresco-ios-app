@@ -54,8 +54,11 @@ typedef NS_ENUM(NSUInteger, CancelOperationsType) {
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
 - (void)cancelOperationsType:(CancelOperationsType)cancelType;
-- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier completionBlock:(void (^)(void))completionBlock;
+- (void)cancelSyncForFolder:(AlfrescoFolder *)folder completionBlock:(void (^)(void))completionBlock;
 
 - (BOOL)isCurrentlySyncing;
+- (void)pauseSyncing:(BOOL)shouldPause;
+- (BOOL)isCurrentlySyncingNode:(AlfrescoNode *)node;
 
 @end

@@ -58,7 +58,6 @@ typedef NS_ENUM(NSInteger, DeleteRule)
  * Sync node information
  */
 - (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm;
-- (NSString *)syncErrorDescriptionForNode:(AlfrescoNode *)node;
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId;
 - (AlfrescoPermissions *)permissionsForSyncNode:(AlfrescoNode *)node;
 
@@ -67,11 +66,12 @@ typedef NS_ENUM(NSInteger, DeleteRule)
  */
 - (void)deleteNodeFromSync:(AlfrescoNode *)node deleteRule:(DeleteRule)deleteRule withCompletionBlock:(void (^)(BOOL savedLocally))completionBlock;
 - (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
-- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier;
+- (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier completionBlock:(void (^)(void))completionBlock;
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder;
 - (void)didUploadNewVersionForDocument:(AlfrescoDocument *)document updatedDocument:(AlfrescoDocument *)updatedDocument fromPath:(NSString *)path;
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
+- (void)unsyncNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
 /**
  * Sync Feature
