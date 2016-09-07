@@ -24,6 +24,6 @@
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationAlwaysUsageDescription = "現在地がこのデバイスで撮影した写真の位置情報 （ジオタグ） に使用されます。";
+NSLocationWhenInUseUsageDescription = "現在地がこのデバイスで撮影した写真の位置情報 （ジオタグ） に使用されます。";
 NSMicrophoneUsageDescription = "マイクを使用して音声を録音します。音声は後でリポジトリにアップロードできます。";
 NSPhotoLibraryUsageDescription = "Library Usage Description String - JA";
