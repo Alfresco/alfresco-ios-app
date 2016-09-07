@@ -18,6 +18,7 @@
 
 #import "BaseFileFolderCollectionViewController+Internal.h"
 #import "SearchCollectionViewDataSource.h"
+#import "PermissionChecker.h"
 
 @implementation BaseFileFolderCollectionViewController
 
@@ -827,20 +828,30 @@
 - (UIAlertAction *)alertActionUploadExistingPhotos
 {
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotos", @"Choose Photo Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
+        [PermissionChecker requestPermissionForResourceType:ResourceTypeLibrary completionBlock:^(BOOL granted) {
+            if (granted)
+            {
+                self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
+                self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+                [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
+            }
+        }];
     }];
 }
 
 - (UIAlertAction *)alertActionUploadExistingPhotosOrVideos
 {
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.upload.existingPhotosOrVideos", @"Choose Photo or Video from Library") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
+        [PermissionChecker requestPermissionForResourceType:ResourceTypeLibrary completionBlock:^(BOOL granted) {
+            if (granted)
+            {
+                self.imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+                self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
+                self.imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+                [self presentViewInPopoverOrModal:self.imagePickerController animated:YES];
+            }
+        }];
     }];
 }
 
@@ -860,45 +871,57 @@
 - (UIAlertAction *)alertActionTakePhoto
 {
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephoto", @"Take Photo") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        // Start location services
-        [[LocationManager sharedManager] startLocationUpdates];
-        
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
+        [PermissionChecker requestPermissionForResourceType:ResourceTypeCamera completionBlock:^(BOOL granted) {
+            // Start location services
+            [PermissionChecker requestPermissionForResourceType:ResourceTypeLocation completionBlock:nil];
+
+            self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            self.imagePickerController.mediaTypes = @[(NSString *)kUTTypeImage];
+            self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
+            [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
+        }];
     }];
 }
 
 - (UIAlertAction *)alertActionTakePhotoOrVideo
 {
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        // Start location services
-        [[LocationManager sharedManager] startLocationUpdates];
-        
-        self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-        self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
-        self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
-        
-        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                          action:kAnalyticsEventActionQuickAction
-                                                           label:kAnalyticsEventLabelTakePhotoOrVideo
-                                                           value:@1];
+        [PermissionChecker requestPermissionForResourceType:ResourceTypeCamera completionBlock:^(BOOL granted) {
+            if (granted)
+            {
+                // Start location services
+                [PermissionChecker requestPermissionForResourceType:ResourceTypeLocation completionBlock:nil];
+                
+                self.imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+                self.imagePickerController.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:self.imagePickerController.sourceType];
+                self.imagePickerController.modalPresentationStyle = UIModalPresentationFullScreen;
+                [self.navigationController presentViewController:self.imagePickerController animated:YES completion:nil];
+                
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                  action:kAnalyticsEventActionQuickAction
+                                                                   label:kAnalyticsEventLabelTakePhotoOrVideo
+                                                                   value:@1];
+            }
+        }];
     }];
 }
 
 - (UIAlertAction *)alertActionRecordAudio
 {
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.record.audio", @"Record Audio") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:[self.dataSource parentFolder] delegate:self];
-        NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
-        [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
-        
-        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                          action:kAnalyticsEventActionQuickAction
-                                                           label:kAnalyticsEventLabelRecordAudio
-                                                           value:@1];
+        [PermissionChecker requestPermissionForResourceType:ResourceTypeMicrophone completionBlock:^(BOOL granted) {
+            if (granted)
+            {
+                UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:[self.dataSource parentFolder] delegate:self];
+                NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
+                [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
+                
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                  action:kAnalyticsEventActionQuickAction
+                                                                   label:kAnalyticsEventLabelRecordAudio
+                                                                   value:@1];
+            }
+        }];
     }];
 }
 

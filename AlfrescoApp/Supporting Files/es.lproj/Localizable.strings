@@ -172,6 +172,32 @@
 "error.person.profile.email.failed.message" = "Imposible enviar el correo electrónico. Inténtelo de nuevo más tarde.";
 
 /**
+ * Permissions
+ */
+// Camera permissions
+"permissions.camera.denied.title" = "Camera denied title - ES";
+"permissions.camera.denied.message" = "Camera denied message - ES";
+"permissions.camera.restricted.title" = "Camera restricted title - ES";
+"permissions.camera.restricted.message" = "Camera restricted message - ES";
+// Library permissions
+"permissions.library.denied.title" = "Library denied title - ES";
+"permissions.library.denied.message" = "Library denied message - ES";
+"permissions.library.restricted.title" = "Library restricted title - ES";
+"permissions.library.restricted.message" = "Library restricted message - ES";
+// Microphone permissions
+"permissions.microphone.denied.title" = "Microphone denied title - ES";
+"permissions.microphone.denied.message" = "Microphone denied message - ES";
+// Location permissions
+"permissions.location.denied.title" = "Location denied title - ES";
+"permissions.location.denied.message" = "Location denied message - ES";
+"permissions.location.restricted.title" = "Location restricted title - ES";
+"permissions.location.restricted.message" = "Location restricted message - ES";
+"permissions.location.disabled.title" = "Location disabled title - ES";
+"permissions.location.disabled.message" = "Location disabled message - ES";
+// Settings button
+"permissions.settings.button" = "Open Settings - ES";
+
+/**
  * Custom error descriptions
  */
 "error.description.kErrorFileSuffixMaxAttempts" = "No se pudo generar un nombre de fichero único";

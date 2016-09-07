@@ -16,14 +16,18 @@
  *  limitations under the License.
  ******************************************************************************/
 
-/**
- * InfoPlist.strings
- * AlfrescoApp
- *
- * English (en)
- */
+#import <Foundation/Foundation.h>
 
-/* Localized versions of Info.plist keys */
-NSLocationAlwaysUsageDescription = "Your location will be used to geotag photos taken with this device.";
-NSMicrophoneUsageDescription = "The microphone will be used to record sound which can then be uploaded to the repository.";
-NSPhotoLibraryUsageDescription = "Library Usage Description String";
+typedef NS_ENUM(NSUInteger, ResourceType)
+{
+    ResourceTypeCamera,
+    ResourceTypeLibrary,
+    ResourceTypeMicrophone,
+    ResourceTypeLocation
+};
+
+@interface PermissionChecker : NSObject
+
++ (void)requestPermissionForResourceType:(ResourceType)resourceType completionBlock:(void (^)(BOOL granted))completionBlock;
+
+@end

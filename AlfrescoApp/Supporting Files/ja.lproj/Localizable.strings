@@ -172,6 +172,32 @@
 "error.person.profile.email.failed.message" = "E メールを送信できません。しばらくしてから、やり直してください。";
 
 /**
+ * Permissions
+ */
+// Camera permissions
+"permissions.camera.denied.title" = "Camera denied title - JA";
+"permissions.camera.denied.message" = "Camera denied message - JA";
+"permissions.camera.restricted.title" = "Camera restricted title - JA";
+"permissions.camera.restricted.message" = "Camera restricted message - JA";
+// Library permissions
+"permissions.library.denied.title" = "Library denied title - JA";
+"permissions.library.denied.message" = "Library denied message - JA";
+"permissions.library.restricted.title" = "Library restricted title - JA";
+"permissions.library.restricted.message" = "Library restricted message - JA";
+// Microphone permissions
+"permissions.microphone.denied.title" = "Microphone denied title - JA";
+"permissions.microphone.denied.message" = "Microphone denied message - JA";
+// Location permissions
+"permissions.location.denied.title" = "Location denied title - JA";
+"permissions.location.denied.message" = "Location denied message - JA";
+"permissions.location.restricted.title" = "Location restricted title - JA";
+"permissions.location.restricted.message" = "Location restricted message - JA";
+"permissions.location.disabled.title" = "Location disabled title - JA";
+"permissions.location.disabled.message" = "Location disabled message - JA";
+// Settings button
+"permissions.settings.button" = "Open Settings - JA";
+
+/**
  * Custom error descriptions
  */
 "error.description.kErrorFileSuffixMaxAttempts" = "固有のファイル名を生成できませんでした";

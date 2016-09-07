@@ -172,6 +172,32 @@
 "error.person.profile.email.failed.message" = "无法发送电子邮件。请稍后重试。";
 
 /**
+ * Permissions
+ */
+// Camera permissions
+"permissions.camera.denied.title" = "Camera denied title - ZH";
+"permissions.camera.denied.message" = "Camera denied message - ZH";
+"permissions.camera.restricted.title" = "Camera restricted title - ZH";
+"permissions.camera.restricted.message" = "Camera restricted message - ZH";
+// Library permissions
+"permissions.library.denied.title" = "Library denied title - ZH";
+"permissions.library.denied.message" = "Library denied message - ZH";
+"permissions.library.restricted.title" = "Library restricted title - ZH";
+"permissions.library.restricted.message" = "Library restricted message - ZH";
+// Microphone permissions
+"permissions.microphone.denied.title" = "Microphone denied title - ZH";
+"permissions.microphone.denied.message" = "Microphone denied message - ZH";
+// Location permissions
+"permissions.location.denied.title" = "Location denied title - ZH";
+"permissions.location.denied.message" = "Location denied message - ZH";
+"permissions.location.restricted.title" = "Location restricted title - ZH";
+"permissions.location.restricted.message" = "Location restricted message - ZH";
+"permissions.location.disabled.title" = "Location disabled title - ZH";
+"permissions.location.disabled.message" = "Location disabled message - ZH";
+// Settings button
+"permissions.settings.button" = "Open Settings - ZH";
+
+/**
  * Custom error descriptions
  */
 "error.description.kErrorFileSuffixMaxAttempts" = "无法生成唯一的文件名";

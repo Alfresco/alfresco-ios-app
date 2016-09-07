@@ -172,6 +172,32 @@
 "error.person.profile.email.failed.message" = "Impossibile inviare l'e-mail. Riprova più tardi.";
 
 /**
+ * Permissions
+ */
+// Camera permissions
+"permissions.camera.denied.title" = "Camera denied title - IT";
+"permissions.camera.denied.message" = "Camera denied message - IT";
+"permissions.camera.restricted.title" = "Camera restricted title - IT";
+"permissions.camera.restricted.message" = "Camera restricted message - IT";
+// Library permissions
+"permissions.library.denied.title" = "Library denied title - IT";
+"permissions.library.denied.message" = "Library denied message - IT";
+"permissions.library.restricted.title" = "Library restricted title - IT";
+"permissions.library.restricted.message" = "Library restricted message - IT";
+// Microphone permissions
+"permissions.microphone.denied.title" = "Microphone denied title - IT";
+"permissions.microphone.denied.message" = "Microphone denied message - IT";
+// Location permissions
+"permissions.location.denied.title" = "Location denied title - IT";
+"permissions.location.denied.message" = "Location denied message - IT";
+"permissions.location.restricted.title" = "Location restricted title - IT";
+"permissions.location.restricted.message" = "Location restricted message - IT";
+"permissions.location.disabled.title" = "Location disabled title - IT";
+"permissions.location.disabled.message" = "Location disabled message - IT";
+// Settings button
+"permissions.settings.button" = "Open Settings - IT";
+
+/**
  * Custom error descriptions
  */
 "error.description.kErrorFileSuffixMaxAttempts" = "Impossibile generare un nome file univoco";
