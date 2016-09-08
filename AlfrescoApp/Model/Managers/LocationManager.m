@@ -58,7 +58,7 @@
 
 - (BOOL)usersLocationAuthorisation
 {
-    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedAlways)
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse)
     {
         return YES;
     }
@@ -76,7 +76,7 @@
     CLAuthorizationStatus status = [CLLocationManager authorizationStatus];
     switch (status)
     {
-        case kCLAuthorizationStatusAuthorizedAlways:
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
         {
             [self.locationManager startUpdatingLocation];
             self.trackingLocation = YES;
@@ -91,7 +91,7 @@
             
         case kCLAuthorizationStatusNotDetermined:
         {
-            [self.locationManager requestAlwaysAuthorization];
+            [self.locationManager requestWhenInUseAuthorization];
         }
             break;
             
@@ -132,7 +132,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    if (status == kCLAuthorizationStatusAuthorizedAlways)
+    if (status == kCLAuthorizationStatusAuthorizedWhenInUse)
     {
         [self.locationManager startUpdatingLocation];
         self.trackingLocation = YES;

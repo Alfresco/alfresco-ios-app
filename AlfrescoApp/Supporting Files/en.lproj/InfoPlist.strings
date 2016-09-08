@@ -24,6 +24,6 @@
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationAlwaysUsageDescription = "Your location will be used to geotag photos taken with this device.";
+NSLocationWhenInUseUsageDescription = "Your location will be used to geotag photos taken with this device.";
 NSMicrophoneUsageDescription = "The microphone will be used to record sound which can then be uploaded to the repository.";
 NSPhotoLibraryUsageDescription = "Library Usage Description String";
