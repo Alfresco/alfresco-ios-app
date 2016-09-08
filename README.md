@@ -11,7 +11,7 @@ Alfresco Mobile is based on top of another open source project, the [Alfresco iO
 Releases
 ---
 
-The `master` branch is used for development of new features so it's stability can not be guaranteed. The current release is [available for download from the App Store](https://itunes.apple.com/app/alfresco/id459242610?mt=8). 
+The `master` branch is used for development of new features so its stability can not be guaranteed. The current release is [available for download from the App Store](https://itunes.apple.com/app/alfresco/id459242610?mt=8). 
 
 Alternatively, use one of the [tags](https://github.com/Alfresco/alfresco-ios-app/tags) to build from source using the latest stable version of Xcode.
 
@@ -19,7 +19,7 @@ Alternatively, use one of the [tags](https://github.com/Alfresco/alfresco-ios-ap
 License
 ---
 
-Alfresco Mobile for iOS 2.3.1
+Alfresco Mobile for iOS 2.4
 
 Copyright © 2016 Alfresco Software, Ltd.
 
@@ -31,5 +31,5 @@ Portions of this product distribution require certain copyright or other notices
 Getting Help
 ===
 
-If you are experiencing problems with the application or need help please consult the [Alfresco Mobile Forum](https://forums.alfresco.com/forum/end-user-discussions/alfresco-mobile).
+If you are experiencing problems with the application or need help please use the in-app Feedback feature, or contact [Mobile@Alfresco.com](mailto:mobile@alfresco.com).
 
