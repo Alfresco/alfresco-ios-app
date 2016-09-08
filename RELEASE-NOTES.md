@@ -1,9 +1,7 @@
-## Alfresco Mobile for iOS 2.2
+## Alfresco Mobile for iOS 2.4
 
-### v2.2
+### v2.4
 
-- **Server-side Configuration**: Allows in-app customisation of the main menu
-- **Grid View**: View folder contents in a grid layout
-- **Improved Search**: Search for sites, folders, files or people
-- **User Profiles**: View user profile information and contact colleagues
+- **Synced Files**: Synced files are now marked per device and no longer use Favorites. The internal sync implementation has been completely reworked to use a Realm database.
+- **Privacy Controls**: The app now has improved handling for user permissions for the Camera, Photo Library, Microphone and Location information.
 - **Bug fixes and performance improvements**
