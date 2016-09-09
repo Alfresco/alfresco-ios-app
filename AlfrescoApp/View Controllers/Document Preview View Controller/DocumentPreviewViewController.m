@@ -107,6 +107,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentSynced:) name:kTopLevelSyncDidAddNodeNotification object:nil];
 }
 
 - (void)showHUD
@@ -327,6 +328,19 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
         @throw ([NSException exceptionWithName:@"AlfrescoNode update exception in DocumentPreviewController - (void)documentUpdated:"
                                         reason:@"No document node returned from the edit file service"
                                       userInfo:nil]);
+    }
+}
+
+- (void)documentSynced:(NSNotification *)notification
+{
+    if ([[notification object] isKindOfClass:[AlfrescoDocument class]])
+    {
+        AlfrescoDocument *document = [notification object];
+        
+        if ([document.identifier isEqualToString:self.document.identifier])
+        {
+            self.documentContentFilePath = [document contentPath];
+        }
     }
 }
 
