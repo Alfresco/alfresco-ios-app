@@ -84,7 +84,7 @@
     }
     else
     {
-        [self showPinScreenAnimated:YES];
+        [self showPinScreenAnimated:YES completionBlock:nil];
         [self showBlankScreen:NO];
     }
 }
@@ -108,7 +108,7 @@
     }
     else
     {
-        [self showPinScreenAnimated:YES];
+        [self showPinScreenAnimated:YES completionBlock:nil];
     }
 }
 
@@ -236,7 +236,7 @@
 
 #pragma mark -
 
-- (void)showPinScreenAnimated:(BOOL)animated
+- (void)showPinScreenAnimated:(BOOL)animated completionBlock:(void (^)())completionBlock
 {
     UIViewController *topController = [UniversalDevice topPresentedViewController];
     
@@ -273,7 +273,7 @@
                 break;
         }
     }];
-    [topController presentViewController:navController animated:animated completion:nil];
+    [topController presentViewController:navController animated:animated completion:completionBlock];
 }
 
 - (void)showBlankScreen:(BOOL)show
@@ -323,8 +323,9 @@
         {
             AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
             
-            [self showPinScreenAnimated:NO];
-            [self showBlankScreen:NO];
+            [self showPinScreenAnimated:NO completionBlock:^{
+                [self showBlankScreen:NO];
+            }];
         }
     }];
 }
