@@ -336,7 +336,11 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     if ([[notification object] isKindOfClass:[AlfrescoDocument class]])
     {
         AlfrescoDocument *document = [notification object];
-        self.documentContentFilePath = [document contentPath];
+        
+        if ([document.identifier isEqualToString:self.document.identifier])
+        {
+            self.documentContentFilePath = [document contentPath];
+        }
     }
 }
 
