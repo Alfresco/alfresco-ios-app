@@ -41,3 +41,4 @@ NSString * const kSettingsSecurityUsePasscodeLockIdentifier = @"SettingsSecurity
 
 NSString * const kAlfrescoMobileGroup = @"group.com.alfresco.mobile";
 NSString * const kShouldResetEntireAppKey = @"ShouldResetEntireApp";
+NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";

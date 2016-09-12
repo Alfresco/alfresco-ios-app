@@ -41,3 +41,4 @@ extern NSString * const kSettingsSecurityUsePasscodeLockIdentifier;
 
 extern NSString * const kAlfrescoMobileGroup;
 extern NSString * const kShouldResetEntireAppKey;
+extern NSString * const kIsAppFirstLaunch;

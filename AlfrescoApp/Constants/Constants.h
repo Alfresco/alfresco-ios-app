@@ -99,7 +99,6 @@ extern CGFloat kUISegmentControlVerticalPadding;
 extern CGFloat kUISegmentControllerHeight;
 
 // NSUserDefault Keys
-extern NSString * const kIsAppFirstLaunch;
 extern NSString * const kSearchTypeFiles;
 extern NSString * const kSearchTypeFolders;
 extern NSString * const kSearchTypeSites;
