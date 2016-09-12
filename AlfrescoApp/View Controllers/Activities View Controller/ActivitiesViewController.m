@@ -29,6 +29,7 @@
 #import "ThumbnailManager.h"
 #import "ConnectivityManager.h"
 #import "TableviewUnderlinedHeaderView.h"
+#import "AlfrescoNode+Sync.h"
 
 static NSString * const kActivityTableSectionToday = @"activities.section.today";
 static NSString * const kActivityTableSectionYesterday = @"activities.section.yesterday";
@@ -502,7 +503,7 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
     {
         [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)node
                                                                        permissions:nodePermissions
-                                                                       contentFile:nil
+                                                                       contentFile:[node contentPath]
                                                                   documentLocation:InAppDocumentLocationFilesAndFolders
                                                                            session:self.session
                                                               navigationController:self.navigationController
