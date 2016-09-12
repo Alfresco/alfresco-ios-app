@@ -88,8 +88,9 @@
     void (^checkAnalyticsBlock)(BOOL, NSUInteger) = ^(BOOL forceAnalyticsDisable, NSUInteger checkedAccountsCount){
         if (forceAnalyticsDisable)
         {
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kSettingsSendDiagnosticsEnable];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+            [defaults setBool:NO forKey:kSettingsSendDiagnosticsEnable];
+            [defaults synchronize];
             
             [self trackEventWithCategory:kAnalyticsEventCategorySettings
                                   action:kAnalyticsEventActionAnalytics
@@ -104,12 +105,13 @@
         {
             if (checkedAccountsCount == [AccountManager sharedManager].allAccounts.count)
             {
-                BOOL oldDiagnosticsEnableState = [[NSUserDefaults standardUserDefaults] boolForKey:kSettingsSendDiagnosticsEnable];
+                NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+                BOOL oldDiagnosticsEnableState = [defaults boolForKey:kSettingsSendDiagnosticsEnable];
                 
                 if (oldDiagnosticsEnableState == NO)
                 {
-                    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kSettingsSendDiagnosticsEnable];
-                    [[NSUserDefaults standardUserDefaults] synchronize];
+                    [defaults setBool:YES forKey:kSettingsSendDiagnosticsEnable];
+                    [defaults synchronize];
                     [self startAnalytics];
                     [self trackAnalyticsEnableEvent];
                 }
