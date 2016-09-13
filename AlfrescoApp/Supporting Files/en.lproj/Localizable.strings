@@ -176,27 +176,27 @@
  * Permissions
  */
 // Camera permissions
-"permissions.camera.denied.title" = "Camera denied title";
-"permissions.camera.denied.message" = "Camera denied message";
-"permissions.camera.restricted.title" = "Camera restricted title";
-"permissions.camera.restricted.message" = "Camera restricted message";
+"permissions.camera.denied.title" = "Camera Turned Off";
+"permissions.camera.denied.message" = "You previously turned off Alfresco access to the camera.";
+"permissions.camera.restricted.title" = "Camera Turned Off";
+"permissions.camera.restricted.message" = "You don't have permission to let Alfresco use your camera.";
 // Library permissions
-"permissions.library.denied.title" = "Library denied title";
-"permissions.library.denied.message" = "Library denied message";
-"permissions.library.restricted.title" = "Library restricted title";
-"permissions.library.restricted.message" = "Library restricted message";
+"permissions.library.denied.title" = "Photo Library Turned Off";
+"permissions.library.denied.message" = "You previously turned off Alfresco access to the Photo Library.";
+"permissions.library.restricted.title" = "Photo Library Turned Off";
+"permissions.library.restricted.message" = "You don't have permission to let Alfresco use your Photo Library.";
 // Microphone permissions
-"permissions.microphone.denied.title" = "Microphone denied title";
-"permissions.microphone.denied.message" = "Microphone denied message";
+"permissions.microphone.denied.title" = "Microphone Turned Off";
+"permissions.microphone.denied.message" = "You previously turned off Alfresco access to the microphone.";
 // Location permissions
-"permissions.location.denied.title" = "Location denied title";
-"permissions.location.denied.message" = "Location denied message";
-"permissions.location.restricted.title" = "Location restricted title";
-"permissions.location.restricted.message" = "Location restricted message";
-"permissions.location.disabled.title" = "Location disabled title";
-"permissions.location.disabled.message" = "Location disabled message";
+"permissions.location.denied.title" = "Location Data Turned Off";
+"permissions.location.denied.message" = "You previously turned off Alfresco access to location data.";
+"permissions.location.restricted.title" = "Location Data Turned Off";
+"permissions.location.restricted.message" = "You don't have permission to let Alfresco use your location data.";
+"permissions.location.disabled.title" = "Location Data Turned Off";
+"permissions.location.disabled.message" = "Location data is switched off on your device.";
 // Settings button
-"permissions.settings.button" = "Open Settings";
+"permissions.settings.button" = "Change Settings";
 
 /**
  * Custom error descriptions
