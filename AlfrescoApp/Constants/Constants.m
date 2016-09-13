@@ -53,7 +53,6 @@ CGFloat kUISegmentControlVerticalPadding = 10.0f;
 CGFloat kUISegmentControllerHeight = 40.0f;
 
 // NSUserDefaults Keys
-NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 NSString * const kSearchTypeFiles = @"ALFSearchTypeFiles";
 NSString * const kSearchTypeFolders = @"ALFSearchTypeFolders";
 NSString * const kSearchTypeSites = @"ALFSearchTypeSites";

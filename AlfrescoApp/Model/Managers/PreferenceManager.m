@@ -122,8 +122,14 @@ static NSString * const kPreferenceKey = @"kAlfrescoPreferencesKey";
 - (void)loadPreferences
 {
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
-    NSMutableDictionary *savedPreferenceData = [defaults valueForKey:kPreferenceKey];
     
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey:kIsAppFirstLaunch] == nil)
+    {
+        [defaults removeObjectForKey:kPreferenceKey];
+    }
+    
+    NSMutableDictionary *savedPreferenceData = [defaults valueForKey:kPreferenceKey];
     self.preferences = savedPreferenceData ?: [NSMutableDictionary dictionary];
 
     NSString *pListPath = [[NSBundle mainBundle] pathForResource:@"UserPreferences" ofType:@"plist"];
