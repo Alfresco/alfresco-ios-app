@@ -584,7 +584,7 @@ static dispatch_once_t onceToken;
             }
         }
         
-        [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:@"VersionOfLastRun"];
+        [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:kVersionOfLastRun];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
