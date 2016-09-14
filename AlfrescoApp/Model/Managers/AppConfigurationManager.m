@@ -565,7 +565,29 @@ static dispatch_once_t onceToken;
     BOOL areThereAccounts = ([AccountManager sharedManager].allAccounts.count > 0) || ([AccountManager sharedManager].selectedAccount != nil);
     
     NSString *completeDestinationPath = areThereAccounts ? [self filePathForEmbeddedConfigurationFile] : [self filePathForNoAccountsConfigurationFile];
-
+    
+    NSString *currentVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSString *versionOfLastRun = [[NSUserDefaults standardUserDefaults] objectForKey:kVersionOfLastRun];
+    
+    if (versionOfLastRun == nil || [versionOfLastRun isEqual:currentVersion] == NO)
+    {
+        // First run after installing or the app was updated since last run.
+        // Delete current embedded config file if exists in order to use the new version embedded config file from the bundle.
+        if ([fileManager fileExistsAtPath:completeDestinationPath])
+        {
+            NSError *deleteError = nil;
+            [fileManager removeItemAtPath:completeDestinationPath error:&deleteError];
+            
+            if (deleteError)
+            {
+                AlfrescoLogError(@"Unable to remove file at path: %@", completeDestinationPath);
+            }
+        }
+        
+        [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:@"VersionOfLastRun"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
     if (![fileManager fileExistsAtPath:completeDestinationPath])
     {
         NSString *configFileName = areThereAccounts ? kAlfrescoEmbeddedConfigurationFileName : kAlfrescoNoAccountConfigurationFileName;
