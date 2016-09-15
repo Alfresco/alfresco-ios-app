@@ -105,6 +105,7 @@ extern NSString * const kSearchTypeSites;
 extern NSString * const kSearchTypeUsers;
 extern NSString * const kHasCoreDataMigrationOccurred;
 extern NSString * const kWasSyncInfoPanelShown;
+extern NSString * const kVersionOfLastRun;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;
