@@ -77,7 +77,7 @@
                                             <action selector="skipButtonClicked:" destination="Fgw-ec-MMR" eventType="touchUpInside" id="2E0-py-kX1"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hxa-rN-HSW">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hxa-rN-HSW">
                                         <rect key="frame" x="520" y="15" width="32" height="15"/>
                                         <state key="normal" title="Next"/>
                                         <connections>
