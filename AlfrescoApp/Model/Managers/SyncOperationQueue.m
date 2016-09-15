@@ -77,10 +77,6 @@
     
     SyncNodeStatus *syncNodeStatus = [self syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
     syncNodeStatus.status = SyncStatusLoading;
-    if (syncNodeStatus.activityType == SyncActivityTypeIdle)
-    {
-        syncNodeStatus.activityType = SyncActivityTypeDownload;
-    }
     
     [node saveNodeInRealmUsingSession:self.session isTopLevelNode:isTopLevel];
     
@@ -180,6 +176,7 @@
     NSString *syncNameForNode = [document syncNameInRealm:[RLMRealm defaultRealm]];
     __block SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
     nodeStatus.status = SyncStatusLoading;
+    nodeStatus.activityType = SyncActivityTypeDownload;
     nodeStatus.bytesTransfered = 0;
     nodeStatus.totalBytesToTransfer = 0;
     
@@ -312,6 +309,7 @@
     NSString *nodeExtension = [document.name pathExtension];
     __block SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
     nodeStatus.status = SyncStatusLoading;
+    nodeStatus.activityType = SyncActivityTypeUpload;
     nodeStatus.bytesTransfered = 0;
     nodeStatus.totalBytesToTransfer = 0;
     
@@ -418,7 +416,6 @@
     BOOL shouldCancelDownloadOperations = cancelType & CancelDownloadOperations;
     BOOL shouldCancelUploadOperations = cancelType & CancelUploadOperations;
 
-    [self.syncOperationQueue setSuspended:YES];
     NSArray *syncDocumentIdentifiers = [self.syncOperations allKeys];
     
     for (NSString *documentIdentifier in syncDocumentIdentifiers)
@@ -440,8 +437,6 @@
         self.syncProgress.syncProgressSize = 0;
         [self notifyProgressDelegateAboutCurrentProgress];
     }
-    
-    [self.syncOperationQueue setSuspended:NO];
 }
 
 - (void)cancelSyncForNode:(AlfrescoNode *)node completionBlock:(void (^)(void))completionBlock
