@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 @class RLMRealm;
+@class RealmSyncNodeInfo;
 
 @interface AlfrescoNode (Sync)
 
@@ -28,9 +29,10 @@
 - (BOOL)isNodeInSyncList;
 - (BOOL)isNodeInSyncListInRealm:(RLMRealm *)realm;
 - (void)saveNodeInRealmUsingSession:(id<AlfrescoSession>)session isTopLevelNode:(BOOL)isTopLevel;
+- (NSString *)syncErrorDescription;
+- (RealmSyncNodeInfo *)topLevelSyncParentNodeInRealm:(RLMRealm *)realm;
 
 + (NSArray *)syncIdentifiersForNodes:(NSArray *)nodes;
 + (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId inRealm:(RLMRealm *)realm;
-- (NSString *)syncErrorDescription;
 
 @end

@@ -128,13 +128,43 @@
     }
     nodeSyncInfo.isFolder = self.isFolder;
     [realm commitWriteTransaction];
-    
-    [self retrieveNodePermissionsWithSession:session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-        if(permissions)
+}
+
+- (NSString *)syncErrorDescription
+{
+    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:[RealmSyncManager sharedManager].mainThreadRealm];
+    return syncError.errorDescription;
+}
+
+- (RealmSyncNodeInfo *)topLevelSyncParentNodeInRealm:(RLMRealm *)realm
+{
+    RealmSyncNodeInfo *topLevelSyncParent = nil;
+    RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    if(syncNodeInfo)
+    {
+        if(syncNodeInfo.isTopLevelSyncNode)
         {
-            [[RealmManager sharedManager] savePermissions:permissions forNode:self];
+            topLevelSyncParent = syncNodeInfo;
         }
-    }];
+        else
+        {
+            RealmSyncNodeInfo *currentSyncNode = syncNodeInfo;
+            while (currentSyncNode.parentNode)
+            {
+                if(currentSyncNode.parentNode.isTopLevelSyncNode)
+                {
+                    topLevelSyncParent = currentSyncNode.parentNode;
+                    break;
+                }
+                else
+                {
+                    currentSyncNode = currentSyncNode.parentNode;
+                }
+            }
+        }
+    }
+    
+    return topLevelSyncParent;
 }
 
 + (NSArray *)syncIdentifiersForNodes:(NSArray *)nodes
@@ -158,12 +188,6 @@
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncNodeId ifNotExistsCreateNew:NO inRealm:realm];
     
     return nodeInfo.alfrescoNode;
-}
-
-- (NSString *)syncErrorDescription
-{
-    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:[RealmSyncManager sharedManager].mainThreadRealm];
-    return syncError.errorDescription;
 }
 
 @end

@@ -56,6 +56,8 @@
         
         _realmManager = [RealmManager sharedManager];
         
+        _unsyncCompletionBlocks = [NSMutableDictionary new];
+        
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusChanged:) name:kSyncStatusChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
@@ -621,20 +623,54 @@
         {
             self.syncNodesInfo = [NSMutableDictionary new];
             [node saveNodeInRealmUsingSession:self.alfrescoSession isTopLevelNode:YES];
+            [syncOpQ setNodeForSyncingAsTopLevel:node];
+            if(completionBlock)
+            {
+                completionBlock(YES);
+            }
             
-            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                if(self.nodeChildrenRequestsCount == 0)
-                {
-                    syncOpQ.syncNodesInfo = self.syncNodesInfo;
-                    [syncOpQ addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
-                    if(completionBlock)
+            if([self checkNodeForConflictingOperations:node inSyncOperationQueue:syncOpQ])
+            {
+                [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                    if(self.nodeChildrenRequestsCount == 0)
                     {
-                        completionBlock(completed);
+                        if([self checkNodeForConflictingOperations:node inSyncOperationQueue:syncOpQ])
+                        {
+                            syncOpQ.syncNodesInfo = self.syncNodesInfo;
+                            [syncOpQ addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
+                        }
                     }
-                }
-            }];
+                }];
+            }
         }
     }
+}
+
+- (BOOL)checkNodeForConflictingOperations:(AlfrescoNode *)node inSyncOperationQueue:(SyncOperationQueue *)syncOpQ
+{
+    BOOL returnValue = YES;
+    if(![syncOpQ shouldContinueSyncProcessForNode:node])
+    {
+        returnValue = NO;
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        RealmSyncNodeInfo *topLevelSyncParent = [node topLevelSyncParentNodeInRealm:realm];
+        AlfrescoNode *nodeToCancelSync = (topLevelSyncParent) ? topLevelSyncParent.alfrescoNode : node;
+        [syncOpQ cancelSyncForNode:nodeToCancelSync completionBlock:^{
+            SyncOperationQueue *syncOpQ = self.currentOperationQueue;
+            syncOpQ.nodesInProcessingForDeletion[[nodeToCancelSync syncIdentifier]] = @YES;
+            [self removeNode:nodeToCancelSync withCompletionBlock:^(BOOL completed) {
+                void (^completionBlock)(BOOL);
+                completionBlock = self.unsyncCompletionBlocks[[node syncIdentifier]];
+                if(completionBlock)
+                {
+                    completionBlock(YES);
+                }
+            }];
+        }];
+    }
+    
+    return returnValue;
 }
 
 - (void)retrieveNodeHierarchyForNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -655,14 +691,17 @@
                 {
                     if(node.isFolder)
                     {
-                        // recursive call to retrieve nodes hierarchies
-                        [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                            
-                            if (completionBlock != NULL)
-                            {
-                                completionBlock(YES);
-                            }
-                        }];
+                        if([self checkNodeForConflictingOperations:node inSyncOperationQueue:self.currentOperationQueue])
+                        {
+                            // recursive call to retrieve nodes hierarchies
+                            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                                
+                                if (completionBlock != NULL)
+                                {
+                                    completionBlock(YES);
+                                }
+                            }];
+                        }
                     }
                 }
             }
@@ -682,67 +721,60 @@
 - (void)unsyncNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL))completionBlock
 {
     SyncOperationQueue *syncOpQ = self.currentOperationQueue;
-    if(syncOpQ.isCurrentlySyncing)
+    if([syncOpQ isCurrentlySyncingNode:node])
     {
-        [syncOpQ pauseSyncing:YES];
-    }
-    
-    if(node.isFolder)
-    {
-        [syncOpQ cancelSyncForFolder:(AlfrescoFolder *)node completionBlock:^{
-            [syncOpQ pauseSyncing:NO];
-            [[RealmSyncManager sharedManager] deleteNodeFromSync:node deleteRule:DeleteRuleRootByForceAndKeepTopLevelChildren withCompletionBlock:^(BOOL savedLocally){
-                if(completionBlock)
-                {
-                    completionBlock(YES);
-                }
-            }];
-        }];
+        [syncOpQ setNodeForRemoval:node];
+        if(completionBlock)
+        {
+            self.unsyncCompletionBlocks[[node syncIdentifier]] = completionBlock;
+        }
     }
     else
     {
-        void (^deleteNode)() = ^void(){
-            [self deleteNodeFromSync:node deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally){
-                if(completionBlock)
-                {
-                    completionBlock(YES);
-                }
-            }];
-        };
-        
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        BOOL isModifiedLocally = [[RealmSyncManager sharedManager] isNodeModifiedSinceLastDownload:node inRealm:realm];
-        
-        if(isModifiedLocally)
-        {
-            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:node.identifier ifNotExistsCreateNew:NO inRealm:realm];
-            if(!syncNodeInfo.isRemovedFromSyncHasLocalChanges)
-            {
-                [realm beginWriteTransaction];
-                syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
-                [realm commitWriteTransaction];
-            }
-            
-            [syncOpQ pauseSyncing:NO];
-            if(![syncOpQ isCurrentlySyncingNode:node])
-            {
-                [self uploadDocument:(AlfrescoDocument *)node withCompletionBlock:^(BOOL completed){
-                    deleteNode();
-                }];
-            }
-            else if (completionBlock)
+        [self removeNode:node withCompletionBlock:completionBlock];
+    }
+}
+
+- (void)removeNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL))completionBlock
+{
+    SyncOperationQueue *syncOpQ = self.currentOperationQueue;
+    void (^deleteNode)() = ^void(){
+        DeleteRule rule = (node.isFolder) ? DeleteRuleRootByForceAndKeepTopLevelChildren : DeleteRuleAllNodes;
+        [self deleteNodeFromSync:node deleteRule:rule withCompletionBlock:^(BOOL savedLocally){
+            if(completionBlock)
             {
                 completionBlock(YES);
             }
-            
-        }
-        else
+        }];
+    };
+    
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inRealm:realm];
+    if(node.isDocument && isModifiedLocally)
+    {
+        RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:node.identifier ifNotExistsCreateNew:NO inRealm:realm];
+        if(!syncNodeInfo.isRemovedFromSyncHasLocalChanges)
         {
-            [self cancelSyncForDocumentWithIdentifier:node.identifier completionBlock:^{
-                [syncOpQ pauseSyncing:NO];
+            [realm beginWriteTransaction];
+            syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
+            [realm commitWriteTransaction];
+        }
+        
+        if(![syncOpQ isCurrentlySyncingNode:node])
+        {
+            [syncOpQ pauseSyncing:NO];
+            [self uploadDocument:(AlfrescoDocument *)node withCompletionBlock:^(BOOL completed){
                 deleteNode();
             }];
         }
+        else if (completionBlock)
+        {
+            completionBlock(YES);
+        }
+    }
+    else
+    {
+        deleteNode();
     }
 }
 
@@ -933,6 +965,10 @@
                 }
             }
             parentNodeStatus.status = syncStatus;
+        }
+        else if((nodeInfo.isTopLevelSyncNode) && (nodeInfo.isFolder))
+        {
+            [syncOpQ folderFinishedSyncing:nodeInfo.alfrescoNode];
         }
     }
 }
