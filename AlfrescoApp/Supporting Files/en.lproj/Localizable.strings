@@ -93,13 +93,13 @@
 "sync.downloadsize.prompt.cancel" = "Don't Sync";
 "sync.downloadsize.prompt.confirm" = "Sync Now";
 "sync.enable.title" = "Sync Files";
-"sync.enable.message" = "Would you like to automatically keep your favorite files in sync with this %@?";
+"sync.enable.message" = "Automatically keep your favorite files in sync with this %@?";
 "sync.state.waiting-to-sync" = "Waiting to sync...";
-"sync.state.failed-to-sync" = "Sync Failed";
+"sync.state.failed-to-sync" = "Sync Unsuccessful";
 "sync.progress.label.singular" = "Syncing 1 file, %@ left"; // example: "Syncing 1 file, 238.3 MB left"
 "sync.progress.label.plural" = "Syncing %d files, %@ left"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "Sync";
-"sync.cancelAll.alert.message" = "Would you like to cancel all sync operations?";
+"sync.cancelAll.alert.message" = "Cancel all sync operations?";
 "sync.cancelAll.alert.button.continue" = "Continue";
 "sync.cancelAll.alert.button.stop" = "Stop Sync";
 
@@ -107,9 +107,9 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "Sync Errors";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "The following files have been unfavorited on the server but have local changes. Select how to proceed for each file.\n\nFiles will be saved to \"Local Files\"";
-"sync-errors.deleted-on-server-with-local-changes.header" = "The following files have been deleted on the server but copies have been saved to your \"Local Files\"";
-"sync-errors.pending-sync-on-server-with-local-changes.header" = "The following files are pending sync and have local changes. Select how to proceed for each file.\n\nFiles will be saved to \"Local Files\"";
+"sync-errors.unfavorited-on-server-with-local-changes.header" = "The following files have been unfavorited on Alfresco but have local changes. Select how to continue for each file.\n\nFiles will be saved to \"Local Files\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "The following files have been deleted on Alfresco but copies have been saved to your \"Local Files\"";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "The following files are waiting to sync and have local changes. Select how to continue for each file.\n\nFiles will be saved to \"Local Files\"";
 "sync-errors.button.sync" = "Sync"; // string length should not be extended
 "sync-errors.button.save" = "Save"; // string length should not be extended
 
@@ -117,60 +117,60 @@
  * Errors
  */
 "error.generic.title" = "We hit a problem";
-"error.filefolder.rootfolder.notfound" = "The root folder couldn’t be loaded.\n\n%@.";
-"error.filefolder.permission.notfound" = "Permission for the file / folder wasn’t found.\n\n%@.";
-"error.filefolder.content.failedtodownload" = "File failed to download.\n\n%@.";
-"error.filefolder.search.searchfailed" = "The search failed.\n\n%@.";
+"error.filefolder.rootfolder.notfound" = "The root folder couldn't be loaded.\n\n%@.";
+"error.filefolder.permission.notfound" = "Permission for the file / folder wasn't found.\n\n%@.";
+"error.filefolder.content.failedtodownload" = "File didn't download.\n\n%@.";
+"error.filefolder.search.searchfailed" = "Search unsuccessful.\n\n%@.";
 "error.filefolder.createfolder.invalidname" = "The folder name contains invalid characters, please try again.";
-"error.filefolder.createfolder.createfolder" = "The folder wasn’t created.\n\n%@.";
-"error.filefolder.content.failedtoretrieve" = "The file / folder couldn’t be retrieved.\n\n%@.";
-"error.filefolder.unable.to.delete" = "The file / folder couldn’t be deleted.\n\n%@";
-"error.sites.documentlibrary.failed" = "Couldn’t access Document Library.\n\n%@.";
+"error.filefolder.createfolder.createfolder" = "The folder wasn't created.\n\n%@.";
+"error.filefolder.content.failedtoretrieve" = "The file / folder couldn't be retrieved.\n\n%@.";
+"error.filefolder.unable.to.delete" = "The file / folder couldn't be deleted.\n\n%@";
+"error.sites.documentlibrary.failed" = "Couldn't access Document Library.\n\n%@.";
 "error.filefolder.favorites.failed" = "Couldn't access Favorites.\n\n%@";
-"error.sites.retrieval.failed" = "Couldn’t retrieve sites.\n\n%@.";
-"error.sites.folder.failed" = "Couldn’t retrieve sites folder.\n\n%@.";
-"error.sites.search.failed" = "Couldn’t search across sites.\n\n%@.";
+"error.sites.retrieval.failed" = "Couldn't retrieve sites.\n\n%@.";
+"error.sites.folder.failed" = "Couldn't retrieve sites folder.\n\n%@.";
+"error.sites.search.failed" = "Couldn't search across sites.\n\n%@.";
 "error.sites.site.notfound" = "Site not found";
-"error.upload.failed" = "The file couldn’t be uploaded right now.\n\n%@.";
-"error.upload.addtags.failed" = "The tags couldn’t be added to the file.\n\n%@.";
-"error.tags.retrieve.failed" = "The tags couldn’t be retrieved right now.\n\n%@.";
-"error.login.failed" = "Log in wasn’t successful, please check that your user name and password are correct.";
-"error.comments.retrieve.failed" = "Comments couldn’t be retrieved right now.\n\n%@";
-"error.add.comment.failed" = "The comment couldn’t be added right now.\n\n%@";
-"error.sites.unable.to.favorite" = "%@ couldn’t be favorited right now";
-"error.sites.unable.to.unfavorite" = "%@ couldn’t be unfavorited right now";
-"error.sites.unable.to.join" = "%@ couldn’t be joined right now";
-"error.sites.unable.to.cancel.request" = "Your request to join %@ couldn’t be cancelled right now";
-"error.sites.unable.to.leave" = "Your request to leave %@ wasn’t successful this time";
-"error.version.history.unable.to.retrieve" = "Version history couldn’t be retrieved right now.\n\n%@";
-"error.version.history.no.latest.version" = "The latest version of the file couldn’t be found.";
+"error.upload.failed" = "The file couldn't be uploaded right now.\n\n%@.";
+"error.upload.addtags.failed" = "The tags couldn't be added to the file.\n\n%@.";
+"error.tags.retrieve.failed" = "The tags couldn't be retrieved right now.\n\n%@.";
+"error.login.failed" = "Log in unsuccessful, check that your user name and password are correct.";
+"error.comments.retrieve.failed" = "Comments couldn't be retrieved right now.\n\n%@";
+"error.add.comment.failed" = "The comment couldn't be added right now.\n\n%@";
+"error.sites.unable.to.favorite" = "%@ couldn't be favorited right now";
+"error.sites.unable.to.unfavorite" = "%@ couldn't be unfavorited right now";
+"error.sites.unable.to.join" = "%@ couldn't be joined right now";
+"error.sites.unable.to.cancel.request" = "Your request to join %@ couldn't be cancelled right now";
+"error.sites.unable.to.leave" = "Your request to leave %@ wasn't successful this time";
+"error.version.history.unable.to.retrieve" = "Version history couldn't be retrieved right now.\n\n%@";
+"error.version.history.no.latest.version" = "The latest version of the file couldn't be found.";
 "error.alfresco.node.notfound" = "File not found";
 "error.alfresco.folder.notfound" = "Folder not found";
 "error.print.failed.message" = "Printing this file is not supported";
 // Internet connection error
 "error.no.internet.access.title" = "A connection couldn't be made";
 "error.no.internet.access.message" = "Check that you're connected to the internet and try again. You can still access your downloaded files without having a connection.";
-"error.access.permissions.message" = "Check that you have access rights to do this";
+"error.access.permissions.message" = "Check that you have permissions to do this";
 "error.host.unreachable.title" = "Connection Error";
-"error.host.unreachable.message" = "Your hostname value seems to be wrong or you may need to activate your VPN. Please check your account settings.";
-"error.retrieving.metadata" = "Properties for %@ couldn’t be retrieved.";
+"error.host.unreachable.message" = "Your settings may be wrong or you may need to activate your VPN. Check your hostname in the account settings.";
+"error.retrieving.metadata" = "Properties for %@ couldn't be retrieved.";
 "error.server.message" = "An error occurred on the server.";
 // Workflow
-"error.workflow.unable.to.complete.process" = "The task process couldn’t be completed right now.\n\n%@";
-"error.workflow.unable.to.reassign.task" = "The task couldn’t be reassigned right now.\n\n%@";
+"error.workflow.unable.to.complete.process" = "The task process couldn't be completed right now.\n\n%@";
+"error.workflow.unable.to.reassign.task" = "The task couldn't be reassigned right now.\n\n%@";
 // New Version
-"error.new.version.unable.to.checkout.title" = "Unable To Check Out";
-"error.new.version.unable.to.checkout.message" = "Unable to check out %@.\n\n%@";
-"error.new.version.unable.to.checkin.title" = "Unable To Check In";
-"error.new.version.unable.to.checkin.message" = "Unable to check in %@.\n\n%@";
+"error.new.version.unable.to.checkout.title" = "Couldn't Check Out";
+"error.new.version.unable.to.checkout.message" = "Couldn't check out %@.\n\n%@";
+"error.new.version.unable.to.checkin.title" = "Couldn't Check In";
+"error.new.version.unable.to.checkin.message" = "Couldn't check in %@.\n\n%@";
 // Email
 "error.no.email.accounts.title" = "No Mail Accounts";
 "error.no.email.accounts.message" = "You must have at least one mail account setup on your device to send this file.";
 // Person Profile
 "error.person.profile.no.profile.title" = "Profile Error";
-"error.person.profile.no.profile.message" = "Unable to locate user; %@";
-"error.person.profile.email.failed.title" = "Sending Failed";
-"error.person.profile.email.failed.message" = "Unable to send the email. Please try again later.";
+"error.person.profile.no.profile.message" = "Couldn't find user; %@";
+"error.person.profile.email.failed.title" = "Sending Unsuccessful";
+"error.person.profile.email.failed.message" = "Couldn't send the email. Try again later.";
 
 /**
  * Permissions
@@ -212,12 +212,12 @@
 "sites.segmentControl.favoritesites" = "Favorite Sites"; // string length should not be extended
 "sites.segmentControl.allsites" = "All Sites"; // string length should not be extended
 "sites.segmentControl.sitefinder" = "Site Finder"; // string length should not be extended
-"sites.site.favorited.banner" = "You have favorited %@";
-"sites.site.unfavorited.banner" = "You have unfavorited %@";
+"sites.site.favorited.banner" = "You've favorited %@";
+"sites.site.unfavorited.banner" = "You've unfavorited %@";
 "sites.site.requested.to.join.banner" = "A request to join %@ has been sent";
-"sites.site.joined.banner" = "You have joined %@";
+"sites.site.joined.banner" = "You've joined %@";
 "sites.site.request.cancelled.banner" = "Request cancelled for %@";
-"sites.site.left.banner" = "You have left %@";
+"sites.site.left.banner" = "You've left %@";
 
 // Site Cell Buttons
 "sites.siteCell.favorite" = "Favorite"; // string length should not be extended
@@ -236,34 +236,34 @@
 "accountdetails.title.newaccount" = "New Account";
 "accountdetails.title.editingaccount" = "Editing Account";
 "accounttype.cloud" = "Alfresco in the Cloud";
-"accounttype.alfrescoServer" = "Alfresco Server";
+"accounttype.alfrescoServer" = "Alfresco One";
 
-"accounttype.footer.alfrescoServer" = "Connect to an Alfresco Server";
-"accounttype.footer.alfrescoCloud" = "Access your Alfresco in the Cloud account";
+"accounttype.footer.alfrescoServer" = "Connect to Alfresco One";
+"accounttype.footer.alfrescoCloud" = "Connect to your Alfresco in the Cloud account";
 
 "accountdetails.placeholder.required" = "Required";
 "accountdetails.placeholder.optional" = "Optional";
 "accountdetails.fields.email" = "Email";
-"accountdetails.placeholder.email" = "example@acme.com";
+"accountdetails.placeholder.email" = "example@alfresco.com";
 "accountdetails.fields.hostname" = "Hostname";
 "accountdetails.fields.description" = "Description";
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Service Document";
-"accountdetails.fields.syncPreference" = "Sync Files";
-"accountdetails.fields.syncPreference.footer" = "Select to sync favorited content to your device. A warning will be displayed before syncing content over 20 MB";
+"accountdetails.fields.syncPreference" = "Sync Content";
+"accountdetails.fields.syncPreference.footer" = "Select to sync content to your device. A warning will be displayed before syncing content over 20 MB";
 "accountdetails.buttons.client-certificate" = "Client Certificate";
 "accountdetails.buttons.configuration" = "Edit Main Menu";
 "accountdetails.header.authentication" = "Account Details";
 "accountdetails.header.advanced" = "Advanced";
 "accountdetails.header.setting" = "Settings";
 "accountdetails.header.main.menu.config" = "Main Menu";
-"accountdetails.footer.main.menu.config.disabled" = "Your Alfresco Administrator has switched off this feature.";
+"accountdetails.footer.main.menu.config.disabled" = "Your IT team have turned off this feature.";
 "accountdetails.buttons.profile" = "Edit Profile";
 "accountdetails.header.profile" = "Profile";
 
 "accountdetails.alert.save.title" = "Save Account";
-"accountdetails.alert.save.validationerror" = "The account couldn’t be saved. Check your account settings with your Alfresco administrator.";
+"accountdetails.alert.save.validationerror" = "Couldn't save account. Check your account settings with your IT team.";
 
 "accountdetails.fields.accountSettings" = "Enter your user name and password to access this account";
 "accountdetails.fields.confirmPassword" = "Confirm your password to access this account";
@@ -273,11 +273,11 @@
 "certificate-manage.download.label" = "Download from Web Server";
 "certificate-import.tableHeader" = "PKCS 12 Passcode";
 "certificate-import.fields.passcode" = "Passcode";
-"certificate-import.tableFooter" = "Please enter the passcode for the PKCS 12 file";
+"certificate-import.tableFooter" = "Enter the passcode for the PKCS 12 file";
 "certificate-import.button.import" = "Import";
 "certificate-import.error.title" = "Import Certificate";
 "certificate-import.error.authentication" = "The passcode provided for the certificate is invalid";
-"certificate-import.error.format" = "The certificate file is incorrect and cannot be imported";
+"certificate-import.error.format" = "The certificate file is incorrect and can't be imported";
 "certificate-download.title" = "Web Server";
 "certificate-download.field.url" = "URL";
 "certificate-details.title" = "Client Certificate";
@@ -330,14 +330,14 @@
  */
 "multiselect.button.delete" = "Delete";
 "multiselect.button.delete.counter" = "Delete (%u)";
-"multiselect.delete.confirmation.message.one-item" = "Do you want to delete 1 file from the server?";
-"multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d files from the server?";
+"multiselect.delete.confirmation.message.one-item" = "Do you want to delete 1 file from Alfresco?";
+"multiselect.delete.confirmation.message.n-items" = "Do you want to delete %d files from Alfresco?";
 "multiselect.delete.confirmation.message.one-download" = "Do you want to delete 1 file from local files?";
 "multiselect.delete.confirmation.message.n-downloads" = "Do you want to delete %d files from local files?";
-"multiselect.delete.completed.title" = "Delete Completed With Errors";
-"multiselect.delete.completed.message" = "%@ files were deleted from the server.";
-"multiselect.delete.partial.message" = "Only %@ files were deleted from the server.";
-"multiselect.delete.failure.message" = "None of the files could be deleted from the server.";
+"multiselect.delete.completed.title" = "Delete Completed with Errors";
+"multiselect.delete.completed.message" = "%@ files were deleted from Alfresco.";
+"multiselect.delete.partial.message" = "%@ files were deleted from Alfresco. Some files couldn't be deleted";
+"multiselect.delete.failure.message" = "None of the files could be deleted from Alfrescor.";
 
 /**
  * Node Picker
@@ -369,7 +369,7 @@
  * About View Controller
  */
 "about.title" = "About";
-"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco Mobile was designed and developed by Alfresco Software, Inc. and connects to Alfresco in the Cloud and Alfresco on-premise servers (3.4.8 and above) to provide safe access to your corporate files on the go. This mobile application connects to your Alfresco repository using your Alfresco login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
+"about.content" = "Alfresco is the open platform for business-critical content management and collaboration.\n\nAlfresco Mobile was designed and developed by Alfresco Software, Inc. and connects to Alfresco in the Cloud and Alfresco One (3.4.8 and above) to provide safe access to your corporate files on the go. This mobile application connects to your Alfresco repository using your Alfresco login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
 "about.version.number" = "Version: %@ (%@)";
 "about.build.date.time" = "Build Date: %s %s";
 
@@ -404,7 +404,7 @@
 "upload.audio.cell.button.play" = "Play";
 "upload.audio.cell.button.stop" = "Stop";
 "upload.audio.setting.disabled.title" = "Permissions";
-"upload.audio.setting.disabled.message" = "This app doesn’t have permission to access the microphone.\n\nChange this in your device Settings -> Privacy -> Microphone.";
+"upload.audio.setting.disabled.message" = "Alfresco doesn't have permission to access the microphone.\n\nChange this in your device Settings > Privacy > Microphone.";
 // confirmation
 "upload.confirm.dismissal.title" = "Unsaved Content";
 "upload.confirm.dismissal.message" = "Do you want to upload this content? Your content will be lost if you don't upload now.";
@@ -440,11 +440,11 @@
 /**
  * Document Preview Controller
  */
-"document.video.not.supported" = "Playback is not available";
-"document.open-in.not.supported.title" = "Open in is not available";
-"document.open-in.not.supported.message" = "The Open in option is not available with this application.";
+"document.video.not.supported" = "Playback isn't available";
+"document.open-in.not.supported.title" = "Open in isn't available";
+"document.open-in.not.supported.message" = "The Open in option isn't available with this application.";
 "document.open-in.noapps.title" = "No apps supported";
-"document.open-in.noapps.message" = "There are no apps installed on this device that can open this file.";
+"document.open-in.noapps.message" = "There aren't any apps installed on this device that can open this file.";
 
 /**
  * Login View Controller
@@ -467,11 +467,11 @@
 /**
  * DownloadManager
  */
-"download.overwrite.prompt.message" = "There is already a local file with the same name. Do you want to overwrite the existing one?";
+"download.overwrite.prompt.message" = "There's already a local file with the same name. Do you want to overwrite the existing one?";
 "download.success.message" = "File Saved";
 "download.success-as.message" = "File Saved as %@";
-"download.failure.message" = "Failed to save the file";
-"download.delete.failure.message" = "Failed to delete local file";
+"download.failure.message" = "Couldn't save the file";
+"download.delete.failure.message" = "Couldn't delete local file";
 
 /**
  * Comments View Controller
@@ -485,7 +485,7 @@
  * Help
  */
 "help.title" = "Help";
-"help.no.internet.message" = "Alfresco Mobile help can't be accessed because you're offline.\n\nPlease try again when you're back online.";
+"help.no.internet.message" = "Alfresco Mobile help can't be accessed because you're offline.\n\nTry again when you're back online.";
 
 /**
  * Metadata View Controller
@@ -564,14 +564,14 @@
  * Text File View Controller
  */
 "createtextfile.title" = "Create Text File";
-"createtextfile.dismiss.confirmation.title" = "Dismiss?";
-"createtextfile.dismiss.confirmation.message" = "Are you sure you want to cancel the creation of this text file?\n\nAll work will be discarded.";
-"document.edit.button.discard" = "Discard Changes";
+"createtextfile.dismiss.confirmation.title" = "Cancel";
+"createtextfile.dismiss.confirmation.message" = "If you cancel the creation of this text file the work won't be saved.";
+"document.edit.button.discard" = "Cancel";
 "document.edit.button.save" = "Save";
 "document.edit.failed.title" = "Save File";
-"document.edit.savefailed.message" = "Couldn’t save file on the server. Do you want to save the file to your Local Files?";
-"document.edit.dismiss.confirmation.message" = "Are you sure you want to cancel changes made to the file?";
-"document.edit.discard" = "Discard";
+"document.edit.savefailed.message" = "Couldn't save file on the server. Do you want to save the file to your Local Files?";
+"document.edit.dismiss.confirmation.message" = "If you cancel changes this text file the work won't be saved.";
+"document.edit.discard" = "Don't Save";
 "document.edit.continue.editing" = "Continue Editing";
 
 /**
@@ -702,10 +702,10 @@
 "settings.reset.title" = "Clear Data";
 "settings.reset.accounts" = "Clear Accounts";
 "settings.reset.accounts.confirmation.title" = "Clear Accounts?";
-"settings.reset.accounts.confirmation.message" = "Are you sure you want to delete all accounts?\n\nYou can’t undo this.";
+"settings.reset.accounts.confirmation.message" = "Are you sure you want to delete all accounts?\n\nYou can't undo this.";
 "settings.reset.entire.app" = "Clear Accounts, Cache, & Downloads";
 "settings.reset.entire.app.confirmation.title" = "Clear Accounts, Cache & Downloads?";
-"settings.reset.entire.app.confirmation.message" = "Are you sure you want to delete all accounts, cached data, and downloads?\n\nYou can’t undo this";
+"settings.reset.entire.app.confirmation.message" = "Are you sure you want to delete all accounts, cached data, and downloads?\n\nYou can't undo this";
 "settings.reset.confirmation.title" = "Data cleared";
 "settings.reset.confirmation.message" = "Please restart Alfresco to complete.\n\nTo restart, press your device Home button twice to show the apps that are running. Swipe Alfresco off the top of the screen to clear it. You can now use Alfresco again.";
 "settings.reset.description" = "Clearing the accounts will delete all accounts from the app. Clearing accounts, cache, and downloads will reset the app to a fresh install.";
@@ -755,7 +755,7 @@
 "action.delete.success.message" = "Successfully deleted %@.";
 "action.delete.success.message.sync" = "Successfully deleted %@, a copy has been saved to Local Files";
 "action.delete.failed.title" = "Failed to delete";
-"action.delete.failed.message" = "%@ couldn’t be deleted.";
+"action.delete.failed.message" = "%@ couldn't be deleted.";
 "action.confirmation.back.message" = "Do you want to save changes to this account?";
 "action.confirmation.back.title" = "Unsaved Changes";
 "action.disablesync.title" = "Turn Off Sync";
@@ -782,7 +782,7 @@
 "saveback.upload.completed.title" = "Upload Completed";
 "saveback.upload.completed.message" = "%@ successfully uploaded to %@";
 "saveback.upload.failed.title" = "Upload Failed";
-"saveback.upload.failed.message" = "%@ couldn’t be uploaded to %@";
+"saveback.upload.failed.message" = "%@ couldn't be uploaded to %@";
 
 /**
  * New Version View Controller
@@ -845,7 +845,7 @@
 
 "configuration.manager.configuration.file.updated.title" = "Configuration Updated";
 "configuration.manager.configuration.file.updated.message" = "The configuration file has been updated";
-"configuration.manager.configuration.file.error.parse.message" = "The configuration file couldn’t be loaded.";
+"configuration.manager.configuration.file.error.parse.message" = "The configuration file couldn't be loaded.";
 
 /**
  * Main Menu Rorder View Controller
