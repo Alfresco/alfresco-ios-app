@@ -117,32 +117,32 @@
  * Errors
  */
 "error.generic.title" = "We hit a problem";
-"error.filefolder.rootfolder.notfound" = "The root folder couldn't be loaded.\n\n%@.";
-"error.filefolder.permission.notfound" = "Permission for the file / folder wasn't found.\n\n%@.";
-"error.filefolder.content.failedtodownload" = "File didn't download.\n\n%@.";
+"error.filefolder.rootfolder.notfound" = "Couldn't load root folder.\n\n%@.";
+"error.filefolder.permission.notfound" = "Couldn't find permission for the file / folder.\n\n%@.";
+"error.filefolder.content.failedtodownload" = "Couldn't download file.\n\n%@.";
 "error.filefolder.search.searchfailed" = "Search unsuccessful.\n\n%@.";
-"error.filefolder.createfolder.invalidname" = "The folder name contains invalid characters, please try again.";
-"error.filefolder.createfolder.createfolder" = "The folder wasn't created.\n\n%@.";
-"error.filefolder.content.failedtoretrieve" = "The file / folder couldn't be retrieved.\n\n%@.";
-"error.filefolder.unable.to.delete" = "The file / folder couldn't be deleted.\n\n%@";
+"error.filefolder.createfolder.invalidname" = "The folder name contains invalid characters, try again.";
+"error.filefolder.createfolder.createfolder" = "Couldn't create folder.\n\n%@.";
+"error.filefolder.content.failedtoretrieve" = "Couldn't load the file / folder.\n\n%@.";
+"error.filefolder.unable.to.delete" = "Couldn't delete the file / folder.\n\n%@";
 "error.sites.documentlibrary.failed" = "Couldn't access Document Library.\n\n%@.";
 "error.filefolder.favorites.failed" = "Couldn't access Favorites.\n\n%@";
-"error.sites.retrieval.failed" = "Couldn't retrieve sites.\n\n%@.";
-"error.sites.folder.failed" = "Couldn't retrieve sites folder.\n\n%@.";
+"error.sites.retrieval.failed" = "Couldn't load sites.\n\n%@.";
+"error.sites.folder.failed" = "Couldn't load sites folder.\n\n%@.";
 "error.sites.search.failed" = "Couldn't search across sites.\n\n%@.";
 "error.sites.site.notfound" = "Site not found";
-"error.upload.failed" = "The file couldn't be uploaded right now.\n\n%@.";
+"error.upload.failed" = "Couldn't upload the file right now.\n\n%@.";
 "error.upload.addtags.failed" = "The tags couldn't be added to the file.\n\n%@.";
-"error.tags.retrieve.failed" = "The tags couldn't be retrieved right now.\n\n%@.";
+"error.tags.retrieve.failed" = "Couldn't load the tags right now.\n\n%@.";
 "error.login.failed" = "Log in unsuccessful, check that your user name and password are correct.";
-"error.comments.retrieve.failed" = "Comments couldn't be retrieved right now.\n\n%@";
-"error.add.comment.failed" = "The comment couldn't be added right now.\n\n%@";
+"error.comments.retrieve.failed" = "Couldn't load comments right now.\n\n%@";
+"error.add.comment.failed" = "Couldn't add comment right now.\n\n%@";
 "error.sites.unable.to.favorite" = "%@ couldn't be favorited right now";
 "error.sites.unable.to.unfavorite" = "%@ couldn't be unfavorited right now";
 "error.sites.unable.to.join" = "%@ couldn't be joined right now";
 "error.sites.unable.to.cancel.request" = "Your request to join %@ couldn't be cancelled right now";
 "error.sites.unable.to.leave" = "Your request to leave %@ wasn't successful this time";
-"error.version.history.unable.to.retrieve" = "Version history couldn't be retrieved right now.\n\n%@";
+"error.version.history.unable.to.retrieve" = "Version history couldn't be loaded right now.\n\n%@";
 "error.version.history.no.latest.version" = "The latest version of the file couldn't be found.";
 "error.alfresco.node.notfound" = "File not found";
 "error.alfresco.folder.notfound" = "Folder not found";
@@ -153,7 +153,7 @@
 "error.access.permissions.message" = "Check that you have permissions to do this";
 "error.host.unreachable.title" = "Connection Error";
 "error.host.unreachable.message" = "Your settings may be wrong or you may need to activate your VPN. Check your hostname in the account settings.";
-"error.retrieving.metadata" = "Properties for %@ couldn't be retrieved.";
+"error.retrieving.metadata" = "Couldn't load properties for %@.";
 "error.server.message" = "An error occurred on the server.";
 // Workflow
 "error.workflow.unable.to.complete.process" = "The task process couldn't be completed right now.\n\n%@";
@@ -569,8 +569,8 @@
 "document.edit.button.discard" = "Cancel";
 "document.edit.button.save" = "Save";
 "document.edit.failed.title" = "Save File";
-"document.edit.savefailed.message" = "Couldn't save file on the server. Do you want to save the file to your Local Files?";
-"document.edit.dismiss.confirmation.message" = "If you cancel changes this text file the work won't be saved.";
+"document.edit.savefailed.message" = "Couldn't save file to Alfresco. Do you want to save the file to your Local Files?";
+"document.edit.dismiss.confirmation.message" = "If you cancel changes your work won't be saved.";
 "document.edit.discard" = "Don't Save";
 "document.edit.continue.editing" = "Continue Editing";
 
@@ -578,7 +578,7 @@
  * Policy Updated
  */
 "policy.updated.title" = "Policy Update";
-"policy.updated.message" = "Your app configuration policy has been updated by your administrator";
+"policy.updated.message" = "Your app configuration policy has been updated by your IT Team";
 
 /**
  * Location Manager
@@ -622,15 +622,15 @@
 
 // Cell
 "tasks.cell.taskcompleted" = "%@ completed this task";
-"tasks.cell.tasknotcompleted" = "%@ has not completed this task";
+"tasks.cell.tasknotcompleted" = "%@ hasn't completed this task";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "New Task";
-"tasks.process.activitiParallelReview" = "Send File(s) For Review";
-"tasks.process.activitiReview" = "Review And Approve";
+"tasks.process.activitiParallelReview" = "Send File(s) for Review";
+"tasks.process.activitiReview" = "Review and Approve";
 "tasks.process.activitiInvitationNominated" = "Invitation";
 "tasks.process.jbpm$wf:adhoc" = "Adhoc Workflow";
-"tasks.process.jbpm$wf:parallelreview" = "Parallel Review And Approve";
-"tasks.process.jbpm$wf:review" = "Review And Approve";
+"tasks.process.jbpm$wf:parallelreview" = "Parallel Review and Approve";
+"tasks.process.jbpm$wf:review" = "Review and Approve";
 "tasks.process.jbpm$invitationNominated" = "Invitation";
 
 /**
@@ -638,10 +638,10 @@
  */
 "task.choose.task.type.title" = "Choose task type";
 "task.type.workflow.todo" = "To do";
-"task.type.workflow.review.and.approve" = "Review & Approve";
+"task.type.workflow.review.and.approve" = "Review and Approve";
 "task.type.workflow.invitation" = "Invitation";
 "task.type.workflow.todo.footer" = "Assign a task to a person.";
-"task.type.workflow.review.and.approve.footer" = "Assign a task to one or more persons to review and approve files.";
+"task.type.workflow.review.and.approve.footer" = "Assign a task to one or more people to review and approve files.";
 
 "task.create.title" = "Create Task";
 "task.create.button" = "Create";
@@ -663,7 +663,7 @@
 "task.create.approvers" = "Approvers";
 "task.create.approver" = "Approver";
 "task.create.created" = "Task created";
-"task.create.error" = "Task creation failed";
+"task.create.error" = "Task creation unsuccessful";
 
 /* Date picker */
 "date.picker.title" = "Calendar";
@@ -674,13 +674,13 @@
  */
 "settings.title" = "Settings";
 "settings.general.title" = "General";
-"settings.sync.on.cellular" = "Cellular Sync";
-"settings.sync.on.cellular.description" = "Switch off to only sync favorite content when you have a Wi-Fi connection.";
+"settings.sync.on.cellular" = "Synced Content";
+"settings.sync.on.cellular.description" = "Switch off to only sync content when you have a Wi-Fi connection.";
 "settings.send.diagnostics" = "Send Diagnostics";
 "settings.send.diagnostics.description" = "To help us improve Alfresco Mobile, we collect anonymous technical diagnostic data. Switch off if preferred.";
 "settings.security.title" = "Security";
 "settings.security.file.protection" = "File Protection";
-"settings.security.file.protection.description" = "Encrypts files stored on this device when it is locked.";
+"settings.security.file.protection.description" = "Encrypts files stored on this device when it's locked.";
 "settings.security.passcode.lock" = "Passcode Lock";
 "settings.security.passcode.lock.description" = "Your Alfresco account details, synced files, and local files will be wiped after %d unsuccessful passcode attempts.";
 "settings.security.passcode.lock.title" = "Passcode";
@@ -701,13 +701,13 @@
 "settings.security.passcode.attempts.several" = "%d attempts remaining";
 "settings.reset.title" = "Clear Data";
 "settings.reset.accounts" = "Clear Accounts";
-"settings.reset.accounts.confirmation.title" = "Clear Accounts?";
+"settings.reset.accounts.confirmation.title" = "Clear Accounts";
 "settings.reset.accounts.confirmation.message" = "Are you sure you want to delete all accounts?\n\nYou can't undo this.";
 "settings.reset.entire.app" = "Clear Accounts, Cache, & Downloads";
 "settings.reset.entire.app.confirmation.title" = "Clear Accounts, Cache & Downloads?";
 "settings.reset.entire.app.confirmation.message" = "Are you sure you want to delete all accounts, cached data, and downloads?\n\nYou can't undo this";
-"settings.reset.confirmation.title" = "Data cleared";
-"settings.reset.confirmation.message" = "Please restart Alfresco to complete.\n\nTo restart, press your device Home button twice to show the apps that are running. Swipe Alfresco off the top of the screen to clear it. You can now use Alfresco again.";
+"settings.reset.confirmation.title" = "Clear Data";
+"settings.reset.confirmation.message" = "Restart Alfresco to complete.\n\nTo restart, press your device Home button twice to show the apps that are running. Swipe Alfresco off the top of the screen to clear it. You can now use Alfresco again.";
 "settings.reset.description" = "Clearing the accounts will delete all accounts from the app. Clearing accounts, cache, and downloads will reset the app to a fresh install.";
 "settings.full.text.search" = "Full Content Search";
 "settings.full.text.search.description" = "Switch on the full content search to search files AND their content when searching.";
@@ -746,15 +746,15 @@
 "action.rename.success.title" = "Rename Successful";
 "action.rename.success.message" = "Successfully renamed %@ to %@.";
 "action.subfolder.success.title" = "Added Subfolder";
-"action.subfolder.success.message" = "%@ was successfully created.";
-"action.subfolder.failure.title" = "Unable to create subfolder";
+"action.subfolder.success.message" = "%@ successfully created.";
+"action.subfolder.failure.title" = "Couldn't create subfolder";
 "action.delete" = "Delete";
 "action.delete.confirmation.title" = "Delete Confirmation";
 "action.delete.confirmation.message" = "Are you sure you want to delete this file?";
 "action.delete.success.title" = "Delete Successful";
 "action.delete.success.message" = "Successfully deleted %@.";
 "action.delete.success.message.sync" = "Successfully deleted %@, a copy has been saved to Local Files";
-"action.delete.failed.title" = "Failed to delete";
+"action.delete.failed.title" = "Delete unsuccessful";
 "action.delete.failed.message" = "%@ couldn't be deleted.";
 "action.confirmation.back.message" = "Do you want to save changes to this account?";
 "action.confirmation.back.title" = "Unsaved Changes";
@@ -771,17 +771,17 @@
  * SaveBack
  */
 "saveback.hud.message" = "Saving...";
-"saveback.saved.successfully.message" = "The file %@ was successfully saved.";
-"saveback.completed.title" = "Save Back Completed";
-"saveback.completed.message" = "%@ has successfully been saved back to Alfresco";
-"saveback.failed.title" = "Save Back Failed";
-"saveback.failed.message" = "%@ has been saved to Local Files";
+"saveback.saved.successfully.message" = "File %@ successfully saved.";
+"saveback.completed.title" = "Save Back Complete";
+"saveback.completed.message" = "%@ successfully saved back to Alfresco";
+"saveback.failed.title" = "Save Back Unsuccessful";
+"saveback.failed.message" = "%@ saved to Local Files";
 // Location Picker
 "saveback.locationpicker.title" = "Choose Location";
 "saveback.locationpicker.other" = "Other";
-"saveback.upload.completed.title" = "Upload Completed";
+"saveback.upload.completed.title" = "Upload Complete";
 "saveback.upload.completed.message" = "%@ successfully uploaded to %@";
-"saveback.upload.failed.title" = "Upload Failed";
+"saveback.upload.failed.title" = "Upload Unsuccessful";
 "saveback.upload.failed.message" = "%@ couldn't be uploaded to %@";
 
 /**
@@ -795,7 +795,7 @@
 "new.version.comment.title" = "Comments";
 "new.version.commet.placeholder" = "Version Comments (optional)";
 "new.version.upload.successful.title" = "File Updated";
-"new.version.upload.successful.message" = "%@ has been updated successfully";
+"new.version.upload.successful.message" = "%@ updated successfully";
 
 /**
  * File Preview Controller
@@ -823,7 +823,7 @@
 /**
  * MDM
  */
-"mdm.missing.keys.description" = "The following keys have not been setup:\n%@\nPlease contact your administrator.";
+"mdm.missing.keys.description" = "The following keys have not been setup:\n%@\nContact your IT Team.";
 
 /**
  * Configuration
@@ -906,7 +906,7 @@
 "search.folders" = "Folders";
 "search.sites" = "Sites";
 "search.people" = "People";
-"search.searchfor" = "Search For";
+"search.searchfor" = "Search for";
 "search.search" = "Search";
 "search.previoussearches" = "Previous Searches";
 
