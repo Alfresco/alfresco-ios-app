@@ -634,11 +634,13 @@
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
                     if(self.nodeChildrenRequestsCount == 0)
                     {
-                        if([self checkNodeForConflictingOperations:node inSyncOperationQueue:syncOpQ])
-                        {
-                            syncOpQ.syncNodesInfo = self.syncNodesInfo;
-                            [syncOpQ addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
-                        }
+                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                            if([self checkNodeForConflictingOperations:node inSyncOperationQueue:syncOpQ])
+                            {
+                                syncOpQ.syncNodesInfo = self.syncNodesInfo;
+                                [syncOpQ addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
+                            }
+                        });
                     }
                 }];
             }
