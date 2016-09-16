@@ -121,7 +121,7 @@
 "error.filefolder.permission.notfound" = "Couldn't find permission for the file / folder.\n\n%@.";
 "error.filefolder.content.failedtodownload" = "Couldn't download file.\n\n%@.";
 "error.filefolder.search.searchfailed" = "Search unsuccessful.\n\n%@.";
-"error.filefolder.createfolder.invalidname" = "The folder name contains invalid characters, try again.";
+"error.filefolder.createfolder.invalidname" = "Couldn't create folder. Try again using numbers, letters, and different characters.";
 "error.filefolder.createfolder.createfolder" = "Couldn't create folder.\n\n%@.";
 "error.filefolder.content.failedtoretrieve" = "Couldn't load the file / folder.\n\n%@.";
 "error.filefolder.unable.to.delete" = "Couldn't delete the file / folder.\n\n%@";
