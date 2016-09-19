@@ -93,7 +93,6 @@
 "sync.downloadsize.prompt.cancel" = "Don't Sync";
 "sync.downloadsize.prompt.confirm" = "Sync Now";
 "sync.enable.title" = "Sync Files";
-"sync.enable.message" = "Automatically keep your favorite files in sync with this %@?";
 "sync.state.waiting-to-sync" = "Waiting to sync...";
 "sync.state.failed-to-sync" = "Sync Unsuccessful";
 "sync.progress.label.singular" = "Syncing 1 file, %@ left"; // example: "Syncing 1 file, 238.3 MB left"
@@ -107,7 +106,6 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "Sync Errors";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "The following files have been unfavorited on Alfresco but have local changes. Select how to continue for each file.\n\nFiles will be saved to \"Local Files\"";
 "sync-errors.deleted-on-server-with-local-changes.header" = "The following files have been deleted on Alfresco but copies have been saved to your \"Local Files\"";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "The following files are waiting to sync and have local changes. Select how to continue for each file.\n\nFiles will be saved to \"Local Files\"";
 "sync-errors.button.sync" = "Sync"; // string length should not be extended
@@ -337,7 +335,7 @@
 "multiselect.delete.completed.title" = "Delete Completed with Errors";
 "multiselect.delete.completed.message" = "%@ files were deleted from Alfresco.";
 "multiselect.delete.partial.message" = "%@ files were deleted from Alfresco. Some files couldn't be deleted";
-"multiselect.delete.failure.message" = "None of the files could be deleted from Alfrescor.";
+"multiselect.delete.failure.message" = "None of the files could be deleted from Alfresco.";
 
 /**
  * Node Picker
@@ -564,9 +562,9 @@
  * Text File View Controller
  */
 "createtextfile.title" = "Create Text File";
-"createtextfile.dismiss.confirmation.title" = "Cancel";
-"createtextfile.dismiss.confirmation.message" = "If you cancel the creation of this text file the work won't be saved.";
-"document.edit.button.discard" = "Cancel";
+"createtextfile.dismiss.confirmation.title" = "Don't Save";
+"createtextfile.dismiss.confirmation.message" = "If you don't save the creation of this text file the work won't be saved.";
+"document.edit.button.discard" = "Don't Save";
 "document.edit.button.save" = "Save";
 "document.edit.failed.title" = "Save File";
 "document.edit.savefailed.message" = "Couldn't save file to Alfresco. Do you want to save the file to your Local Files?";
@@ -674,7 +672,7 @@
  */
 "settings.title" = "Settings";
 "settings.general.title" = "General";
-"settings.sync.on.cellular" = "Synced Content";
+"settings.sync.on.cellular" = "Use Data for Sync";
 "settings.sync.on.cellular.description" = "Switch off to only sync content when you have a Wi-Fi connection.";
 "settings.send.diagnostics" = "Send Diagnostics";
 "settings.send.diagnostics.description" = "To help us improve Alfresco Mobile, we collect anonymous technical diagnostic data. Switch off if preferred.";
