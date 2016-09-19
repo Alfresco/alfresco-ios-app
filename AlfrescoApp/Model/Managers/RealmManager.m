@@ -183,7 +183,7 @@
     [realm beginWriteTransaction];
     for(RLMObject *object in objectsToDelete)
     {
-        if ([object isKindOfClass:[RealmSyncNodeInfo class]])
+        if ([object isKindOfClass:[RealmSyncNodeInfo class]] && !object.isInvalidated)
         {
             // Delete the associated RealmSyncError, if exists.
             RealmSyncError *realmSyncError = ((RealmSyncNodeInfo *)object).syncError;

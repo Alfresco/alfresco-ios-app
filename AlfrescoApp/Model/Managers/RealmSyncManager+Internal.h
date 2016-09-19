@@ -39,6 +39,8 @@
 
 @property (nonatomic) BOOL disableSyncInProgress;
 
+@property (atomic, strong) NSMutableDictionary *unsyncCompletionBlocks;
+
 - (SyncOperationQueue *)currentOperationQueue;
 
 - (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;

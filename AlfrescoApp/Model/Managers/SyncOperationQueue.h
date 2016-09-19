@@ -38,6 +38,8 @@ typedef NS_ENUM(NSUInteger, CancelOperationsType) {
 
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;
+@property (atomic, strong) NSMutableDictionary *topLevelNodesInSyncProcessing;
+@property (atomic, strong) NSMutableDictionary *nodesInProcessingForDeletion;
 
 - (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session syncProgressDelegate:(id<RealmSyncManagerProgressDelegate>)syncProgressDelegate;
 - (void)updateSession:(id<AlfrescoSession>)session;
@@ -54,11 +56,17 @@ typedef NS_ENUM(NSUInteger, CancelOperationsType) {
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 
 - (void)cancelOperationsType:(CancelOperationsType)cancelType;
+- (void)cancelSyncForNode:(AlfrescoNode *)node completionBlock:(void (^)(void))completionBlock;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier completionBlock:(void (^)(void))completionBlock;
 - (void)cancelSyncForFolder:(AlfrescoFolder *)folder completionBlock:(void (^)(void))completionBlock;
 
 - (BOOL)isCurrentlySyncing;
 - (void)pauseSyncing:(BOOL)shouldPause;
 - (BOOL)isCurrentlySyncingNode:(AlfrescoNode *)node;
+
+- (void)folderFinishedSyncing:(AlfrescoNode *)node;
+- (void)setNodeForRemoval:(AlfrescoNode *)node;
+- (void)setNodeForSyncingAsTopLevel:(AlfrescoNode *)node;
+- (BOOL)shouldContinueSyncProcessForNode:(AlfrescoNode *)node;
 
 @end
