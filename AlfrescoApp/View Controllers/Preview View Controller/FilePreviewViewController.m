@@ -217,7 +217,7 @@ static CGFloat sDownloadProgressHeight;
     previewController.view.hidden = YES;
     previewController.currentPreviewItemIndex = 1;
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         previewController.view.frame = self.view.frame;
         [self.view addSubview:previewController.view];
     });

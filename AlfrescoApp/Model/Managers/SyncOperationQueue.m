@@ -212,6 +212,8 @@
                                                                                     
                                                                                     RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:backgroundRealm];
                                                                                     [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
+                                                                                    
+                                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDownloadedNotification object:document];
                                                                                 }
                                                                             }
                                                                             else
