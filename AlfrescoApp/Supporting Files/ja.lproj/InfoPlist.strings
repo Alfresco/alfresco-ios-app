@@ -27,3 +27,4 @@
 NSLocationWhenInUseUsageDescription = "現在地がこのデバイスで撮影した写真の位置情報 （ジオタグ） に使用されます。";
 NSMicrophoneUsageDescription = "マイクを使用して音声を録音します。音声は後でリポジトリにアップロードできます。";
 NSPhotoLibraryUsageDescription = "Library Usage Description String - JA";
+NSCameraUsageDescription = "You can take photos to upload to Alfresco. - JA";

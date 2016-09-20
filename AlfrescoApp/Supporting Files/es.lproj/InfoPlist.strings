@@ -27,3 +27,4 @@
 NSLocationWhenInUseUsageDescription = "Se utilizará su ubicación para añadir etiquetas de geolocalización a las fotos tomadas con este dispositivo.";
 NSMicrophoneUsageDescription = "Se utilizará el micrófono para grabar sonido que podrá cargarse al repositorio.";
 NSPhotoLibraryUsageDescription = "Library Usage Description String - ES";
+NSCameraUsageDescription = "You can take photos to upload to Alfresco. - ES";

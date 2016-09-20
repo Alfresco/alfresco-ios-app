@@ -27,3 +27,4 @@
 NSLocationWhenInUseUsageDescription = "I dati sulla posizione saranno utilizzati per applicare il geotag alle foto scattate con il dispositivo.";
 NSMicrophoneUsageDescription = "Il microfono sarà utilizzato per registrare file audio che potranno poi essere caricati nel repository.";
 NSPhotoLibraryUsageDescription = "Library Usage Description String - IT";
+NSCameraUsageDescription = "You can take photos to upload to Alfresco. - IT";
