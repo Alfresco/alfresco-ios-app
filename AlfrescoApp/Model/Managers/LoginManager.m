@@ -407,6 +407,12 @@
     [view addSubview:progress];
     [progress show:YES];
     
+    if (self.progressHUD)
+    {
+        [self.progressHUD removeFromSuperview];
+        self.progressHUD = nil;
+    }
+    
     self.progressHUD = progress;
 }
 

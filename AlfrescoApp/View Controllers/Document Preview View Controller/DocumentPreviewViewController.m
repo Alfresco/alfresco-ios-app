@@ -108,6 +108,8 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdated:) name:kAlfrescoDocumentUpdatedOnServerNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentSynced:) name:kTopLevelSyncDidAddNodeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentDownloaded:) name:kAlfrescoDocumentDownloadedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUnsynced:) name:kTopLevelSyncDidRemoveNodeNotification object:nil];
 }
 
 - (void)showHUD
@@ -332,6 +334,32 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 }
 
 - (void)documentSynced:(NSNotification *)notification
+{
+    if ([[notification object] isKindOfClass:[AlfrescoDocument class]])
+    {
+        AlfrescoDocument *document = [notification object];
+        
+        if ([document.identifier isEqualToString:self.document.identifier])
+        {
+            self.documentContentFilePath = [document contentPath];
+        }
+    }
+}
+
+- (void)documentUnsynced:(NSNotification *)notification
+{
+    if ([[notification object] isKindOfClass:[AlfrescoDocument class]])
+    {
+        AlfrescoDocument *document = [notification object];
+        
+        if ([document.identifier isEqualToString:self.document.identifier])
+        {
+            self.documentContentFilePath = nil;
+        }
+    }
+}
+
+- (void)documentDownloaded:(NSNotification *)notification
 {
     if ([[notification object] isKindOfClass:[AlfrescoDocument class]])
     {
