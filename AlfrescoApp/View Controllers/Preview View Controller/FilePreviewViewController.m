@@ -33,6 +33,7 @@ static CGFloat const kAnimationFadeSpeed = 0.5f;
 static CGFloat const kAnimationDelayTime = 1.0f;
 static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 static CGFloat sDownloadProgressHeight;
+static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
 
 @interface FilePreviewViewController () <ALFPreviewControllerDelegate,
                                          QLPreviewControllerDataSource,
@@ -217,7 +218,7 @@ static CGFloat sDownloadProgressHeight;
     previewController.view.hidden = YES;
     previewController.currentPreviewItemIndex = 1;
 
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAddPreviewControllerViewDelayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         previewController.view.frame = self.view.frame;
         [self.view addSubview:previewController.view];
     });
