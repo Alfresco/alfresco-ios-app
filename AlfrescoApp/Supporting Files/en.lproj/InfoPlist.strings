@@ -27,3 +27,4 @@
 NSLocationWhenInUseUsageDescription = "Your location will be used to geotag photos taken with this device.";
 NSMicrophoneUsageDescription = "The microphone will be used to record sound which can then be uploaded to the repository.";
 NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to Alfresco.";
+NSCameraUsageDescription = "You can take photos to upload to Alfresco.";
