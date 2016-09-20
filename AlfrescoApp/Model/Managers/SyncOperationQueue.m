@@ -175,13 +175,6 @@
 {
     NSString *syncNameForNode = [document syncNameInRealm:[RLMRealm defaultRealm]];
     __block SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
-    nodeStatus.status = SyncStatusLoading;
-    nodeStatus.activityType = SyncActivityTypeDownload;
-    nodeStatus.bytesTransfered = 0;
-    nodeStatus.totalBytesToTransfer = 0;
-    
-    self.syncProgress.totalSyncSize += document.contentLength;
-    [self notifyProgressDelegateAboutCurrentProgress];
     
     NSString *destinationPath = [[self syncContentDirectoryPathForAccountWithId:self.account.accountIdentifier] stringByAppendingPathComponent:syncNameForNode];
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];
@@ -275,6 +268,14 @@
     
     if([[RealmSyncManager sharedManager] checkNodeForConflictingOperations:document inSyncOperationQueue:self])
     {
+        nodeStatus.status = SyncStatusLoading;
+        nodeStatus.activityType = SyncActivityTypeDownload;
+        nodeStatus.bytesTransfered = 0;
+        nodeStatus.totalBytesToTransfer = 0;
+        
+        self.syncProgress.totalSyncSize += document.contentLength;
+        [self notifyProgressDelegateAboutCurrentProgress];
+        
         self.syncOperationQueue.suspended = YES;
         self.syncOperations[[document syncIdentifier]] = downloadOperation;
         [self.syncOperationQueue addOperation:downloadOperation];
