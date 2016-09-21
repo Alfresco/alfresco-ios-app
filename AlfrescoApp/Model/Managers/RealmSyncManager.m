@@ -1128,7 +1128,8 @@
 {
     BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inRealm:realm];
     
-    NSMutableArray *syncObstableDeleted = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+    NSMutableArray *documentsDeletedOnServerWithLocalChanges = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+    NSMutableArray *documentsToBeDeletedLocallyAfterUpload = [self.syncObstacles objectForKey:kDocumentsToBeDeletedLocallyAfterUpload];
     
     if (isModifiedLocally)
     {
@@ -1136,8 +1137,13 @@
         [self.documentFolderService retrieveNodeWithIdentifier:[node syncIdentifier] completionBlock:^(AlfrescoNode *alfrescoNode, NSError *error) {
             if (error)
             {
-                [syncObstableDeleted addObject:node];
+                [documentsDeletedOnServerWithLocalChanges addObject:node];
             }
+            else
+            {
+                [documentsToBeDeletedLocallyAfterUpload addObject:node];
+            }
+            
             if (completionBlock != NULL)
             {
                 completionBlock(YES);
@@ -1435,6 +1441,20 @@
             {
                 SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[node.alfrescoNode syncIdentifier]];
                 nodeStatus.status = SyncStatusFailed;
+                
+                if (node.alfrescoNode.isDocument)
+                {
+                    NSMutableArray *documentsToBeDeletedLocallyAfterUpload = [self.syncObstacles objectForKey:kDocumentsToBeDeletedLocallyAfterUpload];
+                    
+                    [documentsToBeDeletedLocallyAfterUpload enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop)
+                    {
+                        if ([[document syncIdentifier] isEqualToString:[node.alfrescoNode syncIdentifier]])
+                        {
+                            [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:nil];
+                            *stop = YES;
+                        }
+                    }];
+                }
             }
             
             if (totalChecksForObstacles == 0)

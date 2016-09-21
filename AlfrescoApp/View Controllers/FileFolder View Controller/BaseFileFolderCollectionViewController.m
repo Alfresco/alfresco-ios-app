@@ -20,6 +20,10 @@
 #import "SearchCollectionViewDataSource.h"
 #import "PermissionChecker.h"
 
+@interface BaseFileFolderCollectionViewController () <UIAlertViewDelegate>
+
+@end
+
 @implementation BaseFileFolderCollectionViewController
 
 - (void)viewDidLoad
@@ -484,6 +488,14 @@
                                    delegate:self
                           cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
                           otherButtonTitles:NSLocalizedString(@"Retry", @"Retry"), nil] show];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
     }
 }
 
