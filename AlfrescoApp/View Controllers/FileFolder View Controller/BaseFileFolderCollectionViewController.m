@@ -20,10 +20,6 @@
 #import "SearchCollectionViewDataSource.h"
 #import "PermissionChecker.h"
 
-@interface BaseFileFolderCollectionViewController () <UIAlertViewDelegate>
-
-@end
-
 @implementation BaseFileFolderCollectionViewController
 
 - (void)viewDidLoad
@@ -491,14 +487,6 @@
     }
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1)
-    {
-        [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
-    }
-}
-
 - (void)retrySyncAndCloseRetryPopover
 {
     [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
@@ -754,6 +742,16 @@
     [self presentViewController:alertController animated:YES completion:nil];
     
     self.alertControllerSender = sender;
+}
+
+#pragma mark - UIAlertViewDelegate Methods
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+        [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
+    }
 }
 
 #pragma mark - UIAlertController UIAlertAction definitions
