@@ -40,6 +40,7 @@ typedef void (^PinFlowCompletionBlock)(PinFlowCompletionStatus status);
 #define REMAINING_ATTEMPTS_MAX_VALUE 10
 
 extern NSString * const kShowKeyboardInPinScreenNotification;
+static CGFloat const kKeyboardInPinScreenAppearanceDelay = 0.1;
 
 @interface PinViewController : UIViewController <UIKeyInput>
 
