@@ -34,6 +34,13 @@ typedef NS_ENUM(NSUInteger, CancelOperationsType) {
     CancelAllOperations,
 };
 
+typedef NS_ENUM(NSUInteger, SyncProgressType) {
+    SyncProgressTypeNotInProcessing,
+    SyncProgressTypeInProcessing,
+    SyncProgressTypeUnsyncRequested,
+    SyncProgressTypeInUnsyncProcessing
+};
+
 @interface SyncOperationQueue : NSObject
 
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
@@ -48,7 +55,7 @@ typedef NS_ENUM(NSUInteger, CancelOperationsType) {
 - (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId;
 
 - (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock;
-- (void)addFolderToSync:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel;
+- (void)syncFolder:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel;
 
 - (void)downloadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock;
@@ -64,9 +71,10 @@ typedef NS_ENUM(NSUInteger, CancelOperationsType) {
 - (void)pauseSyncing:(BOOL)shouldPause;
 - (BOOL)isCurrentlySyncingNode:(AlfrescoNode *)node;
 
-- (void)folderFinishedSyncing:(AlfrescoNode *)node;
+- (void)resetSyncProgressInformationForNode:(AlfrescoNode *)node;
 - (void)setNodeForRemoval:(AlfrescoNode *)node;
 - (void)setNodeForSyncingAsTopLevel:(AlfrescoNode *)node;
 - (BOOL)shouldContinueSyncProcessForNode:(AlfrescoNode *)node;
+- (SyncProgressType)syncProgressTypeForNode:(AlfrescoNode *)node;
 
 @end
