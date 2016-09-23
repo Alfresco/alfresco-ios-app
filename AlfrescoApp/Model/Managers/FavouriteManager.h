@@ -22,6 +22,6 @@
 - (AlfrescoRequest *)addFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock;
 - (AlfrescoRequest *)removeFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL succeeded, NSError *error))completionBlock;
 - (AlfrescoRequest *)isNodeFavorite:(AlfrescoNode *)node session:(id<AlfrescoSession>)session completionBlock:(void (^)(BOOL isFavorite, NSError *error))completionBlock;
-- (void)topLevelFavoriteNodesWithSession:(id<AlfrescoSession>)session completionBlock:(AlfrescoArrayCompletionBlock)completionBlock;
+- (void)topLevelFavoriteNodesWithSession:(id<AlfrescoSession>)session ignoreCache:(BOOL)ignoreCache completionBlock:(AlfrescoArrayCompletionBlock)completionBlock;
 
 @end

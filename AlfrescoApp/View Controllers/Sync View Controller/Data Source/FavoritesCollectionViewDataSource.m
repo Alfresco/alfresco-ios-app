@@ -44,8 +44,13 @@
 
 - (void)reloadDataSource
 {
+    [self reloadDataSourceIgnoringCache:NO];
+}
+
+- (void)reloadDataSourceIgnoringCache:(BOOL)ignoreCache
+{
     __weak typeof(self) weakSelf = self;
-    [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session completionBlock:^(NSArray *array, NSError *error) {
+    [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session ignoreCache:ignoreCache completionBlock:^(NSArray *array, NSError *error) {
         if(array)
         {
             self.dataSourceCollection = [array mutableCopy];
