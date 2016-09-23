@@ -20,4 +20,6 @@
 
 @interface FavoritesCollectionViewDataSource : RepositoryCollectionViewDataSource
 
+- (void)reloadDataSourceIgnoringCache:(BOOL)ignoreCache;
+
 @end
