@@ -249,7 +249,15 @@
         {
             if ([pvc pinFlow] == PinFlowEnter)
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
+                if (completionBlock)
+                {
+                    completionBlock();
+                }
+                
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kKeyboardInPinScreenAppearanceDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
+                });
+                
                 return;
             }
         }

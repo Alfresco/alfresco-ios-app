@@ -572,10 +572,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 #pragma mark - UIRefreshControl Functions
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl
 {
+    void (^reloadDataBlock)() = ^{
+        if ([self.dataSource isKindOfClass:[FavoritesCollectionViewDataSource class]])
+        {
+            [(FavoritesCollectionViewDataSource *)self.dataSource reloadDataSourceIgnoringCache:YES];
+        }
+        else
+        {
+            [self.dataSource reloadDataSource];
+        }
+    };
+    
     [self showLoadingTextInRefreshControl:refreshControl];
     if (self.session)
     {
-        [self.dataSource reloadDataSource];
+        reloadDataBlock();
     }
     else
     {
@@ -584,7 +595,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
-                [self.dataSource reloadDataSource];
+                reloadDataBlock();
             }
         }];
     }

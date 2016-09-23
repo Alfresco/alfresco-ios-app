@@ -141,7 +141,7 @@
     }];
 }
 
-- (void)topLevelFavoriteNodesWithSession:(id<AlfrescoSession>)session completionBlock:(AlfrescoArrayCompletionBlock)completionBlock
+- (void)topLevelFavoriteNodesWithSession:(id<AlfrescoSession>)session ignoreCache:(BOOL)ignoreCache completionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
     if (!self.session)
     {
@@ -149,10 +149,14 @@
         [self createServicesWithSession:session];
     }
     
+    if (ignoreCache)
+    {
+        [self.documentFolderService clear];
+    }
+    
     [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
         if (array)
         {
-            NSLog(@"==== favorite array is %@", array);
             if(completionBlock)
             {
                 completionBlock(array, error);
