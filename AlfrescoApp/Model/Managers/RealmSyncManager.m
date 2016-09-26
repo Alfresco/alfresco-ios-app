@@ -1432,11 +1432,21 @@
         return;
     }
     
+    void (^decreaseTotalChecksBlock)() = ^{
+        totalChecksForObstacles--;
+        
+        if (totalChecksForObstacles == 0)
+        {
+            if (completionBlock)
+            {
+                completionBlock();
+            }
+        }
+    };
+    
     for (RealmSyncNodeInfo *node in allNodes)
     {
         [self checkForObstaclesInRemovingDownloadForNode:node.alfrescoNode inRealm:realm completionBlock:^(BOOL encounteredObstacle) {
-            totalChecksForObstacles--;
-            
             if (encounteredObstacle)
             {
                 SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[node.alfrescoNode syncIdentifier]];
@@ -1450,19 +1460,25 @@
                     {
                         if ([[document syncIdentifier] isEqualToString:[node.alfrescoNode syncIdentifier]])
                         {
-                            [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:nil];
+                            [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:^{
+                                decreaseTotalChecksBlock();
+                            }];
                             *stop = YES;
+                        }
+                        else
+                        {
+                            decreaseTotalChecksBlock();
                         }
                     }];
                 }
-            }
-            
-            if (totalChecksForObstacles == 0)
-            {
-                if (completionBlock)
+                else
                 {
-                    completionBlock();
+                    decreaseTotalChecksBlock();
                 }
+            }
+            else
+            {
+                decreaseTotalChecksBlock();
             }
         }];
         if (node.parentNode == nil && node.isTopLevelSyncNode == NO)
