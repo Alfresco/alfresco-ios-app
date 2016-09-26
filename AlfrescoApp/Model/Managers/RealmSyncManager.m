@@ -228,57 +228,64 @@
             NSMutableArray *arrayOfNodesToSaveLocally = [NSMutableArray new];
             NSMutableArray *arrayOfPathsForFilesToBeDeleted = [NSMutableArray new];
             
-            if(node.isDocument)
-            {
-                [weakSelf handleDocumentForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm deleteRule:deleteRule];
-            }
-            else if(node.isFolder)
-            {
-                [weakSelf handleFolderForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm deleteRule:deleteRule];
-            }
+            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:backgroundRealm];
             
             BOOL hasSavedLocally = NO;
-            
-            if(arrayOfNodesToSaveLocally.count)
+            if(!syncNodeInfo.isInvalidated)
             {
-                hasSavedLocally = YES;
-                for(AlfrescoDocument *document in arrayOfNodesToSaveLocally)
+                if(node.isDocument)
                 {
-                    if (deleteRule == DeleteRuleAllNodes)
+                    [weakSelf handleDocumentForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm deleteRule:deleteRule];
+                }
+                else if(node.isFolder)
+                {
+                    [weakSelf handleFolderForDelete:node arrayOfNodesToDelete:arrayOfNodesToDelete arrayOfNodesToSaveLocally:arrayOfNodesToSaveLocally arrayOfPaths:arrayOfPathsForFilesToBeDeleted inRealm:backgroundRealm deleteRule:deleteRule];
+                }
+                
+                if(arrayOfNodesToSaveLocally.count)
+                {
+                    hasSavedLocally = YES;
+                    for(AlfrescoDocument *document in arrayOfNodesToSaveLocally)
                     {
-                        [weakSelf saveDeletedFileBeforeRemovingFromSync:document];
-                    }
-                    else
-                    {
-                        RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:document.identifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
-                        
-                        [backgroundRealm beginWriteTransaction];
-                        syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
-                        [backgroundRealm commitWriteTransaction];
-                        
-                        [[RealmSyncManager sharedManager] uploadDocument:document withCompletionBlock:^(BOOL completed)
-                         {
-                             if (completed)
+                        if (deleteRule == DeleteRuleAllNodes)
+                        {
+                            [weakSelf saveDeletedFileBeforeRemovingFromSync:document];
+                        }
+                        else
+                        {
+                            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:document.identifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                            
+                            [backgroundRealm beginWriteTransaction];
+                            syncNodeInfo.isRemovedFromSyncHasLocalChanges = YES;
+                            [backgroundRealm commitWriteTransaction];
+                            
+                            [[RealmSyncManager sharedManager] uploadDocument:document withCompletionBlock:^(BOOL completed)
                              {
-                                 [self deleteNodeFromSync:document deleteRule:DeleteRuleRootByForceAndKeepTopLevelChildren withCompletionBlock:nil];
-                             }
-                         }];
+                                 if (completed)
+                                 {
+                                     [self deleteNodeFromSync:document deleteRule:DeleteRuleRootByForceAndKeepTopLevelChildren withCompletionBlock:nil];
+                                 }
+                             }];
+                        }
                     }
                 }
-            }
-            
-            for(RealmSyncNodeInfo *node in arrayOfNodesToDelete)
-            {
-                [self.currentOperationQueue removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
-            }
-            // Delete RealmSyncNodeInfo objects
-            [[RealmManager sharedManager] deleteRealmObjects:arrayOfNodesToDelete inRealm:backgroundRealm];
-            
-            // Delete files from the disk
-            for(NSString *path in arrayOfPathsForFilesToBeDeleted)
-            {
-                // No error handling here as we don't want to end up with Sync orphans
-                [weakSelf.fileManager removeItemAtPath:path error:nil];
+                
+                for(RealmSyncNodeInfo *node in arrayOfNodesToDelete)
+                {
+                    if(!node.isInvalidated)
+                    {
+                        [self.currentOperationQueue removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
+                    }
+                }
+                // Delete RealmSyncNodeInfo objects
+                [[RealmManager sharedManager] deleteRealmObjects:arrayOfNodesToDelete inRealm:backgroundRealm];
+                
+                // Delete files from the disk
+                for(NSString *path in arrayOfPathsForFilesToBeDeleted)
+                {
+                    // No error handling here as we don't want to end up with Sync orphans
+                    [weakSelf.fileManager removeItemAtPath:path error:nil];
+                }
             }
             
             if(completionBlock)
@@ -378,14 +385,17 @@
     RLMLinkingObjects *subNodes = folderInfo.nodes;
     for(RealmSyncNodeInfo *subNodeInfo in subNodes)
     {
-        AlfrescoNode *subNode = subNodeInfo.alfrescoNode;
-        if(subNode.isDocument)
+        if(!subNodeInfo.isInvalidated)
         {
-            [self handleDocumentForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm deleteRule:deleteRule];
-        }
-        else if(subNode.isFolder)
-        {
-            [self handleFolderForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm deleteRule:deleteRule];
+            AlfrescoNode *subNode = subNodeInfo.alfrescoNode;
+            if(subNode.isDocument)
+            {
+                [self handleDocumentForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm deleteRule:deleteRule];
+            }
+            else if(subNode.isFolder)
+            {
+                [self handleFolderForDelete:subNode arrayOfNodesToDelete:arrayToDelete arrayOfNodesToSaveLocally:arrayToSave arrayOfPaths:arrayOfPaths inRealm:realm deleteRule:deleteRule];
+            }
         }
     }
 }
@@ -629,50 +639,45 @@
                 completionBlock(YES);
             }
             
-            if([self checkNodeForConflictingOperations:node inSyncOperationQueue:syncOpQ])
+            __block SyncProgressType syncProgressType = [syncOpQ syncProgressTypeForNode:node];
+            if(syncProgressType == SyncProgressTypeInProcessing)
             {
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
                     if(self.nodeChildrenRequestsCount == 0)
                     {
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                            if([self checkNodeForConflictingOperations:node inSyncOperationQueue:syncOpQ])
-                            {
-                                syncOpQ.syncNodesInfo = self.syncNodesInfo;
-                                [syncOpQ addFolderToSync:(AlfrescoFolder *)node isTopLevelNode:YES];
-                            }
-                        });
+                        syncProgressType = [syncOpQ syncProgressTypeForNode:node];
+                        if(syncProgressType == SyncProgressTypeInProcessing)
+                        {
+                            syncOpQ.syncNodesInfo = self.syncNodesInfo;
+                            [syncOpQ syncFolder:(AlfrescoFolder *)node isTopLevelNode:YES];
+                        }
+                        else if(syncProgressType == SyncProgressTypeUnsyncRequested)
+                        {
+                            [self cleanRealmOfNode:node];
+                        }
                     }
                 }];
+            }
+            else
+            {
+                [syncOpQ resetSyncProgressInformationForNode:node];
             }
         }
     }
 }
 
-- (BOOL)checkNodeForConflictingOperations:(AlfrescoNode *)node inSyncOperationQueue:(SyncOperationQueue *)syncOpQ
+- (void)cleanRealmOfNode:(AlfrescoNode *)node
 {
-    BOOL returnValue = YES;
-    if(![syncOpQ shouldContinueSyncProcessForNode:node])
-    {
-        returnValue = NO;
-        
-        RLMRealm *realm = [RLMRealm defaultRealm];
-        RealmSyncNodeInfo *topLevelSyncParent = [node topLevelSyncParentNodeInRealm:realm];
-        AlfrescoNode *nodeToCancelSync = (topLevelSyncParent) ? topLevelSyncParent.alfrescoNode : node;
-        [syncOpQ cancelSyncForNode:nodeToCancelSync completionBlock:^{
-            SyncOperationQueue *syncOpQ = self.currentOperationQueue;
-            syncOpQ.nodesInProcessingForDeletion[[nodeToCancelSync syncIdentifier]] = @YES;
-            [self removeNode:nodeToCancelSync withCompletionBlock:^(BOOL completed) {
-                void (^completionBlock)(BOOL);
-                completionBlock = self.unsyncCompletionBlocks[[node syncIdentifier]];
-                if(completionBlock)
-                {
-                    completionBlock(YES);
-                }
-            }];
-        }];
-    }
-    
-    return returnValue;
+    SyncOperationQueue *syncOpQ = self.currentOperationQueue;
+    syncOpQ.nodesInProcessingForDeletion[[node syncIdentifier]] = @YES;
+    [self removeNode:node withCompletionBlock:^(BOOL completed) {
+        void (^completionBlock)(BOOL);
+        completionBlock = self.unsyncCompletionBlocks[[node syncIdentifier]];
+        if(completionBlock)
+        {
+            completionBlock(YES);
+        }
+    }];
 }
 
 - (void)retrieveNodeHierarchyForNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -689,11 +694,20 @@
             {
                 // nodes for each folder are held in with keys folder identifiers
                 nodesInfoForSelectedAccount[[node syncIdentifier]] = array;
-                for (AlfrescoNode *node in array)
+                RLMRealm *realm = [RLMRealm defaultRealm];
+                for (AlfrescoNode *subNode in array)
                 {
-                    if(node.isFolder)
+                    RealmSyncNodeInfo *subNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[subNode syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
+                    RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+                    [realm beginWriteTransaction];
+                    subNodeInfo.parentNode = folderNodeInfo;
+                    [realm commitWriteTransaction];
+                    SyncNodeStatus *syncNodeStatus = [self.currentOperationQueue syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
+                    syncNodeStatus.status = SyncStatusLoading;
+                    
+                    if(subNode.isFolder)
                     {
-                        if([self checkNodeForConflictingOperations:node inSyncOperationQueue:self.currentOperationQueue])
+                        if([self.currentOperationQueue syncProgressTypeForNode:node] == SyncProgressTypeInProcessing)
                         {
                             // recursive call to retrieve nodes hierarchies
                             [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
@@ -730,10 +744,22 @@
         {
             self.unsyncCompletionBlocks[[node syncIdentifier]] = completionBlock;
         }
+        [syncOpQ cancelSyncForNode:node completionBlock:^{
+            [self cleanRealmOfNode:node];
+            [syncOpQ removeSyncNodeStatusForNodeWithId:[node syncIdentifier]];
+            [syncOpQ resetSyncProgressInformationForNode:node];
+        }];
     }
     else
     {
-        [self removeNode:node withCompletionBlock:completionBlock];
+        SyncProgressType syncProgressType = [syncOpQ syncProgressTypeForNode:node];
+        if(syncProgressType == SyncProgressTypeNotInProcessing)
+        {
+            [self removeNode:node withCompletionBlock:^(BOOL completed) {
+                [syncOpQ removeSyncNodeStatusForNodeWithId:[node syncIdentifier]];
+                completionBlock(completed);
+            }];
+        }
     }
 }
 
@@ -968,9 +994,9 @@
             }
             parentNodeStatus.status = syncStatus;
         }
-        else if((nodeInfo.isTopLevelSyncNode) && (nodeInfo.isFolder))
+        else if((nodeInfo.isTopLevelSyncNode) && (nodeInfo.isFolder) && (nodeStatus.status == SyncStatusSuccessful))
         {
-            [syncOpQ folderFinishedSyncing:nodeInfo.alfrescoNode];
+            [syncOpQ resetSyncProgressInformationForNode:nodeInfo.alfrescoNode];
         }
     }
 }

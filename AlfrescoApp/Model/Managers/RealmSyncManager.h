@@ -73,7 +73,7 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)unsyncNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)removeNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
-- (BOOL)checkNodeForConflictingOperations:(AlfrescoNode *)node inSyncOperationQueue:(SyncOperationQueue *)syncOpQ;
+- (void)cleanRealmOfNode:(AlfrescoNode *)node;
 
 /**
  * Sync Feature
