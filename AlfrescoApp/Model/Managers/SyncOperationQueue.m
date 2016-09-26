@@ -37,6 +37,7 @@
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) NSMutableDictionary *syncStatuses;
 @property (nonatomic, strong) NSMutableDictionary *syncOperations;
+@property (atomic, assign) NSInteger syncOperationsStartedCount;
 
 @end
 
@@ -75,20 +76,7 @@
         [self setNodeForSyncingAsTopLevel:node];
     }
     
-    SyncNodeStatus *syncNodeStatus = [self syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
-    syncNodeStatus.status = SyncStatusLoading;
-    
     [node saveNodeInRealmUsingSession:self.session isTopLevelNode:isTopLevel];
-    
-    if(![self didReceiveUnsyncCallForNode:node])
-    {
-        [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-            if((![self didReceiveUnsyncCallForNode:node]) && (permissions))
-            {
-                [[RealmManager sharedManager] savePermissions:permissions forNode:node];
-            }
-        }];
-    }
 }
 
 - (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -111,42 +99,52 @@
     });
 }
 
-- (void)addFolderToSync:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel
+- (void)addFolderToSync:(AlfrescoFolder *)folder completionBlock:(void (^)(BOOL completed))completionBlock
 {
-    [self addNodeToSync:folder isTopLevelNode:isTopLevel];
-    
     NSArray *folderChildren = self.syncNodesInfo[[folder syncIdentifier]];
     SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[folder syncIdentifier]];
     if (folderChildren.count == 0)
     {
         nodeStatus.status = SyncStatusSuccessful;
     }
-    
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    self.syncOperationsStartedCount++;
     for(AlfrescoNode *subNode in folderChildren)
     {
-        [realm refresh];
-        RealmSyncNodeInfo *subNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[subNode syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
-        RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
-        [realm beginWriteTransaction];
-        subNodeInfo.parentNode = folderNodeInfo;
-        [realm commitWriteTransaction];
-        if([[RealmSyncManager sharedManager] checkNodeForConflictingOperations:subNode inSyncOperationQueue:self])
+        if(subNode.isFolder)
         {
-            if(subNode.isFolder)
-            {
-                [self addFolderToSync:(AlfrescoFolder *)subNode isTopLevelNode:NO];
-            }
-            else
-            {
-                [self addDocumentToSync:(AlfrescoDocument *)subNode isTopLevelNode:NO withCompletionBlock:nil];
-            }
+            [self addFolderToSync:(AlfrescoFolder *)subNode completionBlock:completionBlock];
         }
         else
         {
-            break;
+            [self addDocumentToSync:(AlfrescoDocument *)subNode isTopLevelNode:NO withCompletionBlock:nil];
         }
     }
+    
+    self.syncOperationsStartedCount--;
+    if(completionBlock)
+    {
+        completionBlock(YES);
+    }
+}
+
+- (void)syncFolder:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel
+{
+    [self addNodeToSync:folder isTopLevelNode:isTopLevel];
+    
+    __weak typeof(self) weakSelf = self;
+    [self addFolderToSync:folder completionBlock:^(BOOL completed) {
+        if(self.syncOperationsStartedCount == 0)
+        {
+            //all operations have been started
+            if([weakSelf syncProgressTypeForNode:folder] == SyncProgressTypeUnsyncRequested)
+            {
+                weakSelf.nodesInProcessingForDeletion[[folder syncIdentifier]] = @YES;
+                [weakSelf cancelSyncForFolder:folder completionBlock:^{
+                    [[RealmSyncManager sharedManager] cleanRealmOfNode:folder];
+                }];
+            }
+        }
+    }];
 }
 
 - (void)downloadContentsForNodes:(NSArray *)nodes withCompletionBlock:(void (^)(BOOL completed))completionBlock
@@ -189,12 +187,13 @@
                                                                             [backgroundRealm refresh];
                                                                             RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:backgroundRealm];
                                                                             
+                                                                            SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
                                                                             if (succeeded)
                                                                             {
                                                                                 nodeStatus.status = SyncStatusSuccessful;
                                                                                 nodeStatus.activityType = SyncActivityTypeIdle;
                                                                                 
-                                                                                if(![self didReceiveUnsyncCallForNode:document])
+                                                                                if(syncProgressType == SyncProgressTypeInProcessing)
                                                                                 {
                                                                                     [backgroundRealm beginWriteTransaction];
                                                                                     syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
@@ -230,9 +229,10 @@
                                                                                     // Remove RealmSyncNodeInfo object
                                                                                     [[RealmManager sharedManager] deleteRealmObject:syncNodeInfo inRealm:backgroundRealm];
                                                                                 }
-                                                                                else
+                                                                                else if(!((error.code == kAlfrescoErrorCodeNetworkRequestCancelled) && (syncProgressType == SyncProgressTypeUnsyncRequested || syncProgressType == SyncProgressTypeInProcessing)))
                                                                                 {
-                                                                                    if(![self didReceiveUnsyncCallForNode:document])
+                                                                                    SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
+                                                                                    if(syncProgressType == SyncProgressTypeInProcessing)
                                                                                     {
                                                                                         RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[document syncIdentifier] ifNotExistsCreateNew:YES inRealm:backgroundRealm];
                                                                                         
@@ -257,31 +257,24 @@
                                                                         });
                                                                         
                                                                     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
-                                                                        
-                                                                        if([[RealmSyncManager sharedManager] checkNodeForConflictingOperations:document inSyncOperationQueue:self])
-                                                                        {
-                                                                            self.syncProgress.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
-                                                                            nodeStatus.bytesTransfered = bytesTransferred;
-                                                                            nodeStatus.totalBytesToTransfer = bytesTotal;
-                                                                        }
+                                                                        self.syncProgress.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
+                                                                        nodeStatus.bytesTransfered = bytesTransferred;
+                                                                        nodeStatus.totalBytesToTransfer = bytesTotal;
                                                                     }];
     
-    if([[RealmSyncManager sharedManager] checkNodeForConflictingOperations:document inSyncOperationQueue:self])
-    {
-        nodeStatus.status = SyncStatusLoading;
-        nodeStatus.activityType = SyncActivityTypeDownload;
-        nodeStatus.bytesTransfered = 0;
-        nodeStatus.totalBytesToTransfer = 0;
-        
-        self.syncProgress.totalSyncSize += document.contentLength;
-        [self notifyProgressDelegateAboutCurrentProgress];
-        
-        self.syncOperationQueue.suspended = YES;
-        self.syncOperations[[document syncIdentifier]] = downloadOperation;
-        [self.syncOperationQueue addOperation:downloadOperation];
-        [self notifyProgressDelegateAboutNumberOfNodesInProgress];
-        self.syncOperationQueue.suspended = NO;
-    }
+    nodeStatus.status = SyncStatusLoading;
+    nodeStatus.activityType = SyncActivityTypeDownload;
+    nodeStatus.bytesTransfered = 0;
+    nodeStatus.totalBytesToTransfer = 0;
+    
+    self.syncProgress.totalSyncSize += document.contentLength;
+    [self notifyProgressDelegateAboutCurrentProgress];
+    
+    self.syncOperationQueue.suspended = YES;
+    self.syncOperations[[document syncIdentifier]] = downloadOperation;
+    [self.syncOperationQueue addOperation:downloadOperation];
+    [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+    self.syncOperationQueue.suspended = NO;
 }
 
 #pragma mark - Upload methods
@@ -498,31 +491,6 @@
         [self notifyProgressDelegateAboutNumberOfNodesInProgress];
         self.syncProgress.totalSyncSize -= nodeStatus.totalSize;
         self.syncProgress.syncProgressSize -= nodeStatus.bytesTransfered;
-        
-        if(![self didReceiveUnsyncCallForNode:syncOp.document])
-        {
-            nodeStatus.status = SyncStatusFailed;
-            nodeStatus.bytesTransfered = 0;
-            
-            RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
-            RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:nodeSyncIdentifier ifNotExistsCreateNew:NO inRealm:backgroundRealm];
-            if(!nodeInfo.invalidated)
-            {
-                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:nodeSyncIdentifier ifNotExistsCreateNew:YES inRealm:backgroundRealm];
-                if(!syncError.invalidated)
-                {
-                    [backgroundRealm beginWriteTransaction];
-                    syncError.errorCode = kSyncOperationCancelledErrorCode;
-                    nodeInfo.syncError = syncError;
-                    [backgroundRealm commitWriteTransaction];
-                }
-            }
-        }
-        else
-        {
-            [self removeSyncNodeStatusForNodeWithId:[syncOp.document syncIdentifier]];
-        }
-        
     }
 }
 
@@ -612,9 +580,10 @@
     return NO;
 }
 
-- (void)folderFinishedSyncing:(AlfrescoNode *)node
+- (void)resetSyncProgressInformationForNode:(AlfrescoNode *)node
 {
     [self.topLevelNodesInSyncProcessing removeObjectForKey:[node syncIdentifier]];
+    [self.nodesInProcessingForDeletion removeObjectForKey:[node syncIdentifier]];
 }
 
 - (void)setNodeForRemoval:(AlfrescoNode *)node
@@ -656,10 +625,10 @@
     return shouldContinueSync;
 }
 
-#pragma mark - Private methods
-- (BOOL)didReceiveUnsyncCallForNode:(AlfrescoNode *)node
+- (SyncProgressType)syncProgressTypeForNode:(AlfrescoNode *)node
 {
-    BOOL receivedUnsyncCall = NO;
+    SyncProgressType progressType = SyncProgressTypeNotInProcessing;
+    
     RLMRealm *realm = [RLMRealm defaultRealm];
     RealmSyncNodeInfo *topLevelParentNode = [node topLevelSyncParentNodeInRealm:realm];
     if(topLevelParentNode)
@@ -667,13 +636,22 @@
         NSNumber *isSyncing = self.topLevelNodesInSyncProcessing[topLevelParentNode.syncNodeInfoId];
         if(isSyncing)
         {
-            receivedUnsyncCall = !isSyncing.boolValue;
+            if(isSyncing.boolValue)
+            {
+                progressType = SyncProgressTypeInProcessing;
+            }
+            else
+            {
+                NSNumber *isDeleting = self.nodesInProcessingForDeletion[topLevelParentNode.syncNodeInfoId];
+                progressType = isDeleting? SyncProgressTypeInUnsyncProcessing : SyncProgressTypeUnsyncRequested;
+            }
         }
     }
     
-    return receivedUnsyncCall;
+    return progressType;
 }
 
+#pragma mark - Private methods
 - (BOOL)didStartProcessingDeleteForNode:(AlfrescoNode *)node
 {
     BOOL didStartProcessing = NO;
