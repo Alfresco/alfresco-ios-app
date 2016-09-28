@@ -1482,13 +1482,28 @@
                 {
                     NSMutableArray *documentsToBeDeletedLocallyAfterUpload = [self.syncObstacles objectForKey:kDocumentsToBeDeletedLocallyAfterUpload];
                     
-                    [documentsToBeDeletedLocallyAfterUpload enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop)
-                    {
+                    [documentsToBeDeletedLocallyAfterUpload enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
                         if ([[document syncIdentifier] isEqualToString:[node.alfrescoNode syncIdentifier]])
                         {
                             [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:^{
                                 decreaseTotalChecksBlock();
                             }];
+                            *stop = YES;
+                        }
+                        else
+                        {
+                            decreaseTotalChecksBlock();
+                        }
+                    }];
+                    
+                    NSMutableArray *deletedOnServerWithLocalChanges = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+                    
+                    [deletedOnServerWithLocalChanges enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
+                        if ([[document syncIdentifier] isEqualToString:[node.alfrescoNode syncIdentifier]])
+                        {
+                            // Orphan document with new local version => Copy the file into Local Files prior to deletion.
+                            [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];
+                            decreaseTotalChecksBlock();
                             *stop = YES;
                         }
                         else
