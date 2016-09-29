@@ -93,7 +93,6 @@
 "sync.downloadsize.prompt.cancel" = "No sincronizar";
 "sync.downloadsize.prompt.confirm" = "Sincronizar ahora";
 "sync.enable.title" = "Sincronizar ficheros";
-"sync.enable.message" = "¿Le gustaría mantener sus ficheros favoritos sincronizados automáticamente con este %@?";
 "sync.state.waiting-to-sync" = "Esperando sincronización...";
 "sync.state.failed-to-sync" = "Error de sincronización";
 "sync.progress.label.singular" = "Sincronizando 1 fichero, quedan %@"; // example: "Syncing 1 file, 238.3 MB left"
@@ -107,7 +106,6 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "Errores de sincronización";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "Los siguientes ficheros se han desmarcado como favoritos en el servidor, pero presentan modificaciones locales. Seleccione cómo proceder para cada fichero.\n\nLos ficheros se guardarán en \"Ficheros locales\"";
 "sync-errors.deleted-on-server-with-local-changes.header" = "Los siguientes ficheros se han eliminado del servidor, pero se han guardado copias en \"Ficheros locales\"";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "Los siguientes ficheros se encuentran pendientes de sincronización y presentan modificaciones locales. Seleccione cómo proceder para cada fichero.\n\nLos ficheros se guardarán en \"Ficheros locales\"";
 "sync-errors.button.sync" = "Sincronizar"; // string length should not be extended
@@ -117,6 +115,7 @@
  * Errors
  */
 "error.generic.title" = "Hemos encontrado un problema";
+"error.generic.noaccess.message" = "You might not have access to all views in this profile. Check with your IT Team or choose a different profile. - ES";
 "error.filefolder.rootfolder.notfound" = "No se ha podido cargar la carpeta raíz.\n\n%@.";
 "error.filefolder.permission.notfound" = "No se ha encontrado ningún permiso para el fichero/carpeta.\n\n%@.";
 "error.filefolder.content.failedtodownload" = "Error de fichero al descargar.\n\n%@.";

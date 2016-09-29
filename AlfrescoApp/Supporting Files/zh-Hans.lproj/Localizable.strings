@@ -93,7 +93,6 @@
 "sync.downloadsize.prompt.cancel" = "不同步";
 "sync.downloadsize.prompt.confirm" = "立即同步";
 "sync.enable.title" = "同步文件";
-"sync.enable.message" = "是否想让您最喜爱的文件自动与此 %@ 同步？";
 "sync.state.waiting-to-sync" = "正在同步，请稍候...";
 "sync.state.failed-to-sync" = "同步失败";
 "sync.progress.label.singular" = "正在同步 1 个文件，剩余 %@ 个文件"; // example: "Syncing 1 file, 238.3 MB left"
@@ -107,7 +106,6 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "同步错误";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "以下文件已在服务器上取消收藏，但有本地更改。选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
 "sync-errors.deleted-on-server-with-local-changes.header" = "下列文件已在服务器上删除，但副本已保存到您的 \"本地文件\"";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
 "sync-errors.button.sync" = "同步"; // string length should not be extended
@@ -117,6 +115,7 @@
  * Errors
  */
 "error.generic.title" = "我们遇到一个问题";
+"error.generic.noaccess.message" = "You might not have access to all views in this profile. Check with your IT Team or choose a different profile. - ZH";
 "error.filefolder.rootfolder.notfound" = "无法加载根文件夹。\n\n%@。";
 "error.filefolder.permission.notfound" = "未找到访问文件/文件夹的权限。\n\n%@。";
 "error.filefolder.content.failedtodownload" = "无法下载文件。\n\n%@。";
