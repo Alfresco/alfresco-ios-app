@@ -43,14 +43,18 @@
     self.shouldAllowMultiselect = YES;
     __weak typeof(self) weakSelf = self;
     [self.documentService retrieveNodeWithFolderPath:documentPath completionBlock:^(AlfrescoNode *node, NSError *error) {
-        if(node)
+        if (error)
         {
-            self.document = (AlfrescoDocument *)node;
-            [weakSelf setupWithDocument:self.document];
+            [weakSelf.delegate requestFailedWithError:error stringFormat:nil];
+        }
+        else if (node == nil)
+        {
+            [weakSelf.delegate requestFailedWithError:nil stringFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found")];
         }
         else
         {
-            [weakSelf.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found")];
+            weakSelf.document = (AlfrescoDocument *)node;
+            [weakSelf setupWithDocument:weakSelf.document];
         }
     }];
     

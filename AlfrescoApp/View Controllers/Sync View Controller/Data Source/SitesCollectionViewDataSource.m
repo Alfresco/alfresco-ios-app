@@ -67,11 +67,13 @@
         }
         else
         {
+            NSString *stringFormat = NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found");
+            
             if (documentLibraryFolderError == nil)
             {
-                documentLibraryFolderError = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeUnknown];
+                stringFormat = NSLocalizedString(@"error.generic.noaccess.message", @"You might not have access to all views in this profile. Check with your IT Team or choose a different profile. ");
             }
-            [weakSelf.delegate requestFailedWithError:documentLibraryFolderError stringFormat:NSLocalizedString(@"error.filefolder.rootfolder.notfound", @"Root Folder Not Found")];
+            [weakSelf.delegate requestFailedWithError:documentLibraryFolderError stringFormat:stringFormat];
         }
     }];
 }

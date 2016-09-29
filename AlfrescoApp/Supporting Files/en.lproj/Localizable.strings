@@ -115,6 +115,7 @@
  * Errors
  */
 "error.generic.title" = "We hit a problem";
+"error.generic.noaccess.message" = "You might not have access to all views in this profile. Check with your IT Team or choose a different profile.";
 "error.filefolder.rootfolder.notfound" = "Couldn't load root folder.\n\n%@.";
 "error.filefolder.permission.notfound" = "Couldn't find permission for the file / folder.\n\n%@.";
 "error.filefolder.content.failedtodownload" = "Couldn't download file.\n\n%@.";

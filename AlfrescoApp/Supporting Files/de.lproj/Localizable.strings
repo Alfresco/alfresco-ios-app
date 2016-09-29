@@ -93,7 +93,6 @@
 "sync.downloadsize.prompt.cancel" = "Nicht synchronisieren";
 "sync.downloadsize.prompt.confirm" = "Jetzt synchronisieren";
 "sync.enable.title" = "Dateien synchronisieren";
-"sync.enable.message" = "Möchten Sie Ihre als Favoriten markierten Dateien automatisch mit diesem %@ synchronisieren?";
 "sync.state.waiting-to-sync" = "Warten auf Synchronisierung...";
 "sync.state.failed-to-sync" = "Synchronisierung fehlgeschlagen";
 "sync.progress.label.singular" = "1 Datei wird synchronisiert; %@ übrig"; // example: "Syncing 1 file, 238.3 MB left"
@@ -107,7 +106,6 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "Synchronisierungsfehler";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "Bei den folgenden Dateien wurde die Markierung als Favorit auf dem Server aufgehoben. Es wurden jedoch lokale Änderungen vorgenommen. Wählen Sie aus, wie mit jeder Datei fortgefahren werden soll.\n\nDateien werden in \"Lokale Dateien\" gespeichert.";
 "sync-errors.deleted-on-server-with-local-changes.header" = "Die folgenden Dateien wurden auf dem Server gelöscht, aber es wurden Kopien im Ordner \"Lokale Dateien\" gespeichert.";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "Die Synchronisierung folgender Dateien mit lokalen Änderungen steht aus. Wählen Sie aus, wie mit jeder Datei fortgefahren werden soll.\n\nDateien werden in \"Lokale Dateien\" gespeichert.";
 "sync-errors.button.sync" = "Synchronisieren"; // string length should not be extended
@@ -117,6 +115,7 @@
  * Errors
  */
 "error.generic.title" = "Es ist ein Problem aufgetreten.";
+"error.generic.noaccess.message" = "You might not have access to all views in this profile. Check with your IT Team or choose a different profile. - DE";
 "error.filefolder.rootfolder.notfound" = "Der Stammordner konnte nicht geladen werden.\n\n%@.";
 "error.filefolder.permission.notfound" = "Die Berechtigung für die Datei/den Ordner wurde nicht gefunden.\n\n%@.";
 "error.filefolder.content.failedtodownload" = "Datei konnte nicht heruntergeladen werden.\n\n%@.";

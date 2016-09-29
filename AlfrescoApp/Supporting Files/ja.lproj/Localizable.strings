@@ -93,7 +93,6 @@
 "sync.downloadsize.prompt.cancel" = "同期しない";
 "sync.downloadsize.prompt.confirm" = "今すぐ同期する";
 "sync.enable.title" = "ファイルを同期する";
-"sync.enable.message" = "お気に入りのファイルをこの %@ と自動的に同期し続けますか?";
 "sync.state.waiting-to-sync" = "同期しています。しばらくお待ちください...";
 "sync.state.failed-to-sync" = "同期できませんでした";
 "sync.progress.label.singular" = "1 個のファイルを同期しています。残り %@"; // example: "Syncing 1 file, 238.3 MB left"
@@ -107,7 +106,6 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "同期エラー";
-"sync-errors.unfavorited-on-server-with-local-changes.header" = "次のファイルは、サーバー上ではお気に入りから削除されていますが、ローカルで変更されています。各ファイルの処理方法を選択してください。\n\nファイルは \"ローカルファイル\" に保存されます。";
 "sync-errors.deleted-on-server-with-local-changes.header" = "次のファイルは、サーバーでは削除されていますが、コピーが \"ローカルファイル\" に保存されています。";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "次のファイルは、 同期が保留中で、ローカルで変更されています。各ファイルの処理方法を選択してください。\n\nファイルは \"ローカルファイル\" に保存されます。";
 "sync-errors.button.sync" = "同期"; // string length should not be extended
@@ -117,6 +115,7 @@
  * Errors
  */
 "error.generic.title" = "問題が発生しました";
+"error.generic.noaccess.message" = "You might not have access to all views in this profile. Check with your IT Team or choose a different profile. - JA";
 "error.filefolder.rootfolder.notfound" = "ルートフォルダを読み込めませんでした。\n\n%@。";
 "error.filefolder.permission.notfound" = "このファイル/フォルダの権限が見つかりませんでした。\n\n%@。";
 "error.filefolder.content.failedtodownload" = "ファイルをダウンロードできませんでした。\n\n%@。";

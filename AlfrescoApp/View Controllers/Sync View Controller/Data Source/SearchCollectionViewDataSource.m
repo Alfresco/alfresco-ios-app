@@ -88,7 +88,14 @@
         }
         else
         {
-            [weakSelf.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed")];
+             NSString *stringFormat = NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed");
+            
+            if (error == nil)
+            {
+                stringFormat = NSLocalizedString(@"error.generic.noaccess.message", @"You might not have access to all views in this profile. Check with your IT Team or choose a different profile. ");
+            }
+            
+            [weakSelf.delegate requestFailedWithError:error stringFormat:stringFormat];
         }
     };
     
