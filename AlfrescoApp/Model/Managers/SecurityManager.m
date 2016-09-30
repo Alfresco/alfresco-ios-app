@@ -84,8 +84,9 @@
     }
     else
     {
-        [self showPinScreenAnimated:YES completionBlock:nil];
-        [self showBlankScreen:NO];
+        [self showPinScreenAnimated:YES completionBlock:^{
+            [self showBlankScreen:NO];
+        }];
     }
 }
 
