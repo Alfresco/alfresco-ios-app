@@ -62,6 +62,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectedProfileDidChange:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuConfigurationChanged:) name:kAlfrescoConfigFileDidUpdateNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
     }
     
     return self;
@@ -806,6 +807,24 @@
     }
 }
 
+- (NSMutableArray *)documentsToUpload
+{
+    NSMutableArray *documentsToUpload = [[NSMutableArray alloc] init];
+    
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMResults *allDocuments = [[RealmManager sharedManager] allDocumentsInRealm:realm];
+    for(RealmSyncNodeInfo *document in allDocuments)
+    {
+        AlfrescoNode *alfrescoDocument = document.alfrescoNode;
+        if([self isNodeModifiedSinceLastDownload:alfrescoDocument inRealm:realm])
+        {
+            [documentsToUpload addObject:alfrescoDocument];
+        }
+    }
+    
+    return documentsToUpload;
+}
+
 #pragma mark - Sync node information
 - (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
 {
@@ -901,6 +920,24 @@
     if(hasInternetConnection)
     {
         [self refreshWithCompletionBlock:nil];
+    }
+}
+
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+    
+    if(hasInternetConnection != self.lastConnectivityFlag)
+    {
+        self.lastConnectivityFlag = hasInternetConnection;
+        if(hasInternetConnection)
+        {
+            //Necessary for the SDK to receive and handle the reachability notification as well
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.nodesToUpload = [self documentsToUpload];
+                [self startNetworkOperations];
+            });
+        }
     }
 }
 
