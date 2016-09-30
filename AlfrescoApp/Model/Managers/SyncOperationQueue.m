@@ -77,6 +77,21 @@
     }
     
     [node saveNodeInRealmUsingSession:self.session isTopLevelNode:isTopLevel];
+    
+    [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+        if(permissions)
+        {
+            SyncProgressType progressType = [self syncProgressTypeForNode:node];
+            if(!((progressType == SyncProgressTypeUnsyncRequested) || (progressType == SyncProgressTypeInUnsyncProcessing)))
+            {
+                @try {
+                    [[RealmManager sharedManager] savePermissions:permissions forNode:node];
+                } @catch (NSException *exception) {
+                    AlfrescoLogError(@"Exception thrown is %@", exception);
+                };
+            }
+        }
+    }];
 }
 
 - (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock
