@@ -143,19 +143,26 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
 
 - (void)updateProgressDetails
 {
-    NSString *leftToUpload = stringForLongFileSize(self.totalSyncSize - self.syncedSize);
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (self.numberOfSyncOperations == 1)
-        {
-            self.progressView.progressInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"sync.progress.label.singular", @"1 file, %@ left"), leftToUpload];
-        }
-        else
-        {
-            self.progressView.progressInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"sync.progress.label.plural", @"%d file, %@ left"), self.numberOfSyncOperations, leftToUpload];
-        }
-        self.progressView.progressBar.progress = (float)self.syncedSize / (float)self.totalSyncSize;
-    });
+    if(self.syncedSize > self.totalSyncSize)
+    {
+        [self hideSyncProgressDetails];
+    }
+    else
+    {
+        NSString *leftToUpload = stringForLongFileSize(self.totalSyncSize - self.syncedSize);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (self.numberOfSyncOperations == 1)
+            {
+                self.progressView.progressInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"sync.progress.label.singular", @"1 file, %@ left"), leftToUpload];
+            }
+            else
+            {
+                self.progressView.progressInfoLabel.text = [NSString stringWithFormat:NSLocalizedString(@"sync.progress.label.plural", @"%d file, %@ left"), self.numberOfSyncOperations, leftToUpload];
+            }
+            self.progressView.progressBar.progress = (float)self.syncedSize / (float)self.totalSyncSize;
+        });
+    }
 }
 
 #pragma mark - Public Methods

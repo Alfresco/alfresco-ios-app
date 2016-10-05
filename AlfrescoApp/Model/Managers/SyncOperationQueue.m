@@ -484,6 +484,11 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSArray *folderChildren = self.syncNodesInfo[[folder syncIdentifier]];
+        if(folderChildren.count == 0)
+        {
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            folderChildren = [[RealmManager sharedManager] allDocumentsInFolder:folder recursive:YES includeTopLevelDocuments:NO inRealm:realm];
+        }
         for(AlfrescoNode *subNode in folderChildren)
         {
             SyncOperation *syncOperation = self.syncOperations[[subNode syncIdentifier]];
@@ -587,12 +592,33 @@
 
 - (BOOL)isCurrentlySyncingNode:(AlfrescoNode *)node
 {
-    NSNumber *isSyncing = self.topLevelNodesInSyncProcessing[[node syncIdentifier]];
-    if(isSyncing)
+    BOOL returnSyncStatus = NO;
+    if(self.syncOperations[[node syncIdentifier]])
     {
-        return YES;
+        returnSyncStatus = YES;
     }
-    return NO;
+    else
+    {
+        NSNumber *isSyncing = self.topLevelNodesInSyncProcessing[[node syncIdentifier]];
+        if(isSyncing)
+        {
+            returnSyncStatus = YES;
+        }
+        else
+        {
+            RLMRealm *realm = [RLMRealm defaultRealm];
+            NSArray *childrenDocumentsOfFolder = [[RealmManager sharedManager] allDocumentsInFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelDocuments:NO inRealm:realm];
+            for(AlfrescoNode *child in childrenDocumentsOfFolder)
+            {
+                if(self.syncOperations[[child syncIdentifier]])
+                {
+                    returnSyncStatus = YES;
+                    break;
+                }
+            }
+        }
+    }
+    return returnSyncStatus;
 }
 
 - (void)resetSyncProgressInformationForNode:(AlfrescoNode *)node
@@ -682,6 +708,16 @@
     }
     
     return didStartProcessing;
+}
+
+- (void)setProgressDelegate:(id<RealmSyncManagerProgressDelegate>)progressDelegate
+{
+    _progressDelegate = progressDelegate;
+    if(_progressDelegate)
+    {
+        [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+        [self notifyProgressDelegateAboutCurrentProgress];
+    }
 }
 
 @end
