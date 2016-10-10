@@ -71,9 +71,11 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     if(self.shouldDisplayErrorMessageForRequest)
     {
         [self displayError:self.requestError stringFormat:self.requestErrorStringFormat];
+        self.shouldDisplayErrorMessageForRequest = NO;
     }
 }
 
