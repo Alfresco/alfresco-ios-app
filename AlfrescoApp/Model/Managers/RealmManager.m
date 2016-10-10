@@ -69,14 +69,20 @@
     }
 }
 
-- (RealmSyncNodeInfo *)syncNodeInfoForObjectWithId:(NSString *)objectId ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm
+- (RealmSyncNodeInfo *)syncNodeInfoForObject:(AlfrescoNode *)node ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm
 {
     [realm refresh];
-    RealmSyncNodeInfo *nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId = %@", objectId].firstObject;
+    RealmSyncNodeInfo *nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId = %@", [node syncIdentifier]].firstObject;
     if(createNew && !nodeInfo)
     {
-        nodeInfo = [self createSyncNodeInfoForNodeWithId:objectId inRealm:realm];
+        nodeInfo = [self createSyncNodeInfoForNode:node inRealm:realm];
     }
+    return nodeInfo;
+}
+
+- (RealmSyncNodeInfo *)syncNodeInfoForId:(NSString *)nodeId inRealm:(RLMRealm *)realm
+{
+    RealmSyncNodeInfo *nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId = %@", nodeId].firstObject;
     return nodeInfo;
 }
 
@@ -91,20 +97,20 @@
     return config;
 }
 
-- (RealmSyncError *)errorObjectForNodeWithId:(NSString *)nodeId ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm
+- (RealmSyncError *)errorObjectForNode:(AlfrescoNode *)node ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm
 {
     RealmSyncError *syncError = nil;
     
-    if (nodeId)
+    if (node)
     {
-        RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObjectWithId:nodeId ifNotExistsCreateNew:NO inRealm:realm];
+        RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
         syncError = nodeInfo.syncError;
         
         if (createNew && !syncError)
         {
             syncError = [self createSyncErrorInRealm:realm];
             [realm beginWriteTransaction];
-            syncError.errorId = nodeId;
+            syncError.errorId = [node syncIdentifier];
             [realm commitWriteTransaction];
         }
     }
@@ -121,19 +127,22 @@
     
 }
 
-- (RealmSyncNodeInfo *)createSyncNodeInfoForNodeWithId:(NSString *)nodeId inRealm:(RLMRealm *)realm
+- (RealmSyncNodeInfo *)createSyncNodeInfoForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
 {
     RealmSyncNodeInfo *syncNodeInfo = [RealmSyncNodeInfo new];
-    syncNodeInfo.syncNodeInfoId = nodeId;
+    syncNodeInfo.syncNodeInfoId = [node syncIdentifier];
+    syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:node];
+    syncNodeInfo.title = node.name;
+    syncNodeInfo.isFolder = node.isFolder;
     [realm beginWriteTransaction];
     [realm addObject:syncNodeInfo];
     [realm commitWriteTransaction];
     return syncNodeInfo;
 }
 
-- (void)updateSyncNodeInfoWithId:(NSString *)objectId withNode:(AlfrescoNode *)node lastDownloadedDate:(NSDate *)downloadedDate syncContentPath:(NSString *)syncContentPath inRealm:(RLMRealm *)realm
+- (void)updateSyncNodeInfoForNode:(AlfrescoNode *)node lastDownloadedDate:(NSDate *)downloadedDate syncContentPath:(NSString *)syncContentPath inRealm:(RLMRealm *)realm
 {
-    RealmSyncNodeInfo *syncNodeInfo = [self syncNodeInfoForObjectWithId:objectId ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *syncNodeInfo = [self syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
     [realm beginWriteTransaction];
     
     if(node)
@@ -159,7 +168,7 @@
 - (void)savePermissions:(AlfrescoPermissions *)permissions forNode:(AlfrescoNode *)node
 {
     RLMRealm *realm = [RLMRealm defaultRealm];
-    RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObjectWithId:[node syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
     if(nodeInfo && !nodeInfo.invalidated)
     {
         [realm beginWriteTransaction];
@@ -230,7 +239,7 @@
 {
     NSMutableArray *resultsArray = [NSMutableArray new];
     
-    RealmSyncNodeInfo *folderSyncNode = [self syncNodeInfoForObjectWithId:[folder syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *folderSyncNode = [self syncNodeInfoForObject:folder ifNotExistsCreateNew:NO inRealm:realm];
     if(folderSyncNode)
     {
         RLMLinkingObjects *children = folderSyncNode.nodes;
@@ -274,7 +283,7 @@
 - (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm
 {
     // once sync problem is resolved (document synced or saved) set its isUnfavoritedHasLocalChanges flag to NO so node is deleted later
-    RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObjectWithId:[document syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObject:document ifNotExistsCreateNew:NO inRealm:realm];
     [realm beginWriteTransaction];
     nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
     [realm commitWriteTransaction];

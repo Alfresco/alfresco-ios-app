@@ -28,7 +28,7 @@
 - (BOOL)isTopLevelSyncNode;
 - (BOOL)isNodeInSyncList;
 - (BOOL)isNodeInSyncListInRealm:(RLMRealm *)realm;
-- (void)saveNodeInRealmUsingSession:(id<AlfrescoSession>)session isTopLevelNode:(BOOL)isTopLevel;
+- (void)saveNodeInRealmIsTopLevelNode:(BOOL)isTopLevel;
 - (NSString *)syncErrorDescription;
 - (RealmSyncNodeInfo *)topLevelSyncParentNodeInRealm:(RLMRealm *)realm;
 
