@@ -37,7 +37,7 @@
 
 - (NSString *)syncNameInRealm:(RLMRealm *)realm
 {
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:realm];
     
     if (nodeInfo.syncContentPath.length == 0)
     {
@@ -59,13 +59,13 @@
 
 - (NSDate *)lastDownloadedDateInRealm:(RLMRealm *)realm
 {
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:realm];
     return nodeInfo.lastDownloadedDate;
 }
 
 - (NSString *)contentPath
 {
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
     
     NSString *newNodePath = nil;
     if(nodeInfo && (nodeInfo.isFolder == NO))
@@ -82,7 +82,7 @@
     BOOL isTopLevelSyncNode = NO;
     RLMRealm *realm = [RLMRealm defaultRealm];
     
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:realm];
     if (nodeInfo)
     {
         if (nodeInfo.isTopLevelSyncNode)
@@ -102,7 +102,7 @@
 - (BOOL)isNodeInSyncListInRealm:(RLMRealm *)realm
 {
     BOOL isInSyncList = NO;
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:realm];
     if (nodeInfo)
     {
         if (nodeInfo.isTopLevelSyncNode || nodeInfo.parentNode)
@@ -113,13 +113,13 @@
     return isInSyncList;
 }
 
-- (void)saveNodeInRealmUsingSession:(id<AlfrescoSession>)session isTopLevelNode:(BOOL)isTopLevel
+- (void)saveNodeInRealmIsTopLevelNode:(BOOL)isTopLevel
 {
     RLMRealm *realm = [RLMRealm defaultRealm];
-    RealmSyncNodeInfo *nodeSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:YES inRealm:realm];
+    RealmSyncNodeInfo *nodeSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:YES inRealm:realm];
     if(!nodeSyncInfo.alfrescoNode)
     {
-        [[RealmManager sharedManager] updateSyncNodeInfoWithId:[self syncIdentifier] withNode:self lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
+        [[RealmManager sharedManager] updateSyncNodeInfoForNode:self lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
     }
     [realm beginWriteTransaction];
     if(!nodeSyncInfo.isTopLevelSyncNode)
@@ -132,14 +132,14 @@
 
 - (NSString *)syncErrorDescription
 {
-    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNodeWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:[RealmSyncManager sharedManager].mainThreadRealm];
+    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:self ifNotExistsCreateNew:NO inRealm:[RealmSyncManager sharedManager].mainThreadRealm];
     return syncError.errorDescription;
 }
 
 - (RealmSyncNodeInfo *)topLevelSyncParentNodeInRealm:(RLMRealm *)realm
 {
     RealmSyncNodeInfo *topLevelSyncParent = nil;
-    RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:[self syncIdentifier] ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:realm];
     if(syncNodeInfo)
     {
         if(syncNodeInfo.isTopLevelSyncNode)
@@ -185,7 +185,7 @@
 + (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId inRealm:(RLMRealm *)realm
 {
     NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObjectWithId:syncNodeId ifNotExistsCreateNew:NO inRealm:realm];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForId:syncNodeId inRealm:realm];
     
     return nodeInfo.alfrescoNode;
 }

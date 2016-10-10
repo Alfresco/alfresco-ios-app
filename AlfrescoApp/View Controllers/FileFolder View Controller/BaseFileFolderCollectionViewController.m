@@ -69,6 +69,16 @@
     _imagePickerController.delegate = nil;
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if(self.shouldDisplayErrorMessageForRequest)
+    {
+        [self displayError:self.requestError stringFormat:self.requestErrorStringFormat];
+        self.shouldDisplayErrorMessageForRequest = NO;
+    }
+}
+
 #pragma mark - Custom getters and setters
 
 - (UIImagePickerController *)imagePickerController
@@ -408,6 +418,21 @@
     [self presentViewController:self.actionsAlertController animated:YES completion:nil];
 }
 
+- (void)displayError:(NSError *)error stringFormat:(NSString *)stringFormat
+{
+    if(stringFormat)
+    {
+        if(error)
+        {
+            displayErrorMessage([NSString stringWithFormat:stringFormat, [ErrorDescriptions descriptionForError:error]]);
+        }
+        else
+        {
+            displayErrorMessage(stringFormat);
+        }
+    }
+}
+
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods
 - (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
 {
@@ -543,17 +568,17 @@
 
 - (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat
 {
-    if(stringFormat)
+    if (self.isViewLoaded && self.view.window)
     {
-        if(error)
-        {
-            // display error
-            displayErrorMessage([NSString stringWithFormat:stringFormat, [ErrorDescriptions descriptionForError:error]]);
-        }
-        else
-        {
-            displayErrorMessage(stringFormat);
-        }
+        [self displayError:error stringFormat:stringFormat];
+        self.requestError = nil;
+        self.requestErrorStringFormat = nil;
+    }
+    else
+    {
+        self.requestErrorStringFormat = stringFormat;
+        self.requestError = error;
+        self.shouldDisplayErrorMessageForRequest = YES;
     }
     
     [Notifier notifyWithAlfrescoError:error];

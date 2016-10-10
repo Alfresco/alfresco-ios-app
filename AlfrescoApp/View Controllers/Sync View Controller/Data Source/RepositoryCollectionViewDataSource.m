@@ -125,9 +125,10 @@
 - (void)retrievePermissionsForNode:(AlfrescoNode *)node
 {
     [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-        if (!error)
+        if (permissions)
         {
             [self.nodesPermissions setValue:permissions forKey:node.identifier];
+            [[RealmManager sharedManager] savePermissions:permissions forNode:node];
         }
     }];
 }
@@ -139,6 +140,7 @@
         {
             self.parentFolderPermissions = permissions;
             [self.delegate didRetrievePermissionsForParentNode];
+            [[RealmManager sharedManager] savePermissions:permissions forNode:self.parentNode];
         }
         else
         {

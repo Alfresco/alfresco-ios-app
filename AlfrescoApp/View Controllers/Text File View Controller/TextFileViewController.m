@@ -262,7 +262,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
             
             [syncManager retrySyncForDocument:self.editingDocument completionBlock:^{
                 RLMRealm *realm = [RLMRealm defaultRealm];
-                AlfrescoDocument *document = (AlfrescoDocument *)([[RealmManager sharedManager] syncNodeInfoForObjectWithId:self.editingDocument.syncIdentifier ifNotExistsCreateNew:NO inRealm:realm].alfrescoNode);
+                AlfrescoDocument *document = (AlfrescoDocument *)([[RealmManager sharedManager] syncNodeInfoForObject:self.editingDocument ifNotExistsCreateNew:NO inRealm:realm].alfrescoNode);
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:document];
             }];
             [self dismissViewControllerAnimated:YES completion:nil];
