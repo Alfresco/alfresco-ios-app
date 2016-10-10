@@ -47,6 +47,9 @@ static CGFloat const kCellHeight = 64.0f;
 @property (nonatomic) BOOL hasRequestFinished;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, assign) BOOL capturingMedia;
+@property (nonatomic, strong) NSString *requestErrorStringFormat;
+@property (nonatomic, strong) NSError *requestError;
+@property (nonatomic) BOOL shouldDisplayErrorMessageForRequest;
 
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock;
 - (void)dismissPopoverOrModalWithAnimation:(BOOL)animated withCompletionBlock:(void (^)(void))completionBlock;
