@@ -430,6 +430,7 @@
         {
             displayErrorMessage(stringFormat);
         }
+        [self hidePullToRefreshView];
     }
 }
 
