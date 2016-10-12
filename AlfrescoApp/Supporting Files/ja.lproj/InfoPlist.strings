@@ -20,11 +20,11 @@
  * InfoPlist.strings
  * AlfrescoApp
  *
- * Japanese (ja)
+ * English (en)
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationWhenInUseUsageDescription = "現在地がこのデバイスで撮影した写真の位置情報 （ジオタグ） に使用されます。";
-NSMicrophoneUsageDescription = "マイクを使用して音声を録音します。音声は後でリポジトリにアップロードできます。";
-NSPhotoLibraryUsageDescription = "Library Usage Description String - JA";
-NSCameraUsageDescription = "You can take photos to upload to Alfresco. - JA";
+NSLocationWhenInUseUsageDescription = "現在地がこのデバイスで撮影した写真の位置情報 （ジオタグ） に使用され、Alfresco にアップロードされます。";
+NSMicrophoneUsageDescription = "マイクを使用して音声を録音します。音声は後で Alfresco にアップロードできます。";
+NSPhotoLibraryUsageDescription = "[フォトライブラリ] にある写真やビデオを Alfresco にアップロードできます。";
+NSCameraUsageDescription = "写真を撮って Alfresco にアップロードできます。";

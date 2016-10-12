@@ -20,7 +20,7 @@
  * Localizable.strings
  * AlfrescoApp
  *
- * German (de)
+ * English (en)
  */
 
 /**
@@ -98,7 +98,7 @@
 "sync.progress.label.singular" = "1 Datei wird synchronisiert; %@ übrig"; // example: "Syncing 1 file, 238.3 MB left"
 "sync.progress.label.plural" = "%d Dateien werden synchronisiert; %@ übrig"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "Synchronisieren";
-"sync.cancelAll.alert.message" = "Möchten Sie alle Synchronisierungsvorgänge abbrechen?";
+"sync.cancelAll.alert.message" = "Alle Synchronisierungsvorgänge abbrechen?";
 "sync.cancelAll.alert.button.continue" = "Weiter";
 "sync.cancelAll.alert.button.stop" = "Synchronisierung stoppen";
 
@@ -106,61 +106,62 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "Synchronisierungsfehler";
-"sync-errors.deleted-on-server-with-local-changes.header" = "Die folgenden Dateien wurden auf dem Server gelöscht, aber es wurden Kopien im Ordner \"Lokale Dateien\" gespeichert.";
-"sync-errors.pending-sync-on-server-with-local-changes.header" = "Die Synchronisierung folgender Dateien mit lokalen Änderungen steht aus. Wählen Sie aus, wie mit jeder Datei fortgefahren werden soll.\n\nDateien werden in \"Lokale Dateien\" gespeichert.";
+"sync-errors.deleted-on-server-with-local-changes.header" = "Die folgenden Dateien wurden auf Alfresco gelöscht, aber es wurden Kopien im Ordner \"Lokale Dateien\" gespeichert";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "Die folgenden Dateien enthalten lokale Änderungen und müssen noch synchronisiert werden. Wählen Sie aus, wie mit jeder Datei fortgefahren werden soll.\n\nDateien werden in \"Lokale Dateien\" gespeichert";
 "sync-errors.button.sync" = "Synchronisieren"; // string length should not be extended
 "sync-errors.button.save" = "Speichern"; // string length should not be extended
 
 /**
  * Errors
  */
-"error.generic.title" = "Es ist ein Problem aufgetreten.";
-"error.generic.noaccess.message" = "You might not have access to all views in this profile. Check with your IT Team or choose a different profile. - DE";
-"error.filefolder.rootfolder.notfound" = "Der Stammordner konnte nicht geladen werden.\n\n%@.";
+"error.generic.title" = "Es ist ein Problem aufgetreten";
+"error.generic.noaccess.message" = "Unter Umständen haben Sie nicht auf alle Ansichten in diesem Profil Zugriff. Wenden Sie sich entweder an Ihr IT-Team oder wählen Sie ein anderes Profil aus.";
+"error.filefolder.rootfolder.notfound" = "Stammordner konnte nicht geladen werden.\n\n%@.";
 "error.filefolder.permission.notfound" = "Die Berechtigung für die Datei/den Ordner wurde nicht gefunden.\n\n%@.";
 "error.filefolder.content.failedtodownload" = "Datei konnte nicht heruntergeladen werden.\n\n%@.";
-"error.filefolder.search.searchfailed" = "Der Suchvorgang ist fehlgeschlagen.\n\n%@.";
-"error.filefolder.createfolder.invalidname" = "Der Ordnername enthält ungültige Zeichen, versuchen Sie es erneut.";
-"error.filefolder.createfolder.createfolder" = "Der Ordner wurde nicht erstellt.\n\n%@.";
-"error.filefolder.content.failedtoretrieve" = "Die Datei/der Ordner konnte nicht abgerufen werden.\n\n%@.";
-"error.filefolder.unable.to.delete" = "Die Datei/der Ordner konnte nicht gelöscht werden.\n\n%@";
+"error.filefolder.search.searchfailed" = "Suche fehlgeschlagen.\n\n%@.";
+"error.filefolder.createfolder.invalidname" = "Ordner konnte nicht erstellt werden. Versuchen Sie es noch einmal und verwenden Sie Zahlen, Buchstaben und verschiedene Zeichen.";
+"error.filefolder.createfolder.createfolder" = "Ordner konnte nicht erstellt werden.\n\n%@.";
+"error.filefolder.content.failedtoretrieve" = "Datei/Ordner konnte nicht geladen werden.\n\n%@.";
+"error.filefolder.unable.to.delete" = "Datei/Ordner konnte nicht gelöscht werden.\n\n%@";
 "error.sites.documentlibrary.failed" = "Auf Dokumentenbibliothek konnte nicht zugegriffen werden.\n\n%@.";
-"error.sites.retrieval.failed" = "Sites konnten nicht abgerufen werden.\n\n%@.";
-"error.sites.folder.failed" = "Sites-Ordner konnten nicht abgerufen werden.\n\n%@.";
+"error.filefolder.favorites.failed" = "Auf Favoriten konnte nicht zugegriffen werden.\n\n%@";
+"error.sites.retrieval.failed" = "Sites konnten nicht geladen werden.\n\n%@.";
+"error.sites.folder.failed" = "Sites-Ordner konnte nicht geladen werden.\n\n%@.";
 "error.sites.search.failed" = "Suche innerhalb der Sites konnte nicht ausgeführt werden.\n\n%@.";
 "error.sites.site.notfound" = "Site nicht gefunden";
-"error.upload.failed" = "Die Datei kann derzeit nicht hochgeladen werden.\n\n%@.";
+"error.upload.failed" = "Datei konnte gerade nicht hochgeladen werden.\n\n%@.";
 "error.upload.addtags.failed" = "Die Tags konnten der Datei nicht hinzugefügt werden.\n\n%@.";
-"error.tags.retrieve.failed" = "Die Tags können derzeit nicht abgerufen werden.\n\n%@.";
-"error.login.failed" = "Die Anmeldung war nicht erfolgreich. Stellen Sie sicher, dass Ihr Benutzername und Ihr Passwort korrekt sind.";
-"error.comments.retrieve.failed" = "Kommentare können derzeit nicht abgerufen werden.\n\n%@";
-"error.add.comment.failed" = "Der Kommentar kann derzeit nicht hinzugefügt werden.\n\n%@";
-"error.sites.unable.to.favorite" = "%@ kann derzeit nicht als Favorit markiert werden.";
-"error.sites.unable.to.unfavorite" = "Die Markierung von %@ als Favorit kann derzeit nicht aufgehoben werden.";
-"error.sites.unable.to.join" = "%@ kann derzeit nicht beigetreten werden.";
-"error.sites.unable.to.cancel.request" = "Ihre Anfrage zum Beitritt zu %@ kann derzeit nicht abgebrochen werden.";
-"error.sites.unable.to.leave" = "Ihre Anfrage zum Verlassen von %@ war dieses Mal nicht erfolgreich.";
-"error.version.history.unable.to.retrieve" = "Der Versionsverlauf kann derzeit nicht abgerufen werden.\n\n%@";
+"error.tags.retrieve.failed" = "Die Tags konnten gerade nicht geladen werden.\n\n%@.";
+"error.login.failed" = "Die Anmeldung ist fehlgeschlagen. Stellen Sie sicher, dass Ihr Benutzername und Ihr Passwort korrekt sind.";
+"error.comments.retrieve.failed" = "Kommentare konnten gerade nicht geladen werden.\n\n%@";
+"error.add.comment.failed" = "Kommentar konnte gerade nicht hinzugefügt werden.\n\n%@";
+"error.sites.unable.to.favorite" = "%@ konnte gerade nicht als Favorit markiert werden";
+"error.sites.unable.to.unfavorite" = "Markierung von %@ als Favorit konnte gerade nicht aufgehoben werden";
+"error.sites.unable.to.join" = "%@ konnte gerade nicht hinzugefügt werden";
+"error.sites.unable.to.cancel.request" = "Ihre Anfrage zum Beitritt zu %@ konnte gerade nicht abgebrochen werden";
+"error.sites.unable.to.leave" = "Ihre Anfrage zum Verlassen von %@ war dieses Mal nicht erfolgreich";
+"error.version.history.unable.to.retrieve" = "Der Versionsverlauf konnte gerade nicht geladen werden.\n\n%@";
 "error.version.history.no.latest.version" = "Die neueste Version der Datei konnte nicht gefunden werden.";
 "error.alfresco.node.notfound" = "Datei nicht gefunden";
 "error.alfresco.folder.notfound" = "Ordner nicht gefunden";
-"error.print.failed.message" = "Drucken dieser Datei wird nicht unterstützt.";
+"error.print.failed.message" = "Drucken dieser Datei wird nicht unterstützt";
 // Internet connection error
-"error.no.internet.access.title" = "Es konnte keine Verbindung hergestellt werden.";
+"error.no.internet.access.title" = "Es konnte keine Verbindung hergestellt werden";
 "error.no.internet.access.message" = "Vergewissern Sie sich, dass Sie mit dem Internet verbunden sind, und versuchen Sie es erneut. Auch ohne Verbindung können Sie nach wie vor auf Ihre heruntergeladenen Dateien zugreifen.";
-"error.access.permissions.message" = "Überprüfen Sie, ob Sie die hierzu benötigten Zugriffsrechte besitzen.";
+"error.access.permissions.message" = "Überprüfen Sie, ob Sie die hierzu benötigten Rechte besitzen";
 "error.host.unreachable.title" = "Verbindungsfehler";
-"error.host.unreachable.message" = "Ihr Hostname ist anscheinend falsch oder Sie müssen Ihr VPN aktivieren. Überprüfen Sie die Account-Einstellungen.";
-"error.retrieving.metadata" = "Die Eigenschaften für %@ konnten nicht abgerufen werden.";
+"error.host.unreachable.message" = "Möglicherweise sind Ihre Einstellungen falsch oder Sie müssen Ihr VPN aktivieren. Überprüfen Sie Ihren Hostnamen in den Account-Einstellungen.";
+"error.retrieving.metadata" = "Eigenschaften für %@ konnten nicht geladen werden.";
 "error.server.message" = "Auf dem Server ist ein Fehler aufgetreten.";
 // Workflow
-"error.workflow.unable.to.complete.process" = "Der Aufgabenprozess kann derzeit nicht abgeschlossen werden.\n\n%@";
-"error.workflow.unable.to.reassign.task" = "Die Aufgabe kann derzeit nicht neu zugewiesen werden.\n\n%@";
+"error.workflow.unable.to.complete.process" = "Der Aufgabenprozess konnte gerade nicht abgeschlossen werden.\n\n%@";
+"error.workflow.unable.to.reassign.task" = "Die Aufgabe konnte gerade nicht neu zugewiesen werden.\n\n%@";
 // New Version
 "error.new.version.unable.to.checkout.title" = "Auschecken nicht möglich";
-"error.new.version.unable.to.checkout.message" = "%@ kann nicht ausgecheckt werden.\n\n%@";
+"error.new.version.unable.to.checkout.message" = "%@ konnte nicht ausgecheckt werden.\n\n%@";
 "error.new.version.unable.to.checkin.title" = "Einchecken nicht möglich";
-"error.new.version.unable.to.checkin.message" = "%@ kann nicht eingecheckt werden.\n\n%@";
+"error.new.version.unable.to.checkin.message" = "%@ konnte nicht eingecheckt werden.\n\n%@";
 // Email
 "error.no.email.accounts.title" = "Keine E-Mail-Accounts";
 "error.no.email.accounts.message" = "Sie müssen mindestens ein E-Mail-Account auf Ihrem Gerät eingerichtet haben, um diese Datei zu senden.";
@@ -174,32 +175,32 @@
  * Permissions
  */
 // Camera permissions
-"permissions.camera.denied.title" = "Camera denied title - DE";
-"permissions.camera.denied.message" = "Camera denied message - DE";
-"permissions.camera.restricted.title" = "Camera restricted title - DE";
-"permissions.camera.restricted.message" = "Camera restricted message - DE";
+"permissions.camera.denied.title" = "Kamera ausgeschaltet";
+"permissions.camera.denied.message" = "Sie haben den Zugriff von Alfresco auf die Kamera ausgeschaltet.";
+"permissions.camera.restricted.title" = "Kamera ausgeschaltet";
+"permissions.camera.restricted.message" = "Sie haben nicht die nötige Berechtigung, um Alfresco Zugriff auf Ihre Kamera zu gestatten.";
 // Library permissions
-"permissions.library.denied.title" = "Library denied title - DE";
-"permissions.library.denied.message" = "Library denied message - DE";
-"permissions.library.restricted.title" = "Library restricted title - DE";
-"permissions.library.restricted.message" = "Library restricted message - DE";
+"permissions.library.denied.title" = "Fotobibliothek ausgeschaltet";
+"permissions.library.denied.message" = "Sie haben den Zugriff von Alfresco auf die Fotobibliothek ausgeschaltet.";
+"permissions.library.restricted.title" = "Fotobibliothek ausgeschaltet";
+"permissions.library.restricted.message" = "Sie haben nicht die nötige Berechtigung, um Alfresco Zugriff auf Ihre Fotobibliothek zu gestatten.";
 // Microphone permissions
-"permissions.microphone.denied.title" = "Microphone denied title - DE";
-"permissions.microphone.denied.message" = "Microphone denied message - DE";
+"permissions.microphone.denied.title" = "Mikrofon ausgeschaltet";
+"permissions.microphone.denied.message" = "Sie haben den Zugriff von Alfresco auf das Mikrofon ausgeschaltet.";
 // Location permissions
-"permissions.location.denied.title" = "Location denied title - DE";
-"permissions.location.denied.message" = "Location denied message - DE";
-"permissions.location.restricted.title" = "Location restricted title - DE";
-"permissions.location.restricted.message" = "Location restricted message - DE";
-"permissions.location.disabled.title" = "Location disabled title - DE";
-"permissions.location.disabled.message" = "Location disabled message - DE";
+"permissions.location.denied.title" = "Standortdaten ausgeschaltet";
+"permissions.location.denied.message" = "Sie haben den Zugriff von Alfresco auf die Standortdaten ausgeschaltet.";
+"permissions.location.restricted.title" = "Standortdaten ausgeschaltet";
+"permissions.location.restricted.message" = "Sie haben nicht die nötige Berechtigung, um Alfresco Zugriff auf Ihre Standortdaten zu gestatten.";
+"permissions.location.disabled.title" = "Standortdaten ausgeschaltet";
+"permissions.location.disabled.message" = "Standortdaten sind auf Ihrem Gerät ausgeschaltet.";
 // Settings button
-"permissions.settings.button" = "Open Settings - DE";
+"permissions.settings.button" = "Einstellungen ändern";
 
 /**
  * Custom error descriptions
  */
-"error.description.kErrorFileSuffixMaxAttempts" = "Eindeutiger Dateiname konnte nicht generiert werden.";
+"error.description.kErrorFileSuffixMaxAttempts" = "Eindeutiger Dateiname konnte nicht generiert werden";
 
 /**
  * Sites View Controller
@@ -210,12 +211,12 @@
 "sites.segmentControl.favoritesites" = "Favoriten-Sites"; // string length should not be extended
 "sites.segmentControl.allsites" = "Alle Sites"; // string length should not be extended
 "sites.segmentControl.sitefinder" = "Site-Finder"; // string length should not be extended
-"sites.site.favorited.banner" = "Sie haben %@ als Favoriten markiert.";
-"sites.site.unfavorited.banner" = "Sie haben die Markierung von %@ als Favoriten aufgehoben.";
-"sites.site.requested.to.join.banner" = "Eine Anfrage, %@ beizutreten, wurde gesendet.";
-"sites.site.joined.banner" = "Sie sind %@ beigetreten.";
+"sites.site.favorited.banner" = "Sie haben %@ zu Ihren Favoriten hinzugefügt";
+"sites.site.unfavorited.banner" = "Sie haben %@ aus Ihren Favoriten entfernt";
+"sites.site.requested.to.join.banner" = "Eine Anfrage, %@ beizutreten, wurde gesendet";
+"sites.site.joined.banner" = "Sie sind %@beigetreten";
 "sites.site.request.cancelled.banner" = "Anfrage für %@ zurückgezogen";
-"sites.site.left.banner" = "Sie haben sich bei %@ abgemeldet.";
+"sites.site.left.banner" = "Sie haben %@ verlassen";
 
 // Site Cell Buttons
 "sites.siteCell.favorite" = "Favorit"; // string length should not be extended
@@ -236,32 +237,32 @@
 "accounttype.cloud" = "Alfresco in the Cloud";
 "accounttype.alfrescoServer" = "Alfresco Server";
 
-"accounttype.footer.alfrescoServer" = "Verbindung zu einem Alfresco Server herstellen";
-"accounttype.footer.alfrescoCloud" = "Auf Ihren Alfresco in the Cloud-Account zugreifen";
+"accounttype.footer.alfrescoServer" = "Verbindung zu Alfresco Server herstellen";
+"accounttype.footer.alfrescoCloud" = "Verbindung zu Ihrem Alfresco in the Cloud-Account herstellen";
 
 "accountdetails.placeholder.required" = "Erforderlich";
 "accountdetails.placeholder.optional" = "Optional";
 "accountdetails.fields.email" = "E-Mail";
-"accountdetails.placeholder.email" = "beispiel@acme.com";
+"accountdetails.placeholder.email" = "beispiel@alfresco.com";
 "accountdetails.fields.hostname" = "Hostname";
 "accountdetails.fields.description" = "Beschreibung";
 "accountdetails.fields.port" = "Port";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "Service-Dokument";
-"accountdetails.fields.syncPreference" = "Dateien synchronisieren";
-"accountdetails.fields.syncPreference.footer" = "Treffen Sie eine Auswahl, um bevorzugten Inhalt auf Ihrem Gerät zu synchronisieren. Vor der Synchronisierung von mehr als 20 MB umfassenden Inhalt wird eine Warnung angezeigt.";
+"accountdetails.fields.syncPreference" = "Inhalt synchronisieren";
+"accountdetails.fields.syncPreference.footer" = "Wählen Sie diese Option, um Inhalt auf Ihrem Gerät zu synchronisieren. Vor der Synchronisierung von mehr als 20 MB umfassendem Inhalt wird eine Warnung angezeigt";
 "accountdetails.buttons.client-certificate" = "Client-Zertifikat";
 "accountdetails.buttons.configuration" = "Hauptmenü bearbeiten";
 "accountdetails.header.authentication" = "Account-Details";
 "accountdetails.header.advanced" = "Erweitert";
 "accountdetails.header.setting" = "Einstellungen";
 "accountdetails.header.main.menu.config" = "Hauptmenü";
-"accountdetails.footer.main.menu.config.disabled" = "Ihr Alfresco-Administrator hat diese Funktion ausgeschaltet.";
+"accountdetails.footer.main.menu.config.disabled" = "Dieses Funktion wurde von Ihrem IT-Team deaktiviert.";
 "accountdetails.buttons.profile" = "Profil bearbeiten";
 "accountdetails.header.profile" = "Profil";
 
 "accountdetails.alert.save.title" = "Account speichern";
-"accountdetails.alert.save.validationerror" = "Der Account konnte nicht gespeichert werden. Überprüfen Sie Ihre Account-Einstellungen mit Ihrem Alfresco-Administrator.";
+"accountdetails.alert.save.validationerror" = "Account konnte nicht gespeichert werden. Überprüfen Sie Ihre Account-Einstellungen mit Ihrem IT-Team.";
 
 "accountdetails.fields.accountSettings" = "Geben Sie Ihren Benutzernamen und Ihr Kennwort ein, um auf dieses Benutzerkonto zuzugreifen";
 "accountdetails.fields.confirmPassword" = "Geben Sie Ihr Kennwort ein, um auf dieses Benutzerkonto zuzugreifen";
@@ -271,11 +272,11 @@
 "certificate-manage.download.label" = "Vom Webserver herunterladen";
 "certificate-import.tableHeader" = "PKCS 12-Code";
 "certificate-import.fields.passcode" = "Code";
-"certificate-import.tableFooter" = "Geben Sie den Code für die Datei PKCS 12 ein.";
+"certificate-import.tableFooter" = "Geben Sie den Code für die Datei PKCS 12 ein";
 "certificate-import.button.import" = "Importieren";
 "certificate-import.error.title" = "Zertifikat importieren";
-"certificate-import.error.authentication" = "Der Code für das Zertifikat ist ungültig.";
-"certificate-import.error.format" = "Die Zertifikatdatei ist fehlerhaft und kann nicht importiert werden.";
+"certificate-import.error.authentication" = "Der Code für das Zertifikat ist ungültig";
+"certificate-import.error.format" = "Die Zertifikatdatei ist fehlerhaft und kann nicht importiert werden";
 "certificate-download.title" = "Webserver";
 "certificate-download.field.url" = "URL";
 "certificate-details.title" = "Client-Zertifikat";
@@ -328,14 +329,14 @@
  */
 "multiselect.button.delete" = "Löschen";
 "multiselect.button.delete.counter" = "Löschen (%u)";
-"multiselect.delete.confirmation.message.one-item" = "Möchten Sie 1 Datei vom Server löschen?";
-"multiselect.delete.confirmation.message.n-items" = "Möchten Sie %d Dateien vom Server löschen?";
+"multiselect.delete.confirmation.message.one-item" = "Möchten Sie 1 Datei von Alfresco löschen?";
+"multiselect.delete.confirmation.message.n-items" = "Möchten Sie %d Dateien von Alfresco löschen?";
 "multiselect.delete.confirmation.message.one-download" = "Möchten Sie 1 lokale Datei löschen?";
 "multiselect.delete.confirmation.message.n-downloads" = "Möchten Sie %d lokale Dateien löschen?";
 "multiselect.delete.completed.title" = "Löschvorgang mit Fehlern abgeschlossen";
-"multiselect.delete.completed.message" = "%@ Dateien wurden vom Server gelöscht.";
-"multiselect.delete.partial.message" = "Nur %@ Dateien wurden vom Server gelöscht.";
-"multiselect.delete.failure.message" = "Keine der Dateien konnte vom Server gelöscht werden.";
+"multiselect.delete.completed.message" = "%@ Dateien wurden von Alfresco gelöscht.";
+"multiselect.delete.partial.message" = "%@ Dateien wurden von Alfresco gelöscht. Einige Dateien konnten nicht gelöscht werden";
+"multiselect.delete.failure.message" = "Keine der Dateien konnte von Alfresco gelöscht werden.";
 
 /**
  * Node Picker
@@ -367,7 +368,7 @@
  * About View Controller
  */
 "about.title" = "Info";
-"about.content" = "Alfresco ist die offene Plattform für geschäftskritische Inhaltsverwaltung und Zusammenarbeit.\n\nAlfresco Mobile wurde von Alfresco Software, Inc. entwickelt und verbindet Sie mit der Alfresco in the Cloud und lokalen Alfresco Servern (3.4.8 und höher), um Ihnen unterwegs sicheren Zugriff auf Ihre firmeneigenen Dateien zu ermöglichen. Diese mobile Anwendung stellt mithilfe Ihrer Alfresco Zugangsdaten eine Verbindung zu Ihrem Alfresco Repository her (über HTTP oder HTTPS) und verwaltet den Zugriff entsprechend Ihren Berechtigungen.";
+"about.content" = "Alfresco ist die offene Plattform für geschäftskritische Inhaltsverwaltung und Zusammenarbeit.\n\nAlfresco Mobile wurde von Alfresco Software, Inc. entwickelt und verbindet Sie mit Alfresco in the Cloud sowie Alfresco One und Alfresco Community Edition (3.4.8 und höher), um Ihnen unterwegs sicheren Zugriff auf Ihre firmeneigenen Dateien zu ermöglichen. Diese mobile Anwendung stellt mithilfe Ihrer Alfresco Zugangsdaten eine Verbindung zu Ihrem Alfresco Repository her (über HTTP oder HTTPS) und verwaltet den Zugriff entsprechend Ihren Berechtigungen.";
 "about.version.number" = "Version: %@ (%@)";
 "about.build.date.time" = "Build-Datum: %s %s";
 
@@ -402,7 +403,7 @@
 "upload.audio.cell.button.play" = "Wiedergeben";
 "upload.audio.cell.button.stop" = "Stoppen";
 "upload.audio.setting.disabled.title" = "Berechtigungen";
-"upload.audio.setting.disabled.message" = "Diese App hat keine Berechtigung für den Zugriff auf das Mikrofon.\n\nÄndern Sie dies in Ihren Geräteeinstellungen -> Datenschutz -> Mikrofon.";
+"upload.audio.setting.disabled.message" = "Alfresco hat keine Berechtigung für den Zugriff auf das Mikrofon.\n\nÄndern Sie dies in Ihren Geräteeinstellungen unter Datenschutz > Mikrofon.";
 // confirmation
 "upload.confirm.dismissal.title" = "Nicht gespeicherter Inhalt";
 "upload.confirm.dismissal.message" = "Möchten Sie diesen Inhalt hochladen? Ihr Inhalt geht verloren, wenn Sie ihn jetzt nicht hochladen.";
@@ -417,7 +418,7 @@
 "tagselection.newTag.buttonTitle" = "Neues Tag hinzufügen";
 "tagselection.newTag.alertTitle" = "Neues Tag hinzufügen";
 "tagselection.newTag.error.invalidtag.title" = "Ungültiges Tag";
-"tagselection.newTag.error.invalidtag.message" = "Tags müssen Text enthalten.";
+"tagselection.newTag.error.invalidtag.message" = "Tags müssen Text enthalten";
 
 /**
  * Document Node Preview Controller
@@ -438,8 +439,8 @@
 /**
  * Document Preview Controller
  */
-"document.video.not.supported" = "Wiedergabe ist nicht verfügbar.";
-"document.open-in.not.supported.title" = "Die Option \"Öffnen mit\" ist nicht verfügbar.";
+"document.video.not.supported" = "Wiedergabe nicht verfügbar";
+"document.open-in.not.supported.title" = "Option \"Öffnen mit\" nicht verfügbar";
 "document.open-in.not.supported.message" = "Die Option \"Öffnen mit\" ist bei dieser Anwendung nicht verfügbar.";
 "document.open-in.noapps.title" = "Keine Apps unterstützt";
 "document.open-in.noapps.message" = "Auf diesem Gerät sind keine Apps installiert, die diese Datei öffnen können.";
@@ -468,8 +469,8 @@
 "download.overwrite.prompt.message" = "Es existiert bereits eine lokale Datei mit demselben Namen. Möchten Sie die bereits bestehende Datei überschreiben?";
 "download.success.message" = "Datei gespeichert";
 "download.success-as.message" = "Datei gespeichert als %@";
-"download.failure.message" = "Die Datei konnte nicht gespeichert werden.";
-"download.delete.failure.message" = "Die lokale Datei konnte nicht gelöscht werden.";
+"download.failure.message" = "Datei konnte nicht gespeichert werden";
+"download.delete.failure.message" = "Lokale Datei konnte nicht gespeichert werden";
 
 /**
  * Comments View Controller
@@ -483,7 +484,7 @@
  * Help
  */
 "help.title" = "Hilfe";
-"help.no.internet.message" = "Sie können nicht auf die Alfresco Mobile-Hilfe zugreifen, da Sie offline sind.\n\nVersuchen Sie es erneut, wenn Sie wieder online sind.";
+"help.no.internet.message" = "Sie können nicht auf die Alfresco Mobile-Hilfe zugreifen, da Sie offline sind.\n\nVersuchen Sie es noch einmal, wenn Sie wieder online sind.";
 
 /**
  * Metadata View Controller
@@ -562,13 +563,13 @@
  * Text File View Controller
  */
 "createtextfile.title" = "Textdatei erstellen";
-"createtextfile.dismiss.confirmation.title" = "Verwerfen?";
-"createtextfile.dismiss.confirmation.message" = "Möchten Sie die Erstellung dieser Textdatei wirklich abbrechen?\n\nAlle Änderungen werden verworfen.";
+"createtextfile.dismiss.confirmation.title" = "Verwerfen";
+"createtextfile.dismiss.confirmation.message" = "Wenn Sie diese Textdatei nicht speichern, wird Ihre Arbeit nicht gespeichert.";
 "document.edit.button.discard" = "Änderungen verwerfen";
 "document.edit.button.save" = "Speichern";
 "document.edit.failed.title" = "Datei speichern";
-"document.edit.savefailed.message" = "Die Datei konnte nicht auf dem Server gespeichert werden. Möchten Sie die Datei in Ihren lokalen Dateien speichern?";
-"document.edit.dismiss.confirmation.message" = "Möchten Sie die an dieser Datei vorgenommenen Änderungen wirklich verwerfen?";
+"document.edit.savefailed.message" = "Datei konnte nicht in Alfresco gespeichert werden. Möchten Sie die Datei in Ihren lokalen Dateien speichern?";
+"document.edit.dismiss.confirmation.message" = "Wenn Sie die Änderungen nicht speichern, wird Ihre Arbeit nicht gespeichert.";
 "document.edit.discard" = "Verwerfen";
 "document.edit.continue.editing" = "Bearbeitung fortsetzen";
 
@@ -576,7 +577,7 @@
  * Policy Updated
  */
 "policy.updated.title" = "Richtlinienaktualisierung";
-"policy.updated.message" = "Die Konfigurationsrichtlinie Ihrer App wurde von Ihrem Administrator aktualisiert.";
+"policy.updated.message" = "Die Konfigurationsrichtlinie Ihrer App wurde von Ihrem IT-Team aktualisiert";
 
 /**
  * Location Manager
@@ -619,8 +620,8 @@
 "task.completed.success.message" = "Aufgabe abgeschlossen";
 
 // Cell
-"tasks.cell.taskcompleted" = "%@ hat diese Aufgabe abgeschlossen.";
-"tasks.cell.tasknotcompleted" = "%@ hat diese Aufgabe nicht abgeschlossen.";
+"tasks.cell.taskcompleted" = "%@ hat diese Aufgabe abgeschlossen";
+"tasks.cell.tasknotcompleted" = "%@ hat diese Aufgabe nicht abgeschlossen";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "Neue Aufgabe";
 "tasks.process.activitiParallelReview" = "Datei(en) zur Überprüfung senden";
@@ -638,7 +639,7 @@
 "task.type.workflow.todo" = "Zu erledigen";
 "task.type.workflow.review.and.approve" = "Überprüfen und genehmigen";
 "task.type.workflow.invitation" = "Einladung";
-"task.type.workflow.todo.footer" = "Eine Aufgabe einer Person zuweisen";
+"task.type.workflow.todo.footer" = "Eine Aufgabe einer Person zuweisen.";
 "task.type.workflow.review.and.approve.footer" = "Weisen Sie einer oder mehreren Personen eine Aufgabe zu, um Dateien zu überprüfen und zu genehmigen.";
 
 "task.create.title" = "Aufgabe erstellen";
@@ -672,8 +673,8 @@
  */
 "settings.title" = "Einstellungen";
 "settings.general.title" = "Allgemein";
-"settings.sync.on.cellular" = "Mobilfunkdaten synchronisieren";
-"settings.sync.on.cellular.description" = "Durch Ausschalten wird im Falle einer bestehenden Wi-Fi-Verbindung nur der bevorzugte Inhalt synchronisiert.";
+"settings.sync.on.cellular" = "Synchronisierung bei Roaming";
+"settings.sync.on.cellular.description" = "Deaktivieren Sie diese Option, wenn Inhalte nur synchronisiert werden sollen, wenn eine WLAN-Verbindung besteht.";
 "settings.send.diagnostics" = "Diagnose einsenden";
 "settings.send.diagnostics.description" = "Um Alfresco Mobile weiter zu verbessern, sammeln wir anonym technische Diagnosedaten. Wenn Sie möchten, können Sie dies hier abstellen.";
 "settings.security.title" = "Sicherheit";
@@ -699,17 +700,17 @@
 "settings.security.passcode.attempts.several" = "Noch %d Versuche";
 "settings.reset.title" = "Daten löschen";
 "settings.reset.accounts" = "Accounts löschen";
-"settings.reset.accounts.confirmation.title" = "Accounts löschen?";
+"settings.reset.accounts.confirmation.title" = "Accounts löschen";
 "settings.reset.accounts.confirmation.message" = "Möchten Sie wirklich alle Accounts löschen?\n\nSie können diesen Vorgang nicht rückgängig machen.";
 "settings.reset.entire.app" = "Accounts und Downloads löschen";
 "settings.reset.entire.app.confirmation.title" = "Accounts, Zwischenspeicher und Downloads löschen?";
-"settings.reset.entire.app.confirmation.message" = "Möchten Sie wirklich alle Accounts, zwischengespeicherten Daten und Downloads löschen?\n\nSie können diesen Vorgang nicht rückgängig machen.";
-"settings.reset.confirmation.title" = "Daten gelöscht";
+"settings.reset.entire.app.confirmation.message" = "Möchten Sie wirklich alle Accounts, zwischengespeicherten Daten und Downloads löschen?\n\nSie können diesen Vorgang nicht rückgängig machen";
+"settings.reset.confirmation.title" = "Daten löschen";
 "settings.reset.confirmation.message" = "Starten Sie Alfresco neu, um den Vorgang abzuschließen.\n\nUm neu zu starten, drücken Sie zwei Mal die Startseite-Taste Ihres Geräts, um die ausgeführten Apps anzuzeigen. Wischen Sie Alfresco von der Bildschirmoberfläche, um die Anwendung zu löschen. Sie können Alfresco nun erneut verwenden.";
 "settings.reset.description" = "Durch das Löschen der Accounts werden alle Accounts von der App gelöscht. Durch das Löschen von Accounts, Zwischenspeicher und Downloads wird die App auf eine Neuinstallation zurückgesetzt.";
 "settings.full.text.search" = "Volltextsuche";
 "settings.full.text.search.description" = "Aktivieren Sie die Volltextsuche, um bei der Suche nach Dateien UND deren Inhalten zu suchen.";
-"settings.feedback.title" = "Feedback einsenden";
+"settings.feedback.title" = "Feedback senden";
 
 /**
  * Onboarding View Controller
@@ -720,13 +721,13 @@
 /**
  * Action Sheet Actions
  */
-"action.email" = "Per E-Mail senden";
+"action.email" = "E-Mail";
 "action.emailAsLink" = "Link per E-Mail senden";
 "action.open.in" = "Öffnen mit...";
 "action.like" = "Gefällt mir";
 "action.unlike" = "Gefällt nicht mehr";
 "action.favourite" = "Favorit";
-"action.unfavourite" = "Aus Favoriten entfernen";
+"action.unfavourite" = "Entfernen";
 "action.comment" = "Kommentieren";
 "action.download" = "Herunterladen";
 "action.print" = "Drucken";
@@ -736,41 +737,51 @@
 "action.review" = "Überprüfen";
 "action.edit" = "Bearbeiten";
 "action.new.version" = "Aktualisieren";
+"action.sync" = "Synchronisieren";
+"action.unsync" = "Synchronisierung aufheben";
 // Alerts
 "action.rename.alert.title" = "Umbenennen";
 "action.rename.alert.message" = "Datei umbenennen in:";
 "action.rename.success.title" = "Umbenennung erfolgreich";
 "action.rename.success.message" = "%@ erfolgreich in %@ umbenannt.";
 "action.subfolder.success.title" = "Unterordner hinzugefügt";
-"action.subfolder.success.message" = "%@ wurde erfolgreich erstellt.";
-"action.subfolder.failure.title" = "Unterordner kann nicht erstellt werden.";
+"action.subfolder.success.message" = "%@ erfolgreich erstellt.";
+"action.subfolder.failure.title" = "Unterordner konnte nicht erstellt werden";
 "action.delete" = "Löschen";
 "action.delete.confirmation.title" = "Bestätigung löschen";
 "action.delete.confirmation.message" = "Möchten Sie diese Datei wirklich löschen?";
 "action.delete.success.title" = "Löschvorgang erfolgreich";
 "action.delete.success.message" = "%@ erfolgreich gelöscht.";
-"action.delete.success.message.sync" = "%@ wurde erfolgreich gelöscht, eine Kopie wurde in Lokale Dateien gespeichert.";
+"action.delete.success.message.sync" = "%@ wurde erfolgreich gelöscht, eine Kopie wurde in Lokale Dateien gespeichert";
 "action.delete.failed.title" = "Löschvorgang fehlgeschlagen";
 "action.delete.failed.message" = "%@ konnte nicht gelöscht werden.";
 "action.confirmation.back.message" = "Möchten Sie die an diesem Account vorgenommenen Änderungen speichern?";
 "action.confirmation.back.title" = "Ungespeicherte Änderungen";
+"action.disablesync.title" = "Synchronisierung deaktivieren";
+"action.disablesync.message" = "Bei Auswahl dieser Option wird die Synchronisierungsfunktion deaktiviert und alle synchronisierten Inhalte werden entfernt.";
+"action.disablesync.confirm" = "Synchronisierung deaktivieren";
+"action.pendingoperations.title" = "Unvollständige Synchronisierungen";
+"action.pendingoperations.message" = "Einige Dateien werden noch auf Alfresco synchronisiert. Wenn Sie die Synchronisierung jetzt deaktivieren, kann dieser Synchronisierungsvorgang nicht beendet werden.";
+"action.pendingoperations.cancel" = "Synchronisierung fortsetzen";
+"action.pendingoperations.confirm" = "Synchronisierung deaktivieren";
+
 
 /**
  * SaveBack
  */
 "saveback.hud.message" = "Speichern...";
-"saveback.saved.successfully.message" = "Die Datei %@ wurde erfolgreich gespeichert.";
+"saveback.saved.successfully.message" = "Datei %@ erfolgreich gespeichert.";
 "saveback.completed.title" = "Zurückspeichern abgeschlossen";
-"saveback.completed.message" = "%@ wurde erfolgreich in Alfresco zurückgespeichert.";
+"saveback.completed.message" = "%@ erfolgreich in Alfresco zurückgespeichert";
 "saveback.failed.title" = "Zurückspeichern fehlgeschlagen";
-"saveback.failed.message" = "%@ wurde in den lokalen Dateien gespeichert.";
+"saveback.failed.message" = "%@ in lokalen Dateien gespeichert";
 // Location Picker
 "saveback.locationpicker.title" = "Speicherort wählen";
 "saveback.locationpicker.other" = "Sonstige";
 "saveback.upload.completed.title" = "Upload abgeschlossen";
 "saveback.upload.completed.message" = "%@ erfolgreich auf %@ hochgeladen";
 "saveback.upload.failed.title" = "Upload fehlgeschlagen";
-"saveback.upload.failed.message" = "%@ konnte nicht zu %@ hochgeladen werden.";
+"saveback.upload.failed.message" = "%@ konnte nicht zu %@ hochgeladen werden";
 
 /**
  * New Version View Controller
@@ -783,7 +794,7 @@
 "new.version.comment.title" = "Kommentare";
 "new.version.commet.placeholder" = "Versionskommentare (optional)";
 "new.version.upload.successful.title" = "Datei aktualisiert";
-"new.version.upload.successful.message" = "%@ wurde erfolgreich aktualisiert.";
+"new.version.upload.successful.message" = "%@ erfolgreich aktualisiert";
 
 /**
  * File Preview Controller
@@ -811,7 +822,7 @@
 /**
  * MDM
  */
-"mdm.missing.keys.description" = "Die folgenden Schlüssel wurden nicht eingerichtet:\n%@\nWenden Sie sich an Ihren Administrator.";
+"mdm.missing.keys.description" = "Die folgenden Schlüssel wurden nicht eingerichtet:\n%@\nWenden Sie sich an Ihr IT-Team.";
 
 /**
  * Configuration
@@ -829,6 +840,7 @@
 "view-favorite-default" = "Favoriten";
 "view-search-default" = "Suche";
 "view-local-default" = "Lokale Dateien";
+"view-sync-default" = "Synchronisierter Inhalt";
 
 "configuration.manager.configuration.file.updated.title" = "Konfiguration aktualisiert";
 "configuration.manager.configuration.file.updated.message" = "Die Konfigurationsdatei wurde aktualisiert";
@@ -896,3 +908,9 @@
 "search.searchfor" = "Suche nach";
 "search.search" = "Suche";
 "search.previoussearches" = "Vorherige Suchvorgänge";
+
+/**
+ * Sync Info Panel
+ */
+"sync.info.skip" = "Überspringen";
+"sync.info.next.laststep" = "Verstanden.";

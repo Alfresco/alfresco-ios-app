@@ -20,11 +20,11 @@
  * InfoPlist.strings
  * AlfrescoApp
  *
- * Spanish (es)
+ * English (en)
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationWhenInUseUsageDescription = "Se utilizará su ubicación para añadir etiquetas de geolocalización a las fotos tomadas con este dispositivo.";
-NSMicrophoneUsageDescription = "Se utilizará el micrófono para grabar sonido que podrá cargarse al repositorio.";
-NSPhotoLibraryUsageDescription = "Library Usage Description String - ES";
-NSCameraUsageDescription = "You can take photos to upload to Alfresco. - ES";
+NSLocationWhenInUseUsageDescription = "Se utilizará su ubicación para añadir etiquetas de geolocalización a las fotos realizadas con este dispositivo y cargadas a Alfresco.";
+NSMicrophoneUsageDescription = "Se utilizará el micrófono para grabar sonido que podrá cargarse a Alfresco.";
+NSPhotoLibraryUsageDescription = "Puede cargar fotografías y vídeos desde su Biblioteca de fotos a Alfresco.";
+NSCameraUsageDescription = "Puede sacar fotografías y cargarlas a Alfresco.";

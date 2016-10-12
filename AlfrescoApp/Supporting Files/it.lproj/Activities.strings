@@ -76,8 +76,8 @@
 "org.alfresco.documentlibrary.google-docs-checkout" = "{1} ha eseguito il Check Out del documento {0} in Google Docs";
 "org.alfresco.documentlibrary.google-docs-checkin" = "{1} ha eseguito il Check In del documento {0} da Google Docs";
 "org.alfresco.documentlibrary.inline-edit" = "{1} ha modificato il file {0}";
-"org.alfresco.documentlibrary.file-previewed" = "{1} ha visualizzato in anteprima il documento {0}";
-"org.alfresco.documentlibrary.file-downloaded" = "{1} ha scaricato il documento {0}";
+"org.alfresco.documentlibrary.file-previewed" = "{1} ha visualizzato in anteprima il file {0}";
+"org.alfresco.documentlibrary.file-downloaded" = "{1} ha scaricato il file {0}";
 "org.alfresco.documentlibrary.file-liked" = "{1} ha aggiunto Mi piace al file {0}";
 "org.alfresco.documentlibrary.folder-liked" = "{1} ha aggiunto Mi piace alla cartella {0}";
 "org.alfresco.wiki.page-created" = "{1} ha creato la pagina wiki {0}";
