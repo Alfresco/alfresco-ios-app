@@ -112,6 +112,10 @@
     
     self.session = session;
     self.shouldAllowMultiselect = YES;
+    if(displayName)
+    {
+        self.screenTitle = displayName;
+    }
     self.customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
     __weak typeof (self) weakSelf = self;
     AlfrescoFolderCompletionBlock completionBlock = ^(AlfrescoFolder *folder, NSError *error) {
