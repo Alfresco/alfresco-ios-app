@@ -24,12 +24,14 @@
 #import "SharedConstants.h"
 
 NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScreenNotification";
+NSString * const kAppResetedNotification = @"AppResetedNotification";
 
 @interface PinViewController ()
 
 @property (nonatomic) PinFlow pinFlow;
 @property (nonatomic, strong) PinFlowCompletionBlock completionBlock;
 @property (nonatomic) BOOL animatedDismiss;
+@property (nonatomic) BOOL ownWindow;
 
 @end
 
@@ -60,10 +62,21 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
 
 + (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow animatedDismiss:(BOOL)animatedDismiss completionBlock:(PinFlowCompletionBlock)completionBlock
 {
+    return [PinViewController pinNavigationViewControllerWithFlow:pinFlow inOwnWindow:NO animatedDismiss:animatedDismiss completionBlock:completionBlock];
+}
+
++ (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow inOwnWindow:(BOOL)ownWindow completionBlock:(PinFlowCompletionBlock)completionBlock
+{
+    return [PinViewController pinNavigationViewControllerWithFlow:pinFlow inOwnWindow:ownWindow animatedDismiss:YES completionBlock:completionBlock];
+}
+
++ (UINavigationController *)pinNavigationViewControllerWithFlow:(PinFlow)pinFlow inOwnWindow:(BOOL)ownWindow animatedDismiss:(BOOL)animatedDismiss completionBlock:(PinFlowCompletionBlock)completionBlock
+{
     PinViewController *pinViewController = [[PinViewController alloc] init];
     pinViewController.pinFlow = pinFlow;
     pinViewController.completionBlock = completionBlock;
     pinViewController.animatedDismiss = animatedDismiss;
+    pinViewController.ownWindow = ownWindow;
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:pinViewController];
     navigationController.navigationBar.translucent = NO;
@@ -364,13 +377,23 @@ NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScree
         
         // This will prevent hiding the keyboard in any other instance of PinViewController that may be underneath.
         [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
-        
-        [self dismissViewControllerAnimated:self.animatedDismiss completion:^{
+
+        if (_ownWindow)
+        {
             if (weakSelf.completionBlock)
             {
                 weakSelf.completionBlock(PinFlowCompletionStatusSuccess);
             }
-        }];
+        }
+        else
+        {
+            [self dismissViewControllerAnimated:self.animatedDismiss completion:^{
+                if (weakSelf.completionBlock)
+                {
+                    weakSelf.completionBlock(PinFlowCompletionStatusSuccess);
+                }
+            }];
+        }
     }
     else
     {
