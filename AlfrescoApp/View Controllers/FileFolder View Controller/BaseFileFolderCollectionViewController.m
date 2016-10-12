@@ -565,6 +565,7 @@
     [self updateUIUsingFolderPermissionsWithAnimation:NO];
     self.isLoadingAnotherPage = NO;
     self.hasRequestFinished = YES;
+    self.title = self.dataSource.screenTitle;
 }
 
 - (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat
