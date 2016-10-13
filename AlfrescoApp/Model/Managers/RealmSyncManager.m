@@ -723,7 +723,7 @@
                         if([self.currentOperationQueue syncProgressTypeForNode:node] == SyncProgressTypeInProcessing)
                         {
                             // recursive call to retrieve nodes hierarchies
-                            [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
+                            [self retrieveNodeHierarchyForNode:subNode withCompletionBlock:^(BOOL completed) {
                                 
                                 if (completionBlock != NULL)
                                 {
