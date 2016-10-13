@@ -145,7 +145,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 {
     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
     AlfrescoNode *selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.row];
-    SyncNodeStatus *nodeStatus = [[RealmSyncManager sharedManager] syncStatusForNodeWithId:selectedNode.identifier];
     
     if (selectedNode.isFolder)
     {
@@ -155,12 +154,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     else
     {
-        if (nodeStatus.status == SyncStatusLoading)
-        {
-            [self.collectionView deselectItemAtIndexPath:indexPath animated:YES];
-            return;
-        }
-        
         NSString *filePath = [selectedNode contentPath];
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         if (filePath)
