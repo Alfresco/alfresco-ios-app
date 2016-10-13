@@ -20,7 +20,7 @@
  * Localizable.strings
  * AlfrescoApp
  *
- * English (en)
+ * Japanese (ja)
  */
 
 /**
@@ -115,7 +115,7 @@
  * Errors
  */
 "error.generic.title" = "問題が発生しました";
-"error.generic.noaccess.message" = "このプロフィールではすべての情報にアクセスできない可能性があります。IT 担当者に確認するか、別のプロフィールを選択してください。"
+"error.generic.noaccess.message" = "このプロフィールではすべての情報にアクセスできない可能性があります。IT 担当者に確認するか、別のプロフィールを選択してください。";
 "error.filefolder.rootfolder.notfound" = "ルートフォルダを読み込めませんでした。\n\n%@。";
 "error.filefolder.permission.notfound" = "ファイルまたはフォルダの権限が見つかりません。\n\n%@。";
 "error.filefolder.content.failedtodownload" = "ファイルをダウンロードできませんでした。\n\n%@。";
