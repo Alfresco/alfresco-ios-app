@@ -31,6 +31,12 @@
 #define BLANK_SCREEN_TAG 234
 #define FADE_ANIMATION_DURATION 0.2
 
+@interface SecurityManager()
+
+@property (nonatomic, strong) UIWindow *pinScreenWindow;
+
+@end
+
 @implementation SecurityManager
 
 + (instancetype)sharedManager
@@ -47,9 +53,21 @@
 
 - (void)setup
 {
+    [self addObservers];
+    
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock])
+    {
+        self.pinScreenWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+        self.pinScreenWindow.rootViewController = [UIViewController new];
+        [self.pinScreenWindow makeKeyAndVisible];
+        [self showPinScreenIfNeededInOwnWindow:YES];
+    }
+}
+
+- (void)addObservers
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackgroundNotification:) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForegroundNotification:) name:UIApplicationWillEnterForegroundNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidFinishLaunchingNotification:) name:UIApplicationDidFinishLaunchingNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstPaidAccountAdded:) name:kAlfrescoFirstPaidAccountAddedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lastPaidAccountRemoved:) name:kAlfrescoLastPaidAccountRemovedNotification object:nil];
 }
@@ -84,32 +102,9 @@
     }
     else
     {
-        [self showPinScreenAnimated:YES completionBlock:^{
+        [self showPinScreenAnimated:YES inOwnWindow:NO completionBlock:^{
             [self showBlankScreen:NO];
         }];
-    }
-}
-
-- (void)applicationDidFinishLaunchingNotification:(NSNotification *)notification
-{
-    if ([self forceResetIfNecessary])
-    {
-        return;
-    }
-    
-    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] == NO)
-    {
-        return;
-    }
-    
-    if ([TouchIDManager shouldUseTouchID])
-    {
-        [self showBlankScreen:YES];
-        [self evaluatePolicy];
-    }
-    else
-    {
-        [self showPinScreenAnimated:YES completionBlock:nil];
     }
 }
 
@@ -126,7 +121,7 @@
     [SecurityManager reset];
 }
 
-#pragma mark - Utils
+#pragma mark - Reset Methods
 
 + (void)reset
 {
@@ -150,6 +145,8 @@
         default:
             break;
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kAppResetedNotification object:nil];
 }
 
 + (void)resetAccounts
@@ -167,7 +164,7 @@
     
     UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
                                                            message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                          delegate:self
+                                                          delegate:nil
                                                  cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
                                                  otherButtonTitles:nil];
     [confirmation show];
@@ -195,7 +192,7 @@
     
     UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
                                                            message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                          delegate:self
+                                                          delegate:nil
                                                  cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
                                                  otherButtonTitles:nil];
     [confirmation show];
@@ -235,9 +232,45 @@
     return shouldReset;
 }
 
-#pragma mark -
+#pragma mark - Private Methods
 
-- (void)showPinScreenAnimated:(BOOL)animated completionBlock:(void (^)())completionBlock
+- (UIWindow *)pinAndBlankScreensWindow
+{
+    UIWindow *window = self.pinScreenWindow;
+    
+    if (self.pinScreenWindow == nil)
+    {
+        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        window = delegate.window;
+    }
+    
+    return window;
+}
+
+- (void)showPinScreenIfNeededInOwnWindow:(BOOL)ownWindow
+{
+    if ([self forceResetIfNecessary])
+    {
+        return;
+    }
+    
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] == NO)
+    {
+        return;
+    }
+    
+    if ([TouchIDManager shouldUseTouchID])
+    {
+        [self showBlankScreen:YES];
+        [self evaluatePolicy];
+    }
+    else
+    {
+        [self showPinScreenAnimated:NO inOwnWindow:ownWindow completionBlock:nil];
+    }
+}
+
+- (void)showPinScreenAnimated:(BOOL)animated inOwnWindow:(BOOL)ownWindow completionBlock:(void (^)())completionBlock
 {
     UIViewController *topController = [UniversalDevice topPresentedViewController];
     
@@ -264,16 +297,18 @@
         }
     }
     
-    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter completionBlock:^(PinFlowCompletionStatus status){
+    UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter inOwnWindow:ownWindow completionBlock:^(PinFlowCompletionStatus status){
         switch (status)
         {
             case PinFlowCompletionStatusSuccess:
             {
+                [self switchToMainWindow];
                 [[FileHandlerManager sharedManager] handleCachedPackage];
             }
                 break;
             case PinFlowCompletionStatusReset:
             {
+                [self switchToMainWindow];
                 [SecurityManager resetWithType:ResetTypeEntireApp];
             }
                 break;
@@ -282,13 +317,24 @@
                 break;
         }
     }];
-    [topController presentViewController:navController animated:animated completion:completionBlock];
+    
+    if (ownWindow)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.pinScreenWindow.rootViewController = navController;
+            [self.pinScreenWindow makeKeyAndVisible];
+        });
+    }
+    else
+    {
+        [topController presentViewController:navController animated:animated completion:completionBlock];
+    }
 }
 
 - (void)showBlankScreen:(BOOL)show
 {
-    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    UIView *view = [delegate.window viewWithTag:BLANK_SCREEN_TAG];
+    UIWindow *window = [self pinAndBlankScreensWindow];
+    UIView *view = [window viewWithTag:BLANK_SCREEN_TAG];
     
     if (show)
     {
@@ -296,10 +342,10 @@
         {
             UINib *nib = [UINib nibWithNibName:@"Launch Screen" bundle:nil];
             view = [nib instantiateWithOwner:nil options:nil].firstObject;
-            view.frame = delegate.window.bounds;
+            view.frame = window.bounds;
             view.tag = BLANK_SCREEN_TAG;
-            [delegate.window addSubview:view];
-            [delegate.window endEditing:YES];
+            [window addSubview:view];
+            [window endEditing:YES];
         }
     }
     else
@@ -324,6 +370,7 @@
         if (success)
         {
             [self showBlankScreen:NO];
+            [self switchToMainWindow];
             [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
             
             [[FileHandlerManager sharedManager] handleCachedPackage];
@@ -332,11 +379,23 @@
         {
             AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
             
-            [self showPinScreenAnimated:NO completionBlock:^{
+            [self showPinScreenAnimated:NO inOwnWindow: self.pinScreenWindow ? YES : NO completionBlock:^{
                 [self showBlankScreen:NO];
             }];
         }
     }];
+}
+
+- (void)switchToMainWindow
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [((AppDelegate *)([UIApplication sharedApplication].delegate)).window makeKeyAndVisible];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(FADE_ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.pinScreenWindow.rootViewController = nil;
+            self.pinScreenWindow = nil;
+        });
+    });
 }
 
 @end
