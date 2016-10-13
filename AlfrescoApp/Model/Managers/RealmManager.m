@@ -267,6 +267,42 @@
     return resultsArray;
 }
 
+- (NSArray *)allNodesInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm
+{
+    NSMutableArray *resultsArray = [NSMutableArray new];
+    
+    RealmSyncNodeInfo *folderSyncNode = [self syncNodeInfoForObject:folder ifNotExistsCreateNew:NO inRealm:realm];
+    if (folderSyncNode)
+    {
+        [resultsArray addObject:folderSyncNode.alfrescoNode];
+        
+        RLMLinkingObjects *children = folderSyncNode.nodes;
+        
+        for(RealmSyncNodeInfo *child in children)
+        {
+            if (child.isFolder && recursive)
+            {
+                AlfrescoFolder *childFolder = (AlfrescoFolder *)child.alfrescoNode;
+                if(childFolder)
+                {
+                    [resultsArray addObjectsFromArray:[self allNodesInFolder:childFolder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm]];
+                }
+            }
+            else if (!child.isFolder)
+            {
+                AlfrescoNode *childNode = child.alfrescoNode;
+                if(childNode)
+                {
+                    [resultsArray addObject:childNode];
+                }
+            }
+            
+        }
+    }
+    
+    return resultsArray;
+}
+
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account
 {
     [RLMRealmConfiguration setDefaultConfiguration:[self configForName:account.accountIdentifier]];

@@ -43,6 +43,7 @@
 - (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm;
 - (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm;
 - (NSArray *)allDocumentsInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm;
+- (NSArray *)allNodesInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm;
 
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 - (void)resetDefaultRealmConfiguration;
