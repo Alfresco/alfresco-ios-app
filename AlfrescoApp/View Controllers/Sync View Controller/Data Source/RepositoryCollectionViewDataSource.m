@@ -45,6 +45,7 @@
 {
     self.session = session;
     self.delegate = delegate;
+    self.dataSourceCollection = [NSMutableArray new];
     if(node)
     {
         self.parentNode = node;
@@ -521,26 +522,33 @@
 - (void)retrieveContentsOfParentNode
 {
     __weak typeof(self) weakSelf = self;
-    [self.documentService retrieveChildrenInFolder:(AlfrescoFolder *)self.parentNode listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        if (!error)
-        {
-            for (AlfrescoNode *node in pagingResult.objects)
+    if(self.parentNode)
+    {
+        [self.documentService retrieveChildrenInFolder:(AlfrescoFolder *)self.parentNode listingContext:self.defaultListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+            if (!error)
             {
-                [weakSelf retrievePermissionsForNode:node];
+                for (AlfrescoNode *node in pagingResult.objects)
+                {
+                    [weakSelf retrievePermissionsForNode:node];
+                }
+                
+                if (!self.parentFolderPermissions)
+                {
+                    [self retrieveAndSetPermissionsOfCurrentFolder];
+                }
+                else
+                {
+                    [self.delegate didRetrievePermissionsForParentNode];
+                }
             }
             
-            if (!self.parentFolderPermissions)
-            {
-                [self retrieveAndSetPermissionsOfCurrentFolder];
-            }
-            else
-            {
-                [self.delegate didRetrievePermissionsForParentNode];
-            }
-        }
-        
-        [self reloadCollectionViewWithPagingResult:pagingResult error:error];
-    }];
+            [self reloadCollectionViewWithPagingResult:pagingResult error:error];
+        }];
+    }
+    else
+    {
+        [self.delegate dataSourceUpdated];
+    }
 }
 
 - (void)retrieveContentOfFolder:(AlfrescoFolder *)folder usingListingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock;
