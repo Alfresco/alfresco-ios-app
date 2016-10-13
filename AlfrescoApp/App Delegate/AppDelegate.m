@@ -142,6 +142,8 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     self.window.rootViewController = [self buildMainAppUIWithSession:nil displayingMainMenu:isFirstLaunch];
     self.window.tintColor = [UIColor appTintColor];
     
+    [[SecurityManager sharedManager] setup];
+    
     // Clean up cache
     self.cacheHelper = [[CoreDataCacheHelper alloc] init];
     [self.cacheHelper removeAllCachedDataOlderThanNumberOfDays:@(kNumberOfDaysToKeepCachedData)];
@@ -149,10 +151,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     // Register the delegate for session updates
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     
-    // Make the window visible
-    [self.window makeKeyAndVisible];
-    
-    [[SecurityManager sharedManager] setup];
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] == NO)
+    {
+        // Make the window visible
+        [self.window makeKeyAndVisible];
+    }
     
     if (!safeMode)
     {

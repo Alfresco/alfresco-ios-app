@@ -82,6 +82,13 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     [[RealmSyncManager sharedManager] presentSyncObstaclesIfNeeded];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSyncedContent];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];

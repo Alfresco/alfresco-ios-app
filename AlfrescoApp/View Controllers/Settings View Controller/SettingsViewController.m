@@ -71,6 +71,7 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(preferenceDidChange:) name:kSettingsDidChangeNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillEnterForegroundNotification:) name:UIApplicationWillEnterForegroundNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appReseted:) name:kAppResetedNotification object:nil];
     }
 }
 
@@ -610,6 +611,14 @@
 {
     [self buildTableDataSource];
     [self.tableView reloadData];
+}
+
+- (void)appReseted:(NSNotification *)notification
+{
+    if (self.settingsType == SettingsTypePasscode)
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - SettingsCellProtocol Functions

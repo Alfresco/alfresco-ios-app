@@ -98,7 +98,7 @@
 "sync.progress.label.singular" = "正在同步 1 个文件，剩余 %@ 个文件"; // example: "Syncing 1 file, 238.3 MB left"
 "sync.progress.label.plural" = "正在同步 %d 个文件，剩余 %@ 个文件"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "同步";
-"sync.cancelAll.alert.message" = "是否想要取消所有同步操作？";
+"sync.cancelAll.alert.message" = "取消所有同步操作？";
 "sync.cancelAll.alert.button.continue" = "继续";
 "sync.cancelAll.alert.button.stop" = "停止同步";
 
@@ -106,8 +106,8 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "同步错误";
-"sync-errors.deleted-on-server-with-local-changes.header" = "下列文件已在服务器上删除，但副本已保存到您的 \"本地文件\"";
-"sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。选择如何处理每个文件。\n\n文件将被保存到 \"本地文件\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "下列文件已在 Alfresco 上删除，但副本已保存到您的 \"本地文件\"";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。选择如何继续处理每个文件。\n\n文件将被保存到 \"本地文件\"";
 "sync-errors.button.sync" = "同步"; // string length should not be extended
 "sync-errors.button.save" = "保存"; // string length should not be extended
 
@@ -115,32 +115,33 @@
  * Errors
  */
 "error.generic.title" = "我们遇到一个问题";
-"error.generic.noaccess.message" = "You might not have access to all views in this profile. Check with your IT Team or choose a different profile. - ZH";
+"error.generic.noaccess.message" = "您可能没有访问此配置文件中所有视图的权限。请与您的 IT 团队核实或选择不同的配置文件。";
 "error.filefolder.rootfolder.notfound" = "无法加载根文件夹。\n\n%@。";
 "error.filefolder.permission.notfound" = "未找到访问文件/文件夹的权限。\n\n%@。";
 "error.filefolder.content.failedtodownload" = "无法下载文件。\n\n%@。";
 "error.filefolder.search.searchfailed" = "搜索失败。\n\n%@。";
-"error.filefolder.createfolder.invalidname" = "文件夹名称包含无效字符，请重试。";
-"error.filefolder.createfolder.createfolder" = "未创建文件夹。\n\n%@。";
-"error.filefolder.content.failedtoretrieve" = "无法检索文件/文件夹。\n\n%@。";
+"error.filefolder.createfolder.invalidname" = "无法创建文件夹。请使用数字、字母和不同的字符重试。";
+"error.filefolder.createfolder.createfolder" = "无法创建文件夹。\n\n%@。";
+"error.filefolder.content.failedtoretrieve" = "无法加载文件/文件夹。\n\n%@。";
 "error.filefolder.unable.to.delete" = "无法删除文件/文件夹。\n\n%@";
 "error.sites.documentlibrary.failed" = "无法访问文档库。\n\n%@。";
-"error.sites.retrieval.failed" = "无法检索站点。\n\n%@。";
-"error.sites.folder.failed" = "无法检索站点文件夹。\n\n%@。";
+"error.filefolder.favorites.failed" = "无法访问收藏夹。\n\n%@";
+"error.sites.retrieval.failed" = "无法加载站点。\n\n%@。";
+"error.sites.folder.failed" = "无法加载站点文件夹。\n\n%@。";
 "error.sites.search.failed" = "无法跨站点搜索。\n\n%@。";
 "error.sites.site.notfound" = "未找到站点";
 "error.upload.failed" = "目前无法上传文件。\n\n%@。";
 "error.upload.addtags.failed" = "标记无法添加到文件。\n\n%@。";
-"error.tags.retrieve.failed" = "目前无法检索标记。\n\n%@。";
-"error.login.failed" = "登录未成功，请检查您的用户名和密码是否正确。";
-"error.comments.retrieve.failed" = "目前无法检索评论。\n\n%@";
-"error.add.comment.failed" = "目前无法添加评论。\n\n%@";
+"error.tags.retrieve.failed" = "目前无法加载标记。\n\n%@。";
+"error.login.failed" = "登录失败，请检查您的用户名和密码是否正确。";
+"error.comments.retrieve.failed" = "目前无法加载备注。\n\n%@";
+"error.add.comment.failed" = "目前无法添加备注。\n\n%@";
 "error.sites.unable.to.favorite" = "目前无法收藏 %@";
 "error.sites.unable.to.unfavorite" = "目前无法取消收藏 %@";
 "error.sites.unable.to.join" = "目前无法加入 %@";
 "error.sites.unable.to.cancel.request" = "目前无法取消您加入 %@ 的请求";
 "error.sites.unable.to.leave" = "您离开 %@ 的请求此时未成功";
-"error.version.history.unable.to.retrieve" = "目前无法检索版本历史记录。\n\n%@";
+"error.version.history.unable.to.retrieve" = "目前无法加载版本历史记录。\n\n%@";
 "error.version.history.no.latest.version" = "未找到最新版本的文件。";
 "error.alfresco.node.notfound" = "未找到文件";
 "error.alfresco.folder.notfound" = "未找到文件夹";
@@ -148,14 +149,14 @@
 // Internet connection error
 "error.no.internet.access.title" = "无法建立连接";
 "error.no.internet.access.message" = "检查您是否已连接到 Internet 并重试。您仍可以访问下载的文件，无需连接。";
-"error.access.permissions.message" = "检查您是否有进行此操作的访问权限";
+"error.access.permissions.message" = "检查您是否有进行此操作的权限";
 "error.host.unreachable.title" = "连接错误";
-"error.host.unreachable.message" = "您的主机名值似乎是错误的，或者您可能需要激活 VPN 码。请检查您的帐户设置。";
-"error.retrieving.metadata" = "无法检索 %@ 的属性。";
+"error.host.unreachable.message" = "您的设置可能是错误的，或者您可能需要激活 VPN 码。在帐户设置中检查您的主机名称。";
+"error.retrieving.metadata" = "无法加载 %@ 的属性。";
 "error.server.message" = "服务器上出现一个错误。";
 // Workflow
 "error.workflow.unable.to.complete.process" = "目前无法完成任务流程。\n\n%@";
-"error.workflow.unable.to.reassign.task" = "目前无法重新分配任务。\n\n%@";
+"error.workflow.unable.to.reassign.task" = "目前无法重新指派任务。\n\n%@";
 // New Version
 "error.new.version.unable.to.checkout.title" = "无法签出";
 "error.new.version.unable.to.checkout.message" = "无法签出 %@。\n\n%@";
@@ -168,33 +169,33 @@
 "error.person.profile.no.profile.title" = "配置文件错误";
 "error.person.profile.no.profile.message" = "找不到用户；%@";
 "error.person.profile.email.failed.title" = "发送失败";
-"error.person.profile.email.failed.message" = "无法发送电子邮件。请稍后重试。";
+"error.person.profile.email.failed.message" = "无法发送电子邮件。请稍后再试。";
 
 /**
  * Permissions
  */
 // Camera permissions
-"permissions.camera.denied.title" = "Camera denied title - ZH";
-"permissions.camera.denied.message" = "Camera denied message - ZH";
-"permissions.camera.restricted.title" = "Camera restricted title - ZH";
-"permissions.camera.restricted.message" = "Camera restricted message - ZH";
+"permissions.camera.denied.title" = "摄像头已关闭";
+"permissions.camera.denied.message" = "您先前已关闭 Alfresco 对摄像头的访问权限。";
+"permissions.camera.restricted.title" = "摄像头已关闭";
+"permissions.camera.restricted.message" = "您没有让 Alfresco 使用您摄像头的权限。";
 // Library permissions
-"permissions.library.denied.title" = "Library denied title - ZH";
-"permissions.library.denied.message" = "Library denied message - ZH";
-"permissions.library.restricted.title" = "Library restricted title - ZH";
-"permissions.library.restricted.message" = "Library restricted message - ZH";
+"permissions.library.denied.title" = "照片图库已关闭";
+"permissions.library.denied.message" = "您先前已关闭 Alfresco 对照片图库的访问权限。";
+"permissions.library.restricted.title" = "照片图库已关闭";
+"permissions.library.restricted.message" = "您没有让 Alfresco 使用照片图库的权限。";
 // Microphone permissions
-"permissions.microphone.denied.title" = "Microphone denied title - ZH";
-"permissions.microphone.denied.message" = "Microphone denied message - ZH";
+"permissions.microphone.denied.title" = "麦克风已关闭";
+"permissions.microphone.denied.message" = "您先前已关闭 Alfresco 对麦克风的访问权限。";
 // Location permissions
-"permissions.location.denied.title" = "Location denied title - ZH";
-"permissions.location.denied.message" = "Location denied message - ZH";
-"permissions.location.restricted.title" = "Location restricted title - ZH";
-"permissions.location.restricted.message" = "Location restricted message - ZH";
-"permissions.location.disabled.title" = "Location disabled title - ZH";
-"permissions.location.disabled.message" = "Location disabled message - ZH";
+"permissions.location.denied.title" = "位置数据已关闭";
+"permissions.location.denied.message" = "您先前已关闭 Alfresco 对位置数据的访问权限。";
+"permissions.location.restricted.title" = "位置数据已关闭";
+"permissions.location.restricted.message" = "您没有让 Alfresco 使用位置数据的权限。";
+"permissions.location.disabled.title" = "位置数据已关闭";
+"permissions.location.disabled.message" = "您设备上的位置数据已关闭。";
 // Settings button
-"permissions.settings.button" = "Open Settings - ZH";
+"permissions.settings.button" = "更改设置";
 
 /**
  * Custom error descriptions
@@ -237,31 +238,31 @@
 "accounttype.alfrescoServer" = "Alfresco 服务器";
 
 "accounttype.footer.alfrescoServer" = "连接至 Alfresco 服务器";
-"accounttype.footer.alfrescoCloud" = "访问您的 Alfresco in the Cloud 帐户";
+"accounttype.footer.alfrescoCloud" = "连接至您的 Alfresco in the Cloud 帐户";
 
 "accountdetails.placeholder.required" = "必填";
 "accountdetails.placeholder.optional" = "可选";
 "accountdetails.fields.email" = "电子邮件";
-"accountdetails.placeholder.email" = "example@acme.com";
+"accountdetails.placeholder.email" = "example@alfresco.com";
 "accountdetails.fields.hostname" = "主机名";
 "accountdetails.fields.description" = "说明";
 "accountdetails.fields.port" = "端口";
 "accountdetails.fields.protocol" = "HTTPS";
 "accountdetails.fields.servicedocument" = "服务文档";
-"accountdetails.fields.syncPreference" = "同步文件";
-"accountdetails.fields.syncPreference.footer" = "选择将收藏的内容与设备同步。同步超过 20 MB 的内容之前会显示警告";
+"accountdetails.fields.syncPreference" = "同步内容";
+"accountdetails.fields.syncPreference.footer" = "选择将内容与设备同步。同步超过 20 MB 的内容之前会显示警告";
 "accountdetails.buttons.client-certificate" = "客户端证书";
 "accountdetails.buttons.configuration" = "编辑主菜单";
 "accountdetails.header.authentication" = "帐户详细信息";
 "accountdetails.header.advanced" = "高级";
 "accountdetails.header.setting" = "设置";
 "accountdetails.header.main.menu.config" = "主菜单";
-"accountdetails.footer.main.menu.config.disabled" = "您的 Alfresco 管理员已关闭此功能。";
+"accountdetails.footer.main.menu.config.disabled" = "您的 IT 团队已关闭此功能。";
 "accountdetails.buttons.profile" = "编辑配置文件";
 "accountdetails.header.profile" = "配置文件";
 
 "accountdetails.alert.save.title" = "保存帐户";
-"accountdetails.alert.save.validationerror" = "无法保存帐户。请与您的 Alfresco 管理员核实您的帐户设置。";
+"accountdetails.alert.save.validationerror" = "无法保存帐户。请与您的 IT 团队核实帐户设置。";
 
 "accountdetails.fields.accountSettings" = "输入您的用户名和密码访问此帐户";
 "accountdetails.fields.confirmPassword" = "确认您的密码访问此帐户";
@@ -328,14 +329,14 @@
  */
 "multiselect.button.delete" = "删除";
 "multiselect.button.delete.counter" = "删除 (%u)";
-"multiselect.delete.confirmation.message.one-item" = "是否要从服务器中删除 1 个文件？";
-"multiselect.delete.confirmation.message.n-items" = "是否要从服务器中删除 %d 个文件？";
-"multiselect.delete.confirmation.message.one-download" = "是否要从 \"本地文件\" 中删除 1 个文件？";
-"multiselect.delete.confirmation.message.n-downloads" = "是否要从 \"本地文件\" 中删除 %d 个文件？";
+"multiselect.delete.confirmation.message.one-item" = "是否要从 Alfresco 中删除 1 个文件？";
+"multiselect.delete.confirmation.message.n-items" = "是否要从 Alfresco 中删除 %d 个文件？";
+"multiselect.delete.confirmation.message.one-download" = "是否要从本地文件中删除 1 个文件？";
+"multiselect.delete.confirmation.message.n-downloads" = "是否要从本地文件中删除 %d 个文件？";
 "multiselect.delete.completed.title" = "删除完成但有错误";
-"multiselect.delete.completed.message" = "已从服务器中删除 %@ 个文件。";
-"multiselect.delete.partial.message" = "只从服务器中删除 %@ 个文件。";
-"multiselect.delete.failure.message" = "所有文件都无法从服务器中删除。";
+"multiselect.delete.completed.message" = "已从 Alfresco 中删除 %@ 个文件。";
+"multiselect.delete.partial.message" = "已从 Alfresco 中删除 %@ 个文件。有些文件无法删除";
+"multiselect.delete.failure.message" = "所有文件都无法从 Alfresco 中删除。";
 
 /**
  * Node Picker
@@ -367,7 +368,7 @@
  * About View Controller
  */
 "about.title" = "关于";
-"about.content" = "Alfresco 是业务关键型内容管理和协作的开放平台。\n\nAlfresco Mobile 由 Alfresco Software, Inc. 设计和开发，连接 Alfresco in the Cloud 和 Alfresco 内部部署服务器（3.4.8 和更高版本）以随时安全访问您的企业文件。此移动应用程序使用您的 Alfresco 登录凭据连接至您的 Alfresco 存储库（通过 HTTP 或 HTTPS），并根据您的权限管理访问。";
+"about.content" = "Alfresco 是业务关键型内容管理和协作的开放平台。\n\nAlfresco Mobile 由 Alfresco Software, Inc. 设计和开发，连接 Alfresco in the Cloud 和 Alfresco One 和 Alfresco Community Edition（3.4.8 和更高版本）以随时安全访问您的企业文件。此移动应用程序使用您的 Alfresco 登录凭据连接至您的 Alfresco 存储库（通过 HTTP 或 HTTPS），并根据您的权限管理访问。";
 "about.version.number" = "版本：%@ (%@)";
 "about.build.date.time" = "创建日期：%s %s";
 
@@ -402,10 +403,10 @@
 "upload.audio.cell.button.play" = "播放";
 "upload.audio.cell.button.stop" = "停止";
 "upload.audio.setting.disabled.title" = "权限";
-"upload.audio.setting.disabled.message" = "此应用程序没有访问麦克风的权限。\n\n在您设备的 \"设置\" -> \"隐私\" -> \"麦克风\" 中更改此权限。";
+"upload.audio.setting.disabled.message" = "Alfresco 没有访问麦克风的权限。\n\n在您设备的 \"设置\" > \"隐私\" > \"麦克风\" 中更改此权限。";
 // confirmation
 "upload.confirm.dismissal.title" = "未保存的内容";
-"upload.confirm.dismissal.message" = "是否要上传此内容？ 如果现在不上传，您的内容会丢失。";
+"upload.confirm.dismissal.message" = "是否要上传此内容？如果现在不上传，您的内容会丢失。";
 "upload.confirm.dismissal.cancel" = "不上传";
 "upload.success-as.message" = "文件已作为 %@ 上传";
 
@@ -442,7 +443,7 @@
 "document.open-in.not.supported.title" = "\"打开方式\" 不可用";
 "document.open-in.not.supported.message" = "此应用程序不支持 \"打开方式\" 选项。";
 "document.open-in.noapps.title" = "没有支持的应用程序";
-"document.open-in.noapps.message" = "此设备中未安装可以打开此文件的应用程序。";
+"document.open-in.noapps.message" = "此设备中未安装可以打开此文件的任何应用程序。";
 
 /**
  * Login View Controller
@@ -562,13 +563,13 @@
  * Text File View Controller
  */
 "createtextfile.title" = "创建文本文件";
-"createtextfile.dismiss.confirmation.title" = "取消？";
-"createtextfile.dismiss.confirmation.message" = "是否确定要取消此文本文件的创建？\n\n所有工作将被放弃。";
+"createtextfile.dismiss.confirmation.title" = "放弃";
+"createtextfile.dismiss.confirmation.message" = "如果您没有保存此文本文件，工作将得不到保存。";
 "document.edit.button.discard" = "放弃更改";
 "document.edit.button.save" = "保存";
 "document.edit.failed.title" = "保存文件";
-"document.edit.savefailed.message" = "无法在服务器上保存文件。是否要将文件保存至您的 \"本地文件\"？";
-"document.edit.dismiss.confirmation.message" = "是否要取消对文件所做的更改？";
+"document.edit.savefailed.message" = "无法保存至 Alfresco。是否要将文件保存至您的 \"本地文件\"？";
+"document.edit.dismiss.confirmation.message" = "如果您没有保存更改，您的工作将得不到保存。";
 "document.edit.discard" = "放弃";
 "document.edit.continue.editing" = "继续编辑";
 
@@ -576,7 +577,7 @@
  * Policy Updated
  */
 "policy.updated.title" = "政策更新";
-"policy.updated.message" = "您的管理员已更新您的应用程序配置策略";
+"policy.updated.message" = "您的 IT 团队已更新您的应用程序配置策略";
 
 /**
  * Location Manager
@@ -620,7 +621,7 @@
 
 // Cell
 "tasks.cell.taskcompleted" = "%@ 已完成此任务";
-"tasks.cell.tasknotcompleted" = "%@ 尚未完成此任务";
+"tasks.cell.tasknotcompleted" = "%@ 没有完成此任务";
 // Process definition titles - these match workflow-message.properties in the repository
 "tasks.process.activitiAdhoc" = "新任务";
 "tasks.process.activitiParallelReview" = "发送文件供复查";
@@ -636,7 +637,7 @@
  */
 "task.choose.task.type.title" = "选择任务类型";
 "task.type.workflow.todo" = "待办事项";
-"task.type.workflow.review.and.approve" = "复查和审批";
+"task.type.workflow.review.and.approve" = "复查和批准";
 "task.type.workflow.invitation" = "邀请";
 "task.type.workflow.todo.footer" = "向某人指派一项任务。";
 "task.type.workflow.review.and.approve.footer" = "向一人或多人指派一项任务以复查和审批内容。";
@@ -672,13 +673,13 @@
  */
 "settings.title" = "设置";
 "settings.general.title" = "常规";
-"settings.sync.on.cellular" = "单元同步";
-"settings.sync.on.cellular.description" = "当您有 Wi-Fi 连接时，关闭以仅同步收藏内容。";
+"settings.sync.on.cellular" = "使用数据同步";
+"settings.sync.on.cellular.description" = "当您有 Wi-Fi 连接时，关闭以仅同步内容。";
 "settings.send.diagnostics" = "发送诊断数据";
 "settings.send.diagnostics.description" = "为了帮助我们改进 Alfresco Mobile，我们收集匿名技术诊断数据。如果愿意，请关闭。";
 "settings.security.title" = "安全性";
 "settings.security.file.protection" = "文件保护";
-"settings.security.file.protection.description" = "当设备锁定时，加密其上存储的文件。";
+"settings.security.file.protection.description" = "当此设备锁定时，加密其上存储的文件。";
 "settings.security.passcode.lock" = "密码锁";
 "settings.security.passcode.lock.description" = "在尝试输入 %d 次失败后您的 Alfresco 帐户详细资料、已同步文件和本地文件将被擦除。";
 "settings.security.passcode.lock.title" = "密码";
@@ -691,20 +692,20 @@
 "settings.security.passcode.enter.title" = "输入密码";
 "settings.security.passcode.enter" = "输入您的 Alfresco 密码";
 "settings.security.passcode.re-enter" = "重新输入您的 Alfresco 密码";
-"settings.security.passcode.missmatch" = "密码不匹配。 请再试一次。";
+"settings.security.passcode.missmatch" = "密码不匹配。请再试一次。";
 "settings.security.passcode.enter.new" = "输入您的新 Alfresco 密码";
 "settings.security.passcode.enter.old" = "输入您的旧 Alfresco 密码";
 "settings.security.passcode.re-enter.new" = "重新输入您的新密码";
-"settings.security.passcode.attempts.1" = "还有 1 次输入机会。 如果此次输入失败，Alfresco Mobile 将重新启动，并且您的帐户详细资料、已同步文件和本地文件将被擦除。";
+"settings.security.passcode.attempts.1" = "还有 1 次输入机会。如果此次输入失败，Alfresco Mobile 将重新启动，并且您的帐户详细资料、已同步文件和本地文件将被擦除。";
 "settings.security.passcode.attempts.several" = "剩余 %d 次输入机会";
 "settings.reset.title" = "清除数据";
 "settings.reset.accounts" = "清除帐户";
-"settings.reset.accounts.confirmation.title" = "是否清除帐户？";
-"settings.reset.accounts.confirmation.message" = "是否确定要删除所有帐户？\n\n您无法撤销此操作。";
+"settings.reset.accounts.confirmation.title" = "清除帐户";
+"settings.reset.accounts.confirmation.message" = "是否确定要删除所有帐户\n\n您无法撤销此操作。";
 "settings.reset.entire.app" = "清除帐户、缓存和下载";
 "settings.reset.entire.app.confirmation.title" = "是否清除帐户、缓存和下载？";
-"settings.reset.entire.app.confirmation.message" = "是否确定要删除所有帐户、缓存的数据和下载？\n\n您无法撤销此操作";
-"settings.reset.confirmation.title" = "数据已清除";
+"settings.reset.entire.app.confirmation.message" = "是否确定要删除所有帐户、缓存的数据和下载\n\n无法撤销此操作";
+"settings.reset.confirmation.title" = "清除数据";
 "settings.reset.confirmation.message" = "请重新启动 Alfresco 以完成。\n\n要重新启动，请按两次设备的 \"主页\" 按钮以显示正在运行的应用程序。滑动 Alfresco 离开屏幕顶部，以将其清除。您现在可以重新使用 Alfresco。";
 "settings.reset.description" = "清除帐户会从应用程序中删除所有帐户。清除帐户、缓存和下载会将应用程序重新设置为全新安装。";
 "settings.full.text.search" = "全文搜索";
@@ -720,7 +721,7 @@
 /**
  * Action Sheet Actions
  */
-"action.email" = "发送电子邮件";
+"action.email" = "电子邮件";
 "action.emailAsLink" = "发送电子邮件链接";
 "action.open.in" = "打开方式...";
 "action.like" = "喜欢";
@@ -736,6 +737,8 @@
 "action.review" = "复查";
 "action.edit" = "编辑";
 "action.new.version" = "更新";
+"action.sync" = "同步";
+"action.unsync" = "取消同步";
 // Alerts
 "action.rename.alert.title" = "重命名";
 "action.rename.alert.message" = "重命名文件为：";
@@ -750,20 +753,28 @@
 "action.delete.success.title" = "删除成功";
 "action.delete.success.message" = "成功删除了 %@。";
 "action.delete.success.message.sync" = "成功删除了 %@，一个副本已保存到 \"本地文件\"";
-"action.delete.failed.title" = "无法删除";
+"action.delete.failed.title" = "删除失败";
 "action.delete.failed.message" = "无法删除 %@。";
 "action.confirmation.back.message" = "是否要保存对此帐户所做更改？";
 "action.confirmation.back.title" = "未保存的更改";
+"action.disablesync.title" = "关闭同步";
+"action.disablesync.message" = "此操作将会关闭同步功能并删除所有已同步的内容。";
+"action.disablesync.confirm" = "关闭同步";
+"action.pendingoperations.title" = "未完成同步";
+"action.pendingoperations.message" = "有些文件仍在同步至 Alfresco。如果现在关闭同步，这些将无法完成。";
+"action.pendingoperations.cancel" = "继续同步";
+"action.pendingoperations.confirm" = "关闭同步";
+
 
 /**
  * SaveBack
  */
 "saveback.hud.message" = "正在保存...";
-"saveback.saved.successfully.message" = "文件 %@ 已成功保存。";
+"saveback.saved.successfully.message" = "成功保存文件 %@。";
 "saveback.completed.title" = "保存回操作已完成";
 "saveback.completed.message" = "%@ 已成功保存回 Alfresco";
-"saveback.failed.title" = "保存回操作失败";
-"saveback.failed.message" = "%@ 已保存到 \"本地文件\"";
+"saveback.failed.title" = "保存回失败";
+"saveback.failed.message" = "%@ 已保存至本地文件";
 // Location Picker
 "saveback.locationpicker.title" = "选择位置";
 "saveback.locationpicker.other" = "其他";
@@ -783,7 +794,7 @@
 "new.version.comment.title" = "评论";
 "new.version.commet.placeholder" = "版本评论（可选）";
 "new.version.upload.successful.title" = "文件已更新";
-"new.version.upload.successful.message" = "已成功更新 %@";
+"new.version.upload.successful.message" = "%@ 已成功更新";
 
 /**
  * File Preview Controller
@@ -811,7 +822,7 @@
 /**
  * MDM
  */
-"mdm.missing.keys.description" = "尚未设置下列键：\n%@\n请联系您的管理员。";
+"mdm.missing.keys.description" = "尚未设置下列键：\n%@\n请联系您的 IT 团队。";
 
 /**
  * Configuration
@@ -829,6 +840,7 @@
 "view-favorite-default" = "收藏夹";
 "view-search-default" = "搜索";
 "view-local-default" = "本地文件";
+"view-sync-default" = "已同步内容";
 
 "configuration.manager.configuration.file.updated.title" = "配置已更新";
 "configuration.manager.configuration.file.updated.message" = "配置文件已更新";
@@ -896,3 +908,9 @@
 "search.searchfor" = "搜索";
 "search.search" = "搜索";
 "search.previoussearches" = "以前的搜索";
+
+/**
+ * Sync Info Panel
+ */
+"sync.info.skip" = "跳过";
+"sync.info.next.laststep" = "好的，我找到它了。";

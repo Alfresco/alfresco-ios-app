@@ -24,7 +24,7 @@
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationWhenInUseUsageDescription = "您的位置将用于为此设备拍摄的照片添加地理标记。";
-NSMicrophoneUsageDescription = "麦克风将用于录制声音，然后该声音可上传至存储库。";
-NSPhotoLibraryUsageDescription = "Library Usage Description String - ZH";
-NSCameraUsageDescription = "You can take photos to upload to Alfresco. - ZH";
+NSLocationWhenInUseUsageDescription = "您的位置将用于为此设备拍摄并上传至 Alfresco 的照片添加地理标记。";
+NSMicrophoneUsageDescription = "麦克风将用于录制声音，然后该声音可上传至 Alfresco。";
+NSPhotoLibraryUsageDescription = "您可将照片图库中的照片和视频上传至 Alfresco。";
+NSCameraUsageDescription = "您可以拍摄照片以上传至 Alfresco。";

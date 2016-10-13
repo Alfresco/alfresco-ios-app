@@ -24,7 +24,7 @@
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationWhenInUseUsageDescription = "I dati sulla posizione saranno utilizzati per applicare il geotag alle foto scattate con il dispositivo.";
-NSMicrophoneUsageDescription = "Il microfono sarà utilizzato per registrare file audio che potranno poi essere caricati nel repository.";
-NSPhotoLibraryUsageDescription = "Library Usage Description String - IT";
-NSCameraUsageDescription = "You can take photos to upload to Alfresco. - IT";
+NSLocationWhenInUseUsageDescription = "La posizione sarà utilizzata per applicare il geotag alle foto scattate con questo dispositivo e caricate su Alfresco.";
+NSMicrophoneUsageDescription = "Il microfono sarà utilizzato per registrare file audio che potranno poi essere caricati su Alfresco.";
+NSPhotoLibraryUsageDescription = "È possibile caricare foto e video della propria Libreria foto su Alfresco.";
+NSCameraUsageDescription = "È possibile scattare foto da caricare su Alfresco.";
