@@ -462,6 +462,18 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
 - (void)editingDocumentCompleted:(NSNotification *)notification
 {
     self.document = notification.object;
+    
+    if ([self.document isNodeInSyncList])
+    {
+        NSString *contentPath = [self.document contentPath];
+        if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
+        {
+            contentPath = nil;
+        }
+        
+        self.filePathForFileToLoad = contentPath;
+    }
+    
     [self refreshViewController];
 }
 

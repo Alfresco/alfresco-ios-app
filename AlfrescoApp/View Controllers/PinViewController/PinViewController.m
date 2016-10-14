@@ -601,6 +601,9 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
             break;
             
         case PinFlowSet:
+        case PinFlowUnset:
+        case PinFlowEnter:
+        case PinFlowVerify:
             _titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeEnterString, @"Enter your Alfresco Passcode");
             break;
             
