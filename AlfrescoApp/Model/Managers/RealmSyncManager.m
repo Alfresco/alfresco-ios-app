@@ -629,6 +629,7 @@
             [node saveNodeInRealmIsTopLevelNode:YES];
             [syncOpQ setNodeForSyncingAsTopLevel:node];
             [self checkNode:[NSArray arrayWithObject:node] forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
+                [self trackSyncRunWithNodesToDownload:@[node] nodesToUpload:nil];
                 [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:^(BOOL completed) {
                     completionBlock(completed);
                 }];
@@ -652,7 +653,7 @@
                     {
                         syncProgressType = [syncOpQ syncProgressTypeForNode:node];
                         RLMRealm *realm = [RLMRealm defaultRealm];
-                        NSArray *documents = [[RealmManager sharedManager] allDocumentsInFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelDocuments:YES inRealm:realm];
+                        NSArray *documents = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
                         [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
                             if(syncProgressType == SyncProgressTypeInProcessing)
                             {
@@ -664,6 +665,9 @@
                                 [self cleanRealmOfNode:node];
                             }
                         }];
+                        
+                        NSArray *allNodes = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocumentsAndFolders inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
+                        [self trackSyncRunWithNodesToDownload:allNodes nodesToUpload:nil];
                     }
                 }];
             }
@@ -1646,7 +1650,53 @@
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
         [syncOpQ downloadContentsForNodes:self.nodesToDownload withCompletionBlock:nil];
         [syncOpQ uploadContentsForNodes:self.nodesToUpload withCompletionBlock:nil];
+        
+        [self trackSyncRunWithNodesToDownload:self.nodesToDownload nodesToUpload:self.nodesToUpload];
     });
+}
+
+#pragma mark - Analytics
+
+- (void)trackSyncRunWithNodesToDownload:(NSArray *)nodesToDownload nodesToUpload:(NSArray *)nodesToUpload
+{
+    __block NSUInteger numberOfFiles = 0;
+    __block NSUInteger numberOfFolders = 0;
+    __block unsigned long long totalFileSize = 0;
+    
+    void (^processNodesArray)(NSArray *) = ^(NSArray *nodesArray){
+        [nodesArray enumerateObjectsUsingBlock:^(AlfrescoNode *node, NSUInteger idx, BOOL * stop){
+            if (node.isDocument)
+            {
+                numberOfFiles++;
+                totalFileSize += ((AlfrescoDocument *)node).contentLength;
+            }
+            else
+            {
+                numberOfFolders++;
+            }
+        }];
+    };
+    
+    processNodesArray(nodesToDownload);
+    processNodesArray(nodesToUpload);
+    
+    if (numberOfFiles)
+    {
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySync
+                                                          action:kAnalyticsEventActionRun
+                                                           label:kAnalyticsEventLabelSyncedFiles
+                                                           value:@(numberOfFiles)
+                                                    customMetric:AnalyticsMetricFileSize
+                                                     metricValue:@(totalFileSize)];
+    }
+    
+    if (numberOfFolders)
+    {
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySync
+                                                          action:kAnalyticsEventActionRun
+                                                           label:kAnalyticsEventLabelSyncedFolders
+                                                           value:@(numberOfFolders)];
+    }
 }
 
 @end

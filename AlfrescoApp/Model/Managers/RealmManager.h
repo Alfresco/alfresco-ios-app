@@ -21,6 +21,12 @@
 #import "RealmSyncError.h"
 #import "RealmSyncNodeInfo.h"
 
+typedef NS_ENUM(NSUInteger, NodesType) {
+    NodesTypeDocuments,
+    NodesTypeFolders,
+    NodesTypeDocumentsAndFolders,
+};
+
 @interface RealmManager : NSObject
 
 + (RealmManager *)sharedManager;
@@ -42,7 +48,7 @@
 - (RLMResults *)topLevelSyncNodesInRealm:(RLMRealm *)realm;
 - (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm;
 - (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm;
-- (NSArray *)allDocumentsInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm;
+- (NSArray *)allNodesWithType:(NodesType)nodesType inFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelNodes:(BOOL)shouldIncludeTopLevelNodes inRealm:(RLMRealm *)realm;
 
 - (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
 - (void)resetDefaultRealmConfiguration;

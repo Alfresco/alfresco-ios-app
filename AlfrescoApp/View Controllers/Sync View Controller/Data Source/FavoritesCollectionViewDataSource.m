@@ -37,9 +37,23 @@
     }
     self.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
     
+    [self registerForNotifications];
     [self reloadDataSource];
     
     return self;
+}
+
+- (void)registerForNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didAddNodeToFavorites:)
+                                                 name:kFavouritesDidAddNodeNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didRemoveNodeFromFavorites:)
+                                                 name:kFavouritesDidRemoveNodeNotification
+                                               object:nil];
 }
 
 - (void)reloadDataSource
@@ -54,6 +68,13 @@
         if(array)
         {
             self.dataSourceCollection = [array mutableCopy];
+            
+            if (ignoreCache == NO)
+            {
+                NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+                [self.dataSourceCollection sortUsingDescriptors:@[sortDescriptor]];
+            }
+            
             [weakSelf.delegate dataSourceUpdated];
         }
         else
@@ -61,6 +82,24 @@
             [weakSelf.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.favorites.failed", @"Favorites failed")];
         }
     }];
+}
+
+#pragma mark - Notifications Handlers
+
+- (void)didAddNodeToFavorites:(NSNotification *)notification
+{
+    [self reloadDataSource];
+}
+
+- (void)didRemoveNodeFromFavorites:(NSNotification *)notification
+{
+    AlfrescoNode *node = (AlfrescoNode *)notification.object;
+    
+    if (node)
+    {
+        [self.dataSourceCollection removeObject:node];
+        [self reloadDataSource];
+    }
 }
 
 @end
