@@ -120,7 +120,8 @@ extern NSString * const kAnalyticsEventActionFullScreenView;
 extern NSString * const kAnalyticsEventActionUpdate;
 extern NSString * const kAnalyticsEventActionDownload;
 extern NSString * const kAnalyticsEventActionOpen;
-extern NSString * const kAnalyticsEventActionSync; // 2.3
+extern NSString * const kAnalyticsEventActionSync;
+extern NSString * const kAnalyticsEventActionUnSync;
 extern NSString * const kAnalyticsEventActionEmail;
 extern NSString * const kAnalyticsEventActionEmailLink;
 extern NSString * const kAnalyticsEventActionSendForReview;

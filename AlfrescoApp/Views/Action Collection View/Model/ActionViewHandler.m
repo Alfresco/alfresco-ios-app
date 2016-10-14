@@ -676,6 +676,11 @@
     [[RealmSyncManager sharedManager] addNodeToSync:self.node withCompletionBlock:^(BOOL completed){
         if (completed)
         {
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                              action:kAnalyticsEventActionSync
+                                                               label:[weakSelf analyticsLabel]
+                                                               value:@1];
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnsync,
                                            kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unsync", @"Unsync Action"),
@@ -691,6 +696,12 @@
 {
     __weak typeof(self) weakSelf = self;
     [[RealmSyncManager sharedManager] unsyncNode:self.node withCompletionBlock:^(BOOL completed) {
+        
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                          action:kAnalyticsEventActionUnSync
+                                                           label:[weakSelf analyticsLabel]
+                                                           value:@1];
+
         dispatch_async(dispatch_get_main_queue(), ^{
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierSync,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.sync", @"Sync Action"),
