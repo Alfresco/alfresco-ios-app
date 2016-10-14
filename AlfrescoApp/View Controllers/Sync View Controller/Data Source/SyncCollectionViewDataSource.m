@@ -99,6 +99,9 @@
         }
     }
     
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    [self.dataSourceCollection sortUsingDescriptors:@[sortDescriptor]];
+    
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [weakSelf.delegate dataSourceUpdated];
