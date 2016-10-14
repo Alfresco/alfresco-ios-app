@@ -235,30 +235,45 @@
     return results;
 }
 
-- (NSArray *)allDocumentsInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm
+- (NSArray *)allNodesWithType:(NodesType)nodesType inFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelNodes:(BOOL)shouldIncludeTopLevelNodes inRealm:(RLMRealm *)realm
 {
     NSMutableArray *resultsArray = [NSMutableArray new];
     
     RealmSyncNodeInfo *folderSyncNode = [self syncNodeInfoForObject:folder ifNotExistsCreateNew:NO inRealm:realm];
-    if(folderSyncNode)
+    if (folderSyncNode)
     {
+        if (nodesType == NodesTypeFolders || nodesType == NodesTypeDocumentsAndFolders)
+        {
+            if (folderSyncNode.isTopLevelSyncNode == NO || (folderSyncNode.isTopLevelSyncNode && shouldIncludeTopLevelNodes))
+            {
+                [resultsArray addObject:folderSyncNode.alfrescoNode];
+            }
+        }
+        
         RLMLinkingObjects *children = folderSyncNode.nodes;
+        
         for(RealmSyncNodeInfo *child in children)
         {
-            if(child.isFolder && recursive)
+            if (child.isFolder && recursive)
             {
                 AlfrescoFolder *childFolder = (AlfrescoFolder *)child.alfrescoNode;
                 if(childFolder)
                 {
-                    [resultsArray addObjectsFromArray:[self allDocumentsInFolder:childFolder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm]];
+                    [resultsArray addObjectsFromArray:[self allNodesWithType:nodesType inFolder:childFolder recursive:recursive includeTopLevelNodes:shouldIncludeTopLevelNodes inRealm:realm]];
                 }
             }
-            else if(!child.isFolder)
+            else if (!child.isFolder)
             {
-                AlfrescoNode *childNode = child.alfrescoNode;
-                if(childNode)
+                if (nodesType == NodesTypeDocuments || nodesType == NodesTypeDocumentsAndFolders)
                 {
-                    [resultsArray addObject:childNode];
+                    AlfrescoNode *childNode = child.alfrescoNode;
+                    if(childNode)
+                    {
+                        if (childNode.isTopLevelSyncNode == NO || (childNode.isTopLevelSyncNode && shouldIncludeTopLevelNodes))
+                        {
+                            [resultsArray addObject:childNode];
+                        }
+                    }
                 }
             }
         }
