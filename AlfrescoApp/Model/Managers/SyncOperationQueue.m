@@ -487,7 +487,7 @@
         if(folderChildren.count == 0)
         {
             RLMRealm *realm = [RLMRealm defaultRealm];
-            folderChildren = [[RealmManager sharedManager] allDocumentsInFolder:folder recursive:YES includeTopLevelDocuments:NO inRealm:realm];
+            folderChildren = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:folder recursive:YES includeTopLevelNodes:NO inRealm:realm];
         }
         for(AlfrescoNode *subNode in folderChildren)
         {
@@ -607,7 +607,7 @@
         else
         {
             RLMRealm *realm = [RLMRealm defaultRealm];
-            NSArray *childrenDocumentsOfFolder = [[RealmManager sharedManager] allDocumentsInFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelDocuments:NO inRealm:realm];
+            NSArray *childrenDocumentsOfFolder = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:NO inRealm:realm];
             for(AlfrescoNode *child in childrenDocumentsOfFolder)
             {
                 if(self.syncOperations[[child syncIdentifier]])

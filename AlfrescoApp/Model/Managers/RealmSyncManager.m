@@ -653,7 +653,7 @@
                     {
                         syncProgressType = [syncOpQ syncProgressTypeForNode:node];
                         RLMRealm *realm = [RLMRealm defaultRealm];
-                        NSArray *documents = [[RealmManager sharedManager] allDocumentsInFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelDocuments:YES inRealm:realm];
+                        NSArray *documents = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
                         [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
                             if(syncProgressType == SyncProgressTypeInProcessing)
                             {
@@ -666,7 +666,7 @@
                             }
                         }];
                         
-                        NSArray *allNodes = [[RealmManager sharedManager] allNodesInFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelDocuments:YES inRealm:realm];
+                        NSArray *allNodes = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocumentsAndFolders inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
                         [self trackSyncRunWithNodesToDownload:allNodes nodesToUpload:nil];
                     }
                 }];

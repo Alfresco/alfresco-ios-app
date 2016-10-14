@@ -21,12 +21,6 @@
 #import "UserAccount.h"
 #import "AlfrescoNode+Sync.h"
 
-typedef NS_ENUM(NSUInteger, NodesType) {
-    NodesTypeDocuments,
-    NodesTypeFolders,
-    NodesTypeDocumentsAndFolders,
-};
-
 @implementation RealmManager
 
 + (RealmManager *)sharedManager
@@ -241,17 +235,7 @@ typedef NS_ENUM(NSUInteger, NodesType) {
     return results;
 }
 
-- (NSArray *)allDocumentsInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm
-{
-    return [self allNodesWithType:NodesTypeDocuments inFolder:folder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm];
-}
-
-- (NSArray *)allNodesInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm
-{
-    return [self allNodesWithType:NodesTypeDocumentsAndFolders inFolder:folder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm];
-}
-
-- (NSArray *)allNodesWithType:(NodesType)nodesType inFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm
+- (NSArray *)allNodesWithType:(NodesType)nodesType inFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelNodes:(BOOL)shouldIncludeTopLevelNodes inRealm:(RLMRealm *)realm
 {
     NSMutableArray *resultsArray = [NSMutableArray new];
     
@@ -260,7 +244,10 @@ typedef NS_ENUM(NSUInteger, NodesType) {
     {
         if (nodesType == NodesTypeFolders || nodesType == NodesTypeDocumentsAndFolders)
         {
-            [resultsArray addObject:folderSyncNode.alfrescoNode];
+            if (folderSyncNode.isTopLevelSyncNode == NO || (folderSyncNode.isTopLevelSyncNode && shouldIncludeTopLevelNodes))
+            {
+                [resultsArray addObject:folderSyncNode.alfrescoNode];
+            }
         }
         
         RLMLinkingObjects *children = folderSyncNode.nodes;
@@ -272,7 +259,7 @@ typedef NS_ENUM(NSUInteger, NodesType) {
                 AlfrescoFolder *childFolder = (AlfrescoFolder *)child.alfrescoNode;
                 if(childFolder)
                 {
-                    [resultsArray addObjectsFromArray:[self allNodesWithType:nodesType inFolder:childFolder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm]];
+                    [resultsArray addObjectsFromArray:[self allNodesWithType:nodesType inFolder:childFolder recursive:recursive includeTopLevelNodes:shouldIncludeTopLevelNodes inRealm:realm]];
                 }
             }
             else if (!child.isFolder)
@@ -282,7 +269,10 @@ typedef NS_ENUM(NSUInteger, NodesType) {
                     AlfrescoNode *childNode = child.alfrescoNode;
                     if(childNode)
                     {
-                        [resultsArray addObject:childNode];
+                        if (childNode.isTopLevelSyncNode == NO || (childNode.isTopLevelSyncNode && shouldIncludeTopLevelNodes))
+                        {
+                            [resultsArray addObject:childNode];
+                        }
                     }
                 }
             }
