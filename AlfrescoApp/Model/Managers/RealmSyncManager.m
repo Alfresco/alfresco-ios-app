@@ -1663,29 +1663,22 @@
     __block NSUInteger numberOfFolders = 0;
     __block unsigned long long totalFileSize = 0;
     
-    [nodesToDownload enumerateObjectsUsingBlock:^(AlfrescoNode *node, NSUInteger idx, BOOL * stop){
-        if (node.isDocument)
-        {
-            numberOfFiles++;
-            totalFileSize += ((AlfrescoDocument *)node).contentLength;
-        }
-        else
-        {
-            numberOfFolders++;
-        }
-    }];
+    void (^processNodesArray)(NSArray *) = ^(NSArray *nodesArray){
+        [nodesArray enumerateObjectsUsingBlock:^(AlfrescoNode *node, NSUInteger idx, BOOL * stop){
+            if (node.isDocument)
+            {
+                numberOfFiles++;
+                totalFileSize += ((AlfrescoDocument *)node).contentLength;
+            }
+            else
+            {
+                numberOfFolders++;
+            }
+        }];
+    };
     
-    [nodesToUpload enumerateObjectsUsingBlock:^(AlfrescoNode *node, NSUInteger idx, BOOL *stop){
-        if (node.isDocument)
-        {
-            numberOfFiles++;
-            totalFileSize += ((AlfrescoDocument *)node).contentLength;
-        }
-        else
-        {
-            numberOfFolders++;
-        }
-    }];
+    processNodesArray(nodesToDownload);
+    processNodesArray(nodesToUpload);
     
     if (numberOfFiles)
     {

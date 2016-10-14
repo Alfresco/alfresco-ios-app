@@ -21,6 +21,12 @@
 #import "UserAccount.h"
 #import "AlfrescoNode+Sync.h"
 
+typedef NS_ENUM(NSUInteger, NodesType) {
+    NodesTypeDocuments,
+    NodesTypeFolders,
+    NodesTypeDocumentsAndFolders,
+};
+
 @implementation RealmManager
 
 + (RealmManager *)sharedManager
@@ -237,44 +243,25 @@
 
 - (NSArray *)allDocumentsInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm
 {
-    NSMutableArray *resultsArray = [NSMutableArray new];
-    
-    RealmSyncNodeInfo *folderSyncNode = [self syncNodeInfoForObject:folder ifNotExistsCreateNew:NO inRealm:realm];
-    if(folderSyncNode)
-    {
-        RLMLinkingObjects *children = folderSyncNode.nodes;
-        for(RealmSyncNodeInfo *child in children)
-        {
-            if(child.isFolder && recursive)
-            {
-                AlfrescoFolder *childFolder = (AlfrescoFolder *)child.alfrescoNode;
-                if(childFolder)
-                {
-                    [resultsArray addObjectsFromArray:[self allDocumentsInFolder:childFolder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm]];
-                }
-            }
-            else if(!child.isFolder)
-            {
-                AlfrescoNode *childNode = child.alfrescoNode;
-                if(childNode)
-                {
-                    [resultsArray addObject:childNode];
-                }
-            }
-        }
-    }
-    
-    return resultsArray;
+    return [self allNodesWithType:NodesTypeDocuments inFolder:folder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm];
 }
 
 - (NSArray *)allNodesInFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm
+{
+    return [self allNodesWithType:NodesTypeDocumentsAndFolders inFolder:folder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm];
+}
+
+- (NSArray *)allNodesWithType:(NodesType)nodesType inFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelDocuments:(BOOL)shouldIncludeTopLevelDocuments inRealm:(RLMRealm *)realm
 {
     NSMutableArray *resultsArray = [NSMutableArray new];
     
     RealmSyncNodeInfo *folderSyncNode = [self syncNodeInfoForObject:folder ifNotExistsCreateNew:NO inRealm:realm];
     if (folderSyncNode)
     {
-        [resultsArray addObject:folderSyncNode.alfrescoNode];
+        if (nodesType == NodesTypeFolders || nodesType == NodesTypeDocumentsAndFolders)
+        {
+            [resultsArray addObject:folderSyncNode.alfrescoNode];
+        }
         
         RLMLinkingObjects *children = folderSyncNode.nodes;
         
@@ -285,18 +272,20 @@
                 AlfrescoFolder *childFolder = (AlfrescoFolder *)child.alfrescoNode;
                 if(childFolder)
                 {
-                    [resultsArray addObjectsFromArray:[self allNodesInFolder:childFolder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm]];
+                    [resultsArray addObjectsFromArray:[self allNodesWithType:nodesType inFolder:childFolder recursive:recursive includeTopLevelDocuments:shouldIncludeTopLevelDocuments inRealm:realm]];
                 }
             }
             else if (!child.isFolder)
             {
-                AlfrescoNode *childNode = child.alfrescoNode;
-                if(childNode)
+                if (nodesType == NodesTypeDocuments || nodesType == NodesTypeDocumentsAndFolders)
                 {
-                    [resultsArray addObject:childNode];
+                    AlfrescoNode *childNode = child.alfrescoNode;
+                    if(childNode)
+                    {
+                        [resultsArray addObject:childNode];
+                    }
                 }
             }
-            
         }
     }
     

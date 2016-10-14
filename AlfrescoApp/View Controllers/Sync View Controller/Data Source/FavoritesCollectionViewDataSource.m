@@ -86,14 +86,14 @@
 
 #pragma mark - Notifications Handlers
 
-- (void)didAddNodeToFavorites:(NSNotification *)note
+- (void)didAddNodeToFavorites:(NSNotification *)notification
 {
     [self reloadDataSource];
 }
 
-- (void)didRemoveNodeFromFavorites:(NSNotification *)note
+- (void)didRemoveNodeFromFavorites:(NSNotification *)notification
 {
-    AlfrescoNode *node = (AlfrescoNode *)note.object;
+    AlfrescoNode *node = (AlfrescoNode *)notification.object;
     
     if (node)
     {
