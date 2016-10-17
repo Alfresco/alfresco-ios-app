@@ -96,7 +96,7 @@
 "sync.state.waiting-to-sync" = "正在同步，请稍候...";
 "sync.state.failed-to-sync" = "同步失败";
 "sync.progress.label.singular" = "正在同步 1 个文件，剩余 %@ 个文件"; // example: "Syncing 1 file, 238.3 MB left"
-"sync.progress.label.plural" = "正在同步 %d 个文件，剩余 %@ 个文件"; // example: "Syncing 5 files, 238.3 MB left"
+"sync.progress.label.plural" = "%d 个文件，剩余 %@"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "同步";
 "sync.cancelAll.alert.message" = "取消所有同步操作？";
 "sync.cancelAll.alert.button.continue" = "继续";

@@ -86,7 +86,7 @@
  */
 "favourites.title" = "Favoritos";
 "favourites.empty" = "Ningún favorito";
-"sync.title" = "Contenido sincronizado";
+"sync.title" = "Sincronizado";
 "sync.empty" = "No hay contenido sincronizado";
 "sync.downloadsize.prompt.title" = "Tamaño de la descarga";
 "sync.downloadsize.prompt.message" = "Sincronizar tamaño de la descarga %@. ¿Desea continuar?";
@@ -94,9 +94,9 @@
 "sync.downloadsize.prompt.confirm" = "Sincronizar ahora";
 "sync.enable.title" = "Sincronizar ficheros";
 "sync.state.waiting-to-sync" = "Esperando sincronización...";
-"sync.state.failed-to-sync" = "Sincronización fallida";
+"sync.state.failed-to-sync" = "Sincroniz. fallida";
 "sync.progress.label.singular" = "Sincronizando 1 fichero, quedan %@"; // example: "Syncing 1 file, 238.3 MB left"
-"sync.progress.label.plural" = "Sincronizando %d ficheros, quedan %@"; // example: "Syncing 5 files, 238.3 MB left"
+"sync.progress.label.plural" = "%d ficheros, quedan %@"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "Sincronizar";
 "sync.cancelAll.alert.message" = "¿Cancelar todas las operaciones de sincronización?";
 "sync.cancelAll.alert.button.continue" = "Continuar";
@@ -208,7 +208,7 @@
 "sites.title" = "Sitios";
 "sites.empty" = "Ningún sitio";
 "sites.segmentControl.mysites" = "Mis sitios"; // string length should not be extended
-"sites.segmentControl.favoritesites" = "Sitios favoritos"; // string length should not be extended
+"sites.segmentControl.favoritesites" = "Favoritos"; // string length should not be extended
 "sites.segmentControl.allsites" = "Todos los sitios"; // string length should not be extended
 "sites.segmentControl.sitefinder" = "Buscador"; // string length should not be extended
 "sites.site.favorited.banner" = "Ha marcado como favorito %@";
@@ -220,7 +220,7 @@
 
 // Site Cell Buttons
 "sites.siteCell.favorite" = "Favorito"; // string length should not be extended
-"sites.siteCell.unfavorite" = "No favorito"; // string length should not be extended
+"sites.siteCell.unfavorite" = "Quitar"; // string length should not be extended
 "sites.siteCell.leave" = "Abandonar"; // string length should not be extended
 "sites.siteCell.cancel.request" = "Cancelar solicitud"; // string length should not be extended
 "sites.siteCell.request.to.join" = "Solicitar unirse"; // string length should not be extended

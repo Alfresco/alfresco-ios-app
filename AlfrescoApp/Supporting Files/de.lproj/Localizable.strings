@@ -86,7 +86,7 @@
  */
 "favourites.title" = "Favoriten";
 "favourites.empty" = "Keine Favoriten";
-"sync.title" = "Synchronisierter Inhalt";
+"sync.title" = "Synchronisiert";
 "sync.empty" = "Kein synchronisierter Inhalt";
 "sync.downloadsize.prompt.title" = "Download-Größe";
 "sync.downloadsize.prompt.message" = "Download-Größe %@ synchronisieren. Möchten Sie fortfahren?";
@@ -94,9 +94,9 @@
 "sync.downloadsize.prompt.confirm" = "Jetzt synchronisieren";
 "sync.enable.title" = "Dateien synchronisieren";
 "sync.state.waiting-to-sync" = "Warten auf Synchronisierung...";
-"sync.state.failed-to-sync" = "Synchronisierung fehlgeschlagen";
+"sync.state.failed-to-sync" = "Sync-Fehler";
 "sync.progress.label.singular" = "1 Datei wird synchronisiert; %@ übrig"; // example: "Syncing 1 file, 238.3 MB left"
-"sync.progress.label.plural" = "%d Dateien werden synchronisiert; %@ übrig"; // example: "Syncing 5 files, 238.3 MB left"
+"sync.progress.label.plural" = "%d Dateien, %@ übrig"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "Synchronisieren";
 "sync.cancelAll.alert.message" = "Alle Synchronisierungsvorgänge abbrechen?";
 "sync.cancelAll.alert.button.continue" = "Weiter";
@@ -208,7 +208,7 @@
 "sites.title" = "Sites";
 "sites.empty" = "Keine Sites";
 "sites.segmentControl.mysites" = "Meine Sites"; // string length should not be extended
-"sites.segmentControl.favoritesites" = "Favoriten-Sites"; // string length should not be extended
+"sites.segmentControl.favoritesites" = "Favoriten"; // string length should not be extended
 "sites.segmentControl.allsites" = "Alle Sites"; // string length should not be extended
 "sites.segmentControl.sitefinder" = "Site-Finder"; // string length should not be extended
 "sites.site.favorited.banner" = "Sie haben %@ zu Ihren Favoriten hinzugefügt";

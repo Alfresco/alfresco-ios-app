@@ -86,7 +86,7 @@
  */
 "favourites.title" = "Favoris";
 "favourites.empty" = "Aucun favori";
-"sync.title" = "Contenu synchronisé";
+"sync.title" = "Synchronisé";
 "sync.empty" = "Aucun contenu synchronisé";
 "sync.downloadsize.prompt.title" = "Taille du téléchargement";
 "sync.downloadsize.prompt.message" = "Synchro taille du téléchargement %@. Voulez-vous continuer ?";
@@ -94,9 +94,9 @@
 "sync.downloadsize.prompt.confirm" = "Synchroniser maintenant";
 "sync.enable.title" = "Synchroniser fichiers";
 "sync.state.waiting-to-sync" = "En attente de synchronisation...";
-"sync.state.failed-to-sync" = "La synchronisation a échoué";
+"sync.state.failed-to-sync" = "Échec de synchro";
 "sync.progress.label.singular" = "Synchro en cours d'1 fichier, %@ restants"; // example: "Syncing 1 file, 238.3 MB left"
-"sync.progress.label.plural" = "Synchro en cours de %d fichiers, %@ restants"; // example: "Syncing 5 files, 238.3 MB left"
+"sync.progress.label.plural" = "%d fichiers, %@ restants"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "Synchronisation";
 "sync.cancelAll.alert.message" = "Annuler toutes les synchronisations ?";
 "sync.cancelAll.alert.button.continue" = "Continuer";
@@ -220,7 +220,7 @@
 
 // Site Cell Buttons
 "sites.siteCell.favorite" = "Favori"; // string length should not be extended
-"sites.siteCell.unfavorite" = "Supprimer des favoris"; // string length should not be extended
+"sites.siteCell.unfavorite" = "Supprimer"; // string length should not be extended
 "sites.siteCell.leave" = "Se désabonner"; // string length should not be extended
 "sites.siteCell.cancel.request" = "Annuler la demande"; // string length should not be extended
 "sites.siteCell.request.to.join" = "Demander à rejoindre"; // string length should not be extended
