@@ -188,6 +188,7 @@
 {
     NSString *syncNameForNode = [document syncNameInRealm:[RLMRealm defaultRealm]];
     __block SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
+    nodeStatus.totalSize = [document contentLength];
     
     NSString *destinationPath = [[self syncContentDirectoryPathForAccountWithId:self.account.accountIdentifier] stringByAppendingPathComponent:syncNameForNode];
     NSOutputStream *outputStream = [[AlfrescoFileManager sharedManager] outputStreamToFileAtPath:destinationPath append:NO];

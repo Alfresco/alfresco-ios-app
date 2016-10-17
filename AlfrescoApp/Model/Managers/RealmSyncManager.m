@@ -1315,6 +1315,8 @@
     {
         SyncNodeStatus *nodeStatus = [[RealmSyncManager sharedManager] syncStatusForNodeWithId:node.syncNodeInfoId];
         nodeStatus.status = SyncStatusWaiting;
+        
+        [self.currentOperationQueue setNodeForSyncingAsTopLevel:node.alfrescoNode];
     }
 }
 
@@ -1517,6 +1519,11 @@
         [realm commitWriteTransaction];
         SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[childNode syncIdentifier]];
         nodeStatus.status = SyncStatusSuccessful;
+        
+        if (childSyncNodeInfo.isFolder == NO)
+        {
+            nodeStatus.totalSize = [(AlfrescoDocument *)childSyncNodeInfo.alfrescoNode contentLength];
+        }
     }
     else
     {
