@@ -112,6 +112,7 @@
     
     self.session = session;
     self.shouldAllowMultiselect = YES;
+    self.delegate = delegate;
     if(displayName)
     {
         self.screenTitle = displayName;
