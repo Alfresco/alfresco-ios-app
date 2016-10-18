@@ -139,6 +139,12 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     {
         self.configService.session = self.session;
     }
+    
+    if (self.account != [AccountManager sharedManager].selectedAccount)
+    {
+        self.configService.session = nil;
+    }
+    
     [self.configService retrieveProfilesWithCompletionBlock:^(NSArray *profilesArray, NSError *profilesError) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         
