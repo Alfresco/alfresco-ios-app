@@ -86,7 +86,7 @@
  */
 "favourites.title" = "お気に入り";
 "favourites.empty" = "お気に入りはありません";
-"sync.title" = "同期されているコンテンツ";
+"sync.title" = "同期";
 "sync.empty" = "同期されているコンテンツはありません";
 "sync.downloadsize.prompt.title" = "ダウンロードサイズ";
 "sync.downloadsize.prompt.message" = "ダウンロードサイズ %@ を同期します。作業を続けますか?";
@@ -96,7 +96,7 @@
 "sync.state.waiting-to-sync" = "同期待ち...";
 "sync.state.failed-to-sync" = "同期失敗";
 "sync.progress.label.singular" = "1 個のファイルを同期しています。残り %@"; // example: "Syncing 1 file, 238.3 MB left"
-"sync.progress.label.plural" = "%d 個のファイルを同期しています。残り %@"; // example: "Syncing 5 files, 238.3 MB left"
+"sync.progress.label.plural" = "%d 個のファイル。残り %@"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "同期";
 "sync.cancelAll.alert.message" = "すべての同期をキャンセルしますか?";
 "sync.cancelAll.alert.button.continue" = "続行";
@@ -208,7 +208,7 @@
 "sites.title" = "サイト";
 "sites.empty" = "サイトはありません";
 "sites.segmentControl.mysites" = "あなたのサイト"; // string length should not be extended
-"sites.segmentControl.favoritesites" = "お気に入りのサイト"; // string length should not be extended
+"sites.segmentControl.favoritesites" = "お気に入り"; // string length should not be extended
 "sites.segmentControl.allsites" = "すべてのサイト"; // string length should not be extended
 "sites.segmentControl.sitefinder" = "サイトの検索"; // string length should not be extended
 "sites.site.favorited.banner" = "%@ をお気に入りに登録しました";
@@ -840,7 +840,7 @@
 "view-favorite-default" = "お気に入り";
 "view-search-default" = "検索";
 "view-local-default" = "ローカルファイル";
-"view-sync-default" = "同期されているコンテンツ";
+"view-sync-default" = "同期";
 
 "configuration.manager.configuration.file.updated.title" = "設定が更新されました";
 "configuration.manager.configuration.file.updated.message" = "設定ファイルが更新されました";
