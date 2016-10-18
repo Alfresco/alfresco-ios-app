@@ -578,7 +578,13 @@
 
 - (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId
 {
-    [self.syncStatuses removeObjectForKey:nodeId];
+    SyncNodeStatus *nodeStatus = [self.syncStatuses objectForKey:nodeId];
+    nodeStatus.status = SyncStatusRemoved;
+}
+
+- (void)resetSyncNodeStatusInformation
+{
+    self.syncStatuses = [NSMutableDictionary new];
 }
 
 - (BOOL)isCurrentlySyncing

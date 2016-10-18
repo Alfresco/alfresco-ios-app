@@ -53,6 +53,7 @@ typedef NS_ENUM(NSUInteger, SyncProgressType) {
 
 - (SyncNodeStatus *)syncNodeStatusObjectForNodeWithId:(NSString *)nodeId;
 - (void)removeSyncNodeStatusForNodeWithId:(NSString *)nodeId;
+- (void)resetSyncNodeStatusInformation;
 
 - (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)syncFolder:(AlfrescoFolder *)folder isTopLevelNode:(BOOL)isTopLevel;
