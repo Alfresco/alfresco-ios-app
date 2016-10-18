@@ -204,7 +204,7 @@ static dispatch_once_t onceToken;
     
     if(account)
     {
-        if ([self.currentConfigAccountIdentifier isEqualToString:account.accountIdentifier])
+        if ([[AccountManager sharedManager].selectedAccount.accountIdentifier isEqualToString:account.accountIdentifier])
         {
             returnService = [self configurationServiceForCurrentAccount];
         }

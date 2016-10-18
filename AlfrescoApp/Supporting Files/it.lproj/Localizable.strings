@@ -840,7 +840,7 @@
 "view-favorite-default" = "Preferiti";
 "view-search-default" = "Ricerca";
 "view-local-default" = "File locali";
-"view-sync-default" = "Contenuti sincronizzati";
+"view-sync-default" = "Sincronizzati";
 
 "configuration.manager.configuration.file.updated.title" = "Configurazione aggiornata";
 "configuration.manager.configuration.file.updated.message" = "Il file di configurazione è stato aggiornato";
