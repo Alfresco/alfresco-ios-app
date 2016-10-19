@@ -110,6 +110,8 @@ static const CGFloat kAnimationSpeed = 0.2f;
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
     
+    [self fixShadowHeightOfContainerViewForSize:size];
+    
     // The device has already rotated, that's why this method is being called.
     UIInterfaceOrientation toOrientation   = (UIInterfaceOrientation)[[UIDevice currentDevice] orientation];
     
@@ -249,6 +251,15 @@ static const CGFloat kAnimationSpeed = 0.2f;
 - (void)allAccountsRemoved:(NSNotification *)notification
 {
     [UniversalDevice clearDetailViewController];
+}
+
+- (void)fixShadowHeightOfContainerViewForSize:(CGSize)size
+{
+    CGRect frame = self.detailViewContainer.layer.bounds;
+    frame.size.height = size.height-20;
+    
+    CGPathRef path = [UIBezierPath bezierPathWithRect:frame].CGPath;
+    [self.detailViewContainer.layer setShadowPath:path];
 }
 
 @end

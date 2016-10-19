@@ -18,10 +18,11 @@
  
 #import "SyncNavigationViewController.h"
 #import "ProgressView.h"
+#import "RealmSyncViewController.h"
 
 static CGFloat const kProgressViewAnimationDuration = 0.2f;
 
-@interface SyncNavigationViewController ()
+@interface SyncNavigationViewController () <UINavigationControllerDelegate>
 
 @property (nonatomic, assign) NSInteger numberOfSyncOperations;
 @property (nonatomic, assign) unsigned long long totalSyncSize;
@@ -56,6 +57,25 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
     [self.progressView.cancelButton addTarget:self action:@selector(cancelSyncOperations:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.progressView];
+    
+    self.delegate = self;
+}
+
+#pragma mark - UINavigationControllerDelegate Methods
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([viewController isKindOfClass:[RealmSyncViewController class]])
+    {
+        if (self.numberOfSyncOperations > 0)
+        {
+            [self showSyncProgressDetails];
+        }
+    }
+    else
+    {
+        [self hideSyncProgressDetails];
+    }
 }
 
 #pragma mark - Sync Manager Progress Delegate Methods
