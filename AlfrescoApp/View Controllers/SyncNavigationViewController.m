@@ -125,6 +125,11 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
 
 - (void)showSyncProgressDetails
 {
+    if ([self.topViewController isKindOfClass:[RealmSyncViewController class]] == NO)
+    {
+        return;
+    }
+    
     if (!self.isProgressViewShowing)
     {
         CGRect navFrame = self.view.bounds;
