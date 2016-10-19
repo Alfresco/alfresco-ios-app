@@ -219,10 +219,14 @@
 
 - (void)hidePullToRefreshView
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
-        [self.refreshControl endRefreshing];
-    });
+    if (self.refreshControl.isRefreshing)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
+            [self.refreshControl endRefreshing];
+            self.collectionView.contentInset = UIEdgeInsetsZero;
+        });
+    }
 }
 
 - (BOOL)shouldRefresh
