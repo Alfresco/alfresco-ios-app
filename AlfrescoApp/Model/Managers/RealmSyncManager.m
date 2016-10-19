@@ -46,7 +46,6 @@
     {
         _fileManager = [AlfrescoFileManager sharedManager];
         _syncNodesInfo = [NSMutableDictionary dictionary];
-        _syncNodesStatus = [NSMutableDictionary dictionary];
         
         _syncQueues = [NSMutableDictionary dictionary];
         
@@ -177,9 +176,9 @@
 
 - (void)cleanUpAccount:(UserAccount *)account cancelOperationsType:(CancelOperationsType)cancelType
 {
+    SyncOperationQueue *syncOpQ = self.syncQueues[account.accountIdentifier];
     if (cancelType != CancelOperationsNone)
     {
-        SyncOperationQueue *syncOpQ = self.syncQueues[account.accountIdentifier];
         [syncOpQ cancelOperationsType:cancelType];
     }
     
@@ -190,8 +189,7 @@
         {
             [[RealmSyncManager sharedManager] saveDeletedFileBeforeRemovingFromSync:document];
         }
-        //Empty syncNodesStatus dictionary.
-        self.syncNodesStatus = [NSMutableDictionary dictionary];
+        [syncOpQ resetSyncNodeStatusInformation];
         
         [self deleteRealmForAccount:account];
         [[AppConfigurationManager sharedManager] deleteSpecificSyncFolderForAccount:account];

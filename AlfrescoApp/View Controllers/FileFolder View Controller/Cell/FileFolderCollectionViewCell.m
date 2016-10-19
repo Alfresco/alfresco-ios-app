@@ -253,6 +253,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         updateStatusIcons();
     }
     
+    self.nodeStatus = [[RealmSyncManager sharedManager] syncStatusForNodeWithId:self.node.identifier];
     [self updateCellWithNodeStatus:self.nodeStatus propertyChanged:kSyncStatus];
 }
 
