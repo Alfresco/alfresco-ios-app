@@ -627,13 +627,16 @@
         if (node.isFolder == NO)
         {
             [syncOpQ setNodeForSyncingAsTopLevel:node];
-            [self checkNode:[NSArray arrayWithObject:node] forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                    [self trackSyncRunWithNodesToDownload:@[node] nodesToUpload:nil];
-                    [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:^(BOOL completed) {
-                        completionBlock(completed);
-                    }];
-                });
+            [self checkNode:[NSArray arrayWithObject:node] forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
+                if (shouldProceed)
+                {
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        [self trackSyncRunWithNodesToDownload:@[node] nodesToUpload:nil];
+                        [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:^(BOOL completed) {
+                            completionBlock(completed);
+                        }];
+                    });
+                }
             }];
         }
         else
@@ -654,19 +657,22 @@
                         RLMRealm *realm = [RLMRealm defaultRealm];
                         [self saveChildrenNodesForParent:node inRealm:realm];
                         NSArray *documents = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
-                        [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
-                            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                syncProgressType = [syncOpQ syncProgressTypeForNode:node];
-                                if(syncProgressType == SyncProgressTypeInProcessing)
-                                {
-                                    syncOpQ.syncNodesInfo = self.syncNodesInfo;
-                                    [syncOpQ syncFolder:(AlfrescoFolder *)node isTopLevelNode:YES];
-                                }
-                                else if(syncProgressType == SyncProgressTypeUnsyncRequested)
-                                {
-                                    [self cleanRealmOfNode:node];
-                                }
-                            });
+                        [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
+                            if (shouldProceed)
+                            {
+                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                    syncProgressType = [syncOpQ syncProgressTypeForNode:node];
+                                    if(syncProgressType == SyncProgressTypeInProcessing)
+                                    {
+                                        syncOpQ.syncNodesInfo = self.syncNodesInfo;
+                                        [syncOpQ syncFolder:(AlfrescoFolder *)node isTopLevelNode:YES];
+                                    }
+                                    else if(syncProgressType == SyncProgressTypeUnsyncRequested)
+                                    {
+                                        [self cleanRealmOfNode:node];
+                                    }
+                                });
+                            }
                         }];
                         
                         NSArray *allNodes = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocumentsAndFolders inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
@@ -1190,7 +1196,7 @@
     return totalSize;
 }
 
-- (void)checkNode:(NSArray *)nodes forSizeAndDisplayAlertIfNeededWithProceedBlock:(void (^)(void))proceedBlock
+- (void)checkNode:(NSArray *)nodes forSizeAndDisplayAlertIfNeededWithProceedBlock:(void (^)(BOOL))proceedBlock
 {
     unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodes];
     if(totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
@@ -1204,13 +1210,17 @@
         [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
             if (!isCancelButton)
             {
-                proceedBlock();
+                proceedBlock(YES);
+            }
+            else
+            {
+                proceedBlock(NO);
             }
         }];
     }
     else
     {
-        proceedBlock();
+        proceedBlock(YES);
     }
 }
 
@@ -1303,11 +1313,14 @@
          [self cleanDataBaseOfUnwantedNodesWithcompletionBlock:^() {
              NSMutableArray *allNodesWithPendingOperations = [NSMutableArray arrayWithArray:self.nodesToDownload];
              [allNodesWithPendingOperations addObjectsFromArray:self.nodesToUpload];
-             [self checkNode:allNodesWithPendingOperations forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
-                 // STEP 5 - Start downloading any new content that appears inside the sync set.
-                 [self startNetworkOperations];
-                 
-                 [self presentSyncObstaclesIfNeeded];
+             [self checkNode:allNodesWithPendingOperations forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
+                 if (shouldProceed)
+                 {
+                     // STEP 5 - Start downloading any new content that appears inside the sync set.
+                     [self startNetworkOperations];
+                     
+                     [self presentSyncObstaclesIfNeeded];
+                 }
                  
                  if (completionBlock)
                  {
