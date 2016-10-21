@@ -34,7 +34,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
     CollectionViewStyleGrid
 };
 
-@interface ParentCollectionViewController : UIViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate, CollectionViewMultiSelectDelegate >
+@interface ParentCollectionViewController : UIViewController < UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate, CollectionViewMultiSelectDelegate >
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;

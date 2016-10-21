@@ -102,20 +102,6 @@
     }
 }
 
-#pragma mark - Collection view data source
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    AlfrescoLogDebug(@"collectionview:cellForItemAtIndexPath: is not implemented in the subclass of %@", [self class]);
-    return nil;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    AlfrescoLogDebug(@"collectionView:numberOfItemsInSection: is not implemented in the subclass of %@", [self class]);
-    return 0;
-}
-
 #pragma mark - Collection view delegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
