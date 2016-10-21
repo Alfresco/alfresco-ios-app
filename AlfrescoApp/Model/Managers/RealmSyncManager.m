@@ -619,10 +619,10 @@
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
-    RLMRealm *realm = [RLMRealm defaultRealm];
-    [node saveNodeInRealm:realm isTopLevelNode:YES];
     if (selectedAccount.isSyncOn)
     {
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [node saveNodeInRealm:realm isTopLevelNode:YES];
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
         if (node.isFolder == NO)
         {
