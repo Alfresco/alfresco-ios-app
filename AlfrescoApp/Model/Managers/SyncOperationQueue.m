@@ -75,8 +75,8 @@
     {
         [self setNodeForSyncingAsTopLevel:node];
     }
-    
-    [node saveNodeInRealmIsTopLevelNode:isTopLevel];
+    RLMRealm *realm = [RLMRealm defaultRealm];
+    [node saveNodeInRealm:realm isTopLevelNode:isTopLevel];
     
     [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if(permissions)
