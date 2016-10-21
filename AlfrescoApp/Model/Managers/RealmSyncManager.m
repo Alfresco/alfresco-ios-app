@@ -626,11 +626,14 @@
         {
             [node saveNodeInRealmIsTopLevelNode:YES];
             [syncOpQ setNodeForSyncingAsTopLevel:node];
-            [self checkNode:[NSArray arrayWithObject:node] forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
-                [self trackSyncRunWithNodesToDownload:@[node] nodesToUpload:nil];
-                [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:^(BOOL completed) {
-                    completionBlock(completed);
-                }];
+            [self checkNode:[NSArray arrayWithObject:node] forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
+                if (shouldProceed)
+                {
+                    [self trackSyncRunWithNodesToDownload:@[node] nodesToUpload:nil];
+                    [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:^(BOOL completed) {
+                        completionBlock(completed);
+                    }];
+                }
             }];
         }
         else
@@ -652,15 +655,18 @@
                         syncProgressType = [syncOpQ syncProgressTypeForNode:node];
                         RLMRealm *realm = [RLMRealm defaultRealm];
                         NSArray *documents = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
-                        [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
-                            if(syncProgressType == SyncProgressTypeInProcessing)
+                        [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
+                            if (shouldProceed)
                             {
-                                syncOpQ.syncNodesInfo = self.syncNodesInfo;
-                                [syncOpQ syncFolder:(AlfrescoFolder *)node isTopLevelNode:YES];
-                            }
-                            else if(syncProgressType == SyncProgressTypeUnsyncRequested)
-                            {
-                                [self cleanRealmOfNode:node];
+                                if(syncProgressType == SyncProgressTypeInProcessing)
+                                {
+                                    syncOpQ.syncNodesInfo = self.syncNodesInfo;
+                                    [syncOpQ syncFolder:(AlfrescoFolder *)node isTopLevelNode:YES];
+                                }
+                                else if(syncProgressType == SyncProgressTypeUnsyncRequested)
+                                {
+                                    [self cleanRealmOfNode:node];
+                                }
                             }
                         }];
                         
@@ -1174,7 +1180,7 @@
     return totalSize;
 }
 
-- (void)checkNode:(NSArray *)nodes forSizeAndDisplayAlertIfNeededWithProceedBlock:(void (^)(void))proceedBlock
+- (void)checkNode:(NSArray *)nodes forSizeAndDisplayAlertIfNeededWithProceedBlock:(void (^)(BOOL))proceedBlock
 {
     unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodes];
     if(totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
@@ -1188,13 +1194,17 @@
         [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
             if (!isCancelButton)
             {
-                proceedBlock();
+                proceedBlock(YES);
+            }
+            else
+            {
+                proceedBlock(NO);
             }
         }];
     }
     else
     {
-        proceedBlock();
+        proceedBlock(YES);
     }
 }
 
@@ -1287,11 +1297,14 @@
          [self cleanDataBaseOfUnwantedNodesWithcompletionBlock:^() {
              NSMutableArray *allNodesWithPendingOperations = [NSMutableArray arrayWithArray:self.nodesToDownload];
              [allNodesWithPendingOperations addObjectsFromArray:self.nodesToUpload];
-             [self checkNode:allNodesWithPendingOperations forSizeAndDisplayAlertIfNeededWithProceedBlock:^{
-                 // STEP 5 - Start downloading any new content that appears inside the sync set.
-                 [self startNetworkOperations];
-                 
-                 [self presentSyncObstaclesIfNeeded];
+             [self checkNode:allNodesWithPendingOperations forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
+                 if (shouldProceed)
+                 {
+                     // STEP 5 - Start downloading any new content that appears inside the sync set.
+                     [self startNetworkOperations];
+                     
+                     [self presentSyncObstaclesIfNeeded];
+                 }
                  
                  if (completionBlock)
                  {
