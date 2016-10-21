@@ -28,7 +28,7 @@
 - (BOOL)isTopLevelSyncNode;
 - (BOOL)isNodeInSyncList;
 - (BOOL)isNodeInSyncListInRealm:(RLMRealm *)realm;
-- (void)saveNodeInRealmIsTopLevelNode:(BOOL)isTopLevel;
+- (void)saveNodeInRealm:(RLMRealm *)realm isTopLevelNode:(BOOL)isTopLevel;
 - (NSString *)syncErrorDescription;
 - (RealmSyncNodeInfo *)topLevelSyncParentNodeInRealm:(RLMRealm *)realm;
 
