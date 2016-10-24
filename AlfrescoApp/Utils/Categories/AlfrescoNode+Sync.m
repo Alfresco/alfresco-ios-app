@@ -113,9 +113,8 @@
     return isInSyncList;
 }
 
-- (void)saveNodeInRealmIsTopLevelNode:(BOOL)isTopLevel
+- (void)saveNodeInRealm:(RLMRealm *)realm isTopLevelNode:(BOOL)isTopLevel
 {
-    RLMRealm *realm = [RLMRealm defaultRealm];
     RealmSyncNodeInfo *nodeSyncInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:YES inRealm:realm];
     if(!nodeSyncInfo.alfrescoNode)
     {

@@ -620,25 +620,27 @@
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
     if (selectedAccount.isSyncOn)
     {
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [node saveNodeInRealm:realm isTopLevelNode:YES];
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
         if (node.isFolder == NO)
         {
-            [node saveNodeInRealmIsTopLevelNode:YES];
             [syncOpQ setNodeForSyncingAsTopLevel:node];
             [self checkNode:[NSArray arrayWithObject:node] forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
                 if (shouldProceed)
                 {
-                    [self trackSyncRunWithNodesToDownload:@[node] nodesToUpload:nil];
-                    [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:^(BOOL completed) {
-                        completionBlock(completed);
-                    }];
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        [self trackSyncRunWithNodesToDownload:@[node] nodesToUpload:nil];
+                        [syncOpQ addDocumentToSync:(AlfrescoDocument *)node isTopLevelNode:YES withCompletionBlock:^(BOOL completed) {
+                            completionBlock(completed);
+                        }];
+                    });
                 }
             }];
         }
         else
         {
             self.syncNodesInfo = [NSMutableDictionary new];
-            [node saveNodeInRealmIsTopLevelNode:YES];
             [syncOpQ setNodeForSyncingAsTopLevel:node];
             if(completionBlock)
             {
@@ -651,21 +653,24 @@
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
                     if(self.nodeChildrenRequestsCount == 0)
                     {
-                        syncProgressType = [syncOpQ syncProgressTypeForNode:node];
                         RLMRealm *realm = [RLMRealm defaultRealm];
+                        [self saveChildrenNodesForParent:node inRealm:realm];
                         NSArray *documents = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
                         [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
                             if (shouldProceed)
                             {
-                                if(syncProgressType == SyncProgressTypeInProcessing)
-                                {
-                                    syncOpQ.syncNodesInfo = self.syncNodesInfo;
-                                    [syncOpQ syncFolder:(AlfrescoFolder *)node isTopLevelNode:YES];
-                                }
-                                else if(syncProgressType == SyncProgressTypeUnsyncRequested)
-                                {
-                                    [self cleanRealmOfNode:node];
-                                }
+                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                    syncProgressType = [syncOpQ syncProgressTypeForNode:node];
+                                    if(syncProgressType == SyncProgressTypeInProcessing)
+                                    {
+                                        syncOpQ.syncNodesInfo = self.syncNodesInfo;
+                                        [syncOpQ syncFolder:(AlfrescoFolder *)node isTopLevelNode:YES];
+                                    }
+                                    else if(syncProgressType == SyncProgressTypeUnsyncRequested)
+                                    {
+                                        [self cleanRealmOfNode:node];
+                                    }
+                                });
                             }
                         }];
                         
@@ -678,6 +683,23 @@
             {
                 [syncOpQ resetSyncProgressInformationForNode:node];
             }
+        }
+    }
+}
+
+- (void)saveChildrenNodesForParent:(AlfrescoNode *)parentNode inRealm:(RLMRealm *)realm
+{
+    RealmSyncNodeInfo *parentNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:parentNode ifNotExistsCreateNew:NO inRealm:realm];
+    NSArray *children = self.syncNodesInfo[[parentNode syncIdentifier]];
+    for(AlfrescoNode *child in children)
+    {
+        RealmSyncNodeInfo *subNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:child ifNotExistsCreateNew:YES inRealm:realm];
+        [realm beginWriteTransaction];
+        subNodeInfo.parentNode = parentNodeInfo;
+        [realm commitWriteTransaction];
+        if(child.isFolder)
+        {
+            [self saveChildrenNodesForParent:child inRealm:realm];
         }
     }
 }
@@ -710,14 +732,8 @@
             {
                 // nodes for each folder are held in with keys folder identifiers
                 nodesInfoForSelectedAccount[[node syncIdentifier]] = array;
-                RLMRealm *realm = [RLMRealm defaultRealm];
                 for (AlfrescoNode *subNode in array)
                 {
-                    RealmSyncNodeInfo *subNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:subNode ifNotExistsCreateNew:YES inRealm:realm];
-                    RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
-                    [realm beginWriteTransaction];
-                    subNodeInfo.parentNode = folderNodeInfo;
-                    [realm commitWriteTransaction];
                     SyncNodeStatus *syncNodeStatus = [self.currentOperationQueue syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
                     syncNodeStatus.status = SyncStatusLoading;
                     
