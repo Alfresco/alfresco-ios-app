@@ -304,9 +304,9 @@ static dispatch_once_t onceToken;
         AlfrescoConfigService *configService = [[AlfrescoConfigService alloc] initWithSession:session];
         
         void (^profileSuccessfullySelectedBlock)(AlfrescoProfileConfig *profile, BOOL isEmbeddedConfig) = ^(AlfrescoProfileConfig *selectedProfile, BOOL isEmbeddedConfig) {
-            [AppConfigurationManager sharedManager].currentConfigService = configService;
-            [AppConfigurationManager sharedManager].selectedProfile = selectedProfile;
-            [AppConfigurationManager sharedManager].currentConfigAccountIdentifier = account.accountIdentifier;
+            self.currentConfigService = configService;
+            self.selectedProfile = selectedProfile;
+            self.currentConfigAccountIdentifier = account.accountIdentifier;
             account.selectedProfileIdentifier = selectedProfile.identifier;
             account.selectedProfileName = selectedProfile.label;
             
