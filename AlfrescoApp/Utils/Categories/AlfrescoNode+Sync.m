@@ -65,7 +65,7 @@
 
 - (NSString *)contentPath
 {
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:[[RealmSyncManager sharedManager] realmForCurrentThread]];
     
     NSString *newNodePath = nil;
     if(nodeInfo && (nodeInfo.isFolder == NO))
@@ -80,7 +80,7 @@
 - (BOOL)isTopLevelSyncNode
 {
     BOOL isTopLevelSyncNode = NO;
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:realm];
     if (nodeInfo)
@@ -96,7 +96,7 @@
 
 - (BOOL)isNodeInSyncList
 {
-    return [self isNodeInSyncListInRealm:[RLMRealm defaultRealm]];
+    return [self isNodeInSyncListInRealm:[[RealmSyncManager sharedManager] realmForCurrentThread]];
 }
 
 - (BOOL)isNodeInSyncListInRealm:(RLMRealm *)realm

@@ -261,7 +261,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
             [text writeToFile:syncContentPath atomically:YES encoding:NSUTF8StringEncoding error:nil];
             
             [syncManager retrySyncForDocument:self.editingDocument completionBlock:^{
-                RLMRealm *realm = [RLMRealm defaultRealm];
+                RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
                 AlfrescoDocument *document = (AlfrescoDocument *)([[RealmManager sharedManager] syncNodeInfoForObject:self.editingDocument ifNotExistsCreateNew:NO inRealm:realm].alfrescoNode);
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:document];
             }];

@@ -47,6 +47,7 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 + (RealmSyncManager *)sharedManager;
 
 - (void)refreshWithCompletionBlock:(void (^)(BOOL completed))completionBlock;
+- (RLMRealm *)realmForCurrentThread;
 
 /*
  * Sync Utilities

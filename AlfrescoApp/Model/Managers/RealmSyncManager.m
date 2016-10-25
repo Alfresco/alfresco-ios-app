@@ -72,11 +72,26 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (RLMRealm *)mainThreadRealm
+- (RLMRealm *)realmForCurrentThread
 {
-    _mainThreadRealm = [self realmForAccount:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    RLMRealm *realm = nil;
+    if(([NSThread isMainThread]) && (self.mainThreadRealm))
+    {
+        realm = self.mainThreadRealm;
+    }
+    else
+    {
+        realm = [RLMRealm defaultRealm];
+    }
     
-    return _mainThreadRealm;
+    return realm;
+}
+
+- (void)createMainThreadRealm
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _mainThreadRealm = [self realmForAccount:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    });
 }
 
 #pragma mark - Sync Feature
@@ -210,6 +225,7 @@
     if(account == [AccountManager sharedManager].selectedAccount)
     {
         [[RealmManager sharedManager] changeDefaultConfigurationForAccount:account];
+        [self createMainThreadRealm];
         [self.syncDisabledDelegate syncFeatureStatusChanged:YES];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
@@ -222,7 +238,7 @@
     {
         __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+            RLMRealm *backgroundRealm = [[RealmSyncManager sharedManager] realmForCurrentThread];
             NSMutableArray *arrayOfNodesToDelete = [NSMutableArray new];
             NSMutableArray *arrayOfNodesToSaveLocally = [NSMutableArray new];
             NSMutableArray *arrayOfPathsForFilesToBeDeleted = [NSMutableArray new];
@@ -318,7 +334,7 @@
         {
             if (nodeInfo.isTopLevelSyncNode && nodeInfo.parentNode)
             {
-                RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+                RLMRealm *backgroundRealm = [[RealmSyncManager sharedManager] realmForCurrentThread];
                 [backgroundRealm beginWriteTransaction];
                 nodeInfo.isTopLevelSyncNode = NO;
                 [backgroundRealm commitWriteTransaction];
@@ -372,7 +388,7 @@
     {
         if (folderInfo.isTopLevelSyncNode && folderInfo.parentNode)
         {
-            RLMRealm *backgroundRealm = [RLMRealm defaultRealm];
+            RLMRealm *backgroundRealm = [[RealmSyncManager sharedManager] realmForCurrentThread];
             [backgroundRealm beginWriteTransaction];
             folderInfo.isTopLevelSyncNode = NO;
             [backgroundRealm commitWriteTransaction];
@@ -422,7 +438,7 @@
             [self.fileManager removeItemAtPath:contentPath error:nil];
         }
         [self.fileManager removeItemAtPath:temporaryPath error:nil];
-        RLMRealm *realm = [RLMRealm defaultRealm];
+        RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
         [[RealmManager sharedManager] resolvedObstacleForDocument:document inRealm:realm];
         
         RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:document ifNotExistsCreateNew:NO inRealm:realm];
@@ -621,7 +637,7 @@
     UserAccount *selectedAccount = [[AccountManager sharedManager] selectedAccount];
     if (selectedAccount.isSyncOn)
     {
-        RLMRealm *realm = [RLMRealm defaultRealm];
+        RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
         [node saveNodeInRealm:realm isTopLevelNode:YES];
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
         if (node.isFolder == NO)
@@ -654,7 +670,7 @@
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
                     if(self.nodeChildrenRequestsCount == 0)
                     {
-                        RLMRealm *realm = [RLMRealm defaultRealm];
+                        RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
                         [self saveChildrenNodesForParent:node inRealm:realm];
                         NSArray *documents = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
                         [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
@@ -809,7 +825,7 @@
         }];
     };
     
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     BOOL isModifiedLocally = [self isNodeModifiedSinceLastDownload:node inRealm:realm];
     if(node.isDocument && isModifiedLocally)
     {
@@ -843,7 +859,7 @@
 {
     NSMutableArray *documentsToUpload = [[NSMutableArray alloc] init];
     
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     RLMResults *allDocuments = [[RealmManager sharedManager] allDocumentsInRealm:realm];
     for(RealmSyncNodeInfo *document in allDocuments)
     {
@@ -906,7 +922,7 @@
     
     if (!permissions)
     {
-        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
+        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:[[RealmSyncManager sharedManager] realmForCurrentThread]];
         
         if (nodeInfo.permissions)
         {
@@ -995,7 +1011,7 @@
 - (void)statusChanged:(NSNotification *)notification
 {
     NSDictionary *info = notification.userInfo;
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
     
     SyncNodeStatus *nodeStatus = notification.object;
@@ -1077,11 +1093,11 @@
     
     if(node)
     {
-        token = [[[RealmSyncNodeInfo objectsInRealm:[self mainThreadRealm] where:@"syncNodeInfoId == %@", [node syncIdentifier]] sortedResultsUsingProperty:@"title" ascending:YES] addNotificationBlock:block];
+        token = [[[RealmSyncNodeInfo objectsInRealm:[self realmForCurrentThread] where:@"syncNodeInfoId == %@", [node syncIdentifier]] sortedResultsUsingProperty:@"title" ascending:YES] addNotificationBlock:block];
     }
     else
     {
-        token = [[[RealmSyncNodeInfo objectsInRealm:[self mainThreadRealm] where:@"isTopLevelSyncNode = %@", @YES] sortedResultsUsingProperty:@"title" ascending:YES] addNotificationBlock:block];
+        token = [[[RealmSyncNodeInfo objectsInRealm:[self realmForCurrentThread] where:@"isTopLevelSyncNode = %@", @YES] sortedResultsUsingProperty:@"title" ascending:YES] addNotificationBlock:block];
     }
     
     return token;
@@ -1333,7 +1349,7 @@
 
 - (void)markTopLevelNodesAsPending
 {
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     // Get all top level nodes.
     RLMResults *allTopLevelNodes = [[RealmManager sharedManager] topLevelSyncNodesInRealm:realm];
     
@@ -1349,7 +1365,7 @@
 
 - (void)invalidateParentChildHierarchy
 {
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     RLMResults *allNodes = [[RealmManager sharedManager] allSyncNodesInRealm:realm];
     
     [realm beginWriteTransaction];
@@ -1365,7 +1381,7 @@
 
 - (void)rebuildDataBaseWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     RLMResults *topLevelNodes = [[RealmManager sharedManager] topLevelSyncNodesInRealm:realm];
     
     self.nodeChildrenRequestsCount = 0;
@@ -1411,7 +1427,7 @@
 
 - (void)determineSyncActionAndStatusForRefresh
 {
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     RLMResults *topLevelNodes = [[RealmManager sharedManager] topLevelSyncNodesInRealm:realm];
     for(RealmSyncNodeInfo *node in topLevelNodes)
     {
@@ -1456,7 +1472,7 @@
     }
     else
     {
-        RLMRealm *realm = [RLMRealm defaultRealm];
+        RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
         RealmSyncNodeInfo *childSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
         if(childSyncNodeInfo)
         {
@@ -1522,7 +1538,7 @@
 
 - (void)updateDataBaseForChildNode:(AlfrescoNode *)childNode withParent:(AlfrescoNode *)parentNode updateStatus:(BOOL)shouldUpdateStatus
 {
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     RealmSyncNodeInfo *childSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:childNode ifNotExistsCreateNew:YES inRealm:realm];
     
     [realm beginWriteTransaction];
@@ -1561,7 +1577,7 @@
 
 - (void)removeTopLevelNodeFlagFomNodeWithIdentifier:(NSString *)nodeIdentifier
 {
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForId:nodeIdentifier inRealm:realm];
     
     [realm beginWriteTransaction];
@@ -1571,7 +1587,7 @@
 
 - (void)cleanDataBaseOfUnwantedNodesWithcompletionBlock:(void (^)())completionBlock
 {
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
     RLMResults *allNodes = [[RealmManager sharedManager] allSyncNodesInRealm:realm];
     __block NSInteger totalChecksForObstacles = allNodes.count;
     
