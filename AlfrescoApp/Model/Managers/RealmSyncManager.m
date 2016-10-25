@@ -128,7 +128,7 @@
                 };
                 
                 NSArray *visibleItems = [[AppConfigurationManager sharedManager] visibleItemIdentifiersForAccount:changedAccount];
-                
+
                 if (visibleItems)
                 {
                     [visibleItems enumerateObjectsUsingBlock:^(NSString *visibleItemIdentifier, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -144,7 +144,6 @@
                     setSyncOnAndSaveAccount();
                 }
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:changedAccount];
                 if([changedAccount.accountIdentifier isEqualToString:[AccountManager sharedManager].selectedAccount.accountIdentifier])
                 {
                     [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount];
