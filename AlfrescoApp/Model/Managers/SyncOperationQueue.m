@@ -510,8 +510,24 @@
         [self.syncOperations removeObjectForKey:nodeSyncIdentifier];
         SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:nodeSyncIdentifier];
         [self notifyProgressDelegateAboutNumberOfNodesInProgress];
-        self.syncProgress.totalSyncSize -= nodeStatus.totalSize;
-        self.syncProgress.syncProgressSize -= nodeStatus.bytesTransfered;
+        
+        if (self.syncProgress.totalSyncSize >= nodeStatus.totalSize)
+        {
+            self.syncProgress.totalSyncSize -= nodeStatus.totalSize;
+        }
+        else
+        {
+            self.syncProgress.totalSyncSize = 0;
+        }
+        
+        if (self.syncProgress.syncProgressSize >= nodeStatus.bytesTransfered)
+        {
+            self.syncProgress.syncProgressSize -= nodeStatus.bytesTransfered;
+        }
+        else
+        {
+            self.syncProgress.syncProgressSize = 0;
+        }
     }
 }
 

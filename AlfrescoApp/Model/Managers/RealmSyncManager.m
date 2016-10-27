@@ -1028,7 +1028,12 @@
             SyncNodeStatus *parentNodeStatus = [self syncStatusForNodeWithId:[parentNode syncIdentifier]];
             
             NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
-            parentNodeStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+            unsigned long long changeSize = [[change valueForKey:NSKeyValueChangeOldKey] unsignedLongLongValue];
+            
+            if (nodeStatus.totalSize >= changeSize)
+            {
+                parentNodeStatus.totalSize += nodeStatus.totalSize - changeSize;
+            }
         }
         else
         {
@@ -1037,7 +1042,12 @@
             if (nodeStatus != accountSyncStatus)
             {
                 NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
-                accountSyncStatus.totalSize += nodeStatus.totalSize - [[change valueForKey:NSKeyValueChangeOldKey] longLongValue];
+                unsigned long long changeSize = [[change valueForKey:NSKeyValueChangeOldKey] unsignedLongLongValue];
+                
+                if (nodeStatus.totalSize >= changeSize)
+                {
+                    accountSyncStatus.totalSize += nodeStatus.totalSize - changeSize;
+                }
             }
         }
     }
