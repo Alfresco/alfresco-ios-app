@@ -596,6 +596,7 @@
 {
     SyncNodeStatus *nodeStatus = [self.syncStatuses objectForKey:nodeId];
     nodeStatus.status = SyncStatusRemoved;
+    nodeStatus.totalSize = 0;
 }
 
 - (void)resetSyncNodeStatusInformation
