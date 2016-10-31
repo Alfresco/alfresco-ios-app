@@ -66,9 +66,9 @@
 - (NSString *)contentPath
 {
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
-    
     NSString *newNodePath = nil;
-    if(nodeInfo && (nodeInfo.isFolder == NO))
+    
+    if(nodeInfo && (nodeInfo.isFolder == NO) && nodeInfo.syncContentPath)
     {
         NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
         newNodePath = [[[RealmSyncManager sharedManager] syncContentDirectoryPathForAccountWithId:selectedAccountIdentifier] stringByAppendingPathComponent:nodeInfo.syncContentPath];
