@@ -205,6 +205,16 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
                 }
             }];
         }
+        else
+        {
+            [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                           permissions:syncNodePermissions
+                                                                           contentFile:filePath
+                                                                      documentLocation:InAppDocumentLocationFilesAndFolders
+                                                                               session:self.session
+                                                                  navigationController:self.navigationController
+                                                                              animated:YES];
+        }
     }
 }
 

@@ -524,6 +524,8 @@
         {
             self.syncProgress.syncProgressSize = 0;
         }
+        
+        nodeStatus.status = SyncStatusFailed;
     }
 }
 
@@ -592,6 +594,7 @@
 {
     SyncNodeStatus *nodeStatus = [self.syncStatuses objectForKey:nodeId];
     nodeStatus.status = SyncStatusRemoved;
+    nodeStatus.totalSize = 0;
 }
 
 - (void)resetSyncNodeStatusInformation
