@@ -96,22 +96,18 @@
 
 - (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    __weak typeof(self) weakSelf = self;
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        [weakSelf addNodeToSync:document isTopLevelNode:isTopLevel];
-        [weakSelf downloadDocument:document withCompletionBlock:^(BOOL completed) {
-            if(isTopLevel)
-            {
-                [self.topLevelNodesInSyncProcessing removeObjectForKey:[document syncIdentifier]];
-            }
-        }];
-        
-        if (completionBlock)
+    [self addNodeToSync:document isTopLevelNode:isTopLevel];
+    [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+        if(isTopLevel)
         {
-            completionBlock(YES);
+            [self.topLevelNodesInSyncProcessing removeObjectForKey:[document syncIdentifier]];
         }
-    });
+    }];
+    
+    if (completionBlock)
+    {
+        completionBlock(YES);
+    }
 }
 
 - (void)addFolderToSync:(AlfrescoFolder *)folder completionBlock:(void (^)(BOOL completed))completionBlock
