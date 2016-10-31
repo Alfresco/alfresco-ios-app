@@ -75,7 +75,7 @@
     {
         [self setNodeForSyncingAsTopLevel:node];
     }
-    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     [node saveNodeInRealm:realm isTopLevelNode:isTopLevel];
     
     [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
@@ -182,7 +182,7 @@
 
 - (void)downloadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    NSString *syncNameForNode = [document syncNameInRealm:[[RealmSyncManager sharedManager] realmForCurrentThread]];
+    NSString *syncNameForNode = [document syncNameInRealm:[[RealmManager sharedManager] realmForCurrentThread]];
     __block SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
     nodeStatus.totalSize = [document contentLength];
     
@@ -195,7 +195,7 @@
                                                                         
                                                                         [outputStream close];
                                                                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                            RLMRealm *backgroundRealm = [[RealmSyncManager sharedManager] realmForCurrentThread];
+                                                                            RLMRealm *backgroundRealm = [[RealmManager sharedManager] realmForCurrentThread];
                                                                             [backgroundRealm refresh];
                                                                             RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:document ifNotExistsCreateNew:NO inRealm:backgroundRealm];
                                                                             
@@ -313,7 +313,7 @@
 
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    NSString *syncNameForNode = [document syncNameInRealm:[[RealmSyncManager sharedManager] realmForCurrentThread]];
+    NSString *syncNameForNode = [document syncNameInRealm:[[RealmManager sharedManager] realmForCurrentThread]];
     NSString *nodeExtension = [document.name pathExtension];
     __block SyncNodeStatus *nodeStatus = [self syncNodeStatusObjectForNodeWithId:[document syncIdentifier]];
     nodeStatus.status = SyncStatusLoading;
@@ -348,7 +348,7 @@
                                                                         
                                                                         [readStream close];
                                                                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                            RLMRealm *backgroundRealm = [[RealmSyncManager sharedManager] realmForCurrentThread];
+                                                                            RLMRealm *backgroundRealm = [[RealmManager sharedManager] realmForCurrentThread];
                                                                             RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:document ifNotExistsCreateNew:YES inRealm:backgroundRealm];
                                                                             if (uploadedDocument)
                                                                             {
@@ -483,7 +483,7 @@
         NSArray *folderChildren = self.syncNodesInfo[[folder syncIdentifier]];
         if(folderChildren.count == 0)
         {
-            RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
+            RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
             folderChildren = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:folder recursive:YES includeTopLevelNodes:NO inRealm:realm];
         }
         for(AlfrescoNode *subNode in folderChildren)
@@ -625,7 +625,7 @@
         }
         else
         {
-            RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
+            RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
             NSArray *childrenDocumentsOfFolder = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:NO inRealm:realm];
             for(AlfrescoNode *child in childrenDocumentsOfFolder)
             {
@@ -664,7 +664,7 @@
 - (BOOL)shouldContinueSyncProcessForNode:(AlfrescoNode *)node
 {
     BOOL shouldContinueSync = NO;
-    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RealmSyncNodeInfo *topLevelParentNode = [node topLevelSyncParentNodeInRealm:realm];
     if(topLevelParentNode)
     {
@@ -689,7 +689,7 @@
 {
     SyncProgressType progressType = SyncProgressTypeNotInProcessing;
     
-    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RealmSyncNodeInfo *topLevelParentNode = [node topLevelSyncParentNodeInRealm:realm];
     if(topLevelParentNode)
     {
@@ -715,7 +715,7 @@
 - (BOOL)didStartProcessingDeleteForNode:(AlfrescoNode *)node
 {
     BOOL didStartProcessing = NO;
-    RLMRealm *realm = [[RealmSyncManager sharedManager] realmForCurrentThread];
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RealmSyncNodeInfo *topLevelParentNode = [node topLevelSyncParentNodeInRealm:realm];
     if(topLevelParentNode)
     {

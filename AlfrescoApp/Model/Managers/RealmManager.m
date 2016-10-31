@@ -20,6 +20,11 @@
 
 #import "UserAccount.h"
 #import "AlfrescoNode+Sync.h"
+#import "AccountManager.h"
+
+@interface RealmManager()
+@property (nonatomic, strong) RLMRealm *mainThreadRealm;
+@end
 
 @implementation RealmManager
 
@@ -32,6 +37,40 @@
     });
     return sharedObject;
 }
+
+#pragma mark - Private methods
+
+- (void)createMainThreadRealm
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    });
+}
+
+- (RealmSyncError *)createSyncErrorInRealm:(RLMRealm *)realm
+{
+    RealmSyncError *error = [RealmSyncError new];
+    [realm beginWriteTransaction];
+    [realm addObject:error];
+    [realm commitWriteTransaction];
+    return error;
+}
+
+- (RealmSyncNodeInfo *)createSyncNodeInfoForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
+{
+    RealmSyncNodeInfo *syncNodeInfo = [RealmSyncNodeInfo new];
+    syncNodeInfo.syncNodeInfoId = [node syncIdentifier];
+    syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:node];
+    syncNodeInfo.title = node.name;
+    syncNodeInfo.isFolder = node.isFolder;
+    [realm beginWriteTransaction];
+    [realm addObject:syncNodeInfo];
+    [realm commitWriteTransaction];
+    return syncNodeInfo;
+}
+
+#pragma mark - Public methods
+#pragma mark Realm management methods
 
 - (RLMRealm *)createRealmWithName:(NSString *)realmName
 {
@@ -67,8 +106,51 @@
             // handle error
         }
     }
+    
+    _mainThreadRealm = nil;
 }
 
+- (RLMRealm *)realmForCurrentThread
+{
+    RLMRealm *realm = nil;
+    if(([NSThread isMainThread]) && (self.mainThreadRealm))
+    {
+        realm = self.mainThreadRealm;
+    }
+    else
+    {
+        realm = [RLMRealm defaultRealm];
+    }
+    
+    return realm;
+}
+
+- (RLMRealmConfiguration *)configForName:(NSString *)name
+{
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    
+    // Use the default directory, but replace the filename with the accountId
+    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+    config.fileURL = [NSURL URLWithString:configFilePath];
+    
+    return config;
+}
+
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account
+{
+    [RLMRealmConfiguration setDefaultConfiguration:[self configForName:account.accountIdentifier]];
+    [self createMainThreadRealm];
+}
+
+- (void)resetDefaultRealmConfiguration
+{
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"default"] stringByAppendingPathExtension:@"realm"];
+    config.fileURL = [NSURL URLWithString:configFilePath];
+    [RLMRealmConfiguration setDefaultConfiguration:config];
+}
+
+#pragma mark Realm object management
 - (RealmSyncNodeInfo *)syncNodeInfoForObject:(AlfrescoNode *)node ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm
 {
     [realm refresh];
@@ -86,21 +168,9 @@
     return nodeInfo;
 }
 
-- (RLMRealmConfiguration *)configForName:(NSString *)name
-{
-    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
-    
-    // Use the default directory, but replace the filename with the accountId
-    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
-    config.fileURL = [NSURL URLWithString:configFilePath];
-    
-    return config;
-}
-
 - (RealmSyncError *)errorObjectForNode:(AlfrescoNode *)node ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm
 {
     RealmSyncError *syncError = nil;
-    
     if (node)
     {
         RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
@@ -115,29 +185,6 @@
         }
     }
     return syncError;
-}
-
-- (RealmSyncError *)createSyncErrorInRealm:(RLMRealm *)realm
-{
-    RealmSyncError *error = [RealmSyncError new];
-    [realm beginWriteTransaction];
-    [realm addObject:error];
-    [realm commitWriteTransaction];
-    return error;
-    
-}
-
-- (RealmSyncNodeInfo *)createSyncNodeInfoForNode:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
-{
-    RealmSyncNodeInfo *syncNodeInfo = [RealmSyncNodeInfo new];
-    syncNodeInfo.syncNodeInfoId = [node syncIdentifier];
-    syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:node];
-    syncNodeInfo.title = node.name;
-    syncNodeInfo.isFolder = node.isFolder;
-    [realm beginWriteTransaction];
-    [realm addObject:syncNodeInfo];
-    [realm commitWriteTransaction];
-    return syncNodeInfo;
 }
 
 - (void)updateSyncNodeInfoForNode:(AlfrescoNode *)node lastDownloadedDate:(NSDate *)downloadedDate syncContentPath:(NSString *)syncContentPath inRealm:(RLMRealm *)realm
@@ -280,19 +327,6 @@
     }
     
     return resultsArray;
-}
-
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account
-{
-    [RLMRealmConfiguration setDefaultConfiguration:[self configForName:account.accountIdentifier]];
-}
-
-- (void)resetDefaultRealmConfiguration
-{
-    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
-    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"default"] stringByAppendingPathExtension:@"realm"];
-    config.fileURL = [NSURL URLWithString:configFilePath];
-    [RLMRealmConfiguration setDefaultConfiguration:config];
 }
 
 - (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm
