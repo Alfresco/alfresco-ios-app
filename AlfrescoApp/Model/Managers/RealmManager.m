@@ -34,6 +34,11 @@
     __strong static id sharedObject = nil;
     dispatch_once(&predicate, ^{
         sharedObject = [[self alloc] init];
+        
+        if([AccountManager sharedManager].selectedAccount)
+        {
+            [sharedObject createMainThreadRealm];
+        }
     });
     return sharedObject;
 }
