@@ -58,6 +58,8 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *topLevelIconTopSpaceConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *syncIconTopSpaceConstraint;
 
+@property (nonatomic, assign) BOOL shouldHideAccessoryView;
+
 @end
 
 @implementation AlfrescoNodeCell
@@ -200,6 +202,13 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 
 - (void)setupCellWithNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session
 {
+    [self setupCellWithNode:node session:session hideAccessoryView:NO];
+}
+
+- (void)setupCellWithNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session hideAccessoryView:(BOOL)hideAccessoryView
+{
+    self.shouldHideAccessoryView = hideAccessoryView;
+    
     [self registerForNotifications];
     
     BOOL isNodeInSyncList = [node isNodeInSyncList];
@@ -354,7 +363,7 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
 {
     if (self.node.isFolder)
     {
-        self.accessoryType = UITableViewCellAccessoryDetailButton;
+        self.accessoryType = self.shouldHideAccessoryView ? UITableViewCellAccessoryNone : UITableViewCellAccessoryDetailButton;
     }
     else
     {

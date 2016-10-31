@@ -207,7 +207,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     AlfrescoNodeCell *cell = (AlfrescoNodeCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     AlfrescoNode *currentNode = [self nodeForIndexPath:indexPath];
-    [cell setupCellWithNode:currentNode session:self.session];
+    [cell setupCellWithNode:currentNode session:self.session hideAccessoryView:YES];
     
     cell.progressBar.hidden = YES;
     
