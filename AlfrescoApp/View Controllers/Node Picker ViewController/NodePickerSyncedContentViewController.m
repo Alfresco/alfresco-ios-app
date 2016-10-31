@@ -105,7 +105,7 @@
     AlfrescoNodeCell *nodeCell = (AlfrescoNodeCell *)[super tableView:tableView cellForRowAtIndexPath:indexPath];
     
     AlfrescoNode *node = self.tableViewData[indexPath.row];
-    [nodeCell setupCellWithNode:node session:self.session];
+    [nodeCell setupCellWithNode:node session:self.session hideAccessoryView:YES];
 
     if ([self.nodePicker isNodeSelected:node])
     {
