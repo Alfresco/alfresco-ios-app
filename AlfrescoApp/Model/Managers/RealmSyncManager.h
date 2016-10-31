@@ -42,7 +42,6 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 
 @property (nonatomic, weak) id<RealmSyncManagerProgressDelegate> progressDelegate;
 @property (nonatomic, weak) id<RealmSyncManagerSyncDisabledDelegate> syncDisabledDelegate;
-@property (nonatomic, strong) RLMRealm *mainThreadRealm;
 
 + (RealmSyncManager *)sharedManager;
 

@@ -64,7 +64,7 @@
         NSString *temporaryFilePath = [[[AlfrescoFileManager sharedManager] temporaryDirectory] stringByAppendingPathComponent:fileNameWithCorrectExtension];
         [self overwriteItemAtPath:temporaryFilePath withItemAtPath:url.path];
         
-        RLMRealm *realm = [RLMRealm defaultRealm];
+        RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
         AlfrescoDocument *syncedDocument = (AlfrescoDocument *)[AlfrescoNode alfrescoNodeForIdentifier:metadata.nodeRef inRealm:realm];
         
         if (syncedDocument)
@@ -74,7 +74,7 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSaveBackLocalComplete object:metadata.nodeRef userInfo:nil];
             
             [[RealmSyncManager sharedManager] retrySyncForDocument:syncedDocument completionBlock:^{
-                RLMRealm *realm = [RLMRealm defaultRealm];
+                RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
                 AlfrescoDocument *editedDocument = (AlfrescoDocument *)[AlfrescoNode alfrescoNodeForIdentifier:syncDocumentIdentifier inRealm:realm];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentEditedNotification object:editedDocument];
             }];

@@ -33,6 +33,7 @@ typedef NS_ENUM(NSUInteger, NodesType) {
 
 - (RLMRealm *)createRealmWithName:(NSString *)realmName;
 - (void)deleteRealmWithName:(NSString *)realmName;
+- (RLMRealm *)realmForCurrentThread;
 
 - (RealmSyncNodeInfo *)syncNodeInfoForObject:(AlfrescoNode *)node ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm;
 - (RealmSyncNodeInfo *)syncNodeInfoForId:(NSString *)nodeId inRealm:(RLMRealm *)realm;

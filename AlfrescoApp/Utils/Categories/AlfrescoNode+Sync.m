@@ -65,9 +65,9 @@
 
 - (NSString *)contentPath
 {
-    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:[RLMRealm defaultRealm]];
-    NSString *newNodePath = nil;
+    RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:[[RealmManager sharedManager] realmForCurrentThread]];
     
+    NSString *newNodePath = nil;
     if(nodeInfo && (nodeInfo.isFolder == NO) && nodeInfo.syncContentPath)
     {
         NSString *selectedAccountIdentifier = [[AccountManager sharedManager] selectedAccount].accountIdentifier;
@@ -80,7 +80,7 @@
 - (BOOL)isTopLevelSyncNode
 {
     BOOL isTopLevelSyncNode = NO;
-    RLMRealm *realm = [RLMRealm defaultRealm];
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:realm];
     if (nodeInfo)
@@ -96,7 +96,7 @@
 
 - (BOOL)isNodeInSyncList
 {
-    return [self isNodeInSyncListInRealm:[RLMRealm defaultRealm]];
+    return [self isNodeInSyncListInRealm:[[RealmManager sharedManager] realmForCurrentThread]];
 }
 
 - (BOOL)isNodeInSyncListInRealm:(RLMRealm *)realm
@@ -131,7 +131,7 @@
 
 - (NSString *)syncErrorDescription
 {
-    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:self ifNotExistsCreateNew:NO inRealm:[RealmSyncManager sharedManager].mainThreadRealm];
+    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:self ifNotExistsCreateNew:NO inRealm:[[RealmManager sharedManager] realmForCurrentThread]];
     return syncError.errorDescription;
 }
 
