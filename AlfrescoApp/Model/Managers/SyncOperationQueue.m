@@ -594,15 +594,18 @@
         [self.syncStatuses setValue:nodeStatus forKey:nodeId];
         RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
         RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForId:nodeId inRealm:realm];
-        if(!syncNodeInfo.isFolder)
+        if(syncNodeInfo)
         {
-            if(syncNodeInfo.syncError)
+            if(!syncNodeInfo.isFolder)
             {
-                nodeStatus.status = SyncStatusFailed;
-            }
-            else if(!syncNodeInfo.lastDownloadedDate)
-            {
-                nodeStatus.status = SyncStatusWaiting;
+                if(syncNodeInfo.syncError)
+                {
+                    nodeStatus.status = SyncStatusFailed;
+                }
+                else if(!syncNodeInfo.lastDownloadedDate)
+                {
+                    nodeStatus.status = SyncStatusWaiting;
+                }
             }
         }
     }
