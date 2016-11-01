@@ -1540,6 +1540,13 @@
     
     [realm commitWriteTransaction];
     
+    RealmSyncNodeInfo *topLevelParentNode = [childNode topLevelSyncParentNodeInRealm:realm];
+    if(topLevelParentNode)
+    {
+        SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+        syncOpQ.topLevelNodesInSyncProcessing[topLevelParentNode.syncNodeInfoId] = @YES;
+    }
+    
     if(shouldUpdateStatus)
     {
         [realm beginWriteTransaction];
