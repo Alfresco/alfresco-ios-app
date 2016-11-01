@@ -142,7 +142,26 @@
 
 - (void)cancelOperation
 {
-    [self.syncRequest cancel];
+    if(self.syncRequest)
+    {
+        [self.syncRequest cancel];
+    }
+    else if(self.isDownload)
+    {
+        if(self.downloadCompletionBlock)
+        {
+            NSError *error = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeNetworkRequestCancelled];
+            self.downloadCompletionBlock(nil, error);
+        }
+    }
+    else
+    {
+        if(self.uploadCompletionBlock)
+        {
+            NSError *error = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeNetworkRequestCancelled];
+            self.uploadCompletionBlock(nil, error);
+        }
+    }
     [self cancel];
     [self performSelector:@selector(wakeUpThread) onThread:self.operationThread withObject:nil waitUntilDone:NO];
 }
