@@ -65,6 +65,15 @@
     self.topLevelNodesInSyncProcessing = [NSMutableDictionary new];
     self.nodesInProcessingForDeletion = [NSMutableDictionary new];
     
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
+        RLMResults *allDocuments = [[RealmManager sharedManager] allDocumentsInRealm:realm];
+        for(RealmSyncNodeInfo *document in allDocuments)
+        {
+            [self syncNodeStatusObjectForNodeWithId:document.syncNodeInfoId];
+        }
+    });
+    
     return self;
 }
 
@@ -241,7 +250,7 @@
                                                                                     // Remove RealmSyncNodeInfo object
                                                                                     [[RealmManager sharedManager] deleteRealmObject:syncNodeInfo inRealm:backgroundRealm];
                                                                                 }
-                                                                                else if(!((error.code == kAlfrescoErrorCodeNetworkRequestCancelled) && (syncProgressType == SyncProgressTypeUnsyncRequested || syncProgressType == SyncProgressTypeInProcessing)))
+                                                                                else if(!((error.code == kAlfrescoErrorCodeNetworkRequestCancelled) && (syncProgressType == SyncProgressTypeUnsyncRequested || syncProgressType == SyncProgressTypeInUnsyncProcessing)))
                                                                                 {
                                                                                     SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
                                                                                     if(syncProgressType == SyncProgressTypeInProcessing)
@@ -524,8 +533,6 @@
         {
             self.syncProgress.syncProgressSize = 0;
         }
-        
-        nodeStatus.status = SyncStatusFailed;
     }
 }
 
@@ -585,6 +592,19 @@
     {
         nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:nodeId];
         [self.syncStatuses setValue:nodeStatus forKey:nodeId];
+        RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
+        RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForId:nodeId inRealm:realm];
+        if(!syncNodeInfo.isFolder)
+        {
+            if(syncNodeInfo.syncError)
+            {
+                nodeStatus.status = SyncStatusFailed;
+            }
+            else if(!syncNodeInfo.lastDownloadedDate)
+            {
+                nodeStatus.status = SyncStatusWaiting;
+            }
+        }
     }
     
     return nodeStatus;
