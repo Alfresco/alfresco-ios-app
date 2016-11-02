@@ -364,13 +364,55 @@
     }
 }
 
+- (PinViewController *)currentPinScreen
+{
+    PinViewController *currentPinViewController = nil;
+    UIViewController *topController = [UniversalDevice topPresentedViewController];
+    
+    if ([topController isKindOfClass:[UINavigationController class]])
+    {
+        UINavigationController *topNavigationController = (UINavigationController *)topController;
+        PinViewController *pvc = topNavigationController.viewControllers.firstObject;
+        
+        if ([pvc isKindOfClass:[PinViewController class]])
+        {
+            currentPinViewController = pvc;
+        }
+    }
+    
+    return currentPinViewController;
+}
+
+- (void)hideCurrentPinViewScreenWithcompletionBlock:(void (^)())completionBlock
+{
+    PinViewController *pvc = [self currentPinScreen];
+    
+    if (pvc.navigationController && [pvc pinFlow] == PinFlowEnter)
+    {
+        [pvc.navigationController dismissViewControllerAnimated:YES completion:completionBlock];
+    }
+    else
+    {
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+    }
+}
+
 - (void)evaluatePolicy
 {
     [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
         if (success)
         {
-            [self showBlankScreen:NO];
-            [self switchToMainWindow];
+            [self hideCurrentPinViewScreenWithcompletionBlock:^{
+                [self showBlankScreen:NO];
+            }];
+            
+            if (self.pinScreenWindow && [self.pinScreenWindow isKeyWindow])
+            {
+                [self switchToMainWindow];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
             
             [[FileHandlerManager sharedManager] handleCachedPackage];
