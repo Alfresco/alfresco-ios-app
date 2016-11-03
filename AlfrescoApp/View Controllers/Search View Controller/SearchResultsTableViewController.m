@@ -242,6 +242,7 @@ static CGFloat const kCellHeight = 73.0f;
             properCell.nameLabel.text = currentPerson.fullName;
             
             AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:currentPerson.identifier session:self.session];
+            configuration.ignoreCache = YES;
             [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *image, NSError *error) {
                 properCell.avatarImageView.image = image;
             }];
