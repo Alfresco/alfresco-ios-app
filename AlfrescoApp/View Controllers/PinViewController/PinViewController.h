@@ -24,7 +24,8 @@ typedef NS_ENUM(NSUInteger, PinFlow)
     PinFlowUnset,
     PinFlowChange,
     PinFlowEnter,   // Used when launching the app or moving the app into the foreground
-    PinFlowVerify   // Used when deleting the last paid account. Almost similar to PinFlowEnter; the navigation bar is displayed so the user has access to the Cancel button.
+    PinFlowVerify,  // Used when deleting the last paid account. Almost similar to PinFlowEnter; the navigation bar is displayed so the user has access to the Cancel button.
+    PinFlowAny
 };
 
 typedef NS_ENUM(NSUInteger, PinFlowCompletionStatus)

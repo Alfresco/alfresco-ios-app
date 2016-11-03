@@ -210,19 +210,7 @@
         
         [SecurityManager resetWithType:ResetTypeEntireApp];
         
-        UIViewController *topController = [UniversalDevice topPresentedViewController];
-        
-        if ([topController isKindOfClass:[UINavigationController class]])
-        {
-            UINavigationController *topNavigationController = (UINavigationController *)topController;
-            PinViewController *pvc = topNavigationController.viewControllers.firstObject;
-            
-            if ([pvc isKindOfClass:[PinViewController class]])
-            {
-                [topController dismissViewControllerAnimated:NO completion:nil];
-            }
-        }
-        
+        [self hideCurrentPinViewScreenWithFlow:PinFlowAny animated:NO completionBlock:nil];
         [self showBlankScreen:NO];
         
         [[PreferenceManager sharedManager] updatePreferenceToValue:@(NO) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
@@ -272,29 +260,20 @@
 
 - (void)showPinScreenAnimated:(BOOL)animated inOwnWindow:(BOOL)ownWindow completionBlock:(void (^)())completionBlock
 {
-    UIViewController *topController = [UniversalDevice topPresentedViewController];
+    PinViewController *pvc = [self currentPinScreen];
     
-    if ([topController isKindOfClass:[UINavigationController class]])
+    if (pvc && [pvc pinFlow] == PinFlowEnter)
     {
-        UINavigationController *topNavigationController = (UINavigationController *)topController;
-        PinViewController *pvc = topNavigationController.viewControllers.firstObject;
-        
-        if ([pvc isKindOfClass:[PinViewController class]])
+        if (completionBlock)
         {
-            if ([pvc pinFlow] == PinFlowEnter)
-            {
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-                
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kKeyboardInPinScreenAppearanceDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
-                });
-                
-                return;
-            }
+            completionBlock();
         }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kKeyboardInPinScreenAppearanceDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
+        });
+        
+        return;
     }
     
     UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowEnter inOwnWindow:ownWindow completionBlock:^(PinFlowCompletionStatus status){
@@ -327,7 +306,7 @@
     }
     else
     {
-        [topController presentViewController:navController animated:animated completion:completionBlock];
+        [[UniversalDevice topPresentedViewController] presentViewController:navController animated:animated completion:completionBlock];
     }
 }
 
@@ -364,13 +343,56 @@
     }
 }
 
+- (PinViewController *)currentPinScreen
+{
+    PinViewController *currentPinViewController = nil;
+    UIViewController *topController = [UniversalDevice topPresentedViewController];
+    
+    if ([topController isKindOfClass:[UINavigationController class]])
+    {
+        UINavigationController *topNavigationController = (UINavigationController *)topController;
+        PinViewController *pvc = topNavigationController.viewControllers.firstObject;
+        
+        if ([pvc isKindOfClass:[PinViewController class]])
+        {
+            currentPinViewController = pvc;
+        }
+    }
+    
+    return currentPinViewController;
+}
+
+- (void)hideCurrentPinViewScreenWithFlow:(PinFlow)pinFlow animated:(BOOL)animated completionBlock:(void (^)())completionBlock
+{
+    PinViewController *pvc = [self currentPinScreen];
+    PinFlow currentPinFlow = [pvc pinFlow];
+    
+    if (pvc.navigationController && (currentPinFlow == pinFlow || currentPinFlow == PinFlowAny))
+    {
+        [pvc.navigationController dismissViewControllerAnimated:animated completion:completionBlock];
+    }
+    else
+    {
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+    }
+}
+
 - (void)evaluatePolicy
 {
     [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
         if (success)
         {
-            [self showBlankScreen:NO];
-            [self switchToMainWindow];
+            [self hideCurrentPinViewScreenWithFlow:PinFlowEnter animated:YES completionBlock:^{
+                [self showBlankScreen:NO];
+            }];
+            
+            if (self.pinScreenWindow && [self.pinScreenWindow isKeyWindow])
+            {
+                [self switchToMainWindow];
+            }
             [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
             
             [[FileHandlerManager sharedManager] handleCachedPackage];

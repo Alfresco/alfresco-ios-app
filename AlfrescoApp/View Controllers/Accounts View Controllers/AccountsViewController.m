@@ -28,6 +28,7 @@
 #import "PreferenceManager.h"
 #import "TouchIDManager.h"
 #import "RealmSyncManager.h"
+#import "SecurityManager.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -387,13 +388,22 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] && [accountManager numberOfPaidAccounts] == 1 && account.isPaidAccount)
     {
         UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowVerify completionBlock:^(PinFlowCompletionStatus status){
-            if (status == PinFlowCompletionStatusSuccess)
+            switch (status)
             {
-                removeAccount();
-            }
-            else if (status == PinFlowCompletionStatusCancel)
-            {
-                [tableView setEditing:NO animated:YES];
+                case PinFlowCompletionStatusSuccess:
+                    removeAccount();
+                    break;
+                    
+                case PinFlowCompletionStatusCancel:
+                    [tableView setEditing:NO animated:YES];
+                    break;
+                    
+                case PinFlowCompletionStatusReset:
+                    [SecurityManager resetWithType:ResetTypeEntireApp];
+                    break;
+                    
+                default:
+                    break;
             }
         }];
         [self presentViewController:navController animated:YES completion:nil];
