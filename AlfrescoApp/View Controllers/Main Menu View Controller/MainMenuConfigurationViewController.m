@@ -75,6 +75,7 @@ static NSString * const kFavouritesViewIdentifier = @"view-favorite-default";
     
     AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:self.session.personIdentifier session:self.session];
     configuration.placeholderImage = [[UIImage imageNamed:@"mainmenu-alfresco.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    configuration.ignoreCache = YES;
     [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *image, NSError *error) {
         [self updateMainMenuItemWithIdentifier:kAlfrescoMainMenuItemAccountsIdentifier withAvatarImage:image];
     }];

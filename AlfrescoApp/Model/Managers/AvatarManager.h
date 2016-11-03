@@ -32,7 +32,6 @@
 @interface AvatarManager : NSObject
 
 + (AvatarManager *)sharedManager;
-//- (void)retrieveAvatarForIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session ignoreCache:(BOOL)ignoreCache completionBlock:(ImageCompletionBlock)completionBlock;
 - (void)retrieveAvatarWithConfiguration:(AvatarConfiguration *)configuration completionBlock:(ImageCompletionBlock)completionBlock;
 - (void)deleteAvatarForIdentifier:(NSString *)identifier;
 

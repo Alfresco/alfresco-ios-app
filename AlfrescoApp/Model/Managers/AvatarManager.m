@@ -50,7 +50,6 @@
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
 @property (nonatomic, strong) CoreDataCacheHelper *coreDataCacheHelper;
-//@property (nonatomic, strong) UIImage *placeholderImage;
 
 @end
 
@@ -74,7 +73,6 @@
         self.avatars = [NSMutableDictionary dictionary];
         self.requestedUsernamesAndCompletionBlocks = [NSMutableDictionary dictionary];
         self.coreDataCacheHelper = [[CoreDataCacheHelper alloc] init];
-//        self.placeholderImage = [UIImage imageNamed:@"avatar.png"];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     }
     return self;
@@ -154,8 +152,6 @@
     [self.personService retrievePersonWithIdentifier:configuration.identifier completionBlock:^(AlfrescoPerson *person, NSError *identifierError) {
         if (person)
         {
-            NSLog(@"avatar identifier: %@", person.avatarIdentifier);
-            
             [self.personService retrieveAvatarForPerson:person completionBlock:^(AlfrescoContentFile *contentFile, NSError *contentError) {
                 if (contentFile)
                 {
@@ -194,84 +190,6 @@
         }
     }];
 }
-
-//- (void)retrieveAvatarForIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session ignoreCache:(BOOL)ignoreCache completionBlock:(ImageCompletionBlock)completionBlock
-//{
-//    if (![self.session isEqual:session])
-//    {
-//        self.session = session;
-//        self.personService = [[AlfrescoPersonService alloc] initWithSession:session];
-//    }
-//    
-//    if (identifier == nil)
-//    {
-//        completionBlock(self.placeholderImage, nil);
-//        return;
-//    }
-//    
-//    if (ignoreCache == NO)
-//    {
-//        UIImage *avatar = [self avatarForIdentifier:identifier];
-//        completionBlock(avatar ? avatar : self.placeholderImage, nil);
-//        return;
-//    }
-//    else
-//    {
-//        [self deleteAvatarForIdentifier:identifier];
-//    }
-//    
-//    ImageCompletionBlock copiedBlock = [completionBlock copy];
-//    completionBlock(self.placeholderImage, nil);
-//    
-//    if ([[self.requestedUsernamesAndCompletionBlocks allKeys] containsObject:identifier] && ignoreCache == NO)
-//    {
-//        [self addCompletionBlock:copiedBlock forKey:identifier];
-//        return;
-//    }
-//
-//    [self addCompletionBlock:copiedBlock forKey:identifier];
-//    
-//    [self.personService retrievePersonWithIdentifier:identifier completionBlock:^(AlfrescoPerson *person, NSError *identifierError) {
-//        if (person)
-//        {
-//            [self.personService retrieveAvatarForPerson:person completionBlock:^(AlfrescoContentFile *contentFile, NSError *contentError) {
-//                if (contentFile)
-//                {
-//                    NSManagedObjectContext *childManagedObjectContext = [self.coreDataCacheHelper createChildManagedObjectContext];
-//                    AvatarImageCache *imageCache = [self.coreDataCacheHelper createAvatarObjectInManagedObjectContext:childManagedObjectContext];
-//                    imageCache.identifier = identifier;
-//                    
-//                    // Crop the avatar
-//                    UIImage *uncroppedAvatar = [UIImage imageWithContentsOfFile:contentFile.fileUrl.path];
-//                    UIImage *croppedAvatar = [Utility cropImageIntoSquare:uncroppedAvatar];
-//                    
-//                    imageCache.avatarImageData = UIImagePNGRepresentation(croppedAvatar);
-//                    imageCache.dateAdded = [NSDate date];
-//                    [self.coreDataCacheHelper saveContextForManagedObjectContext:childManagedObjectContext];
-//                    
-//                    // remove the temp file
-//                    NSError *removalError = nil;
-//                    [[AlfrescoFileManager sharedManager] removeItemAtPath:contentFile.fileUrl.path error:&removalError];
-//                    
-//                    if (removalError)
-//                    {
-//                        AlfrescoLogError(@"Error removing file at path %@", contentFile.fileUrl.path);
-//                    }
-//                    
-//                    [self runAllCompletionBlocksForIdentifier:identifier avatarImage:[imageCache avatarImage] error:contentError];
-//                }
-//                else
-//                {
-//                    [self runAllCompletionBlocksForIdentifier:identifier avatarImage:self.placeholderImage error:contentError];
-//                }
-//            }];
-//        }
-//        else
-//        {
-//            [self runAllCompletionBlocksForIdentifier:identifier avatarImage:self.placeholderImage error:identifierError];
-//        }
-//    }];
-//}
 
 - (void)deleteAvatarForIdentifier:(NSString *)identifier
 {
