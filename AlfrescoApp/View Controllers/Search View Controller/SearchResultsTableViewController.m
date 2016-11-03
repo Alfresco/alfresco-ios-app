@@ -241,19 +241,11 @@ static CGFloat const kCellHeight = 73.0f;
             AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.results objectAtIndex:indexPath.row];
             properCell.nameLabel.text = currentPerson.fullName;
             
-            AvatarManager *avatarManager = [AvatarManager sharedManager];
-            
-            [avatarManager retrieveAvatarForPersonIdentifier:currentPerson.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                if(image)
-                {
-                    properCell.avatarImageView.image = image;
-                }
-                else
-                {
-                    UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
-                    properCell.avatarImageView.image = placeholderImage;
-                }
+            AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:currentPerson.identifier session:self.session];
+            [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *image, NSError *error) {
+                properCell.avatarImageView.image = image;
             }];
+            
             cell = properCell;
             break;
         }

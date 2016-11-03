@@ -25,7 +25,6 @@
 #import "AccountManager.h"
 #import "SettingButtonCell.h"
 #import "UIAlertView+ALF.h"
-#import "AvatarImageCache.h"
 #import <MessageUI/MessageUI.h>
 #import <sys/utsname.h>
 #import "PinViewController.h"

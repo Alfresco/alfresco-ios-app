@@ -15,12 +15,25 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
-  
+
+@interface AvatarConfiguration : NSObject
+
+@property (nonatomic, strong) NSString *identifier;
+@property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) UIImage *placeholderImage;
+@property (nonatomic, assign) BOOL ignoreCache;
+
++ (AvatarConfiguration *)defaultConfiguration;
++ (AvatarConfiguration *)defaultConfigurationWithIdentifier: (NSString *)identifier session:(id<AlfrescoSession>)session;
+
+@end
+
+
 @interface AvatarManager : NSObject
 
 + (AvatarManager *)sharedManager;
-- (UIImage *)avatarForIdentifier:(NSString *)identifier;
-- (void)retrieveAvatarForPersonIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session completionBlock:(ImageCompletionBlock)completionBlock;
+//- (void)retrieveAvatarForIdentifier:(NSString *)identifier session:(id<AlfrescoSession>)session ignoreCache:(BOOL)ignoreCache completionBlock:(ImageCompletionBlock)completionBlock;
+- (void)retrieveAvatarWithConfiguration:(AvatarConfiguration *)configuration completionBlock:(ImageCompletionBlock)completionBlock;
 - (void)deleteAvatarForIdentifier:(NSString *)identifier;
 
 @end

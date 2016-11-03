@@ -111,25 +111,11 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
 {
     AlfrescoPerson *person = [self.tableViewData objectAtIndex:indexPath.row];
     PersonCell *cell = (PersonCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([PersonCell class]) forIndexPath:indexPath];
-    AvatarManager *avatarManager = [AvatarManager sharedManager];
-    UIImage *avatar = [avatarManager avatarForIdentifier:person.identifier];
-
-    if (avatar)
-    {
-        cell.avatarImageView.image = avatar;
-    }
-    else
-    {
-        UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
-        cell.avatarImageView.image = placeholderImage;
-
-        [avatarManager retrieveAvatarForPersonIdentifier:person.identifier session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
-            if (avatarImage)
-            {
-                [cell.avatarImageView setImage:avatarImage withFade:YES];
-            }
-        }];
-    }
+    
+    AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:person.identifier session:self.session];
+    [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+        [cell.avatarImageView setImage:avatarImage withFade:YES];
+    }];
     
     cell.nameLabel.text = person.fullName;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

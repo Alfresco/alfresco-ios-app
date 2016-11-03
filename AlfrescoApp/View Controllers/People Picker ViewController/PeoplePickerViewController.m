@@ -153,9 +153,8 @@ static NSInteger const kSearchResultsIndex = 0;
         AlfrescoPerson *person = (AlfrescoPerson *)item;
         cell.nameLabel.text = person.fullName;
         
-        AvatarManager *avatarManager = [AvatarManager sharedManager];
-        
-        [avatarManager retrieveAvatarForPersonIdentifier:person.identifier session:self.session completionBlock:^(UIImage *image, NSError *error) {
+        AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:person.identifier session:self.session];
+        [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *image, NSError *error) {
             cell.avatarImageView.image = image;
         }];
         
