@@ -239,22 +239,10 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         cell.contentTextLabel.textColor = [UIColor darkGrayColor];
     }
     
-    UIImage *avatar = [[AvatarManager sharedManager] avatarForIdentifier:currentComment.createdBy];
-    if (avatar)
-    {
-        [cell.avatarImageView setImage:avatar withFade:NO];
-    }
-    else
-    {
-        UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
-        cell.avatarImageView.image = placeholderImage;
-        [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentComment.createdBy session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
-            if (avatarImage)
-            {
-                [cell.avatarImageView setImage:avatarImage withFade:YES];
-            }
-        }];
-    }
+    AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:currentComment.createdBy session:self.session];
+    [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+        [cell.avatarImageView setImage:avatarImage withFade:YES];
+    }];
     
     return cell;
 }

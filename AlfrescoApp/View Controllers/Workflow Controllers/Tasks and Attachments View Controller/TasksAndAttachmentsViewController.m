@@ -282,22 +282,10 @@ typedef NS_ENUM(NSUInteger, TableSections)
             {
                 AlfrescoWorkflowTask *currentTask = self.tasks[indexPath.row];
                 
-                UIImage *avatar = [[AvatarManager sharedManager] avatarForIdentifier:currentTask.assigneeIdentifier];
-                if (avatar)
-                {
-                    [processTasksCell.avatarImageView setImage:avatar withFade:NO];
-                }
-                else
-                {
-                    UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
-                    processTasksCell.avatarImageView.image = placeholderImage;
-                    [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:currentTask.assigneeIdentifier session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
-                        if (avatarImage)
-                        {
-                            [processTasksCell.avatarImageView setImage:avatarImage withFade:YES];
-                        }
-                    }];
-                }
+                AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:currentTask.assigneeIdentifier session:self.session];
+                [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+                    [processTasksCell.avatarImageView setImage:avatarImage withFade:YES];
+                }];
                 
                 [processTasksCell updateStatusLabelUsingTask:currentTask];
             }

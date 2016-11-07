@@ -465,27 +465,15 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
             }
             else if (activityWrapper.avatarUserName)
             {
-                UIImage *cachedImage = [[AvatarManager sharedManager] avatarForIdentifier:activityWrapper.avatarUserName];
-                if (cachedImage)
-                {
-                    activityWrapper.activityImage = cachedImage;
-                }
-                else
-                {
-                    activityWrapper.activityImage = [UIImage imageNamed:@"avatar.png"];
-
-                    [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:activityWrapper.avatarUserName session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
-                        if (avatarImage)
+                AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:activityWrapper.avatarUserName session:self.session];
+                [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+                        ActivityTableViewCell *avatarCell = (ActivityTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+                        if (avatarCell)
                         {
-                            ActivityTableViewCell *avatarCell = (ActivityTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-                            if (avatarCell)
-                            {
-                                activityWrapper.activityImage = avatarImage;
-                                avatarCell.activityImage.image = activityWrapper.activityImage;
-                            }
+                            activityWrapper.activityImage = avatarImage;
+                            avatarCell.activityImage.image = activityWrapper.activityImage;
                         }
-                    }];
-                }
+                }];
             }
 
             // We'll always have *something* by the time the code gets here
