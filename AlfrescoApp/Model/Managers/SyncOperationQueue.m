@@ -607,6 +607,8 @@
                     nodeStatus.status = SyncStatusWaiting;
                 }
             }
+            
+            nodeStatus.activityType = [syncNodeInfo.alfrescoNode determineSyncActivityTypeInRealm:realm];
         }
     }
     
