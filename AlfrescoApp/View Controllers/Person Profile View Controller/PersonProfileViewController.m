@@ -277,22 +277,10 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     }
     
     /// Request the avatar
-    UIImage *avatar = [[AvatarManager sharedManager] avatarForIdentifier:self.username];
-    if (avatar)
-    {
-        self.avatarImageView.image = avatar;
-    }
-    else
-    {
-        UIImage *placeholderImage = [UIImage imageNamed:@"avatar.png"];
-        self.avatarImageView.image = placeholderImage;
-        [[AvatarManager sharedManager] retrieveAvatarForPersonIdentifier:self.username session:self.session completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
-            if (avatarImage)
-            {
-                [self.avatarImageView setImage:avatarImage withFade:YES];
-            }
-        }];
-    }
+    AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:self.username session:self.session];
+    [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *avatarImage, NSError *avatarError) {
+        [self.avatarImageView setImage:avatarImage withFade:YES];
+    }];
 }
 
 - (NSArray *)availableUserContactInformationFromPerson:(AlfrescoPerson *)person
