@@ -166,6 +166,60 @@
     return topLevelSyncParent;
 }
 
+- (SyncActivityType)determineSyncActivityTypeInRealm:(RLMRealm *)realm
+{
+    SyncActivityType typeToReturn = SyncActivityTypeIdle;
+    if(!self.isFolder)
+    {
+        RealmSyncNodeInfo *syncNode = [[RealmManager sharedManager] syncNodeInfoForObject:self ifNotExistsCreateNew:NO inRealm:realm];
+        if(syncNode)
+        {
+            if(syncNode.isRemovedFromSyncHasLocalChanges)
+            {
+                typeToReturn = SyncActivityTypeUpload;
+            }
+            else
+            {
+                if(syncNode.reloadContent)
+                {
+                    typeToReturn = SyncActivityTypeDownload;
+                }
+                else
+                {
+                    AlfrescoNode *localNode = syncNode.alfrescoNode;
+                    NSComparisonResult compareResult = [localNode.modifiedAt compare:self.modifiedAt];
+                    if(compareResult == NSOrderedAscending)
+                    {
+                        typeToReturn = SyncActivityTypeDownload;
+                    }
+                    else if(compareResult == NSOrderedDescending)
+                    {
+                        typeToReturn = SyncActivityTypeUpload;
+                    }
+                    else
+                    {
+                        //both modifiedAt dates have the same value - checking for last downloaded date
+                        if(syncNode.lastDownloadedDate)
+                        {
+                            NSComparisonResult downloadCompareResult = [syncNode.lastDownloadedDate compare:self.modifiedAt];
+                            if(downloadCompareResult == NSOrderedAscending)
+                            {
+                                typeToReturn = SyncActivityTypeDownload;
+                            }
+                        }
+                        else
+                        {
+                            typeToReturn = SyncActivityTypeDownload;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    return typeToReturn;
+}
+
 + (NSArray *)syncIdentifiersForNodes:(NSArray *)nodes
 {
     NSMutableArray *syncIdentifiers = [NSMutableArray array];

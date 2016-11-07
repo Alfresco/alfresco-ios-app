@@ -477,7 +477,7 @@
 {
     SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[document syncIdentifier]];
     
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    if ([[ConnectivityManager sharedManager] hasInternetConnection] && self.alfrescoSession)
     {
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
         
@@ -502,12 +502,6 @@
     }
     else
     {
-        if (nodeStatus.activityType != SyncActivityTypeDownload)
-        {
-            nodeStatus.status = SyncStatusWaiting;
-            nodeStatus.activityType = SyncActivityTypeUpload;
-        }
-        
         if (completionBlock)
         {
             completionBlock();
@@ -1451,64 +1445,23 @@
 - (BOOL)determineFileActionForNode:(AlfrescoNode *)node
 {
     BOOL shouldUpdateStatus = NO;
-    if(node.isFolder)
-    {
-        shouldUpdateStatus = YES;
-    }
-    else
-    {
-        RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
-        RealmSyncNodeInfo *childSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
-        if(childSyncNodeInfo)
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
+    SyncActivityType activityTypeForNode = [node determineSyncActivityTypeInRealm:realm];
+    switch (activityTypeForNode) {
+        case SyncActivityTypeIdle:
         {
-            AlfrescoNode *localNode = childSyncNodeInfo.alfrescoNode;
-            if(childSyncNodeInfo.isRemovedFromSyncHasLocalChanges)
-            {
-                [self.nodesToUpload addObject:node];
-            }
-            else
-            {
-                if(childSyncNodeInfo.reloadContent)
-                {
-                    [self.nodesToDownload addObject:node];
-                }
-                else
-                {
-                    NSComparisonResult compareResult = [localNode.modifiedAt compare:node.modifiedAt];
-                    if(compareResult == NSOrderedAscending)
-                    {
-                        [self.nodesToDownload addObject:node];
-                    }
-                    else if(compareResult == NSOrderedDescending)
-                    {
-                        [self.nodesToUpload addObject:localNode];
-                    }
-                    else
-                    {
-                        //both modifiedAt dates have the same value - checking for last downloaded date
-                        if(childSyncNodeInfo.lastDownloadedDate)
-                        {
-                            NSComparisonResult downloadCompareResult = [childSyncNodeInfo.lastDownloadedDate compare:node.modifiedAt];
-                            if(downloadCompareResult == NSOrderedAscending)
-                            {
-                                [self.nodesToDownload addObject:node];
-                            }
-                            else
-                            {
-                                shouldUpdateStatus = YES;
-                            }
-                        }
-                        else
-                        {
-                            [self.nodesToDownload addObject:node];
-                        }
-                    }
-                }
-            }
+            shouldUpdateStatus = YES;
+            break;
         }
-        else
+        case SyncActivityTypeUpload:
+        {
+            [self.nodesToUpload addObject:node];
+            break;
+        }
+        case SyncActivityTypeDownload:
         {
             [self.nodesToDownload addObject:node];
+            break;
         }
     }
     

@@ -34,6 +34,7 @@
 @property (nonatomic, strong) AlfrescoOAuthUILoginViewController *loginController;
 @property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession, NSError *error);
 @property (nonatomic, assign) BOOL didCancelLogin;
+@property (nonatomic, assign) BOOL completionBlockCalledFromLoginViewController;
 // Cloud parameters
 @property (nonatomic, strong) NSString *cloudAPIKey;
 @property (nonatomic, strong) NSString *cloudSecretKey;
@@ -60,6 +61,7 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoAccessDeniedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appPolicyUpdated:) name:kAlfrescoApplicationPolicyUpdatedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
     }
     return self;
 }
@@ -443,6 +445,26 @@
     self.currentLoginURLString = nil;
 }
 
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+    
+    if(hasInternetConnection)
+    {
+        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+            if(successful && !self.completionBlockCalledFromLoginViewController)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+            }
+            else if (self.completionBlockCalledFromLoginViewController)
+            {
+                self.completionBlockCalledFromLoginViewController = NO;
+            }
+        }];
+    }
+}
+
 #pragma mark - LoginViewControllerDelegate Functions
 
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password
@@ -457,6 +479,7 @@
             [[AccountManager sharedManager] saveAccountsToKeychain];
             if (self.authenticationCompletionBlock != NULL)
             {
+                self.completionBlockCalledFromLoginViewController = YES;
                 self.authenticationCompletionBlock(YES, alfrescoSession, error);
             }
             [loginViewController dismissViewControllerAnimated:YES completion:nil];
