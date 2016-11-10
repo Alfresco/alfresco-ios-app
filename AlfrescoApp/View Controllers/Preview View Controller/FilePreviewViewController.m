@@ -73,6 +73,7 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
     if (self)
     {
         self.animationController = [FullScreenAnimationController new];
+        self.animationController.presentationSpeed = 0.5f;
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadStarting:) name:kDocumentPreviewManagerWillStartDownloadNotification object:nil];
@@ -212,32 +213,38 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
 {
     self.filePathForFileToLoad = filePath;
 
-    ALFPreviewController *previewController = [ALFPreviewController new];
-    previewController.dataSource = self;
-    previewController.gestureDelegate = self;
-    previewController.view.hidden = YES;
-    previewController.currentPreviewItemIndex = 1;
+    ALFPreviewController *previewVC = [ALFPreviewController new];
+    previewVC.previewController.dataSource = self;
+    previewVC.gestureDelegate = self;
+    previewVC.view.hidden = YES;
+    previewVC.previewController.currentPreviewItemIndex = 1;
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAddPreviewControllerViewDelayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        previewController.view.frame = self.view.frame;
-        [self.view addSubview:previewController.view];
+        previewVC.view.frame = self.view.bounds;
+        [self.view addSubview:previewVC.view];
     });
     
-    self.previewController = previewController;
+    self.previewController = previewVC;
+    
+    [self.previewController changeButtonImageIsFullscreen:self.fullScreenMode];
+    if(self.fullScreenMode)
+    {
+        [self.previewController hideButton:YES];
+    }
     
     if (animated)
     {
-        previewController.view.alpha = 0.0f;
-        previewController.view.hidden = NO;
+        previewVC.view.alpha = 0.0f;
+        previewVC.view.hidden = NO;
         [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
             self.previewThumbnailImageView.alpha = 0.0f;
-            previewController.view.alpha = 1.0f;
+            previewVC.view.alpha = 1.0f;
         }];
     }
     else
     {
-        previewController.view.hidden = NO;
-        previewController.view.alpha = 1.0;
+        previewVC.view.hidden = NO;
+        previewVC.view.alpha = 1.0;
     }
 }
 
@@ -453,7 +460,7 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
     
     if ([nodeRefUpdated isEqualToString:self.document.identifier] || self.document == nil)
     {
-        [self.previewController reloadData];
+        [self.previewController.previewController reloadData];
     }
 }
 
@@ -522,16 +529,9 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
 
 - (void)previewControllerWasTapped:(ALFPreviewController *)controller
 {
-    if (self.presentingViewController)
+    if(self.presentingViewController)
     {
-        if (self.navigationController.navigationBarHidden)
-        {
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
-        }
-        else
-        {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-        }
+        [self dismiss:nil];
     }
     else
     {
@@ -556,19 +556,13 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
         presentationViewController.fullScreenMode = YES;
         NavigationViewController *navigationPresentationViewController = [[NavigationViewController alloc] initWithRootViewController:presentationViewController];
         
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Done", @"Done")
-                                                                       style:UIBarButtonItemStyleDone
-                                                                      target:self
-                                                                      action:@selector(dismiss:)];
-        [presentationViewController.navigationItem setRightBarButtonItem:doneButton];
-        presentationViewController.title = (self.document) ? self.document.name : self.filePathForFileToLoad.lastPathComponent;
-        
         navigationPresentationViewController.transitioningDelegate  = self;
         navigationPresentationViewController.modalPresentationStyle = UIModalPresentationCustom;
         navigationPresentationViewController.modalPresentationCapturesStatusBarAppearance = YES;
+        [navigationPresentationViewController setNavigationBarHidden:YES];
         
         [self presentViewController:navigationPresentationViewController animated:YES completion:^{
-            [presentationViewController.navigationController setNavigationBarHidden:YES animated:YES];
+            [presentationViewController.previewController hideButton:NO];
         }];
         
         NSString *mimeType = nil;
