@@ -502,6 +502,9 @@
     }
     else
     {
+        SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[document syncIdentifier]];
+        nodeStatus.status = SyncStatusOffline;
+        
         if (completionBlock)
         {
             completionBlock();

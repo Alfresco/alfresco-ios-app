@@ -401,8 +401,10 @@ static NSString * const kDownloadInProgressExtension = @"-download";
         
         if (editBarButtonItem)
         {
-            [self.navigationItem setRightBarButtonItem:editBarButtonItem animated:YES];
-            editBarButtonItem.enabled = (self.tableViewData.count > 0);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationItem setRightBarButtonItem:editBarButtonItem animated:YES];
+                editBarButtonItem.enabled = (self.tableViewData.count > 0);
+            });
         }
     }
 }
