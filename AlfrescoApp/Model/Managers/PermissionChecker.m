@@ -60,28 +60,28 @@
     {
         case AVAuthorizationStatusAuthorized:
         {
-            completionBlock(YES);
+            [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:YES];
         }
             break;
             
         case AVAuthorizationStatusDenied:
         {
             [Utility showLocalizedAlertWithTitle:@"permissions.camera.denied.title" message:@"permissions.camera.denied.message"];
-            completionBlock(NO);
+            [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:NO];
         }
             break;
             
         case AVAuthorizationStatusRestricted:
         {
             [Utility showLocalizedAlertWithTitle:@"permissions.camera.restricted.title" message:@"permissions.camera.restricted.message"];
-            completionBlock(NO);
+            [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:NO];
         }
             break;
             
         case AVAuthorizationStatusNotDetermined:
         {
             [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted){
-                completionBlock(granted);
+                [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:granted];
             }];
         }
             break;
@@ -99,21 +99,21 @@
     {
         case PHAuthorizationStatusAuthorized:
         {
-            completionBlock(YES);
+            [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:YES];
         }
             break;
             
         case PHAuthorizationStatusDenied:
         {
             [Utility showLocalizedAlertWithTitle:@"permissions.library.denied.title" message:@"permissions.library.denied.message"];
-            completionBlock(NO);
+            [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:NO];
         }
             break;
             
         case PHAuthorizationStatusRestricted:
         {
             [Utility showLocalizedAlertWithTitle:@"permissions.library.restricted.title" message:@"permissions.library.restricted.message"];
-            completionBlock(NO);
+            [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:NO];
         }
             break;
             
@@ -123,12 +123,12 @@
                 if (status == PHAuthorizationStatusAuthorized)
                 {
                     // Access has been granted.
-                    completionBlock(YES);
+                    [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:YES];
                 }
                 else
                 {
                     // Access has been denied.
-                    completionBlock(NO);
+                    [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:NO];
                 }
             }];
         }
@@ -148,20 +148,20 @@
         case AVAudioSessionRecordPermissionDenied:
         {
             [Utility showLocalizedAlertWithTitle:@"permissions.microphone.denied.title" message:@"permissions.microphone.denied.message"];
-            completionBlock(NO);
+            [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:NO];
         }
             break;
             
         case AVAudioSessionRecordPermissionGranted:
         {
-            completionBlock(YES);
+            [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:YES];
         }
             break;
             
         case AVAudioSessionRecordPermissionUndetermined:
         {
             [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted){
-                completionBlock(granted);
+                [PermissionChecker performCompletionBlock:completionBlock onMainThreadWithValue:granted];
             }];
         }
             break;
@@ -175,6 +175,13 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [[LocationManager sharedManager] startLocationUpdates];
+    });
+}
+
++ (void)performCompletionBlock:(void (^)(BOOL))completionBlock onMainThreadWithValue:(BOOL)value
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        completionBlock(value);
     });
 }
 
