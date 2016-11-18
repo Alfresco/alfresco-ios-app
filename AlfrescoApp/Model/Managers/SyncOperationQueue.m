@@ -533,6 +533,8 @@
         {
             self.syncProgress.syncProgressSize = 0;
         }
+        
+         nodeStatus.status = SyncStatusFailed;
     }
 }
 
