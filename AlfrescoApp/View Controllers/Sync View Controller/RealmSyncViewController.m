@@ -65,8 +65,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     self.hasRequestFinished = NO;
     
-    [self adjustCollectionViewForProgressView:nil];
-    
     [self changeCollectionViewStyle:self.style animated:YES];
     
     [self addNotificationListeners];
@@ -86,7 +84,9 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 {
     [super viewDidAppear:animated];
     
-     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSyncedContent];
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSyncedContent];
+    
+    [self adjustCollectionViewForProgressView:nil];
 }
 
 - (void)dealloc
@@ -98,7 +98,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 - (void)reloadCollectionView
 {
     [super reloadCollectionView];
-    self.collectionView.contentOffset = CGPointMake(0., 0.);
+    self.collectionView.contentOffset = CGPointZero;
 }
 
 - (void)addNotificationListeners
@@ -284,7 +284,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     {
         SyncNavigationViewController *syncNavigationController = (SyncNavigationViewController *)navigationController;
         
-        UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+        UIEdgeInsets edgeInset = UIEdgeInsetsZero;
         if ([syncNavigationController isProgressViewVisible])
         {
             edgeInset = UIEdgeInsetsMake(0.0, 0.0, [syncNavigationController progressViewHeight], 0.0);
