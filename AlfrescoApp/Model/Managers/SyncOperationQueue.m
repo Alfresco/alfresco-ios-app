@@ -469,17 +469,15 @@
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier completionBlock:(void (^)(void))completionBlock
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
-        SyncOperation *syncOperation = self.syncOperations[syncDocumentIdentifier];
-        
-        [self cancelOperation:syncOperation forNodeSyncIdentifier:syncDocumentIdentifier];
-        
-        if(completionBlock)
-        {
-            completionBlock();
-        }
-    });
+    NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
+    SyncOperation *syncOperation = self.syncOperations[syncDocumentIdentifier];
+    
+    [self cancelOperation:syncOperation forNodeSyncIdentifier:syncDocumentIdentifier];
+    
+    if(completionBlock)
+    {
+        completionBlock();
+    }
 }
 
 - (void)cancelSyncForFolder:(AlfrescoFolder *)folder completionBlock:(void (^)(void))completionBlock
