@@ -129,10 +129,6 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigShouldUpdateMainMenuNotification object:self.mainMenuBuilder];
         }
-        else
-        {
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoConfigFileDidUpdateNotification object:self.mainMenuBuilder];
-        }
     }
 }
 
