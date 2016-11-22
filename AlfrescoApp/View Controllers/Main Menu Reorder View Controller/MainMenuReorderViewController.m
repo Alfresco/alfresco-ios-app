@@ -250,8 +250,21 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     
     if(syncMenuItem)
     {
+        // Get index of sync item from oldData.
+        __block NSUInteger index = 0;
+        [self.oldData enumerateObjectsUsingBlock:^(MainMenuItem *item, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+            {
+                index = idx;
+                *stop = YES;
+            }
+        }];
+        
         [self.hiddenItems removeObject:syncMenuItem];
-        [self.visibleItems addObject:syncMenuItem];
+        
+        // Insert sync item at the original index.
+        [self.visibleItems insertObject:syncMenuItem atIndex:index];
+        
         [self.tableView reloadData];
     }
 }
