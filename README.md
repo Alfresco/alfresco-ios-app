@@ -27,6 +27,22 @@ This product distribution is made available under the [Apache 2.0 license](http:
 
 Portions of this product distribution require certain copyright or other notices to be included with the product distribution. These notices may also appear in individual source files. 
 
+Project Requirements
+---
+- Cocoapods
+- Git
+
+
+Setting Up The Project
+---
+1. Clone the project
+2. Run `sh setup-project.sh` on your terminal.
+3. Open `AlfrescoApp.xcworkspace` on your XCode.
+
+
+Contributors
+---
+[Bhagya Silva](https://about.me/bhagyas) ([Loftux AB](https://loftux.com?ref=ios)) 
 
 Getting Help
 ===
