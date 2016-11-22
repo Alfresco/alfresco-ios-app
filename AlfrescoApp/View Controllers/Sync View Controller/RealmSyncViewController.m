@@ -160,13 +160,41 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         {
             if ([[ConnectivityManager sharedManager] hasInternetConnection])
             {
-                [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                               permissions:syncNodePermissions
-                                                                               contentFile:filePath
-                                                                          documentLocation:InAppDocumentLocationSync
-                                                                                   session:self.session
-                                                                      navigationController:self.navigationController
-                                                                                  animated:YES];
+                if (!syncNodePermissions)
+                {
+                    [self showHUD];
+                    __weak typeof(self) weakSelf = self;
+                    [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                        [weakSelf hideHUD];
+                        if (!error)
+                        {
+                            [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                           permissions:permissions
+                                                                                           contentFile:filePath
+                                                                                      documentLocation:InAppDocumentLocationSync
+                                                                                               session:weakSelf.session
+                                                                                  navigationController:weakSelf.navigationController
+                                                                                              animated:YES];
+                        }
+                        else
+                        {
+                            // display an error
+                            NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), selectedNode.name];
+                            displayErrorMessage(permissionRetrievalErrorMessage);
+                            [Notifier notifyWithAlfrescoError:error];
+                        }
+                    }];
+                }
+                else
+                {
+                    [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                                   permissions:syncNodePermissions
+                                                                                   contentFile:filePath
+                                                                              documentLocation:InAppDocumentLocationSync
+                                                                                       session:self.session
+                                                                          navigationController:self.navigationController
+                                                                                      animated:YES];
+                }
             }
             else
             {
