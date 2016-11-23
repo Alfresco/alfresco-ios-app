@@ -47,9 +47,16 @@
 
 - (void)createMainThreadRealm
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    if ([NSThread isMainThread])
+    {
         _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
-    });
+    }
+    else
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+        });
+    }
 }
 
 - (RealmSyncError *)createSyncErrorInRealm:(RLMRealm *)realm
