@@ -37,7 +37,7 @@
         
         if([AccountManager sharedManager].selectedAccount)
         {
-            [sharedObject createMainThreadRealm];
+            [sharedObject createMainThreadRealmWithCompletionBlock:nil];
         }
     });
     return sharedObject;
@@ -45,16 +45,26 @@
 
 #pragma mark - Private methods
 
-- (void)createMainThreadRealm
+- (void)createMainThreadRealmWithCompletionBlock:(void (^)(void))completionBlock
 {
     if ([NSThread isMainThread])
     {
-        _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            if (completionBlock)
+            {
+                completionBlock();
+            }
+        });
     }
     else
     {
         dispatch_sync(dispatch_get_main_queue(), ^{
             _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            if (completionBlock)
+            {
+                completionBlock();
+            }
         });
     }
 }
@@ -148,10 +158,10 @@
     return config;
 }
 
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account completionBlock:(void (^)(void))completionBlock
 {
     [RLMRealmConfiguration setDefaultConfiguration:[self configForName:account.accountIdentifier]];
-    [self createMainThreadRealm];
+    [self createMainThreadRealmWithCompletionBlock:completionBlock];
 }
 
 - (void)resetDefaultRealmConfiguration

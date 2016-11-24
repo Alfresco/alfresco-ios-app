@@ -176,7 +176,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     
     if (selectedAccount)
     {
-        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:selectedAccount];
+        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:selectedAccount completionBlock:nil];
     }
     
     for (UserAccount *account in self.accountsFromKeychain)
