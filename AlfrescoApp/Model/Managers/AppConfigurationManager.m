@@ -431,7 +431,9 @@ static dispatch_once_t onceToken;
                         if (defaultServerProfileError)
                         {
                             AlfrescoLogWarning(@"Could not retrieve the default profile from server config: %@", defaultServerProfileError.localizedDescription);
-                            if(defaultServerProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound || defaultServerProfileError.code == kAlfrescoErrorCodeJSONParsing)
+                            if(defaultServerProfileError.code == kAlfrescoErrorCodeRequestedNodeNotFound ||
+                               defaultServerProfileError.code == kAlfrescoErrorCodeJSONParsing ||
+                               defaultServerProfileError.code == kAlfrescoErrorCodeUnknown)
                             {
                                 // something happened with the configuration as it is not found; will load the embedded configuration
                                 AppConfigurationManager *appConfigM = [AppConfigurationManager resetInstanceAndReturnManager];
