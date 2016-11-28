@@ -186,7 +186,13 @@
 
 - (RealmSyncNodeInfo *)syncNodeInfoForId:(NSString *)nodeId inRealm:(RLMRealm *)realm
 {
-    RealmSyncNodeInfo *nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId = %@", nodeId].firstObject;
+    RealmSyncNodeInfo *nodeInfo = nil;
+    
+    if (nodeId)
+    {
+        nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId = %@", nodeId].firstObject;
+    }
+    
     return nodeInfo;
 }
 

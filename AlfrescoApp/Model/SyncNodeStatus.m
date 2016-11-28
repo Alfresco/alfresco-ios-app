@@ -84,7 +84,10 @@ NSString * const kSyncLocalModificationDate = @"localModificationDate";
     {
         info = @{kSyncStatusNodeIdKey : self.nodeId, kSyncStatusPropertyChangedKey : property};
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kSyncStatusChangeNotification object:self userInfo:info];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncStatusChangeNotification object:self userInfo:info];
+    });
 }
 
 - (void)dealloc

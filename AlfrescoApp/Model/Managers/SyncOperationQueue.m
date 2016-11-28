@@ -587,7 +587,7 @@
     if (!nodeStatus && nodeId)
     {
         nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:nodeId];
-        [self.syncStatuses setValue:nodeStatus forKey:nodeId];
+        [self.syncStatuses setObject:nodeStatus forKey:nodeId];
         RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
         RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForId:nodeId inRealm:realm];
         if(syncNodeInfo)
