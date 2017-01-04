@@ -21,6 +21,9 @@
 #import "AppConfigurationManager.h"
 #import "UserAccount.h"
 #import "AccountManager.h"
+#import "MainMenuItemsVisibilityUtils.h"
+#import "ConfigurationFilesUtils.h"
+#import "UserAccount+FileHandling.h"
 
 static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 
@@ -30,6 +33,7 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 @property (nonatomic, strong) NSString *originallySelectedProfileIdentifier;
 @property (nonatomic, strong) AlfrescoProfileConfig *currentlySelectedProfile;
 @property (nonatomic, strong) AlfrescoConfigService *configService;
+@property (nonatomic, strong) AccountConfiguration *accountConfiguration;
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @end
@@ -44,6 +48,7 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
         self.account = account;
         self.session = session;
         self.configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
+        self.accountConfiguration = [[AppConfigurationManager sharedManager] accountConfigurationForAccount:account];
         self.originallySelectedProfileIdentifier = account.selectedProfileIdentifier;
     }
     return self;
@@ -78,7 +83,7 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
         // Only show the notification if the change was for the currently selected account
         if ([[AccountManager sharedManager].selectedAccount.accountIdentifier isEqualToString:self.account.accountIdentifier])
         {
-            [[AppConfigurationManager sharedManager] isViewOfType:kAlfrescoConfigViewTypeSync presentInProfile:self.currentlySelectedProfile forAccount:[AccountManager sharedManager].selectedAccount completionBlock:^(BOOL isViewPresent, NSError *error) {
+            [MainMenuItemsVisibilityUtils isViewOfType:kAlfrescoConfigViewTypeSync presentInProfile:self.currentlySelectedProfile forAccount:[AccountManager sharedManager].selectedAccount completionBlock:^(BOOL isViewPresent, NSError *error) {
                 if(!error)
                 {
                     if(isViewPresent)
@@ -130,33 +135,37 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 
 - (void)loadData
 {
-    AppConfigurationManager *appConfigManager = [AppConfigurationManager sharedManager];
-    
-    [self.configService clear];
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    
-    if ((self.configService == [appConfigManager configurationServiceForCurrentAccount]) && (!self.configService.session))
-    {
-        self.configService.session = self.session;
-    }
-    
     if (self.account != [AccountManager sharedManager].selectedAccount)
     {
-        self.configService.session = nil;
+        [self.accountConfiguration switchToConfigurationFileType:ConfigurationFileTypeLocal];
+    }
+    else
+    {
+        [self.accountConfiguration switchToConfigurationFileType:ConfigurationFileTypeServer];
     }
     
-    [self.configService retrieveProfilesWithCompletionBlock:^(NSArray *profilesArray, NSError *profilesError) {
+    [self.accountConfiguration retrieveProfilesWithCompletionBlock:^(NSArray *profilesArray, NSError *profilesError) {
         [MBProgressHUD hideHUDForView:self.view animated:YES];
         
         if (profilesError || profilesArray == nil)
         {
-            [appConfigManager removeConfigurationFileForAccount:self.account];
-            self.configService = [appConfigManager configurationServiceForAccount:self.account];
-            self.configService.session = nil;
-            [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
-                self.tableViewData = [NSArray arrayWithObject:config];
-                [self.tableView reloadData];
-                [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            [self.account deleteConfigurationFile];
+            [self.accountConfiguration switchToConfigurationFileType:ConfigurationFileTypeEmbedded];
+            
+            [self.accountConfiguration retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                if (config)
+                {
+                    self.tableViewData = [NSArray arrayWithObject:config];
+                    [self.tableView reloadData];
+                    [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+
+                    [self didSelectNewProfile];
+                }
+                else
+                {
+                    self.tableViewData = [NSArray array];
+                    [self.tableView reloadData];
+                }
             }];
         }
         else
@@ -175,7 +184,7 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
             
             if (shouldAutoSelectProfile)
             {
-                [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+                [self.accountConfiguration retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
                     for (int i = 0; i < self.tableViewData.count; i++)
                     {
                         AlfrescoProfileConfig *profile = self.tableViewData[i];
@@ -184,7 +193,6 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
                             [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
                         }
                     }
-                    
                 }];
             }
         }

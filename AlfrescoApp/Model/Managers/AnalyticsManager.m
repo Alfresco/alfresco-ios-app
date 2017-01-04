@@ -222,8 +222,7 @@
         // Sync Info
         [self addSyncInfoMetricsInTracker:tracker];
         
-        AppConfigurationManager *appConfigManager = [AppConfigurationManager sharedManager];
-        AlfrescoConfigService *configService = [appConfigManager configurationServiceForCurrentAccount];
+        AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
         configService.session = session;
         
         [configService retrieveProfilesWithCompletionBlock:^(NSArray *profilesArray, NSError *profilesError){

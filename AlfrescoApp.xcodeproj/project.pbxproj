@@ -82,6 +82,10 @@
 		1D2A52AC1CC7687000991186 /* RepositoryCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */; };
 		1DE9507A1CAC0887009299C8 /* RealmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950791CAC0887009299C8 /* RealmManager.m */; };
 		1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9507C1CAE6D09009299C8 /* SyncConstants.m */; };
+		2308BF8A1DD1CFD7009C3D8B /* AccountConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308BF891DD1CFD7009C3D8B /* AccountConfiguration.m */; };
+		2308BF901DD1DC55009C3D8B /* ConfigurationFilesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308BF8F1DD1DC55009C3D8B /* ConfigurationFilesUtils.m */; };
+		2308BF931DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308BF921DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m */; };
+		2308BF961DD22828009C3D8B /* UserAccount+FileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308BF951DD22828009C3D8B /* UserAccount+FileHandling.m */; };
 		2311ADB11CE1E44E00F2E1AC /* PinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */; };
 		2311ADB61CE1E45400F2E1AC /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B2B2A01CA1A4FD00A8196C /* PinViewController.m */; };
 		2311ADB71CE1E7C300F2E1AC /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
@@ -1005,6 +1009,14 @@
 		1DE950791CAC0887009299C8 /* RealmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmManager.m; sourceTree = "<group>"; };
 		1DE9507B1CAE6D09009299C8 /* SyncConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncConstants.h; sourceTree = "<group>"; };
 		1DE9507C1CAE6D09009299C8 /* SyncConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncConstants.m; sourceTree = "<group>"; };
+		2308BF881DD1CFD7009C3D8B /* AccountConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountConfiguration.h; sourceTree = "<group>"; };
+		2308BF891DD1CFD7009C3D8B /* AccountConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountConfiguration.m; sourceTree = "<group>"; };
+		2308BF8E1DD1DC55009C3D8B /* ConfigurationFilesUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationFilesUtils.h; sourceTree = "<group>"; };
+		2308BF8F1DD1DC55009C3D8B /* ConfigurationFilesUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationFilesUtils.m; sourceTree = "<group>"; };
+		2308BF911DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuItemsVisibilityUtils.h; sourceTree = "<group>"; };
+		2308BF921DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuItemsVisibilityUtils.m; sourceTree = "<group>"; };
+		2308BF941DD22828009C3D8B /* UserAccount+FileHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UserAccount+FileHandling.h"; sourceTree = "<group>"; };
+		2308BF951DD22828009C3D8B /* UserAccount+FileHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UserAccount+FileHandling.m"; sourceTree = "<group>"; };
 		231A0B4D1CABCCCD0029A10E /* SecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityManager.h; sourceTree = "<group>"; };
 		231A0B4E1CABCCCD0029A10E /* SecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityManager.m; sourceTree = "<group>"; };
 		232D38A61D7D937100B2F2E8 /* PermissionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionChecker.h; sourceTree = "<group>"; };
@@ -3675,6 +3687,12 @@
 				730B444D18EC3A96008A0977 /* AnalyticsManager.m */,
 				080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */,
 				080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */,
+				2308BF881DD1CFD7009C3D8B /* AccountConfiguration.h */,
+				2308BF891DD1CFD7009C3D8B /* AccountConfiguration.m */,
+				2308BF8E1DD1DC55009C3D8B /* ConfigurationFilesUtils.h */,
+				2308BF8F1DD1DC55009C3D8B /* ConfigurationFilesUtils.m */,
+				2308BF911DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.h */,
+				2308BF921DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m */,
 				73922271187C1BF700BFCE21 /* AvatarManager.h */,
 				73922272187C1BF700BFCE21 /* AvatarManager.m */,
 				73B957D117A6750E0099FB84 /* ConnectivityManager.h */,
@@ -3811,6 +3829,8 @@
 				2B4E0CAC1D3D19020031FD3A /* AlfrescoNode+Sync.m */,
 				2BDC6FA31D660731003F9324 /* AlfrescoNode+Networking.h */,
 				2BDC6FA41D660731003F9324 /* AlfrescoNode+Networking.m */,
+				2308BF941DD22828009C3D8B /* UserAccount+FileHandling.h */,
+				2308BF951DD22828009C3D8B /* UserAccount+FileHandling.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -4989,6 +5009,7 @@
 				73B959EE17A686590099FB84 /* main.m in Sources */,
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
+				2308BF961DD22828009C3D8B /* UserAccount+FileHandling.m in Sources */,
 				7390B36E1B03681E00E7191F /* AlfrescoItemConfig.m in Sources */,
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
 				272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */,
@@ -5028,6 +5049,7 @@
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
 				73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */,
 				0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */,
+				2308BF8A1DD1CFD7009C3D8B /* AccountConfiguration.m in Sources */,
 				0876A05718D9A0A80035370A /* ProgressView.m in Sources */,
 				272CC7BD19466B680009FADA /* MapViewController.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
@@ -5201,6 +5223,7 @@
 				27A1BFD119460318004DF61D /* ThumbnailOperation.m in Sources */,
 				7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */,
 				2BB2657D1B78938F00EE7EB0 /* AlfrescoURLHandler.m in Sources */,
+				2308BF931DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m in Sources */,
 				738664F01906B2420021D1BD /* PersonCell.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				2B1A050A1BB2D27C00EE4AAE /* SiteMembersViewController.m in Sources */,
@@ -5240,6 +5263,7 @@
 				2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */,
 				1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
+				2308BF901DD1DC55009C3D8B /* ConfigurationFilesUtils.m in Sources */,
 				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
 				7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,

@@ -21,7 +21,6 @@
 #import "AccountManager.h"
 #import "SyncManager.h"
 #import "MainMenuTableViewCell.h"
-#import "AppConfigurationManager.h"
 #import "MainMenuRemoteConfigurationBuilder.h"
 #import "RootRevealViewController.h"
 

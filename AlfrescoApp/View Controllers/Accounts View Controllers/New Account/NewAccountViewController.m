@@ -31,8 +31,9 @@
 #import "MainMenuReorderViewController.h"
 #import "MainMenuLocalConfigurationBuilder.h"
 #import "ProfileSelectionViewController.h"
-#import "AppConfigurationManager.h"
 #import "RealmSyncManager.h"
+#import "UserAccount+FileHandling.h"
+#import "AlfrescoProfileConfig.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
 
@@ -91,7 +92,7 @@ static NSInteger const kTagProfileCell = 3;
         self.canEditAccounts = (canEditAccounts) ? canEditAccounts.boolValue : YES;
         
         NSNumber *canReorderMenuItems = configuration[kAppConfigurationUserCanEditMainMenuKey];
-        self.canReorderMainMenuItems = ((canReorderMenuItems.boolValue && account == [AccountManager sharedManager].selectedAccount) || [[AppConfigurationManager sharedManager] serverConfigurationExistsForAccount:account]) ? canReorderMenuItems.boolValue : YES;
+        self.canReorderMainMenuItems = ((canReorderMenuItems.boolValue && account == [AccountManager sharedManager].selectedAccount) || [account serverConfigurationExists]) ? canReorderMenuItems.boolValue : YES;
     }
     return self;
 }

@@ -25,6 +25,8 @@
 #import "PreferenceManager.h"
 #import "RealmSyncManager+Internal.h"
 #import "AlfrescoNode+Networking.h"
+#import "UserAccount+FileHandling.h"
+#import "MainMenuItemsVisibilityUtils.h"
 
 @implementation RealmSyncManager
 
@@ -91,7 +93,7 @@
 
 - (void)determineSyncFeatureStatus:(UserAccount *)changedAccount selectedProfile:(AlfrescoProfileConfig *)selectedProfile
 {
-    [[AppConfigurationManager sharedManager] isViewOfType:kAlfrescoConfigViewTypeSync presentInProfile:selectedProfile forAccount:changedAccount completionBlock:^(BOOL isViewPresent, NSError *error) {
+    [MainMenuItemsVisibilityUtils isViewOfType:kAlfrescoConfigViewTypeSync presentInProfile:selectedProfile forAccount:changedAccount completionBlock:^(BOOL isViewPresent, NSError *error) {
         if(!error && (isViewPresent != changedAccount.isSyncOn))
         {
             if(isViewPresent)
@@ -104,7 +106,7 @@
                     [[AccountManager sharedManager] saveAccountsToKeychain];
                 };
                 
-                NSArray *visibleItems = [[AppConfigurationManager sharedManager] visibleItemIdentifiersForAccount:changedAccount];
+                NSArray *visibleItems = [MainMenuItemsVisibilityUtils visibleItemIdentifiersForAccount:changedAccount];
 
                 if (visibleItems)
                 {
@@ -183,7 +185,7 @@
         [syncOpQ resetSyncNodeStatusInformation];
         
         [self deleteRealmForAccount:account];
-        [[AppConfigurationManager sharedManager] deleteSpecificSyncFolderForAccount:account];
+        [account deleteSpecificSyncFolder];
         
         account.isSyncOn = NO;
         [[AccountManager sharedManager] saveAccountsToKeychain];
@@ -913,7 +915,8 @@
 {
     UserAccount *changedAccount = [AccountManager sharedManager].selectedAccount;
     [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount];
-    AlfrescoProfileConfig *selectedProfileForAccount = [AppConfigurationManager sharedManager].selectedProfile;
+    
+    AlfrescoProfileConfig *selectedProfileForAccount = [[AppConfigurationManager sharedManager] selectedProfileForAccount:changedAccount];
     [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
     
     id<AlfrescoSession> session = notification.object;

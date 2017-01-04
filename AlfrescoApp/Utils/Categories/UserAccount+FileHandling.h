@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2016 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -15,13 +15,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
+#import "UserAccount.h"
 
-#import "MainMenuRemoteConfigurationBuilder.h"
-#import "AlfrescoConfigService.h"
+@interface UserAccount (FileHandling)
 
-@interface MainMenuRemoteConfigurationBuilder ()
-@end
-
-@implementation MainMenuRemoteConfigurationBuilder
+- (NSString *)configurationFilePath;
+- (NSString *)accountSpecificConfigurationFolderPath;
+- (void)deleteSpecificConfigurationFolder;
+- (void)deleteSpecificSyncFolder;
+- (void)deleteConfigurationFile;
+- (BOOL)serverConfigurationExists;
 
 @end

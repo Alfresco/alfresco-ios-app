@@ -43,6 +43,7 @@
 
 @property (nonatomic, strong, readonly) AlfrescoConfigScope *defaultConfigScope;
 @property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, assign) BOOL shouldIgnoreRequests;
 
 /**---------------------------------------------------------------------------------------
  * @name Initialisation methods
