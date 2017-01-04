@@ -19,13 +19,11 @@
 #import "FileFolderCollectionViewController.h"
 #import "BaseFileFolderCollectionViewController+Internal.h"
 
-
 #import "MetaDataViewController.h"
 #import "ConnectivityManager.h"
 #import "LoginManager.h"
 #import "AccountManager.h"
 #import "DocumentPreviewViewController.h"
-
 
 #import "SearchCollectionSectionHeader.h"
 
@@ -615,7 +613,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     for (AlfrescoNode *node in selectedItems)
     {
-        AlfrescoPermissions *nodePermission = self.dataSource.nodesPermissions[node.identifier];
+        AlfrescoPermissions *nodePermission = [self.dataSource permissionsForNode:node];
         if (!nodePermission.canDelete)
         {
             [self.multiSelectToolbar enableAction:kMultiSelectDelete enable:NO];

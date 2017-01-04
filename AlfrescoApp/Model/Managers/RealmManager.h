@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, NodesType) {
 - (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm;
 - (NSArray *)allNodesWithType:(NodesType)nodesType inFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelNodes:(BOOL)shouldIncludeTopLevelNodes inRealm:(RLMRealm *)realm;
 
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account;
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account completionBlock:(void (^)(void))completionBlock;
 - (void)resetDefaultRealmConfiguration;
 
 - (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm;

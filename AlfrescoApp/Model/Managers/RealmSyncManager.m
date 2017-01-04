@@ -123,7 +123,7 @@
                 
                 if([changedAccount.accountIdentifier isEqualToString:[AccountManager sharedManager].selectedAccount.accountIdentifier])
                 {
-                    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount];
+                    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount completionBlock:nil];
                 }
             }
             else
@@ -200,8 +200,9 @@
     [self realmForAccount:account.accountIdentifier];
     if(account == [AccountManager sharedManager].selectedAccount)
     {
-        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:account];
-        [self.syncDisabledDelegate syncFeatureStatusChanged:YES];
+        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:account completionBlock:^{
+            [self.syncDisabledDelegate syncFeatureStatusChanged:YES];
+        }];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
 }
@@ -477,7 +478,7 @@
 {
     SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[document syncIdentifier]];
     
-    if ([[ConnectivityManager sharedManager] hasInternetConnection])
+    if ([[ConnectivityManager sharedManager] hasInternetConnection] && self.alfrescoSession)
     {
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
         
@@ -502,11 +503,8 @@
     }
     else
     {
-        if (nodeStatus.activityType != SyncActivityTypeDownload)
-        {
-            nodeStatus.status = SyncStatusWaiting;
-            nodeStatus.activityType = SyncActivityTypeUpload;
-        }
+        SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[document syncIdentifier]];
+        nodeStatus.status = SyncStatusOffline;
         
         if (completionBlock)
         {
@@ -918,32 +916,33 @@
 - (void)sessionReceived:(NSNotification *)notification
 {
     UserAccount *changedAccount = [AccountManager sharedManager].selectedAccount;
-    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount];
-    AlfrescoProfileConfig *selectedProfileForAccount = [AppConfigurationManager sharedManager].selectedProfile;
-    [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
-    
-    id<AlfrescoSession> session = notification.object;
-    self.alfrescoSession = session;
-    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    
-    self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
-    SyncOperationQueue *syncOperationQueueManager = self.syncQueues[self.selectedAccountSyncIdentifier];
-    
-    if (!syncOperationQueueManager)
-    {
-        syncOperationQueueManager = [[SyncOperationQueue alloc] initWithAccount:changedAccount session:session syncProgressDelegate:nil];
-        self.syncQueues[self.selectedAccountSyncIdentifier] = syncOperationQueueManager;
-    }
-    else
-    {
-        [syncOperationQueueManager updateSession:session];
-    }
-    
-    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-    if(hasInternetConnection)
-    {
-        [self refreshWithCompletionBlock:nil];
-    }
+    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount completionBlock:^{
+        AlfrescoProfileConfig *selectedProfileForAccount = [AppConfigurationManager sharedManager].selectedProfile;
+        [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
+        
+        id<AlfrescoSession> session = notification.object;
+        self.alfrescoSession = session;
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+        
+        self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
+        SyncOperationQueue *syncOperationQueueManager = self.syncQueues[self.selectedAccountSyncIdentifier];
+        
+        if (!syncOperationQueueManager)
+        {
+            syncOperationQueueManager = [[SyncOperationQueue alloc] initWithAccount:changedAccount session:session syncProgressDelegate:nil];
+            self.syncQueues[self.selectedAccountSyncIdentifier] = syncOperationQueueManager;
+        }
+        else
+        {
+            [syncOperationQueueManager updateSession:session];
+        }
+        
+        BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+        if(hasInternetConnection)
+        {
+            [self refreshWithCompletionBlock:nil];
+        }
+    }];
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification
@@ -1451,64 +1450,23 @@
 - (BOOL)determineFileActionForNode:(AlfrescoNode *)node
 {
     BOOL shouldUpdateStatus = NO;
-    if(node.isFolder)
-    {
-        shouldUpdateStatus = YES;
-    }
-    else
-    {
-        RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
-        RealmSyncNodeInfo *childSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
-        if(childSyncNodeInfo)
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
+    SyncActivityType activityTypeForNode = [node determineSyncActivityTypeInRealm:realm];
+    switch (activityTypeForNode) {
+        case SyncActivityTypeIdle:
         {
-            AlfrescoNode *localNode = childSyncNodeInfo.alfrescoNode;
-            if(childSyncNodeInfo.isRemovedFromSyncHasLocalChanges)
-            {
-                [self.nodesToUpload addObject:node];
-            }
-            else
-            {
-                if(childSyncNodeInfo.reloadContent)
-                {
-                    [self.nodesToDownload addObject:node];
-                }
-                else
-                {
-                    NSComparisonResult compareResult = [localNode.modifiedAt compare:node.modifiedAt];
-                    if(compareResult == NSOrderedAscending)
-                    {
-                        [self.nodesToDownload addObject:node];
-                    }
-                    else if(compareResult == NSOrderedDescending)
-                    {
-                        [self.nodesToUpload addObject:localNode];
-                    }
-                    else
-                    {
-                        //both modifiedAt dates have the same value - checking for last downloaded date
-                        if(childSyncNodeInfo.lastDownloadedDate)
-                        {
-                            NSComparisonResult downloadCompareResult = [childSyncNodeInfo.lastDownloadedDate compare:node.modifiedAt];
-                            if(downloadCompareResult == NSOrderedAscending)
-                            {
-                                [self.nodesToDownload addObject:node];
-                            }
-                            else
-                            {
-                                shouldUpdateStatus = YES;
-                            }
-                        }
-                        else
-                        {
-                            [self.nodesToDownload addObject:node];
-                        }
-                    }
-                }
-            }
+            shouldUpdateStatus = YES;
+            break;
         }
-        else
+        case SyncActivityTypeUpload:
+        {
+            [self.nodesToUpload addObject:node];
+            break;
+        }
+        case SyncActivityTypeDownload:
         {
             [self.nodesToDownload addObject:node];
+            break;
         }
     }
     

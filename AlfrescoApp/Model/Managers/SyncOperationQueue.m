@@ -203,78 +203,76 @@
                                                                     downloadCompletionBlock:^(BOOL succeeded, NSError *error) {
                                                                         
                                                                         [outputStream close];
-                                                                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                            RLMRealm *backgroundRealm = [[RealmManager sharedManager] realmForCurrentThread];
-                                                                            [backgroundRealm refresh];
-                                                                            RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:document ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                                                                        RLMRealm *backgroundRealm = [[RealmManager sharedManager] realmForCurrentThread];
+                                                                        [backgroundRealm refresh];
+                                                                        RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:document ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                                                                        
+                                                                        SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
+                                                                        if (succeeded)
+                                                                        {
+                                                                            nodeStatus.status = SyncStatusSuccessful;
+                                                                            nodeStatus.activityType = SyncActivityTypeIdle;
                                                                             
-                                                                            SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
-                                                                            if (succeeded)
+                                                                            if(syncProgressType == SyncProgressTypeInProcessing)
                                                                             {
-                                                                                nodeStatus.status = SyncStatusSuccessful;
-                                                                                nodeStatus.activityType = SyncActivityTypeIdle;
+                                                                                [backgroundRealm beginWriteTransaction];
+                                                                                syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
+                                                                                syncNodeInfo.lastDownloadedDate = [NSDate date];
+                                                                                syncNodeInfo.syncContentPath = syncNameForNode;
+                                                                                syncNodeInfo.reloadContent = NO;
+                                                                                [backgroundRealm commitWriteTransaction];
                                                                                 
+                                                                                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:document ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                                                                                [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
+                                                                                
+                                                                                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDownloadedNotification object:document];
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            nodeStatus.status = SyncStatusFailed;
+                                                                            
+                                                                            if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                                                                            {
+                                                                                // Remove file
+                                                                                NSString *filePath = syncNodeInfo.syncContentPath;
+                                                                                NSError *deleteError;
+                                                                                [self.fileManager removeItemAtPath:filePath error:&deleteError];
+                                                                                
+                                                                                // Remove sync status
+                                                                                [self removeSyncNodeStatusForNodeWithId:syncNodeInfo.syncNodeInfoId];
+                                                                                
+                                                                                // Remove RealmSyncError object if exists
+                                                                                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:syncNodeInfo.alfrescoNode ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                                                                                [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
+                                                                                
+                                                                                // Remove RealmSyncNodeInfo object
+                                                                                [[RealmManager sharedManager] deleteRealmObject:syncNodeInfo inRealm:backgroundRealm];
+                                                                            }
+                                                                            else if(!((error.code == kAlfrescoErrorCodeNetworkRequestCancelled) && (syncProgressType == SyncProgressTypeUnsyncRequested || syncProgressType == SyncProgressTypeInUnsyncProcessing)))
+                                                                            {
+                                                                                SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
                                                                                 if(syncProgressType == SyncProgressTypeInProcessing)
                                                                                 {
+                                                                                    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:document ifNotExistsCreateNew:YES inRealm:backgroundRealm];
+                                                                                    
                                                                                     [backgroundRealm beginWriteTransaction];
-                                                                                    syncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:document];
-                                                                                    syncNodeInfo.lastDownloadedDate = [NSDate date];
-                                                                                    syncNodeInfo.syncContentPath = syncNameForNode;
-                                                                                    syncNodeInfo.reloadContent = NO;
+                                                                                    syncNodeInfo.reloadContent = YES;
+                                                                                    syncError.errorCode = error.code;
+                                                                                    syncError.errorDescription = [error localizedDescription];
+                                                                                    syncNodeInfo.syncError = syncError;
                                                                                     [backgroundRealm commitWriteTransaction];
-                                                                                    
-                                                                                    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:document ifNotExistsCreateNew:NO inRealm:backgroundRealm];
-                                                                                    [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
-                                                                                    
-                                                                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDownloadedNotification object:document];
                                                                                 }
                                                                             }
-                                                                            else
+                                                                        }
+                                                                        
+                                                                        [self.syncOperations removeObjectForKey:[document syncIdentifier]];
+                                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                                            [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+                                                                            if (completionBlock != NULL)
                                                                             {
-                                                                                nodeStatus.status = SyncStatusFailed;
-                                                                                
-                                                                                if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                                                                                {
-                                                                                    // Remove file
-                                                                                    NSString *filePath = syncNodeInfo.syncContentPath;
-                                                                                    NSError *deleteError;
-                                                                                    [self.fileManager removeItemAtPath:filePath error:&deleteError];
-                                                                                    
-                                                                                    // Remove sync status
-                                                                                    [self removeSyncNodeStatusForNodeWithId:syncNodeInfo.syncNodeInfoId];
-                                                                                    
-                                                                                    // Remove RealmSyncError object if exists
-                                                                                    RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:syncNodeInfo.alfrescoNode ifNotExistsCreateNew:NO inRealm:backgroundRealm];
-                                                                                    [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
-                                                                                    
-                                                                                    // Remove RealmSyncNodeInfo object
-                                                                                    [[RealmManager sharedManager] deleteRealmObject:syncNodeInfo inRealm:backgroundRealm];
-                                                                                }
-                                                                                else if(!((error.code == kAlfrescoErrorCodeNetworkRequestCancelled) && (syncProgressType == SyncProgressTypeUnsyncRequested || syncProgressType == SyncProgressTypeInUnsyncProcessing)))
-                                                                                {
-                                                                                    SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
-                                                                                    if(syncProgressType == SyncProgressTypeInProcessing)
-                                                                                    {
-                                                                                        RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:document ifNotExistsCreateNew:YES inRealm:backgroundRealm];
-                                                                                        
-                                                                                        [backgroundRealm beginWriteTransaction];
-                                                                                        syncNodeInfo.reloadContent = YES;
-                                                                                        syncError.errorCode = error.code;
-                                                                                        syncError.errorDescription = [error localizedDescription];
-                                                                                        syncNodeInfo.syncError = syncError;
-                                                                                        [backgroundRealm commitWriteTransaction];
-                                                                                    }
-                                                                                }
+                                                                                completionBlock(YES);
                                                                             }
-
-                                                                            [self.syncOperations removeObjectForKey:[document syncIdentifier]];
-                                                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                [self notifyProgressDelegateAboutNumberOfNodesInProgress];
-                                                                                if (completionBlock != NULL)
-                                                                                {
-                                                                                    completionBlock(YES);
-                                                                                }
-                                                                            });
                                                                         });
                                                                         
                                                                     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
@@ -356,44 +354,42 @@
                                                                     uploadCompletionBlock:^(AlfrescoDocument *uploadedDocument, NSError *error) {
                                                                         
                                                                         [readStream close];
-                                                                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                                                            RLMRealm *backgroundRealm = [[RealmManager sharedManager] realmForCurrentThread];
-                                                                            RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:document ifNotExistsCreateNew:YES inRealm:backgroundRealm];
-                                                                            if (uploadedDocument)
-                                                                            {
-                                                                                nodeStatus.status = SyncStatusSuccessful;
-                                                                                nodeStatus.activityType = SyncActivityTypeIdle;
-                                                                                
-                                                                                [backgroundRealm beginWriteTransaction];
-                                                                                nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:uploadedDocument];
-                                                                                nodeInfo.lastDownloadedDate = [NSDate date];
-                                                                                nodeInfo.isRemovedFromSyncHasLocalChanges = NO;
-                                                                                [backgroundRealm commitWriteTransaction];
-                                                                                
-                                                                                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:document ifNotExistsCreateNew:NO inRealm:backgroundRealm];
-                                                                                [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                nodeStatus.status = SyncStatusFailed;
-                                                                                
-                                                                                RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:document ifNotExistsCreateNew:YES inRealm:backgroundRealm];
-                                                                                
-                                                                                [backgroundRealm beginWriteTransaction];
-                                                                                syncError.errorCode = error.code;
-                                                                                syncError.errorDescription = [error localizedDescription];
-                                                                                nodeInfo.syncError = syncError;
-                                                                                [backgroundRealm commitWriteTransaction];
-                                                                            }
+                                                                        RLMRealm *backgroundRealm = [[RealmManager sharedManager] realmForCurrentThread];
+                                                                        RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:document ifNotExistsCreateNew:YES inRealm:backgroundRealm];
+                                                                        if (uploadedDocument)
+                                                                        {
+                                                                            nodeStatus.status = SyncStatusSuccessful;
+                                                                            nodeStatus.activityType = SyncActivityTypeIdle;
                                                                             
-                                                                            [self.syncOperations removeObjectForKey:[document syncIdentifier]];
-                                                                            dispatch_async(dispatch_get_main_queue(), ^{
-                                                                                [self notifyProgressDelegateAboutNumberOfNodesInProgress];
-                                                                                if (completionBlock != NULL)
-                                                                                {
-                                                                                    completionBlock(YES);
-                                                                                }
-                                                                            });
+                                                                            [backgroundRealm beginWriteTransaction];
+                                                                            nodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:uploadedDocument];
+                                                                            nodeInfo.lastDownloadedDate = [NSDate date];
+                                                                            nodeInfo.isRemovedFromSyncHasLocalChanges = NO;
+                                                                            [backgroundRealm commitWriteTransaction];
+                                                                            
+                                                                            RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:document ifNotExistsCreateNew:NO inRealm:backgroundRealm];
+                                                                            [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:backgroundRealm];
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            nodeStatus.status = SyncStatusFailed;
+                                                                            
+                                                                            RealmSyncError *syncError = [[RealmManager sharedManager] errorObjectForNode:document ifNotExistsCreateNew:YES inRealm:backgroundRealm];
+                                                                            
+                                                                            [backgroundRealm beginWriteTransaction];
+                                                                            syncError.errorCode = error.code;
+                                                                            syncError.errorDescription = [error localizedDescription];
+                                                                            nodeInfo.syncError = syncError;
+                                                                            [backgroundRealm commitWriteTransaction];
+                                                                        }
+                                                                        
+                                                                        [self.syncOperations removeObjectForKey:[document syncIdentifier]];
+                                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                                            [self notifyProgressDelegateAboutNumberOfNodesInProgress];
+                                                                            if (completionBlock != NULL)
+                                                                            {
+                                                                                completionBlock(YES);
+                                                                            }
                                                                         });
                                                                     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                                                                         self.syncProgress.syncProgressSize += (bytesTransferred - nodeStatus.bytesTransfered);
@@ -473,17 +469,15 @@
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier completionBlock:(void (^)(void))completionBlock
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
-        SyncOperation *syncOperation = self.syncOperations[syncDocumentIdentifier];
-        
-        [self cancelOperation:syncOperation forNodeSyncIdentifier:syncDocumentIdentifier];
-        
-        if(completionBlock)
-        {
-            completionBlock();
-        }
-    });
+    NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
+    SyncOperation *syncOperation = self.syncOperations[syncDocumentIdentifier];
+    
+    [self cancelOperation:syncOperation forNodeSyncIdentifier:syncDocumentIdentifier];
+    
+    if(completionBlock)
+    {
+        completionBlock();
+    }
 }
 
 - (void)cancelSyncForFolder:(AlfrescoFolder *)folder completionBlock:(void (^)(void))completionBlock
@@ -533,6 +527,8 @@
         {
             self.syncProgress.syncProgressSize = 0;
         }
+        
+         nodeStatus.status = SyncStatusFailed;
     }
 }
 
@@ -591,7 +587,7 @@
     if (!nodeStatus && nodeId)
     {
         nodeStatus = [[SyncNodeStatus alloc] initWithNodeId:nodeId];
-        [self.syncStatuses setValue:nodeStatus forKey:nodeId];
+        [self.syncStatuses setObject:nodeStatus forKey:nodeId];
         RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
         RealmSyncNodeInfo *syncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForId:nodeId inRealm:realm];
         if(syncNodeInfo)
@@ -607,6 +603,8 @@
                     nodeStatus.status = SyncStatusWaiting;
                 }
             }
+            
+            nodeStatus.activityType = [syncNodeInfo.alfrescoNode determineSyncActivityTypeInRealm:realm];
         }
     }
     
