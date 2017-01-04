@@ -125,12 +125,10 @@ typedef NS_ENUM(NSUInteger, RenditionType)
             if ([session isKindOfClass:[AlfrescoCloudSession class]])
             {
                 operation.minimumDelayBetweenRequests = kMinimumDelayBetweenRequestsOnCloud;
-                self.operationQueue.maxConcurrentOperationCount = 1;
             }
             else
             {
                 operation.minimumDelayBetweenRequests = 0;
-                self.operationQueue.maxConcurrentOperationCount = 4;
             }
             [self.operationQueue addOperation:operation];
         }

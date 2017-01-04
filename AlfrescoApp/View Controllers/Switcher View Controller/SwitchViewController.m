@@ -69,6 +69,12 @@
 
 - (void)displayViewController:(UIViewController *)controller
 {
+    // The controller is already added as a child and it's currrently displayed. No need to remove it and add it again.
+    if ([self.childViewControllers containsObject:controller] && self.displayedViewController == controller)
+    {
+        return;
+    }
+    
     if (self.displayedViewController)
     {
         [self.displayedViewController willMoveToParentViewController:nil];

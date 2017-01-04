@@ -131,7 +131,6 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
                 
                 if (accountManager.totalNumberOfAddedAccounts == 0)
                 {
-                    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:account];
                     [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject] alfrescoSession:alfrescoSession];
                 }
                 

@@ -40,6 +40,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic) BOOL isSyncPresent;
 @property (nonatomic) BOOL isSyncVisible;
+@property (nonatomic) BOOL shouldSaveChangesBeforePoping;
 @end
 
 @implementation MainMenuReorderViewController
@@ -110,17 +111,17 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 {
     [super viewDidDisappear:animated];
     
+    if(self.shouldSaveChangesBeforePoping == NO)
+    {
+        return;
+    }
+    
     // If the order or visibility has changed
     if (![self.oldData isEqualToArray:self.visibleItems])
     {
         [MainMenuItemsVisibilityUtils saveVisibleMenuItems:self.visibleItems hiddenMenuItems:self.hiddenItems forAccount:self.account];
         
-        NSString *label = [AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
-        
-        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
-                                                          action:kAnalyticsEventActionUpdateMenu
-                                                           label:label
-                                                           value:@1];
+        [self trackUpdateMenuEvent];
 
         // Only need to post a notification informing the app if the current account order has been modified
         if ([AccountManager sharedManager].selectedAccount == self.account)
@@ -131,6 +132,16 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 }
 
 #pragma mark - Private Methods
+
+- (void)trackUpdateMenuEvent
+{
+    NSString *label = [AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                      action:kAnalyticsEventActionUpdateMenu
+                                                       label:label
+                                                       value:@1];
+}
 
 - (void)loadData
 {
@@ -237,8 +248,21 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     
     if(syncMenuItem)
     {
+        // Get index of sync item from oldData.
+        __block NSUInteger index = 0;
+        [self.oldData enumerateObjectsUsingBlock:^(MainMenuItem *item, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([item.itemIdentifier isEqualToString:kSyncViewIdentifier])
+            {
+                index = idx;
+                *stop = YES;
+            }
+        }];
+        
         [self.hiddenItems removeObject:syncMenuItem];
-        [self.visibleItems addObject:syncMenuItem];
+        
+        // Insert sync item at the original index.
+        [self.visibleItems insertObject:syncMenuItem atIndex:index];
+        
         [self.tableView reloadData];
     }
 }
@@ -253,15 +277,25 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     [[RealmSyncManager sharedManager] disableSyncForAccount:self.account fromViewController:self cancelBlock:^{
         [self moveSyncMenuItemToVisibleItems];
     } completionBlock:^{
+        self.shouldSaveChangesBeforePoping = YES;
         [self.navigationController popViewControllerAnimated:YES];
     }];
 }
 
 - (void)save
 {
-    // If the order or visibility has not changed or sync item is not present
-    if ([self.oldData isEqualToArray:self.visibleItems] || self.isSyncPresent == NO)
+    // If the order or visibility has not changed
+    if ([self.oldData isEqualToArray:self.visibleItems])
     {
+        self.shouldSaveChangesBeforePoping = NO;
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
+    
+    // If sync is not available and there are visibility changes
+    if (self.isSyncPresent == NO)
+    {
+        self.shouldSaveChangesBeforePoping = YES;
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
@@ -285,6 +319,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         }
         else
         {
+            self.shouldSaveChangesBeforePoping = YES;
             [self.navigationController popViewControllerAnimated:YES];
         }
     }
@@ -299,6 +334,8 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
                 break;
             }
         }
+        
+        self.shouldSaveChangesBeforePoping = YES;
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

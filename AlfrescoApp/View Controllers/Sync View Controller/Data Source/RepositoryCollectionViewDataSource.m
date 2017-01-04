@@ -41,6 +41,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)setupWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
 {
     self.session = session;
@@ -128,7 +133,7 @@
     [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if (permissions)
         {
-            [self.nodesPermissions setValue:permissions forKey:node.identifier];
+            [self.nodesPermissions setValue:permissions forKey:[node syncIdentifier]];
             [[RealmManager sharedManager] savePermissions:permissions forNode:node];
         }
     }];
@@ -392,7 +397,7 @@
     AlfrescoPermissions *permissions = nil;
     if(node)
     {
-        NSString *nodeIdentifier = node.identifier;
+        NSString *nodeIdentifier = [node syncIdentifier];
         permissions = self.nodesPermissions[nodeIdentifier];
     }
     
@@ -414,7 +419,7 @@
     NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
     for (AlfrescoNode *node in alfrescoNodes)
     {
-        AlfrescoPermissions *nodePermissions = self.nodesPermissions[node.identifier];
+        AlfrescoPermissions *nodePermissions = self.nodesPermissions[[node syncIdentifier]];
         if(!nodePermissions)
         {
             [self retrievePermissionsForNode:node];

@@ -23,6 +23,7 @@
 #import "AccountCertificate.h"
 #import "AlfrescoProfileConfig.h"
 #import "AppConfigurationManager.h"
+#import "RealmManager.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
@@ -172,6 +173,11 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     }
     
     self.selectedAccount = selectedAccount;
+    
+    if (selectedAccount)
+    {
+        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:selectedAccount completionBlock:nil];
+    }
     
     for (UserAccount *account in self.accountsFromKeychain)
     {

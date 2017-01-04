@@ -65,8 +65,6 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     self.hasRequestFinished = NO;
     
-    [self adjustCollectionViewForProgressView:nil];
-    
     [self changeCollectionViewStyle:self.style animated:YES];
     
     [self addNotificationListeners];
@@ -86,7 +84,9 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 {
     [super viewDidAppear:animated];
     
-     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSyncedContent];
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSyncedContent];
+    
+    [self adjustCollectionViewForProgressView:nil];
 }
 
 - (void)dealloc
@@ -98,7 +98,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 - (void)reloadCollectionView
 {
     [super reloadCollectionView];
-    self.collectionView.contentOffset = CGPointMake(0., 0.);
+    self.collectionView.contentOffset = CGPointZero;
 }
 
 - (void)addNotificationListeners
@@ -156,17 +156,56 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     {
         NSString *filePath = [selectedNode contentPath];
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
+        
+        void (^displayPermissionRetrievalError)(NSError *) = ^void (NSError *error){
+            NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), selectedNode.name];
+            displayErrorMessage(permissionRetrievalErrorMessage);
+            [Notifier notifyWithAlfrescoError:error];
+        };
+        
+        void (^pushToDisplayDocumentPreviewController)(AlfrescoPermissions *, InAppDocumentLocation) = ^void (AlfrescoPermissions *permissions, InAppDocumentLocation location){
+            [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
+                                                                           permissions:permissions
+                                                                           contentFile:filePath
+                                                                      documentLocation:location
+                                                                               session:self.session
+                                                                  navigationController:self.navigationController
+                                                                              animated:YES];
+        };
+        
+        void (^retrievePermissionsAndPushToDisplayPreviewController)(InAppDocumentLocation) = ^void (InAppDocumentLocation location){
+            [self showHUD];
+            __weak typeof(self) weakSelf = self;
+            [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                [weakSelf hideHUD];
+                if (error)
+                {
+                    displayPermissionRetrievalError(error);
+                }
+                else if (location == InAppDocumentLocationFilesAndFolders)
+                {
+                    pushToDisplayDocumentPreviewController(permissions, InAppDocumentLocationFilesAndFolders);
+                }
+                
+                if (location == InAppDocumentLocationSync)
+                {
+                    pushToDisplayDocumentPreviewController(permissions, InAppDocumentLocationSync);
+                }
+            }];
+        };
+        
         if (filePath)
         {
             if ([[ConnectivityManager sharedManager] hasInternetConnection])
             {
-                [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                               permissions:syncNodePermissions
-                                                                               contentFile:filePath
-                                                                          documentLocation:InAppDocumentLocationSync
-                                                                                   session:self.session
-                                                                      navigationController:self.navigationController
-                                                                                  animated:YES];
+                if (syncNodePermissions)
+                {
+                    pushToDisplayDocumentPreviewController(syncNodePermissions, InAppDocumentLocationSync);
+                }
+                else
+                {
+                    retrievePermissionsAndPushToDisplayPreviewController(InAppDocumentLocationSync);
+                }
             }
             else
             {
@@ -181,39 +220,11 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
         }
         else if ([[ConnectivityManager sharedManager] hasInternetConnection])
         {
-            [self showHUD];
-            __weak typeof(self) weakSelf = self;
-            [self.documentFolderService retrievePermissionsOfNode:selectedNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                
-                [weakSelf hideHUD];
-                if (!error)
-                {
-                    [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                                   permissions:permissions
-                                                                                   contentFile:filePath
-                                                                              documentLocation:InAppDocumentLocationFilesAndFolders
-                                                                                       session:weakSelf.session
-                                                                          navigationController:weakSelf.navigationController
-                                                                                      animated:YES];
-                }
-                else
-                {
-                    // display an error
-                    NSString *permissionRetrievalErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", "Permission Retrieval Error"), selectedNode.name];
-                    displayErrorMessage(permissionRetrievalErrorMessage);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-            }];
+            retrievePermissionsAndPushToDisplayPreviewController(InAppDocumentLocationFilesAndFolders);
         }
         else
         {
-            [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                           permissions:syncNodePermissions
-                                                                           contentFile:filePath
-                                                                      documentLocation:InAppDocumentLocationFilesAndFolders
-                                                                               session:self.session
-                                                                  navigationController:self.navigationController
-                                                                              animated:YES];
+            pushToDisplayDocumentPreviewController(syncNodePermissions, InAppDocumentLocationFilesAndFolders);
         }
     }
 }
@@ -284,7 +295,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     {
         SyncNavigationViewController *syncNavigationController = (SyncNavigationViewController *)navigationController;
         
-        UIEdgeInsets edgeInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
+        UIEdgeInsets edgeInset = UIEdgeInsetsZero;
         if ([syncNavigationController isProgressViewVisible])
         {
             edgeInset = UIEdgeInsetsMake(0.0, 0.0, [syncNavigationController progressViewHeight], 0.0);

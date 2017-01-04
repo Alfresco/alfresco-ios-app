@@ -37,7 +37,7 @@
         
         if([AccountManager sharedManager].selectedAccount)
         {
-            [sharedObject createMainThreadRealm];
+            [sharedObject createMainThreadRealmWithCompletionBlock:nil];
         }
     });
     return sharedObject;
@@ -45,11 +45,28 @@
 
 #pragma mark - Private methods
 
-- (void)createMainThreadRealm
+- (void)createMainThreadRealmWithCompletionBlock:(void (^)(void))completionBlock
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
-    });
+    if ([NSThread isMainThread])
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            if (completionBlock)
+            {
+                completionBlock();
+            }
+        });
+    }
+    else
+    {
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            _mainThreadRealm = [self createRealmWithName:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            if (completionBlock)
+            {
+                completionBlock();
+            }
+        });
+    }
 }
 
 - (RealmSyncError *)createSyncErrorInRealm:(RLMRealm *)realm
@@ -141,10 +158,10 @@
     return config;
 }
 
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account
+- (void)changeDefaultConfigurationForAccount:(UserAccount *)account completionBlock:(void (^)(void))completionBlock
 {
     [RLMRealmConfiguration setDefaultConfiguration:[self configForName:account.accountIdentifier]];
-    [self createMainThreadRealm];
+    [self createMainThreadRealmWithCompletionBlock:completionBlock];
 }
 
 - (void)resetDefaultRealmConfiguration
@@ -169,7 +186,13 @@
 
 - (RealmSyncNodeInfo *)syncNodeInfoForId:(NSString *)nodeId inRealm:(RLMRealm *)realm
 {
-    RealmSyncNodeInfo *nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId = %@", nodeId].firstObject;
+    RealmSyncNodeInfo *nodeInfo = nil;
+    
+    if (nodeId)
+    {
+        nodeInfo = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId = %@", nodeId].firstObject;
+    }
+    
     return nodeInfo;
 }
 

@@ -259,6 +259,8 @@
 		2B7169F81B567CC1009A4487 /* large_folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F61B567CC1009A4487 /* large_folder@2x.png */; };
 		2B81257A1D0807A100AC0AD9 /* SearchCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8125791D0807A100AC0AD9 /* SearchCollectionViewDataSource.m */; };
 		2B8366731D06F3C900CC77DC /* NodeCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8366721D06F3C900CC77DC /* NodeCollectionViewDataSource.m */; };
+		2B841D521DD47BA2008D7F40 /* enterFullScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B841D501DD47BA2008D7F40 /* enterFullScreen@2x.png */; };
+		2B841D531DD47BA2008D7F40 /* exitFullScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B841D511DD47BA2008D7F40 /* exitFullScreen@2x.png */; };
 		2B8CF8101C7C57D40079BB99 /* RealmSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */; };
 		2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */; };
 		2B9031FA1C0EF78B005C10ED /* SearchService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9031F91C0EF78B005C10ED /* SearchService.m */; };
@@ -1238,6 +1240,8 @@
 		2B8125791D0807A100AC0AD9 /* SearchCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCollectionViewDataSource.m; sourceTree = "<group>"; };
 		2B8366711D06F3C900CC77DC /* NodeCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeCollectionViewDataSource.h; sourceTree = "<group>"; };
 		2B8366721D06F3C900CC77DC /* NodeCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeCollectionViewDataSource.m; sourceTree = "<group>"; };
+		2B841D501DD47BA2008D7F40 /* enterFullScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "enterFullScreen@2x.png"; sourceTree = "<group>"; };
+		2B841D511DD47BA2008D7F40 /* exitFullScreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "exitFullScreen@2x.png"; sourceTree = "<group>"; };
 		2B8CF80E1C7C57D40079BB99 /* RealmSyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncManager.h; sourceTree = "<group>"; };
 		2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncManager.m; sourceTree = "<group>"; };
 		2B8CF8181C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RealmSyncManager+CoreDataMigration.h"; sourceTree = "<group>"; };
@@ -3996,6 +4000,8 @@
 		73B959FA17A68B7E0099FB84 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
+				2B841D501DD47BA2008D7F40 /* enterFullScreen@2x.png */,
+				2B841D511DD47BA2008D7F40 /* exitFullScreen@2x.png */,
 				731901AE18475B14002C82C1 /* closeButton.png */,
 				734BFE541899606A00692AB4 /* hamburger.png */,
 				734BFE551899606A00692AB4 /* hamburger@2x.png */,
@@ -4598,6 +4604,7 @@
 				734293A11899218300BDFD35 /* bubble_grey.png in Resources */,
 				27DFEBF41937644D006D85BC /* actionsheet-edit@2x~ipad.png in Resources */,
 				2764ABCE18CDC839003FFBF9 /* actionsheet-upload@2x.png in Resources */,
+				2B841D531DD47BA2008D7F40 /* exitFullScreen@2x.png in Resources */,
 				27DFEBFC1937644D006D85BC /* actionsheet-review@2x~ipad.png in Resources */,
 				27DFEBF11937644D006D85BC /* actionsheet-comment@2x~ipad.png in Resources */,
 				2B53B3551C91DA9800D4FD48 /* actionsheet-sync.png in Resources */,
@@ -4620,6 +4627,7 @@
 				735DDC241B30268D0091D7B4 /* mainmenu-alfresco@2x.png in Resources */,
 				27E84E8118AD53510024B658 /* mainmenu-localfiles@2x.png in Resources */,
 				08E1EA2E18DB057900F9052F /* TaskViewController.xib in Resources */,
+				2B841D521DD47BA2008D7F40 /* enterFullScreen@2x.png in Resources */,
 				73881FE81890086F0052C75F /* actionsheet-print@2x.png in Resources */,
 				7302475519544AD50034D861 /* playButton@2x.png in Resources */,
 				73BE41FA18F3FF2900DB8912 /* account-type-cloud.png in Resources */,

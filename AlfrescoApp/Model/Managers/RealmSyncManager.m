@@ -125,7 +125,7 @@
                 
                 if([changedAccount.accountIdentifier isEqualToString:[AccountManager sharedManager].selectedAccount.accountIdentifier])
                 {
-                    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount];
+                    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount completionBlock:nil];
                 }
             }
             else
@@ -202,8 +202,9 @@
     [self realmForAccount:account.accountIdentifier];
     if(account == [AccountManager sharedManager].selectedAccount)
     {
-        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:account];
-        [self.syncDisabledDelegate syncFeatureStatusChanged:YES];
+        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:account completionBlock:^{
+            [self.syncDisabledDelegate syncFeatureStatusChanged:YES];
+        }];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:account];
 }
@@ -504,6 +505,9 @@
     }
     else
     {
+        SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[document syncIdentifier]];
+        nodeStatus.status = SyncStatusOffline;
+        
         if (completionBlock)
         {
             completionBlock();
@@ -914,33 +918,33 @@
 - (void)sessionReceived:(NSNotification *)notification
 {
     UserAccount *changedAccount = [AccountManager sharedManager].selectedAccount;
-    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount];
-    
-    AlfrescoProfileConfig *selectedProfileForAccount = [[AppConfigurationManager sharedManager] selectedProfileForAccount:changedAccount];
-    [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
-    
-    id<AlfrescoSession> session = notification.object;
-    self.alfrescoSession = session;
-    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-    
-    self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
-    SyncOperationQueue *syncOperationQueueManager = self.syncQueues[self.selectedAccountSyncIdentifier];
-    
-    if (!syncOperationQueueManager)
-    {
-        syncOperationQueueManager = [[SyncOperationQueue alloc] initWithAccount:changedAccount session:session syncProgressDelegate:nil];
-        self.syncQueues[self.selectedAccountSyncIdentifier] = syncOperationQueueManager;
-    }
-    else
-    {
-        [syncOperationQueueManager updateSession:session];
-    }
-    
-    BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-    if(hasInternetConnection)
-    {
-        [self refreshWithCompletionBlock:nil];
-    }
+    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount completionBlock:^{
+        AlfrescoProfileConfig *selectedProfileForAccount = [[AppConfigurationManager sharedManager] selectedProfileForAccount:changedAccount];
+        [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
+        
+        id<AlfrescoSession> session = notification.object;
+        self.alfrescoSession = session;
+        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+        
+        self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
+        SyncOperationQueue *syncOperationQueueManager = self.syncQueues[self.selectedAccountSyncIdentifier];
+        
+        if (!syncOperationQueueManager)
+        {
+            syncOperationQueueManager = [[SyncOperationQueue alloc] initWithAccount:changedAccount session:session syncProgressDelegate:nil];
+            self.syncQueues[self.selectedAccountSyncIdentifier] = syncOperationQueueManager;
+        }
+        else
+        {
+            [syncOperationQueueManager updateSession:session];
+        }
+        
+        BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+        if(hasInternetConnection)
+        {
+            [self refreshWithCompletionBlock:nil];
+        }
+    }];
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification

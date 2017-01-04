@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NSMutableArray *dataSourceCollection;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
+@property (nonatomic, strong) NSMutableDictionary *nodesPermissions;
 
 - (void)setupWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 
