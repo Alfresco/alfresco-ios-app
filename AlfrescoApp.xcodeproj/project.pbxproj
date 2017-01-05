@@ -5614,6 +5614,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos10.2]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5704,6 +5705,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos10.2]" = "iPhone Developer";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider-Prefix.pch";
