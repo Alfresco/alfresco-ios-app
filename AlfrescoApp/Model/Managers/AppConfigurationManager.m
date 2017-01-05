@@ -60,11 +60,11 @@
 
 - (void)createInitialAccountConfiguration
 {
-    BOOL thereAreaccounts = [AccountManager sharedManager].allAccounts.count > 0;
+    BOOL thereAreAccounts = [AccountManager sharedManager].allAccounts.count > 0;
     UserAccount *activeAccount = [AccountManager sharedManager].selectedAccount;
     AccountConfiguration *currentAccountConfiguration = nil;
     
-    if(thereAreaccounts && activeAccount)
+    if(thereAreAccounts && activeAccount)
     {
         self.activeAccountConfiguration = [[AccountConfiguration alloc] initWithAccount:activeAccount session:nil];
         self.configurations[activeAccount.accountIdentifier] = self.activeAccountConfiguration;

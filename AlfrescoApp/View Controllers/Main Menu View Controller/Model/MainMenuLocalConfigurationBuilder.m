@@ -27,8 +27,7 @@
 
 - (AlfrescoConfigService *)configService
 {
-    AlfrescoConfigService *configurationService = [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
-    return configurationService;
+    return [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
 }
 
 #pragma mark - Public Methods
