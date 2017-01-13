@@ -254,4 +254,14 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     self.navigationItem.rightBarButtonItem.enabled = ![self.originallySelectedProfileIdentifier isEqualToString:self.currentlySelectedProfile.identifier];
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.account != [AccountManager sharedManager].selectedAccount)
+    {
+        indexPath = nil;
+    }
+    
+    return indexPath;
+}
+
 @end
