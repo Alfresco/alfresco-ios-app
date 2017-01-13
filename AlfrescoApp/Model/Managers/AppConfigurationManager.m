@@ -102,7 +102,7 @@
     AccountConfiguration *activeAccountConfiguration = self.configurations[activeAccount.accountIdentifier];
     
     [self.configurations enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, AccountConfiguration * _Nonnull configuration, BOOL * _Nonnull stop) {
-        if (![activeAccount.accountIdentifier isEqualToString:key])
+        if (![key isEqualToString:kNoAccountsConfigurationKey] && ![activeAccount.accountIdentifier isEqualToString:key])
         {
             configuration.session = nil;
             configuration.configService.session = nil;
