@@ -24,7 +24,10 @@
 {
     if (overwrite)
     {
-        [self removeItemAtURL:dstURL error:error];
+        if([self fileExistsAtPath:dstURL.absoluteString])
+        {
+            [self removeItemAtURL:dstURL error:error];
+        }
     }
     
     return [self copyItemAtURL:srcURL toURL:dstURL error:error];
@@ -34,7 +37,10 @@
 {
     if (overwrite)
     {
-        [self removeItemAtPath:dstPath error:error];
+        if([self fileExistsAtPath:dstPath])
+        {
+            [self removeItemAtPath:dstPath error:error];
+        }
     }
     
     return [self copyItemAtPath:srcPath toPath:dstPath error:error];
