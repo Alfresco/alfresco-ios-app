@@ -34,5 +34,6 @@
 - (void)switchToConfigurationFileType:(ConfigurationFileType)configurationFileType;
 - (void)retrieveProfilesWithCompletionBlock:(AlfrescoArrayCompletionBlock)completionBlock;
 - (void)retrieveDefaultProfileWithCompletionBlock:(AlfrescoProfileConfigCompletionBlock)completionBlock;
+- (BOOL)isEmbeddedConfigurationLoaded;
 
 @end
