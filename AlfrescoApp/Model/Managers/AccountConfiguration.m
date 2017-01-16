@@ -173,6 +173,11 @@
     }];
 }
 
+- (BOOL)isEmbeddedConfigurationLoaded
+{
+    return self.configService == self.embeddedConfigService;
+}
+
 #pragma mark - Private Methods
 
 - (void)profileSuccessfullySelected:(AlfrescoProfileConfig *)selectedProfile isEmbeddedConfig:(BOOL)isEmbeddedConfig configService:(AlfrescoConfigService *)configService

@@ -135,12 +135,22 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 
 - (void)loadData
 {
+    BOOL isEmbeddedConfigurationLoaded = NO;
+    
     if (self.account != [AccountManager sharedManager].selectedAccount)
     {
-        [self.accountConfiguration switchToConfigurationFileType:ConfigurationFileTypeLocal];
+        if ([self.account serverConfigurationExists])
+        {
+            [self.accountConfiguration switchToConfigurationFileType:ConfigurationFileTypeLocal];
+        }
+        else
+        {
+            [self.accountConfiguration switchToConfigurationFileType:ConfigurationFileTypeEmbedded];
+        }
     }
     else
     {
+        isEmbeddedConfigurationLoaded = [self.accountConfiguration isEmbeddedConfigurationLoaded];
         [self.accountConfiguration switchToConfigurationFileType:ConfigurationFileTypeServer];
     }
     
@@ -152,6 +162,7 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
             [self.account deleteConfigurationFile];
             [self.accountConfiguration switchToConfigurationFileType:ConfigurationFileTypeEmbedded];
             
+            // Retrieve embedded profile.
             [self.accountConfiguration retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
                 if (config)
                 {
@@ -159,7 +170,10 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
                     [self.tableView reloadData];
                     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 
-                    [self didSelectNewProfile];
+                    if (isEmbeddedConfigurationLoaded == NO)
+                    {
+                        [self didSelectNewProfile];
+                    }
                 }
                 else
                 {
