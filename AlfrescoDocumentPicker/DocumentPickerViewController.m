@@ -465,22 +465,21 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 void (^cacheAndDismissBlock)(FileMetadataSaveLocation saveLocation) = ^(FileMetadataSaveLocation location) {
                     NSArray *fileURLs = [self.queueStore.queue valueForKey:@"fileURL"];
                     
-                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:location];
+                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:location mode:self.documentPickerMode];
                     
                     if (![fileURLs containsObject:outURL])
                     {
                         [self.queueStore addObjectToQueue:metadata];
-                        [self.queueStore saveQueue];
                     }
                     else
                     {
                         NSUInteger indexOfMetadata = [fileURLs indexOfObject:outURL];
                         [self.queueStore replaceObjectInQueueAtIndex:indexOfMetadata withObject:metadata];
-                        [self.queueStore saveQueue];
-                        
-                        [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionOpen
-                                                                     label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]];
                     }
+                    [self.queueStore saveQueue];
+                    
+                    [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionOpen
+                                                                 label:[DocumentPickerViewController mimeTypeForFileExtension:outURL.absoluteString]];
                     
                     [self dismissGrantingAccessToURL:outURL];
                 };
@@ -644,7 +643,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 
                 NSURL *outURL = [self.documentStorageURL URLByAppendingPathComponent:fileName];
                 NSFileManager *fileManager = [[NSFileManager alloc] init];
-                [fileManager copyItemAtURL:newURL toURL:outURL overwritingExistingFile:YES error:nil];
+                NSError *fileCopyError = nil;
+                [fileManager copyItemAtURL:newURL toURL:outURL overwritingExistingFile:YES error:&fileCopyError];
                 
                 // Show Progress HUD
                 MBProgressHUD *progressHUD = [self progressHUDForView:namingController.view];
@@ -654,7 +654,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 // Initiate the upload
                 AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
                 AlfrescoFolder *uploadFolder = (AlfrescoFolder *)userInfo;
-                AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:outURL];
+                AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:newURL];
                 
                 NSInputStream *inputStream = [NSInputStream inputStreamWithURL:outURL];
                 AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:contentFile.mimeType length:contentFile.length];
@@ -666,6 +666,10 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     }
                     else
                     {
+                        FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:FileMetadataSaveLocationRepository mode:self.documentPickerMode];
+                        [self.queueStore addObjectToQueue:metadata];
+                        [self.queueStore saveQueue];
+                        
                         [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionCreate
                                                                      label:document.contentMimeType];
                         [self dismissGrantingAccessToURL:outURL];
@@ -702,28 +706,25 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     AlfrescoLogError(@"Unable to copy file from location: %@ to location: %@", newURL, completeDocumentStorageURL);
                 }
                 
-                // copy to downloads
                 NSString *fullDestinationPath = [[[AlfrescoFileManager sharedManager] downloadsContentFolderPath] stringByAppendingPathComponent:fileName];
                 NSURL *downloadPath = [NSURL fileURLWithPath:fullDestinationPath];
+                
+                void (^saveFileMetadataInfo)(NSString *) = ^(NSString *eventActionKey) {
+                    [DocumentPickerViewController trackEventWithAction:eventActionKey
+                                                                 label:[DocumentPickerViewController mimeTypeForFileExtension:downloadPath.absoluteString]];
+                    
+                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:nil fileURL:completeDocumentStorageURL sourceLocation:FileMetadataSaveLocationLocalFiles mode:self.documentPickerMode];
+                    [self.queueStore addObjectToQueue:metadata];
+                    [self.queueStore saveQueue];
+                    
+                    [self dismissGrantingAccessToURL:completeDocumentStorageURL];
+                };
                 
                 if ([fileManager fileExistsAtPath:fullDestinationPath])
                 {
                     UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No") style:UIAlertActionStyleCancel handler:nil];
                     UIAlertAction *overwrite = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-                        NSError *copyError = nil;
-                        [fileManager copyItemAtURL:completeDocumentStorageURL toURL:downloadPath overwritingExistingFile:YES error:&copyError];
-                        
-                        if (copyError)
-                        {
-                            AlfrescoLogError(@"Unable to copy from: %@ to: %@", completeDocumentStorageURL, downloadPath);
-                        }
-                        else
-                        {
-                            [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionUpdate
-                                                                         label:[DocumentPickerViewController mimeTypeForFileExtension:downloadPath.absoluteString]];
-                        }
-                        
-                        [self dismissGrantingAccessToURL:completeDocumentStorageURL];
+                        saveFileMetadataInfo(kAnalyticsEventActionUpdate);
                     }];
                     
                     NSString *title = NSLocalizedString(@"document.picker.scope.overwrite.title", @"Overwrite Title");
@@ -735,20 +736,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 }
                 else
                 {
-                    NSError *copyError = nil;
-                    [fileManager copyItemAtURL:completeDocumentStorageURL toURL:downloadPath overwritingExistingFile:YES error:&copyError];
-                    
-                    if (copyError)
-                    {
-                        AlfrescoLogError(@"Unable to copy from: %@ to: %@", completeDocumentStorageURL, downloadPath);
-                    }
-                    else
-                    {
-                        [DocumentPickerViewController trackEventWithAction:kAnalyticsEventActionCreate
-                                                                     label:[DocumentPickerViewController mimeTypeForFileExtension:downloadPath.absoluteString]];
-                    }
-                    
-                    [self dismissGrantingAccessToURL:completeDocumentStorageURL];
+                    saveFileMetadataInfo(kAnalyticsEventActionCreate);
                 }
             }];
             
@@ -820,7 +808,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         
         if (![fileURLs containsObject:outURL])
         {
-            FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:nil fileURL:outURL sourceLocation:FileMetadataSaveLocationLocalFiles];
+            FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:nil fileURL:outURL sourceLocation:FileMetadataSaveLocationLocalFiles mode:self.documentPickerMode];
             [self.queueStore addObjectToQueue:metadata];
             [self.queueStore saveQueue];
         }

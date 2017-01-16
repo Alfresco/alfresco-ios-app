@@ -14,6 +14,7 @@ static NSString * const kFileMetadataFileURLIdentifier = @"FileMetadataFileURLId
 static NSString * const kFileMetadataLastAccessedIdentifier = @"FileMetadataLastAccessedIdentifier";
 static NSString * const kFileMetadataStatusIdentifier = @"FileMetadataStatusIdentifier";
 static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSourceLocationIdentifier";
+static NSString * const kFileMetadataModeIdentifier = @"FileMetadataModeIdentifier";
 
 @interface FileMetadata ()
 @end
@@ -26,8 +27,9 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
 @synthesize lastAccessed = _lastAccessed;
 @synthesize status = _status;
 @synthesize saveLocation = _saveLocation;
+@synthesize mode = _mode;
 
-- (instancetype)initWithAccountIdentififer:(NSString *)accountId repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSaveLocation)location
+- (instancetype)initWithAccountIdentififer:(NSString *)accountId repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSaveLocation)location mode:(UIDocumentPickerMode)mode
 {
     self = [self init];
     if (self)
@@ -38,6 +40,7 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
         self.lastAccessed = [NSDate date];
         self.status = FileMetadataStatusPendingUpload;
         self.saveLocation = location;
+        self.mode = mode;
     }
     return self;
 }
@@ -74,6 +77,12 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
     return _saveLocation;
 }
 
+- (UIDocumentPickerMode)mode
+{
+    [self updateAccessDate];
+    return _mode;
+}
+
 #pragma mark - Custom Setters
 
 - (void)setAccountIdentifier:(NSString *)accountIdentifier
@@ -106,6 +115,12 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
     _saveLocation = saveLocation;
 }
 
+- (void)setMode:(UIDocumentPickerMode)mode
+{
+    [self updateAccessDate];
+    _mode = mode;
+}
+
 #pragma mark - Private Methods
 
 - (void)updateAccessDate
@@ -123,6 +138,7 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
     [aCoder encodeObject:self.lastAccessed forKey:kFileMetadataLastAccessedIdentifier];
     [aCoder encodeInteger:self.status forKey:kFileMetadataStatusIdentifier];
     [aCoder encodeInteger:self.saveLocation forKey:kFileMetadataSourceLocationIdentifier];
+    [aCoder encodeInteger:self.mode forKey:kFileMetadataModeIdentifier];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -136,6 +152,7 @@ static NSString * const kFileMetadataSourceLocationIdentifier = @"FileMetadataSo
         self.lastAccessed = [aDecoder decodeObjectForKey:kFileMetadataLastAccessedIdentifier];
         self.status = [aDecoder decodeIntegerForKey:kFileMetadataStatusIdentifier];
         self.saveLocation = [aDecoder decodeIntegerForKey:kFileMetadataSourceLocationIdentifier];
+        self.mode = [aDecoder decodeIntegerForKey:kFileMetadataModeIdentifier];
     }
     return self;
 }
