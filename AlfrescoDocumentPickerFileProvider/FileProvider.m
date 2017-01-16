@@ -92,6 +92,12 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     NSArray *folderAndFilePathComponents = [pathComponents subarrayWithRange:NSMakeRange(pathComponents.count - 2, 2)];
     NSString *lastTwoPathString = [NSString pathWithComponents:folderAndFilePathComponents];
     
+    NSString *lastPartDocumentStorageURL = self.documentStorageURL.lastPathComponent;
+    if([lastTwoPathString containsString:lastPartDocumentStorageURL])
+    {
+        lastTwoPathString = folderAndFilePathComponents.lastObject;
+    }
+    
     NSURL *searchURL = [self.documentStorageURL URLByAppendingPathComponent:lastTwoPathString];
     NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"fileURL == %@", searchURL];
     NSArray *urlSearchResultArray = [self.queueStore.queue filteredArrayUsingPredicate:searchPredicate];
@@ -245,91 +251,95 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     NSDate *urlModificationDate = fileAttributes[NSFileModificationDate];
     
     FileMetadata *metadata = [self fileMetadataForURL:url];
-    AlfrescoDocument *repoNode = (AlfrescoDocument *)metadata.repositoryNode;
-    
-    if (![repoNode.modifiedAt isEqualToDate:urlModificationDate] && metadata.status != FileMetadataStatusUploading)
+    if(metadata)
     {
-        if (metadata.saveLocation == FileMetadataSaveLocationRepository)
-        {
-            UserAccountWrapper *account = [self userAccountForMetadataItem:metadata];
+        // the document exists in the AlfrescoRepository
+        AlfrescoDocument *repoNode = (AlfrescoDocument *)metadata.repositoryNode;
         
-            // Coordinate the reading of the file for uploading
-            [self.fileCoordinator coordinateReadingItemAtURL:metadata.fileURL options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newURL) {
-                // define an upload block
-                void (^uploadBlock)(id<AlfrescoSession>session) = ^(id<AlfrescoSession>session) {
-                    AlfrescoDocument *updateDocument = (AlfrescoDocument *)metadata.repositoryNode;
-                    [self uploadDocument:updateDocument sourceURL:newURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
-                        if (updateError)
-                        {
-                            AlfrescoLogError(@"Error Updating Document: %@. Error: %@", updateDocument.name, updateError.localizedDescription);
-                        }
-                        else
-                        {
-                            AlfrescoLogInfo(@"Successfully updated document: %@, Modified At: %@, Created At: %@", document.name, document.modifiedAt, document.createdAt);
-                            metadata.repositoryNode = document;
-                        }
-                        metadata.status = FileMetadataStatusPendingUpload;
-                        [self.queueStore saveQueue];
-                    }];
-                    
-                    // Set the metadata to uploading - ensure the upload doesnt start again.
-                    metadata.status = FileMetadataStatusUploading;
-                    [self.queueStore saveQueue];
-                };
-                
-                // Session exists, use that, else do a login and then upload.
-                id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[account.identifier];
-                if (!cachedSession)
-                {
-                    __block BOOL loginCallbackComplete = NO;
-                    
-                    [self loginToAccount:account completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
-                        if (successful)
-                        {
-                            uploadBlock(session);
-                        }
-                        else
-                        {
-                            AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
-                        }
-                        
-                        loginCallbackComplete = YES;
-                    }];
-                    
-                    /*
-                     * Keep this object around long enough for the login attempt to complete.
-                     * Running as a background thread, seperate from the UI, so should not cause
-                     * Any issues when blocking the thread.
-                     */
-                    do
-                    {
-                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-                    }
-                    while (loginCallbackComplete == NO);
-                }
-                else
-                {
-                    uploadBlock(cachedSession);
-                }
-            }];
-
-        }
-        else if (metadata.saveLocation == FileMetadataSaveLocationLocalFiles)
+        if (![repoNode.modifiedAt isEqualToDate:urlModificationDate] && metadata.status != FileMetadataStatusUploading)
         {
-            NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
-            NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
-            NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
-            [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                NSError *copyError = nil;
-                NSFileManager *fileManager = [[NSFileManager alloc] init];
+            if (metadata.saveLocation == FileMetadataSaveLocationRepository)
+            {
+                UserAccountWrapper *account = [self userAccountForMetadataItem:metadata];
                 
-                [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES error:&copyError];
+                // Coordinate the reading of the file for uploading
+                [self.fileCoordinator coordinateReadingItemAtURL:metadata.fileURL options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newURL) {
+                    // define an upload block
+                    void (^uploadBlock)(id<AlfrescoSession>session) = ^(id<AlfrescoSession>session) {
+                        AlfrescoDocument *updateDocument = (AlfrescoDocument *)metadata.repositoryNode;
+                        [self uploadDocument:updateDocument sourceURL:newURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
+                            if (updateError)
+                            {
+                                AlfrescoLogError(@"Error Updating Document: %@. Error: %@", updateDocument.name, updateError.localizedDescription);
+                            }
+                            else
+                            {
+                                AlfrescoLogInfo(@"Successfully updated document: %@, Modified At: %@, Created At: %@", document.name, document.modifiedAt, document.createdAt);
+                                metadata.repositoryNode = document;
+                            }
+                            metadata.status = FileMetadataStatusPendingUpload;
+                            [self.queueStore saveQueue];
+                        }];
+                        
+                        // Set the metadata to uploading - ensure the upload doesnt start again.
+                        metadata.status = FileMetadataStatusUploading;
+                        [self.queueStore saveQueue];
+                    };
+                    
+                    // Session exists, use that, else do a login and then upload.
+                    id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[account.identifier];
+                    if (!cachedSession)
+                    {
+                        __block BOOL loginCallbackComplete = NO;
+                        
+                        [self loginToAccount:account completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
+                            if (successful)
+                            {
+                                uploadBlock(session);
+                            }
+                            else
+                            {
+                                AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
+                            }
+                            
+                            loginCallbackComplete = YES;
+                        }];
+                        
+                        /*
+                         * Keep this object around long enough for the login attempt to complete.
+                         * Running as a background thread, seperate from the UI, so should not cause
+                         * Any issues when blocking the thread.
+                         */
+                        do
+                        {
+                            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                        }
+                        while (loginCallbackComplete == NO);
+                    }
+                    else
+                    {
+                        uploadBlock(cachedSession);
+                    }
+                }];
                 
-                if (copyError)
-                {
-                    AlfrescoLogError(@"Unable to copy file at path: %@, to location: %@. Error: %@", newReadingURL, newWritingURL, copyError.localizedDescription);
-                }
-            }];
+            }
+            else if (metadata.saveLocation == FileMetadataSaveLocationLocalFiles)
+            {
+                NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
+                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
+                NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+                [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+                    NSError *copyError = nil;
+                    NSFileManager *fileManager = [[NSFileManager alloc] init];
+                    
+                    [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES error:&copyError];
+                    
+                    if (copyError)
+                    {
+                        AlfrescoLogError(@"Unable to copy file at path: %@, to location: %@. Error: %@", newReadingURL, newWritingURL, copyError.localizedDescription);
+                    }
+                }];
+            }
         }
     }
 }
