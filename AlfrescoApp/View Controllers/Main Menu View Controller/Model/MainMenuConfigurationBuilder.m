@@ -53,12 +53,13 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     self = [super initWithAccount:account];
     if (self)
     {
-        self.configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
-        self.session = session;
+        AlfrescoConfigService *configService = [[AppConfigurationManager sharedManager] configurationServiceForAccount:account];
+        _configService = configService;
+        _session = session;
         NSString *plistPath = [[NSBundle mainBundle] pathForResource:kMenuIconTypeMappingFileName ofType:@"plist"];
-        self.iconTypeMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        _iconTypeMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
         plistPath = [[NSBundle mainBundle] pathForResource:kMenuIconIdentifierMappingFileName ofType:@"plist"];
-        self.iconIdentifierMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        _iconIdentifierMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
     }
     return self;
 }
@@ -85,11 +86,17 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
 
 - (void)sectionsForContentGroupWithCompletionBlock:(void (^)(NSArray *))completionBlock
 {
-    AppConfigurationManager *configManager = [AppConfigurationManager sharedManager];
-    self.configService = [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
+    if ([AccountManager sharedManager].selectedAccount)
+    {
+        _configService = [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
+    }
+    else
+    {
+        _configService = [[AppConfigurationManager sharedManager] configurationServiceForNoAccountConfiguration];
+    }
 
     void (^buildItemsForProfile)(AlfrescoProfileConfig *profile) = ^(AlfrescoProfileConfig *profile) {
-        [self.configService retrieveViewGroupConfigWithIdentifier:profile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {
+        [_configService retrieveViewGroupConfigWithIdentifier:profile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {
             if (rootViewError)
             {
                 AlfrescoLogError(@"Could not retrieve root config for profile %@", profile.rootViewId);
@@ -107,17 +114,18 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         if (self.account == [AccountManager sharedManager].selectedAccount)
         {
-            buildItemsForProfile(configManager.selectedProfile);
+            buildItemsForProfile([[AppConfigurationManager sharedManager] selectedProfileForAccount:self.account]);
         }
         else
         {
-            [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultConfig, NSError *defaultConfigError) {
+            [_configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultConfig, NSError *defaultConfigError) {
                 if (defaultConfigError)
                 {
                     AlfrescoLogError(@"Could not retrieve root config for profile %@", defaultConfig.rootViewId);
                 }
                 else
                 {
+                    AlfrescoLogDebug(@"retrieveDefaultProfileWithCompletionBlock: %@", defaultConfig.identifier);
                     buildItemsForProfile(defaultConfig);
                 }
             }];
@@ -125,17 +133,22 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     else
     {
-        self.configService = [[AppConfigurationManager sharedManager] configurationServiceForNoAccountConfiguration];
-        [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultConfig, NSError *defaultConfigError) {
-            if (defaultConfigError)
-            {
-                AlfrescoLogError(@"Could not retrieve root config for profile %@", defaultConfig.rootViewId);
-            }
-            else
-            {
-                buildItemsForProfile(defaultConfig);
-            }
-        }];
+        _configService = [[AppConfigurationManager sharedManager] configurationServiceForNoAccountConfiguration];
+        
+        if (_configService)
+        {
+            [_configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultConfig, NSError *defaultConfigError) {
+                if (defaultConfigError)
+                {
+                    AlfrescoLogError(@"Could not retrieve root config for profile %@", defaultConfig.rootViewId);
+                }
+                else
+                {
+                    AlfrescoLogDebug(@"retrieveDefaultProfileWithCompletionBlock2: %@", defaultConfig.identifier);
+                    buildItemsForProfile(defaultConfig);
+                }
+            }];
+        }
     }
 }
 
@@ -190,7 +203,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         if ([subItem isKindOfClass:[AlfrescoViewGroupConfig class]])
         {
             // Recursively build the views from the view groups
-            [self.configService retrieveViewGroupConfigWithIdentifier:subItem.identifier completionBlock:^(AlfrescoViewGroupConfig *groupConfig, NSError *groupConfigError) {
+            [_configService retrieveViewGroupConfigWithIdentifier:subItem.identifier completionBlock:^(AlfrescoViewGroupConfig *groupConfig, NSError *groupConfigError) {
                 if (groupConfigError)
                 {
                     AlfrescoLogError(@"Unable to retrieve view group for identifier: %@. Error: %@", subItem.identifier, groupConfigError.localizedDescription);
@@ -237,7 +250,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             else
             {
                 // Retrieve the view using the view identifier
-                [self.configService retrieveViewConfigWithIdentifier:subItem.identifier completionBlock:^(AlfrescoViewConfig *viewConfig, NSError *viewConfigError) {
+                [_configService retrieveViewConfigWithIdentifier:subItem.identifier completionBlock:^(AlfrescoViewConfig *viewConfig, NSError *viewConfigError) {
                     if (viewConfigError)
                     {
                         AlfrescoLogError(@"Unable to retrieve view for identifier: %@. Error: %@", subItem.identifier, viewConfigError.localizedDescription);

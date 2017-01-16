@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #import "MainMenuLocalConfigurationBuilder.h"
+#import "MainMenuItemsVisibilityUtils.h"
 #import "AppConfigurationManager.h"
 
 @interface MainMenuLocalConfigurationBuilder ()
@@ -26,7 +27,7 @@
 
 - (AlfrescoConfigService *)configService
 {
-    return [[AppConfigurationManager sharedManager] configurationServiceForEmbeddedConfiguration];
+    return [[AppConfigurationManager sharedManager] configurationServiceForCurrentAccount];
 }
 
 #pragma mark - Public Methods
@@ -34,15 +35,14 @@
 - (void)sectionsForContentGroupWithCompletionBlock:(void (^)(NSArray *sections))completionBlock
 {
     [super sectionsForContentGroupWithCompletionBlock:^(NSArray *sections) {
-        AppConfigurationManager *configManager = [AppConfigurationManager sharedManager];
         
         // For each section, we ask the app configuration manager to set the visibility flags on each item and
         // reorder the visible section in the correct order
         // (The order for hidden items is not important)
         [sections enumerateObjectsUsingBlock:^(MainMenuSection *section, NSUInteger idx, BOOL *stop) {
-            [configManager setVisibilityForMenuItems:section.allSectionItems forAccount:self.account];
-            NSArray *sortedVisibleItems = [configManager orderedArrayFromUnorderedMainMenuItems:section.allSectionItems
-                                                                        usingOrderedIdentifiers:[configManager visibleItemIdentifiersForAccount:self.account]
+            [MainMenuItemsVisibilityUtils setVisibilityForMenuItems:section.allSectionItems forAccount:self.account];
+            NSArray *sortedVisibleItems = [MainMenuItemsVisibilityUtils orderedArrayFromUnorderedMainMenuItems:section.allSectionItems
+                                                                        usingOrderedIdentifiers:[MainMenuItemsVisibilityUtils visibleItemIdentifiersForAccount:self.account]
                                                                           appendNotFoundObjects:YES];
             section.allSectionItems = sortedVisibleItems.mutableCopy;
         }];

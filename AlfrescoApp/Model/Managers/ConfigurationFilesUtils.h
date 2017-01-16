@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,12 +16,21 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "MainMenuRemoteConfigurationBuilder.h"
-#import "AlfrescoConfigService.h"
+#import <Foundation/Foundation.h>
 
-@interface MainMenuRemoteConfigurationBuilder ()
-@end
+typedef NS_ENUM(NSUInteger, ConfigurationFileType)
+{
+    ConfigurationFileTypeNoAccounts,
+    ConfigurationFileTypeEmbedded,
+    ConfigurationFileTypeLocal,
+    ConfigurationFileTypeServer
+};
 
-@implementation MainMenuRemoteConfigurationBuilder
+@interface ConfigurationFilesUtils : NSObject
+
++ (void)setupConfigurationFileType:(ConfigurationFileType)configurationFileType completionBlock:(void (^)(NSString *configurationFilePath))completionBlock;
++ (BOOL)configServiceShouldIgnoreRequestsForType:(ConfigurationFileType)configurationFileType;
++ (void)logDefaultProfileError:(NSError *)error forConfigurationWithType:(ConfigurationFileType)configurationFileType;
++ (void)logCustomProfile:(NSString *)profileIdentifier error:(NSError *)error;
 
 @end

@@ -69,6 +69,7 @@
     {
         self.isCacheBuilt = NO;
         self.isCacheBuilding = NO;
+        self.shouldIgnoreRequests = NO;
         self.defaultConfigScope = [[AlfrescoConfigScope alloc] initWithProfile:kAlfrescoConfigProfileDefaultIdentifier];
         self.queuedCompletionBlocks = [NSMutableArray array];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
@@ -156,7 +157,7 @@
             [self runAndDequeueAllCompletionBlocksWithSuccess:success error:error];
         };
         
-        if (self.session != nil)
+        if (self.session != nil && self.shouldIgnoreRequests == NO)
         {
             AlfrescoRequest *request = nil;
             AlfrescoSearchService *searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
@@ -386,16 +387,24 @@
                 // set status flags and call completion block
                 self.isCacheBuilt = YES;
                 self.isCacheBuilding = NO;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionBlock(YES, nil);
-                });
+                
+                if (completionBlock)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completionBlock(YES, nil);
+                    });
+                }
             }
             else
             {
                 self.isCacheBuilding = NO;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    completionBlock(NO, [AlfrescoErrors alfrescoErrorWithUnderlyingError:error andAlfrescoErrorCode:kAlfrescoErrorCodeJSONParsing]);
-                });
+                
+                if (completionBlock)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        completionBlock(NO, [AlfrescoErrors alfrescoErrorWithUnderlyingError:error andAlfrescoErrorCode:kAlfrescoErrorCodeJSONParsing]);
+                    });
+                }
             }
         }
         else
@@ -577,13 +586,16 @@
 - (AlfrescoRequest *)retrieveDefaultProfileWithCompletionBlock:(AlfrescoProfileConfigCompletionBlock)completionBlock
 {
     return [self initializeInternalStateWithCompletionBlock:^(BOOL succeeded, NSError *error) {
-        if (succeeded)
+        if (completionBlock)
         {
-            completionBlock(self.profileConfigHelper.defaultProfile, nil);
-        }
-        else
-        {
-            completionBlock(nil, error);
+            if (succeeded)
+            {
+                completionBlock(self.profileConfigHelper.defaultProfile, nil);
+            }
+            else
+            {
+                completionBlock(nil, error);
+            }
         }
     }];
 }

@@ -82,6 +82,10 @@
 		1D2A52AC1CC7687000991186 /* RepositoryCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */; };
 		1DE9507A1CAC0887009299C8 /* RealmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950791CAC0887009299C8 /* RealmManager.m */; };
 		1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9507C1CAE6D09009299C8 /* SyncConstants.m */; };
+		2308BF8A1DD1CFD7009C3D8B /* AccountConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308BF891DD1CFD7009C3D8B /* AccountConfiguration.m */; };
+		2308BF901DD1DC55009C3D8B /* ConfigurationFilesUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308BF8F1DD1DC55009C3D8B /* ConfigurationFilesUtils.m */; };
+		2308BF931DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308BF921DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m */; };
+		2308BF961DD22828009C3D8B /* UserAccount+FileHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 2308BF951DD22828009C3D8B /* UserAccount+FileHandling.m */; };
 		2311ADB11CE1E44E00F2E1AC /* PinViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 23B2B2A11CA1A4FD00A8196C /* PinViewController.xib */; };
 		2311ADB61CE1E45400F2E1AC /* PinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23B2B2A01CA1A4FD00A8196C /* PinViewController.m */; };
 		2311ADB71CE1E7C300F2E1AC /* SettingConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7384BE0717F57FEC00C6A54F /* SettingConstants.m */; };
@@ -1007,6 +1011,14 @@
 		1DE950791CAC0887009299C8 /* RealmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmManager.m; sourceTree = "<group>"; };
 		1DE9507B1CAE6D09009299C8 /* SyncConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncConstants.h; sourceTree = "<group>"; };
 		1DE9507C1CAE6D09009299C8 /* SyncConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncConstants.m; sourceTree = "<group>"; };
+		2308BF881DD1CFD7009C3D8B /* AccountConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountConfiguration.h; sourceTree = "<group>"; };
+		2308BF891DD1CFD7009C3D8B /* AccountConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountConfiguration.m; sourceTree = "<group>"; };
+		2308BF8E1DD1DC55009C3D8B /* ConfigurationFilesUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationFilesUtils.h; sourceTree = "<group>"; };
+		2308BF8F1DD1DC55009C3D8B /* ConfigurationFilesUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfigurationFilesUtils.m; sourceTree = "<group>"; };
+		2308BF911DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuItemsVisibilityUtils.h; sourceTree = "<group>"; };
+		2308BF921DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuItemsVisibilityUtils.m; sourceTree = "<group>"; };
+		2308BF941DD22828009C3D8B /* UserAccount+FileHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UserAccount+FileHandling.h"; sourceTree = "<group>"; };
+		2308BF951DD22828009C3D8B /* UserAccount+FileHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UserAccount+FileHandling.m"; sourceTree = "<group>"; };
 		231A0B4D1CABCCCD0029A10E /* SecurityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecurityManager.h; sourceTree = "<group>"; };
 		231A0B4E1CABCCCD0029A10E /* SecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityManager.m; sourceTree = "<group>"; };
 		232D38A61D7D937100B2F2E8 /* PermissionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionChecker.h; sourceTree = "<group>"; };
@@ -3679,6 +3691,12 @@
 				730B444D18EC3A96008A0977 /* AnalyticsManager.m */,
 				080FC9CD1886FF4A00485485 /* AppConfigurationManager.h */,
 				080FC9CE1886FF4A00485485 /* AppConfigurationManager.m */,
+				2308BF881DD1CFD7009C3D8B /* AccountConfiguration.h */,
+				2308BF891DD1CFD7009C3D8B /* AccountConfiguration.m */,
+				2308BF8E1DD1DC55009C3D8B /* ConfigurationFilesUtils.h */,
+				2308BF8F1DD1DC55009C3D8B /* ConfigurationFilesUtils.m */,
+				2308BF911DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.h */,
+				2308BF921DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m */,
 				73922271187C1BF700BFCE21 /* AvatarManager.h */,
 				73922272187C1BF700BFCE21 /* AvatarManager.m */,
 				73B957D117A6750E0099FB84 /* ConnectivityManager.h */,
@@ -3815,6 +3833,8 @@
 				2B4E0CAC1D3D19020031FD3A /* AlfrescoNode+Sync.m */,
 				2BDC6FA31D660731003F9324 /* AlfrescoNode+Networking.h */,
 				2BDC6FA41D660731003F9324 /* AlfrescoNode+Networking.m */,
+				2308BF941DD22828009C3D8B /* UserAccount+FileHandling.h */,
+				2308BF951DD22828009C3D8B /* UserAccount+FileHandling.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -4276,11 +4296,13 @@
 				ORGANIZATIONNAME = Alfresco;
 				TargetAttributes = {
 					08E89C9817E7593B006936DF = {
+						DevelopmentTeam = W8N95J537P;
 						TestTargetID = 7373B4F417A66E9400869949;
 					};
 					734CC3EB1A700808005D148E = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = W8N95J537P;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -4293,6 +4315,7 @@
 					734CC3F91A700808005D148E = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = W8N95J537P;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Keychain = {
 								enabled = 1;
@@ -4301,6 +4324,7 @@
 					};
 					7373B4F417A66E9400869949 = {
 						DevelopmentTeam = W8N95J537P;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -4997,6 +5021,7 @@
 				73B959EE17A686590099FB84 /* main.m in Sources */,
 				73B957CD17A673A90099FB84 /* AppDelegate.m in Sources */,
 				7384BE0817F57FEC00C6A54F /* SettingConstants.m in Sources */,
+				2308BF961DD22828009C3D8B /* UserAccount+FileHandling.m in Sources */,
 				7390B36E1B03681E00E7191F /* AlfrescoItemConfig.m in Sources */,
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
 				272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */,
@@ -5036,6 +5061,7 @@
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
 				73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */,
 				0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */,
+				2308BF8A1DD1CFD7009C3D8B /* AccountConfiguration.m in Sources */,
 				0876A05718D9A0A80035370A /* ProgressView.m in Sources */,
 				272CC7BD19466B680009FADA /* MapViewController.m in Sources */,
 				73B9584517A6750F0099FB84 /* LoginManager.m in Sources */,
@@ -5209,6 +5235,7 @@
 				27A1BFD119460318004DF61D /* ThumbnailOperation.m in Sources */,
 				7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */,
 				2BB2657D1B78938F00EE7EB0 /* AlfrescoURLHandler.m in Sources */,
+				2308BF931DD21D95009C3D8B /* MainMenuItemsVisibilityUtils.m in Sources */,
 				738664F01906B2420021D1BD /* PersonCell.m in Sources */,
 				0833244C17F32AA200EE6AA8 /* SyncNodeStatus.m in Sources */,
 				2B1A050A1BB2D27C00EE4AAE /* SiteMembersViewController.m in Sources */,
@@ -5248,6 +5275,7 @@
 				2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */,
 				1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
+				2308BF901DD1DC55009C3D8B /* ConfigurationFilesUtils.m in Sources */,
 				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
 				7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
@@ -5474,6 +5502,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5501,6 +5530,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -5520,6 +5551,8 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "2bafb3cc-3501-4577-9062-cef225d63457";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) Ad Hoc Profile";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5558,6 +5591,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPicker/AlfrescoDocumentPicker-Prefix.pch";
@@ -5577,6 +5612,8 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "587fddc6-cd8b-44ba-acb1-a01c5ef70b2e";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Document Picker Development";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -5590,6 +5627,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5606,6 +5645,8 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "46dbb5be-012b-4a20-af1d-9525186c3454";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Document Picker (X8Q) App Store Profile";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -5619,6 +5660,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPicker/AlfrescoDocumentPicker.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -5635,6 +5678,8 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "567e89c7-fac5-48e0-ae5c-bb17a475bbb8";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Document Picker (X8Q) Ad Hoc Profile";
 				SKIP_INSTALL = YES;
 			};
 			name = AdHoc;
@@ -5647,6 +5692,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5668,6 +5715,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8c316c84-e473-4964-8049-74abde67dbb7";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco File Provider Development";
 				SKIP_INSTALL = YES;
 			};
 			name = Debug;
@@ -5680,6 +5729,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider-Prefix.pch";
@@ -5698,6 +5749,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "d8f0a98d-9d7a-420e-9fa0-8bb7ae2c9d51";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco File Provider (X8Q) App Store Profile";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -5710,6 +5763,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_ENTITLEMENTS = AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "AlfrescoDocumentPickerFileProvider/AlfrescoDocumentPickerFileProvider-Prefix.pch";
@@ -5728,6 +5783,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.alfresco.mobile.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "a0d336d4-1e69-434d-b0cd-e595d2b96bdf";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco File Provider (X8Q) Ad Hoc Profile";
 				SKIP_INSTALL = YES;
 			};
 			name = AdHoc;
@@ -5748,6 +5805,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = NO;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -5784,6 +5842,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -5811,6 +5870,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -5830,6 +5891,8 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "25ae4d3b-6c1a-4a27-a511-a09146b86f72";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) Development";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5842,6 +5905,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				DEVELOPMENT_TEAM = W8N95J537P;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SOURCE_ROOT)/AlfrescoApp/Third\\ Party\\ Libraries/**",
@@ -5861,6 +5926,8 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "da10ba1b-cd14-4657-b520-6d637077845f";
+				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) App Store Profile";
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
