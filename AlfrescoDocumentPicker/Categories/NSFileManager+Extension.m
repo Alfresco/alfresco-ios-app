@@ -24,7 +24,7 @@
 {
     if (overwrite)
     {
-        if([self fileExistsAtPath:dstURL.absoluteString])
+        if([self fileExistsAtPath:[dstURL path]])
         {
             [self removeItemAtURL:dstURL error:error];
         }
