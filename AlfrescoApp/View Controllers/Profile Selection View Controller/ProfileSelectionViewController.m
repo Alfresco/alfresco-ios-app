@@ -192,7 +192,10 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
                 AlfrescoProfileConfig *profile = self.tableViewData[i];
                 if ([self.originallySelectedProfileIdentifier isEqualToString:profile.identifier])
                 {
-                    shouldAutoSelectProfile = NO;
+                    if (isEmbeddedConfigurationLoaded == NO)
+                    {
+                        shouldAutoSelectProfile = NO;
+                    }
                 }
             }
             
@@ -205,6 +208,13 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
                         if ([config.identifier isEqualToString:profile.identifier])
                         {
                             [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+                            
+                            if (isEmbeddedConfigurationLoaded)
+                            {
+                                [self didSelectNewProfile];
+                            }
+                            
+                            break;
                         }
                     }
                 }];
