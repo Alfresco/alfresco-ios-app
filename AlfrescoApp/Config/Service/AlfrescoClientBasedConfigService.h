@@ -26,4 +26,6 @@
 // including the resolution of all localised strings.
 @interface AlfrescoClientBasedConfigService : AlfrescoConfigService
 
+- (BOOL)isUsingCachedData;
+
 @end
