@@ -24,6 +24,7 @@
 #import "MainMenuItemsVisibilityUtils.h"
 #import "ConfigurationFilesUtils.h"
 #import "UserAccount+FileHandling.h"
+#import "AlfrescoClientBasedConfigService.h"
 
 static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
 
@@ -192,9 +193,12 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
                 AlfrescoProfileConfig *profile = self.tableViewData[i];
                 if ([self.originallySelectedProfileIdentifier isEqualToString:profile.identifier])
                 {
+                    self.currentlySelectedProfile = profile;
+                    
                     if (isEmbeddedConfigurationLoaded == NO)
                     {
                         shouldAutoSelectProfile = NO;
+                        break;
                     }
                 }
             }
@@ -219,8 +223,23 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
                     }
                 }];
             }
+            else if ([self shouldSelectNewProfile])
+            {
+                [self didSelectNewProfile];
+            }
         }
     }];
+}
+
+- (BOOL)shouldSelectNewProfile
+{
+    BOOL isUsingCache = NO;
+    
+    AlfrescoClientBasedConfigService *service = (AlfrescoClientBasedConfigService *)self.accountConfiguration.configService;
+    
+    isUsingCache = [service isUsingCachedData];
+    
+    return !isUsingCache;
 }
 
 #pragma mark - UITableViewDataSource Delegate Methods
