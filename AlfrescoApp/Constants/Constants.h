@@ -342,6 +342,8 @@ extern NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusKey;
 extern NSString * const kAlfrescoConfigViewParameterTaskFiltersDueKey;
 extern NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityKey;
 extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeKey;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersKey;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersModeKey;
 // View Parameter Values
 extern NSString * const kAlfrescoConfigViewParameterMySitesValue;
 extern NSString * const kAlfrescoConfigViewParameterFavouriteSitesValue;
@@ -366,6 +368,9 @@ extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeMe;
 extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeUnassigned;
 extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeAll;
 extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeNone;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersAll;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersFolders;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersFiles;
 
 // App Configuration
 //// Notifications

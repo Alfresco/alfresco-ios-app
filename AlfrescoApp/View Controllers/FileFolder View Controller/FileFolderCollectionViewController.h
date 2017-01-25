@@ -113,9 +113,10 @@
 /**
  Use when needing to display the list of top level favorite nodes
  
+ @param filter - values: all|folders|files
  @param session - an active session
  */
-- (instancetype)initForFavoritesWithSession:(id<AlfrescoSession>)session;
+- (instancetype)initForFavoritesWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session;
 
 /**
  Use the search statement initialiser to initiate a CMIS search
