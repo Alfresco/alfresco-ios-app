@@ -302,6 +302,8 @@ NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusKey = @"status";
 NSString * const kAlfrescoConfigViewParameterTaskFiltersDueKey = @"due";
 NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityKey = @"priority";
 NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeKey = @"assignee";
+NSString * const kAlfrescoConfigViewParameterFavoritesFiltersKey = @"filters";
+NSString * const kAlfrescoConfigViewParameterFavoritesFiltersModeKey = @"mode";
 // View Parameter Values
 NSString * const kAlfrescoConfigViewParameterMySitesValue = @"my";
 NSString * const kAlfrescoConfigViewParameterFavouriteSitesValue = @"favorites";
@@ -326,6 +328,9 @@ NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeMe = @"me";
 NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeUnassigned = @"unassigned";
 NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeAll = @"all";
 NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeNone = @"none";
+NSString * const kAlfrescoConfigViewParameterFavoritesFiltersAll = @"all";
+NSString * const kAlfrescoConfigViewParameterFavoritesFiltersFolders = @"folders";
+NSString * const kAlfrescoConfigViewParameterFavoritesFiltersFiles = @"files";
 
 // App Configuration
 //// Notifications

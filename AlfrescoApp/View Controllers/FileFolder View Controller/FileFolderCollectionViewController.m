@@ -202,13 +202,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initForFavoritesWithSession:(id<AlfrescoSession>)session
+- (instancetype)initForFavoritesWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
     {
         self.controllerType = FileFolderCollectionViewControllerTypeFavorites;
-        self.dataSource = [[FavoritesCollectionViewDataSource alloc] initWithParentNode:nil session:session delegate:self];
+        self.dataSource = [[FavoritesCollectionViewDataSource alloc] initWithFilter:filter session:session delegate:self];
     }
     
     return self;
