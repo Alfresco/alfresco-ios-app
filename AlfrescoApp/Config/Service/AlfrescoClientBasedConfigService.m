@@ -54,6 +54,8 @@
 @property (nonatomic, strong) AlfrescoViewConfigHelper *viewConfigHelper;
 @property (nonatomic, strong) AlfrescoFormConfigHelper *formConfigHelper;
 
+@property (nonatomic, assign) BOOL isUsingCacheData;
+
 @end
 
 @implementation AlfrescoClientBasedConfigService
@@ -214,6 +216,8 @@
                                 // Only initiate the download if required
                                 if (![attributes.fileModificationDate isEqualToDate:configNode.modifiedAt])
                                 {
+                                    self.isUsingCacheData = NO;
+                                    
                                     NSString *temporaryFileConfigPath = [configDestinationFolderPath stringByAppendingPathComponent:kAlfrescoConfigServiceTemporaryFileName];
                                     NSOutputStream *outputStream = [NSOutputStream outputStreamToFileAtPath:temporaryFileConfigPath append:NO];
                                     
@@ -290,6 +294,7 @@
                                 }
                                 else
                                 {
+                                    self.isUsingCacheData = YES;
                                     // Process the file we have cached
                                     [self processJSONData:[NSData dataWithContentsOfFile:completeFileConfigPath] completionBlock:runAllCompletionBlocks];
                                 }
@@ -875,6 +880,11 @@
             completionBlock(NO, error);
         }
     }];
+}
+
+- (BOOL)isUsingCachedData
+{
+    return self.isUsingCacheData;
 }
 
 @end

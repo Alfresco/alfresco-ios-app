@@ -21,6 +21,7 @@
 #import "MainMenuLocalConfigurationBuilder.h"
 #import "MainMenuRemoteConfigurationBuilder.h"
 #import "UserAccount+FileHandling.h"
+#import "ConnectivityManager.h"
 
 @interface AccountConfiguration ()
 
@@ -46,16 +47,17 @@
                                          kAlfrescoConfigServiceParameterFileName: configurationFilePath.lastPathComponent};
             self.embeddedConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
             self.embeddedConfigService.shouldIgnoreRequests = YES;
+            self.configService = self.embeddedConfigService;
             
             if ([account serverConfigurationExists])
             {
                 NSDictionary *parameters = [self configServiceParametersForCurrentAccount];
-                self.localConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+                
+                if (self.localConfigService == nil)
+                {
+                    self.localConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+                }
                 self.configService = self.localConfigService;
-            }
-            else
-            {
-                self.configService = self.embeddedConfigService;
             }
         }];
     }
@@ -88,7 +90,11 @@
         if ([self.account serverConfigurationExists])
         {
             NSDictionary *parameters = [self configServiceParametersForCurrentAccount];
-            self.localConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+            
+            if (self.localConfigService == nil)
+            {
+                self.localConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
+            }
             self.configService = self.localConfigService;
         }
         else
@@ -110,18 +116,11 @@
     }
     else
     {
-        ConfigurationFileType configurationFileType = ConfigurationFileTypeEmbedded;
-        
-        if ([self.account serverConfigurationExists])
-        {
-            NSDictionary *parameters = [self configServiceParametersForCurrentAccount];
-            self.localConfigService = [[AlfrescoConfigService alloc] initWithDictionary:parameters];
-            configurationFileType = ConfigurationFileTypeLocal;
-        }
+        ConfigurationFileType configurationFileType = [self.account serverConfigurationExists] ? ConfigurationFileTypeLocal : ConfigurationFileTypeEmbedded;
         
         [self loadConfigurationFileType:configurationFileType completionBlock:^{
             [[AnalyticsManager sharedManager] checkAnalyticsFeature];
-            if (![self.session isKindOfClass:[AlfrescoCloudSession class]])
+            if (![self.session isKindOfClass:[AlfrescoCloudSession class]] && [ConnectivityManager sharedManager].hasInternetConnection)
             {
                 self.serverConfigService = [[AlfrescoConfigService alloc] initWithSession:self.session];
                 [self loadConfigurationFileType:ConfigurationFileTypeServer completionBlock:nil];
@@ -203,47 +202,47 @@
 
 - (void)loadConfigurationFileType:(ConfigurationFileType)configurationFileType completionBlock:(void (^)())completionBlock
 {
+    AlfrescoConfigService *service = [self configServiceForType:configurationFileType];
+    service.shouldIgnoreRequests = [ConfigurationFilesUtils configServiceShouldIgnoreRequestsForType:configurationFileType];
+    service.session = self.session;
+    
+    NSString *selectedProfileIdentifier = self.account.selectedProfileIdentifier;
+    
+    void (^loadServerOrLocalDefaultProfile)() = ^void(){
+        [service retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
+            if (error)
+            {
+                if (configurationFileType == ConfigurationFileTypeServer)
+                {
+                    // If the node is not found on the server, delete configuration.json from user's folder.
+                    [self.account deleteConfigurationFile];
+                }
+                
+                [ConfigurationFilesUtils logDefaultProfileError:error forConfigurationWithType:configurationFileType];
+                [self loadEmbeddedConfigurationWithCompletionBlock:completionBlock];
+            }
+            else
+            {
+                [self profileSuccessfullySelected:config isEmbeddedConfig:NO configService:service];
+            }
+            
+            if (completionBlock)
+            {
+                completionBlock();
+            }
+        }];
+    };
+    
     if (self.session)
     {
-        AlfrescoConfigService *service = [self configServiceForType:configurationFileType];
-        service.shouldIgnoreRequests = [ConfigurationFilesUtils configServiceShouldIgnoreRequestsForType:configurationFileType];
-        service.session = self.session;
-        
         if (configurationFileType == ConfigurationFileTypeServer)
         {
             NSDictionary *parameters = [self configServiceParametersForCurrentAccount];
             [service.session addParametersFromDictionary:parameters];
         }
         
-        void (^loadServerOrLocalDefaultProfile)() = ^void(){
-            [service retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
-                if (error)
-                {
-                    if (configurationFileType == ConfigurationFileTypeServer)
-                    {
-                        // If the node is not found on the server, delete configuration.json from user's folder.
-                        [self.account deleteConfigurationFile];
-                    }
-                    
-                    [ConfigurationFilesUtils logDefaultProfileError:error forConfigurationWithType:configurationFileType];
-                    [self loadEmbeddedConfigurationWithCompletionBlock:completionBlock];
-                }
-                else
-                {
-                    [self profileSuccessfullySelected:config isEmbeddedConfig:NO configService:service];
-                }
-                
-                if (completionBlock)
-                {
-                    completionBlock();
-                }
-            }];
-        };
-        
         if (configurationFileType == ConfigurationFileTypeLocal || configurationFileType == ConfigurationFileTypeServer)
         {
-            NSString *selectedProfileIdentifier = self.account.selectedProfileIdentifier;
-            
             if (selectedProfileIdentifier)
             {
                 [service retrieveProfileWithIdentifier:selectedProfileIdentifier completionBlock:^(AlfrescoProfileConfig *identifierProfile, NSError *identifierError) {
@@ -271,6 +270,36 @@
         else if (configurationFileType == ConfigurationFileTypeEmbedded)
         {
             [self loadEmbeddedConfigurationWithCompletionBlock:completionBlock];
+        }
+    }
+    else // no session, offline
+    {
+        if (selectedProfileIdentifier)
+        {
+            [service retrieveProfileWithIdentifier:selectedProfileIdentifier completionBlock:^(AlfrescoProfileConfig *identifierProfile, NSError *identifierError) {
+                if (identifierError || identifierProfile == nil)
+                {
+                    [ConfigurationFilesUtils logCustomProfile:selectedProfileIdentifier error:identifierError];
+                    
+                    if (configurationFileType == ConfigurationFileTypeLocal)
+                    {
+                        [self loadEmbeddedConfigurationWithCompletionBlock:completionBlock];
+                    }
+                }
+                else
+                {
+                    [self profileSuccessfullySelected:identifierProfile isEmbeddedConfig:NO configService:service];
+                    
+                    if (completionBlock)
+                    {
+                        completionBlock();
+                    }
+                }
+            }];
+        }
+        else
+        {
+            loadServerOrLocalDefaultProfile();
         }
     }
 }
