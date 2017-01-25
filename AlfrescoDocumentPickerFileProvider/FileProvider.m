@@ -226,18 +226,16 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             NSString *fullSourcePath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
             NSURL *sourceURL = [NSURL fileURLWithPath:fullSourcePath];
             
-            [self.fileCoordinator coordinateReadingItemAtURL:sourceURL options:NSFileCoordinatorReadingForUploading writingItemAtURL:url options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                NSError *copyError = nil;
-                NSFileManager *fileManager = [[NSFileManager alloc] init];
-                [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL error:&copyError];
-                
-                if (copyError)
-                {
-                    AlfrescoLogError(@"Unable to copy item from: %@, to: %@. Error: %@", newReadingURL, newWritingURL, copyError.localizedDescription);
-                }
-                
-                completionHandler(copyError);
-            }];
+            NSError *copyError = nil;
+            NSFileManager *fileManager = [[NSFileManager alloc] init];
+            [fileManager copyItemAtURL:sourceURL toURL:url error:&copyError];
+            
+            if (copyError)
+            {
+                AlfrescoLogError(@"Unable to copy item from: %@, to: %@. Error: %@", sourceURL, url, copyError.localizedDescription);
+            }
+            
+            completionHandler(copyError);
         }
     }
 }
