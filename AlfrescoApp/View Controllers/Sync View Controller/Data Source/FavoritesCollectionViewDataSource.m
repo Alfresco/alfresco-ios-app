@@ -20,21 +20,25 @@
 #import "RepositoryCollectionViewDataSource+Internal.h"
 #import "FavouriteManager.h"
 
+@interface FavoritesCollectionViewDataSource ()
+
+@property (nonatomic, strong) NSString *filter;
+
+@end
+
 @implementation FavoritesCollectionViewDataSource
 
-- (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)initWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
 {
-    self = [super initWithParentNode:node session:session delegate:delegate];
+    self = [super initWithParentNode:nil session:session delegate:delegate];
     if(!self)
     {
         return nil;
     }
-    self.shouldAllowMultiselect = NO;
     
-    if(!node)
-    {
-        self.screenTitle = NSLocalizedString(@"favourites.title", @"Favorites Title");
-    }
+    self.filter = filter ? filter : kAlfrescoConfigViewParameterFavoritesFiltersAll;
+    self.shouldAllowMultiselect = NO;
+    self.screenTitle = NSLocalizedString(@"favourites.title", @"Favorites Title");
     self.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
     
     [self registerForNotifications];
@@ -64,7 +68,8 @@
 - (void)reloadDataSourceIgnoringCache:(BOOL)ignoreCache
 {
     __weak typeof(self) weakSelf = self;
-    [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session ignoreCache:ignoreCache completionBlock:^(NSArray *array, NSError *error) {
+    
+    [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session filter:self.filter ignoreCache:ignoreCache completionBlock:^(NSArray *array, NSError *error) {
         if(array)
         {
             self.dataSourceCollection = [array mutableCopy];

@@ -141,8 +141,15 @@
     }];
 }
 
-- (void)topLevelFavoriteNodesWithSession:(id<AlfrescoSession>)session ignoreCache:(BOOL)ignoreCache completionBlock:(AlfrescoArrayCompletionBlock)completionBlock
+- (void)topLevelFavoriteNodesWithSession:(id<AlfrescoSession>)session filter:(NSString *)filter ignoreCache:(BOOL)ignoreCache completionBlock:(AlfrescoArrayCompletionBlock)completionBlock
 {
+    void (^retrieveCompletionBlock)(NSArray *, NSError *) = ^void(NSArray *array, NSError *error) {
+        if(completionBlock)
+        {
+            completionBlock(array, error);
+        }
+    };
+    
     if (!self.session)
     {
         self.session = session;
@@ -154,19 +161,18 @@
         [self.documentFolderService clear];
     }
     
-    [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:^(NSArray *array, NSError *error) {
-        if (array)
-        {
-            if(completionBlock)
-            {
-                completionBlock(array, error);
-            }
-        }
-        else if(completionBlock)
-        {
-            completionBlock(nil, error);
-        }
-    }];
+    if ([filter isEqualToString:kAlfrescoConfigViewParameterFavoritesFiltersFiles])
+    {
+        [self.documentFolderService retrieveFavoriteDocumentsWithCompletionBlock:retrieveCompletionBlock];
+    }
+    else if ([filter isEqualToString:kAlfrescoConfigViewParameterFavoritesFiltersFolders])
+    {
+        [self.documentFolderService retrieveFavoriteFoldersWithCompletionBlock:retrieveCompletionBlock];
+    }
+    else if ([filter isEqualToString:kAlfrescoConfigViewParameterFavoritesFiltersAll])
+    {
+        [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:retrieveCompletionBlock];
+    }
 }
 
 @end
