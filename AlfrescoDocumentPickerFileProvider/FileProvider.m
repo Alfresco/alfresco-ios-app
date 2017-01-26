@@ -122,6 +122,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     NSArray *accountArray = [accounts filteredArrayUsingPredicate:predicate];
     UserAccount *keychainAccount = accountArray.firstObject;
     UserAccountWrapper *account = [[UserAccountWrapper alloc] initWithUserAccount:keychainAccount];
+    account.selectedNetworkIdentifier = metadata.networkIdentifier;
     
     return account;
 }
@@ -129,7 +130,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 - (void)loginToAccount:(id<AKUserAccount>)account completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session, NSError *loginError))completionBlock
 {
     AKLoginService *loginService = [[AKLoginService alloc] init];
-    [loginService loginToAccount:account networkIdentifier:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
+    [loginService loginToAccount:account networkIdentifier:account.selectedNetworkIdentifier completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
         if (successful)
         {
             self.accountIdentifierToSessionMappings[account.identifier] = session;
