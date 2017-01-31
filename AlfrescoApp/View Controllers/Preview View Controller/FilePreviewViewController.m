@@ -171,18 +171,21 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
     {
         [self displayFileAtPath:[[DocumentPreviewManager sharedManager] filePathForDocument:self.document]];
     }
-    else if ([[DocumentPreviewManager sharedManager] isCurrentlyDownloadingDocument:self.document])
-    {
-        self.previewThumbnailImageView.alpha = 1.0f;
-        self.previewThumbnailImageView.hidden = NO;
-    }
     else
     {
         // Display a static placeholder image
         [self.previewThumbnailImageView setImage:largeImageForType(self.document.name.pathExtension) withFade:NO];
         
-        // Request the document download
-        self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
+        if ([[DocumentPreviewManager sharedManager] isCurrentlyDownloadingDocument:self.document])
+        {
+            self.previewThumbnailImageView.alpha = 1.0f;
+            self.previewThumbnailImageView.hidden = NO;
+        }
+        else
+        {
+            // Request the document download
+            self.downloadRequest = [[DocumentPreviewManager sharedManager] downloadDocument:self.document session:self.session];
+        }
     }
 }
 
