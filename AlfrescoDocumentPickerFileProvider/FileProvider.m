@@ -264,6 +264,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 // Coordinate the reading of the file for uploading
                 [self.fileCoordinator coordinateReadingItemAtURL:metadata.fileURL options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newURL) {
                     // define an upload block
+                    __block BOOL networkOperationCallbackComplete = NO;
                     void (^uploadBlock)(id<AlfrescoSession>session) = ^(id<AlfrescoSession>session) {
                         AlfrescoDocument *updateDocument = (AlfrescoDocument *)metadata.repositoryNode;
                         [self uploadDocument:updateDocument sourceURL:newURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
@@ -276,6 +277,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                                 AlfrescoLogInfo(@"Successfully updated document: %@, Modified At: %@, Created At: %@", document.name, document.modifiedAt, document.createdAt);
                                 metadata.repositoryNode = document;
                             }
+                            networkOperationCallbackComplete = YES;
                             metadata.status = FileMetadataStatusPendingUpload;
                             [self.queueStore saveQueue];
                         }];
@@ -289,8 +291,6 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[account.identifier];
                     if (!cachedSession)
                     {
-                        __block BOOL loginCallbackComplete = NO;
-                        
                         [self loginToAccount:account completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
                             if (successful)
                             {
@@ -300,12 +300,10 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                             {
                                 AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
                             }
-                            
-                            loginCallbackComplete = YES;
                         }];
                         
                         /*
-                         * Keep this object around long enough for the login attempt to complete.
+                         * Keep this object around long enough for the network operations to complete.
                          * Running as a background thread, seperate from the UI, so should not cause
                          * Any issues when blocking the thread.
                          */
@@ -313,7 +311,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                         {
                             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                         }
-                        while (loginCallbackComplete == NO);
+                        while (networkOperationCallbackComplete == NO);
                     }
                     else
                     {
