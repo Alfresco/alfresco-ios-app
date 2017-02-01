@@ -33,7 +33,6 @@ static CGFloat const kAnimationFadeSpeed = 0.5f;
 static CGFloat const kAnimationDelayTime = 1.0f;
 static CGFloat const kPlaceholderToProcessVerticalOffset = 30.0f;
 static CGFloat sDownloadProgressHeight;
-static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
 
 @interface FilePreviewViewController () <ALFPreviewControllerDelegate,
                                          QLPreviewControllerDataSource,
@@ -217,15 +216,17 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
     self.filePathForFileToLoad = filePath;
 
     ALFPreviewController *previewVC = [ALFPreviewController new];
-    previewVC.previewController.dataSource = self;
+    
+    if (self.filePathForFileToLoad)
+    {
+        previewVC.previewController.dataSource = self;
+    }
+    
     previewVC.gestureDelegate = self;
     previewVC.view.hidden = YES;
     previewVC.previewController.currentPreviewItemIndex = 1;
-
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(kAddPreviewControllerViewDelayTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        previewVC.view.frame = self.view.bounds;
-        [self.view addSubview:previewVC.view];
-    });
+    previewVC.view.frame = self.view.bounds;
+    [self.view addSubview:previewVC.view];
     
     self.previewController = previewVC;
     
@@ -520,7 +521,7 @@ static CGFloat const kAddPreviewControllerViewDelayTime = 0.1f;
 
 - (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller
 {
-    return 1;
+    return self.filePathForFileToLoad ? 1 : 0;
 }
 
 - (id<QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
