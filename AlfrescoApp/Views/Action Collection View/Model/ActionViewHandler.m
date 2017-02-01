@@ -31,7 +31,6 @@
 #import "RealmSyncManager.h"
 #import "CreateTaskViewController.h"
 #import "DocumentPreviewManager.h"
-#import "FilePreviewViewController.h"
 #import "TextFileViewController.h"
 #import "AccountManager.h"
 #import "SaveBackMetadata.h"
