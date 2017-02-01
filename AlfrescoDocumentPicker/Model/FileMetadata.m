@@ -9,6 +9,7 @@
 #import "FileMetadata.h"
 
 static NSString * const kFileMetadataAccountIdentifier = @"FileMetadataAccountIdentifier";
+static NSString * const kFileMetadataNetworkIdentifier = @"FileMetadataNetworkIdentifier";
 static NSString * const kFileMetadataRepositoryNodeIdentifier = @"FileMetadataRepositoryNodeIdentifier";
 static NSString * const kFileMetadataFileURLIdentifier = @"FileMetadataFileURLIdentifier";
 static NSString * const kFileMetadataLastAccessedIdentifier = @"FileMetadataLastAccessedIdentifier";
@@ -22,6 +23,7 @@ static NSString * const kFileMetadataModeIdentifier = @"FileMetadataModeIdentifi
 @implementation FileMetadata
 
 @synthesize accountIdentifier = _accountIdentifier;
+@synthesize networkIdentifier = _networkIdentifier;
 @synthesize repositoryNode = _repositoryNode;
 @synthesize fileURL = _fileURL;
 @synthesize lastAccessed = _lastAccessed;
@@ -29,12 +31,13 @@ static NSString * const kFileMetadataModeIdentifier = @"FileMetadataModeIdentifi
 @synthesize saveLocation = _saveLocation;
 @synthesize mode = _mode;
 
-- (instancetype)initWithAccountIdentififer:(NSString *)accountId repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSaveLocation)location mode:(UIDocumentPickerMode)mode
+- (instancetype)initWithAccountIdentififer:(NSString *)accountId networkIdentifier:(NSString *)networkIdentifier repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSaveLocation)location mode:(UIDocumentPickerMode)mode
 {
     self = [self init];
     if (self)
     {
         self.accountIdentifier = accountId;
+        self.networkIdentifier = networkIdentifier;
         self.repositoryNode = repoNode;
         self.fileURL = fileURL;
         self.lastAccessed = [NSDate date];
@@ -51,6 +54,12 @@ static NSString * const kFileMetadataModeIdentifier = @"FileMetadataModeIdentifi
 {
     [self updateAccessDate];
     return _accountIdentifier;
+}
+
+- (NSString *)networkIdentifier
+{
+    [self updateAccessDate];
+    return _networkIdentifier;
 }
 
 - (AlfrescoNode *)repositoryNode
@@ -89,6 +98,12 @@ static NSString * const kFileMetadataModeIdentifier = @"FileMetadataModeIdentifi
 {
     [self updateAccessDate];
     _accountIdentifier = accountIdentifier;
+}
+
+- (void)setNetworkIdentifier:(NSString *)networkIdentifier
+{
+    [self updateAccessDate];
+    _networkIdentifier = networkIdentifier;
 }
 
 - (void)setRepositoryNode:(AlfrescoNode *)repositoryNode
@@ -133,6 +148,7 @@ static NSString * const kFileMetadataModeIdentifier = @"FileMetadataModeIdentifi
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:self.accountIdentifier forKey:kFileMetadataAccountIdentifier];
+    [aCoder encodeObject:self.networkIdentifier forKey:kFileMetadataNetworkIdentifier];
     [aCoder encodeObject:self.repositoryNode forKey:kFileMetadataRepositoryNodeIdentifier];
     [aCoder encodeObject:self.fileURL forKey:kFileMetadataFileURLIdentifier];
     [aCoder encodeObject:self.lastAccessed forKey:kFileMetadataLastAccessedIdentifier];
@@ -147,6 +163,7 @@ static NSString * const kFileMetadataModeIdentifier = @"FileMetadataModeIdentifi
     if (self)
     {
         self.accountIdentifier = [aDecoder decodeObjectForKey:kFileMetadataAccountIdentifier];
+        self.networkIdentifier = [aDecoder decodeObjectForKey:kFileMetadataNetworkIdentifier];
         self.repositoryNode = [aDecoder decodeObjectForKey:kFileMetadataRepositoryNodeIdentifier];
         self.fileURL = [aDecoder decodeObjectForKey:kFileMetadataFileURLIdentifier];
         self.lastAccessed = [aDecoder decodeObjectForKey:kFileMetadataLastAccessedIdentifier];

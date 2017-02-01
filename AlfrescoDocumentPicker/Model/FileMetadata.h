@@ -25,6 +25,7 @@ typedef NS_ENUM(NSUInteger, FileMetadataSaveLocation)
 @interface FileMetadata : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *accountIdentifier;
+@property (nonatomic, strong) NSString *networkIdentifier;
 @property (nonatomic, strong) AlfrescoNode *repositoryNode;
 @property (nonatomic, strong) NSURL *fileURL;
 @property (nonatomic, strong) NSDate *lastAccessed;
@@ -32,6 +33,6 @@ typedef NS_ENUM(NSUInteger, FileMetadataSaveLocation)
 @property (nonatomic, assign) FileMetadataSaveLocation saveLocation;
 @property (nonatomic, assign) UIDocumentPickerMode mode;
 
-- (instancetype)initWithAccountIdentififer:(NSString *)accountId repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSaveLocation)location mode:(UIDocumentPickerMode)mode;
+- (instancetype)initWithAccountIdentififer:(NSString *)accountId networkIdentifier:(NSString *)networkIdentifier repositoryNode:(AlfrescoNode *)repoNode fileURL:(NSURL *)fileURL sourceLocation:(FileMetadataSaveLocation)location mode:(UIDocumentPickerMode)mode;
 
 @end

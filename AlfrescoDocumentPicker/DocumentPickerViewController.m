@@ -465,7 +465,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 void (^cacheAndDismissBlock)(FileMetadataSaveLocation saveLocation) = ^(FileMetadataSaveLocation location) {
                     NSArray *fileURLs = [self.queueStore.queue valueForKey:@"fileURL"];
                     
-                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:location mode:self.documentPickerMode];
+                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier networkIdentifier:self.account.selectedNetworkIdentifier repositoryNode:document fileURL:outURL sourceLocation:location mode:self.documentPickerMode];
                     
                     if (![fileURLs containsObject:outURL])
                     {
@@ -666,7 +666,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     }
                     else
                     {
-                        FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:document fileURL:outURL sourceLocation:FileMetadataSaveLocationRepository mode:self.documentPickerMode];
+                        FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier networkIdentifier:self.account.selectedNetworkIdentifier repositoryNode:document fileURL:outURL sourceLocation:FileMetadataSaveLocationRepository mode:self.documentPickerMode];
                         [self.queueStore addObjectToQueue:metadata];
                         [self.queueStore saveQueue];
                         
@@ -713,7 +713,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     [DocumentPickerViewController trackEventWithAction:eventActionKey
                                                                  label:[DocumentPickerViewController mimeTypeForFileExtension:downloadPath.absoluteString]];
                     
-                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:nil fileURL:completeDocumentStorageURL sourceLocation:FileMetadataSaveLocationLocalFiles mode:self.documentPickerMode];
+                    FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier networkIdentifier:self.account.selectedNetworkIdentifier repositoryNode:nil fileURL:completeDocumentStorageURL sourceLocation:FileMetadataSaveLocationLocalFiles mode:self.documentPickerMode];
                     [self.queueStore addObjectToQueue:metadata];
                     [self.queueStore saveQueue];
                     
@@ -808,7 +808,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         
         if (![fileURLs containsObject:outURL])
         {
-            FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier repositoryNode:nil fileURL:outURL sourceLocation:FileMetadataSaveLocationLocalFiles mode:self.documentPickerMode];
+            FileMetadata *metadata = [[FileMetadata alloc] initWithAccountIdentififer:self.account.identifier networkIdentifier:self.account.selectedNetworkIdentifier repositoryNode:nil fileURL:outURL sourceLocation:FileMetadataSaveLocationLocalFiles mode:self.documentPickerMode];
             [self.queueStore addObjectToQueue:metadata];
             [self.queueStore saveQueue];
         }
