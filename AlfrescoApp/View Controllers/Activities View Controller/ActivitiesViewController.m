@@ -162,8 +162,11 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
     // The last row index of the table data
     NSUInteger lastRowIndex = [[self.tableViewData lastObject] count] - 1;
     
+    // The last section index of the table data
+    NSInteger lastSectionIndex = tableView.numberOfSections - 1;
+    
     // If the last cell is about to be drawn, check if there are more activities
-    if (indexPath.row == lastRowIndex)
+    if (indexPath.row == lastRowIndex && indexPath.section == lastSectionIndex)
     {
         int totalTableViewItemsCount = 0;
         for (id section in self.tableViewData)
