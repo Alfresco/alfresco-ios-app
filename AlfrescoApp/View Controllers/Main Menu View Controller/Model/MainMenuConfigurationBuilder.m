@@ -410,9 +410,12 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         // Site membership
         UIViewController *membersViewController = nil;
         NSString *siteShortName = viewConfig.parameters[kAlfrescoConfigViewParameterSiteShortNameKey];
+
         if(siteShortName)
         {
-            membersViewController = [[SiteMembersViewController alloc] initWithSiteShortName:siteShortName session:self.session displayName:nil];
+            NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+            AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
+            membersViewController = [[SiteMembersViewController alloc] initWithSiteShortName:siteShortName listingContext:listingContext session:self.session displayName:nil];
         }
         else
         {

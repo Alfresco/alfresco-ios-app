@@ -39,7 +39,7 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
 
 @implementation SiteMembersViewController
 
-- (instancetype)initWithSiteShortName:(NSString *)siteShortName session:(id<AlfrescoSession>)session displayName:(NSString *)displayName
+- (instancetype)initWithSiteShortName:(NSString *)siteShortName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session displayName:(NSString *)displayName
 {
     self = [super initWithNibName:NSStringFromClass([self class]) andSession:session];
     
@@ -49,6 +49,11 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
         self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
         self.displayName = displayName;
         self.site = nil;
+        
+        if (listingContext)
+        {
+            self.defaultListingContext = listingContext;
+        }
     }
     
     return self;
@@ -143,7 +148,10 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tableViewData.count) intValue]];
+        int maxItems = self.defaultListingContext.maxItems;
+        int skipCount = self.defaultListingContext.skipCount + (int)self.tableViewData.count;
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:maxItems skipCount:skipCount];
+   
         if (self.moreItemsAvailable)
         {
             // show more items are loading ...
