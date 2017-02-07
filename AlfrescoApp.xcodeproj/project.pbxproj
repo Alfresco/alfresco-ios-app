@@ -110,6 +110,7 @@
 		23BE84D61CE9C3B200FA5BCB /* TouchIDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */; };
 		23BE84D71CE9C3B200FA5BCB /* TouchIDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */; };
 		23D2B9B91D4A553E00215431 /* BaseNodePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D2B9B81D4A553E00215431 /* BaseNodePickerViewController.m */; };
+		23DC9A4B1E48D3F000A33725 /* AlfrescoListingContext+InitWithDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 23DC9A4A1E48D3F000A33725 /* AlfrescoListingContext+InitWithDictionary.m */; };
 		23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
@@ -1038,6 +1039,8 @@
 		23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TouchIDManager.m; sourceTree = "<group>"; };
 		23D2B9B71D4A553E00215431 /* BaseNodePickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseNodePickerViewController.h; sourceTree = "<group>"; };
 		23D2B9B81D4A553E00215431 /* BaseNodePickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseNodePickerViewController.m; sourceTree = "<group>"; };
+		23DC9A491E48D3F000A33725 /* AlfrescoListingContext+InitWithDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoListingContext+InitWithDictionary.h"; sourceTree = "<group>"; };
+		23DC9A4A1E48D3F000A33725 /* AlfrescoListingContext+InitWithDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoListingContext+InitWithDictionary.m"; sourceTree = "<group>"; };
 		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
 		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
 		23FBC9FB1D3D11DD00E935B2 /* RealmSyncManager+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RealmSyncManager+Internal.h"; sourceTree = "<group>"; };
@@ -3835,6 +3838,8 @@
 				2BDC6FA41D660731003F9324 /* AlfrescoNode+Networking.m */,
 				2308BF941DD22828009C3D8B /* UserAccount+FileHandling.h */,
 				2308BF951DD22828009C3D8B /* UserAccount+FileHandling.m */,
+				23DC9A491E48D3F000A33725 /* AlfrescoListingContext+InitWithDictionary.h */,
+				23DC9A4A1E48D3F000A33725 /* AlfrescoListingContext+InitWithDictionary.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5102,6 +5107,7 @@
 				08244AAF192B99AE00228AD6 /* AccountSyncProgress.m in Sources */,
 				2B314C861B7B7D750031E965 /* UserAccountWrapper.m in Sources */,
 				739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */,
+				23DC9A4B1E48D3F000A33725 /* AlfrescoListingContext+InitWithDictionary.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				2BDC6FA51D660731003F9324 /* AlfrescoNode+Networking.m in Sources */,
 				0876A04218D99FF60035370A /* NodePicker.m in Sources */,

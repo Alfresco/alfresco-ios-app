@@ -304,6 +304,9 @@ NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityKey = @"priority
 NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeKey = @"assignee";
 NSString * const kAlfrescoConfigViewParameterFavoritesFiltersKey = @"filters";
 NSString * const kAlfrescoConfigViewParameterFavoritesFiltersModeKey = @"mode";
+NSString * const kAlfrescoConfigViewParameterPaginationKey = @"pagination";
+NSString * const kAlfrescoConfigViewParameterPaginationMaxItemsKey = @"maxItems";
+NSString * const kAlfrescoConfigViewParameterPaginationSkipCountKey = @"skipCount";
 // View Parameter Values
 NSString * const kAlfrescoConfigViewParameterMySitesValue = @"my";
 NSString * const kAlfrescoConfigViewParameterFavouriteSitesValue = @"favorites";

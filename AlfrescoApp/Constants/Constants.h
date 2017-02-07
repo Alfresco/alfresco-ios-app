@@ -344,6 +344,10 @@ extern NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityKey;
 extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeKey;
 extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersKey;
 extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersModeKey;
+extern NSString * const kAlfrescoConfigViewParameterPaginationKey;
+extern NSString * const kAlfrescoConfigViewParameterPaginationMaxItemsKey;
+extern NSString * const kAlfrescoConfigViewParameterPaginationSkipCountKey;
+
 // View Parameter Values
 extern NSString * const kAlfrescoConfigViewParameterMySitesValue;
 extern NSString * const kAlfrescoConfigViewParameterFavouriteSitesValue;

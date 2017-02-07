@@ -67,7 +67,7 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
     return self;
 }
 
-- (instancetype)initWithSiteShortName:(NSString *)siteShortName session:(id<AlfrescoSession>)session
+- (instancetype)initWithSiteShortName:(NSString *)siteShortName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [self initWithSession:session];
     if (self)
@@ -76,6 +76,11 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
         {
             self.controllerType = ActivitiesViewControllerTypeSite;
             self.siteShortName = siteShortName;
+        }
+        
+        if (listingContext)
+        {
+            self.defaultListingContext = listingContext;
         }
     }
     return self;
@@ -174,7 +179,10 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
             totalTableViewItemsCount += [section count];
         }
         
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:totalTableViewItemsCount];
+        int maxItems = self.defaultListingContext.maxItems;
+        int skipCount = self.defaultListingContext.skipCount + totalTableViewItemsCount;
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:maxItems skipCount:skipCount];
+        
         if (self.moreItemsAvailable)
         {
             // Show more items are loading ...

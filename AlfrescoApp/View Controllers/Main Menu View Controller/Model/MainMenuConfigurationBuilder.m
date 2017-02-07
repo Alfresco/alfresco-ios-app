@@ -35,7 +35,7 @@
 #import "SitesViewController.h"
 #import "SyncNavigationViewController.h"
 #import "SearchResultsTableViewController.h"
-
+#import "AlfrescoListingContext+InitWithDictionary.h"
 #import "RealmSyncViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
@@ -293,7 +293,10 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Activities
         NSString *siteShortName = viewConfig.parameters[kAlfrescoConfigViewParameterSiteShortNameKey];
-        ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSiteShortName:siteShortName session:self.session];
+        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
+        
+        ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSiteShortName:siteShortName listingContext:listingContext session:self.session];
         associatedObject = activityListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeRepository])
