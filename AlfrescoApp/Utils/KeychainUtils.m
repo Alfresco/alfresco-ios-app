@@ -117,8 +117,16 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
             NSArray *accountArray = [accountsList filteredArrayUsingPredicate:predicate];
             UserAccount *keychainAccount = accountArray.firstObject;
             NSUInteger index = [accountsList indexOfObject:keychainAccount];
-            [accountsList replaceObjectAtIndex:index withObject:account];
-            [self updateSavedAccounts:accountsList forListIdentifier:listIdentifier error:updateError];
+            if(index < accountsList.count)
+            {
+                [accountsList replaceObjectAtIndex:index withObject:account];
+                [self updateSavedAccounts:accountsList forListIdentifier:listIdentifier error:updateError];
+            }
+            else
+            {
+                *updateError = [NSError errorWithDomain:@"Account not found in Keychain" code:-1 userInfo:nil];
+                updateSucceeded = NO;
+            }
         }
         else
         {
