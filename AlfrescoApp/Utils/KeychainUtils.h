@@ -17,11 +17,13 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
+@class UserAccount;
 
 @interface KeychainUtils : NSObject
 
 + (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error;
 + (BOOL)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError;
++ (BOOL)updateSavedAccount:(UserAccount *)account forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError;
 + (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError;
 
 + (OSStatus)saveItem:(id)value forKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error;

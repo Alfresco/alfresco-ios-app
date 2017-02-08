@@ -18,6 +18,7 @@
  
 #import "KeychainUtils.h"
 #import "NSObject+DebugCheck.h"
+#import "UserAccount.h"
 
 @implementation KeychainUtils
 
@@ -99,6 +100,37 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
         *updateError = [NSError errorWithDomain:@"Nil account array" code:-1 userInfo:nil];
         updateSucceeded = NO;
     }
+    return updateSucceeded;
+}
+
++ (BOOL)updateSavedAccount:(UserAccount *)account forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError
+{
+    BOOL updateSucceeded = YES;
+    
+    if(account)
+    {
+        NSMutableArray *accountsList = [[self savedAccountsForListIdentifier:listIdentifier error:updateError] mutableCopy];
+        if(accountsList)
+        {
+            // Get the account
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountIdentifier == %@", account.accountIdentifier];
+            NSArray *accountArray = [accountsList filteredArrayUsingPredicate:predicate];
+            UserAccount *keychainAccount = accountArray.firstObject;
+            NSUInteger index = [accountsList indexOfObject:keychainAccount];
+            [accountsList replaceObjectAtIndex:index withObject:account];
+            [self updateSavedAccounts:accountsList forListIdentifier:listIdentifier error:updateError];
+        }
+        else
+        {
+            [self updateSavedAccounts:[NSArray arrayWithObject:account] forListIdentifier:listIdentifier error:updateError];
+        }
+    }
+    else if(updateError)
+    {
+        *updateError = [NSError errorWithDomain:@"Nil account" code:-1 userInfo:nil];
+        updateSucceeded = NO;
+    }
+    
     return updateSucceeded;
 }
 

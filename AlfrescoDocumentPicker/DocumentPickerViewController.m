@@ -351,6 +351,17 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     [loginService loginToAccount:account networkIdentifier:account.selectedNetworkIdentifier completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
                         if (successful)
                         {
+                            NSError *accountSavingError = nil;
+                            NSArray *accountList = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&accountSavingError];
+                            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountIdentifier == %@", account.identifier];
+                            NSArray *accountArray = [accountList filteredArrayUsingPredicate:predicate];
+                            UserAccount *keychainAccount = accountArray.firstObject;
+                            keychainAccount.oauthData = oauthData;
+                            [KeychainUtils updateSavedAccount:keychainAccount forListIdentifier:kAccountsListIdentifier error:&accountSavingError];
+                            if (accountSavingError)
+                            {
+                                AlfrescoLogError(@"Error accessing shared keychain. Error: %@", accountSavingError.localizedDescription);
+                            }
                             [self displayScopeViewControllerFromController:accountListViewController forAccount:account session:session completionBlock:^{
                                 // Remove the login controller from the nav stack
                                 NSMutableArray *navigationStack = self.embeddedNavigationController.viewControllers.mutableCopy;
