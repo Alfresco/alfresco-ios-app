@@ -21,6 +21,6 @@
 
 @interface FilteredTaskViewController : ParentListViewController
 
-- (instancetype)initWithFilter:(TaskViewFilter *)filter session:(id<AlfrescoSession>)session;
+- (id)initWithFilter:(TaskViewFilter *)filter listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 @end

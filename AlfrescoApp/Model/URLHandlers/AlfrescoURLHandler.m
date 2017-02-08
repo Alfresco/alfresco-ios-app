@@ -249,7 +249,7 @@ static NSString * const kParamTypePath = @"path";
                 if (filters.count > 0)
                 {
                     TaskViewFilter *taskFilter = [[TaskViewFilter alloc] initWithDictionary:filters];
-                    viewControllerToPresent = [[FilteredTaskViewController alloc] initWithFilter:taskFilter session:session];
+                    viewControllerToPresent = [[FilteredTaskViewController alloc] initWithFilter:taskFilter listingContext:nil session:session];
                     handled = YES;
                 }
             }

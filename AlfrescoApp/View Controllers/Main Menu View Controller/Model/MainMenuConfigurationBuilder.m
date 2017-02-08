@@ -35,7 +35,7 @@
 #import "SitesViewController.h"
 #import "SyncNavigationViewController.h"
 #import "SearchResultsTableViewController.h"
-#import "AlfrescoListingContext+InitWithDictionary.h"
+#import "AlfrescoListingContext+Dictionary.h"
 #import "RealmSyncViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
@@ -353,15 +353,18 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Tasks
         NSDictionary *taskFilters = viewConfig.parameters[kAlfrescoConfigViewParameterTaskFiltersKey];
+        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
+
         if (taskFilters.count > 0)
         {
             TaskViewFilter *filter = [[TaskViewFilter alloc] initWithDictionary:taskFilters];
-            FilteredTaskViewController *filteredTaskViewController = [[FilteredTaskViewController alloc] initWithFilter:filter session:self.session];
+            FilteredTaskViewController *filteredTaskViewController = [[FilteredTaskViewController alloc] initWithFilter:filter listingContext:listingContext session:self.session];
             associatedObject = filteredTaskViewController;
         }
         else
         {
-            TaskViewController *taskListViewController = [[TaskViewController alloc] initWithSession:self.session];
+            TaskViewController *taskListViewController = [[TaskViewController alloc] initWithSession:self.session listingContext:listingContext];
             associatedObject = taskListViewController;
         }
     }

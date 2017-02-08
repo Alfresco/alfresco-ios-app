@@ -18,7 +18,7 @@
 
 #import "AlfrescoListingContext.h"
 
-@interface AlfrescoListingContext (InitWithDictionary)
+@interface AlfrescoListingContext (Dictionary)
 
 + (AlfrescoListingContext *)listingContextFromDictionary:(NSDictionary *)dictionary;
 - (AlfrescoListingContext *)initWithDictionary:(NSDictionary *)dictionary;

@@ -16,9 +16,9 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AlfrescoListingContext+InitWithDictionary.h"
+#import "AlfrescoListingContext+Dictionary.h"
 
-@implementation AlfrescoListingContext (InitWithDictionary)
+@implementation AlfrescoListingContext (Dictionary)
 
 + (AlfrescoListingContext *)listingContextFromDictionary:(NSDictionary *)dictionary
 {

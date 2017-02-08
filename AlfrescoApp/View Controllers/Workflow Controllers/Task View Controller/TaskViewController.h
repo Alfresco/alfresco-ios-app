@@ -20,4 +20,6 @@
 
 @interface TaskViewController : ParentListViewController
 
+- (id)initWithSession:(id<AlfrescoSession>)session listingContext:(AlfrescoListingContext *)listingContext;
+
 @end
