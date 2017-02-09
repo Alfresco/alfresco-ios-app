@@ -35,7 +35,7 @@
 #import "SitesViewController.h"
 #import "SyncNavigationViewController.h"
 #import "SearchResultsTableViewController.h"
-
+#import "AlfrescoListingContext+Dictionary.h"
 #import "RealmSyncViewController.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
@@ -293,7 +293,10 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Activities
         NSString *siteShortName = viewConfig.parameters[kAlfrescoConfigViewParameterSiteShortNameKey];
-        ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSiteShortName:siteShortName session:self.session];
+        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
+        
+        ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSiteShortName:siteShortName listingContext:listingContext session:self.session];
         associatedObject = activityListViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeRepository])
@@ -350,15 +353,18 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Tasks
         NSDictionary *taskFilters = viewConfig.parameters[kAlfrescoConfigViewParameterTaskFiltersKey];
+        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
+
         if (taskFilters.count > 0)
         {
             TaskViewFilter *filter = [[TaskViewFilter alloc] initWithDictionary:taskFilters];
-            FilteredTaskViewController *filteredTaskViewController = [[FilteredTaskViewController alloc] initWithFilter:filter session:self.session];
+            FilteredTaskViewController *filteredTaskViewController = [[FilteredTaskViewController alloc] initWithFilter:filter listingContext:listingContext session:self.session];
             associatedObject = filteredTaskViewController;
         }
         else
         {
-            TaskViewController *taskListViewController = [[TaskViewController alloc] initWithSession:self.session];
+            TaskViewController *taskListViewController = [[TaskViewController alloc] initWithSession:self.session listingContext:listingContext];
             associatedObject = taskListViewController;
         }
     }
@@ -407,9 +413,12 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         // Site membership
         UIViewController *membersViewController = nil;
         NSString *siteShortName = viewConfig.parameters[kAlfrescoConfigViewParameterSiteShortNameKey];
+
         if(siteShortName)
         {
-            membersViewController = [[SiteMembersViewController alloc] initWithSiteShortName:siteShortName session:self.session displayName:nil];
+            NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+            AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
+            membersViewController = [[SiteMembersViewController alloc] initWithSiteShortName:siteShortName listingContext:listingContext session:self.session displayName:nil];
         }
         else
         {

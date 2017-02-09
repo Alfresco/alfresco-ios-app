@@ -595,7 +595,7 @@
     NSIndexPath *selectedSiteIndexPath = [self.tableView indexPathForCell:siteCell];
     AlfrescoSite *selectedSite = [self.tableViewData objectAtIndex:selectedSiteIndexPath.row];
     
-    SiteMembersViewController *membersVC = [[SiteMembersViewController alloc] initWithSiteShortName:selectedSite.shortName session:self.session displayName:selectedSite.title];
+    SiteMembersViewController *membersVC = [[SiteMembersViewController alloc] initWithSiteShortName:selectedSite.shortName listingContext:nil session:self.session displayName:selectedSite.title];
     [self.pushHandler.navigationController pushViewController:membersVC animated:YES];
 }
 

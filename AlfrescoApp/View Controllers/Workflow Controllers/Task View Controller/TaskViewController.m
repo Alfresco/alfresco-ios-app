@@ -58,6 +58,11 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 
 - (id)initWithSession:(id<AlfrescoSession>)session
 {
+    return [self initWithSession:session listingContext:nil];
+}
+
+- (id)initWithSession:(id<AlfrescoSession>)session listingContext:(AlfrescoListingContext *)listingContext
+{
     self = [super initWithNibName:NSStringFromClass(self.class) andSession:session];
     if (self)
     {
@@ -66,6 +71,11 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         [self.dateFormatter setDateFormat:kDateFormat];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskListDidChange:) name:kAlfrescoWorkflowTaskListDidChangeNotification object:nil];
         [self createWorkflowServicesWithSession:session];
+        
+        if (listingContext)
+        {
+            self.defaultListingContext = listingContext;
+        }
     }
     return self;
 }
@@ -246,8 +256,6 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
 
 - (void)loadDataWithListingContext:(AlfrescoListingContext *)listingContext forceRefresh:(BOOL)forceRefresh completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
 {
-//    [[AnalyticsManager sharedManager] trackScreenWithName:self.isDisplayingMyTasks ? kAnalyticsViewTaskListingTasksAssignedToMe : kAnalyticsViewTaskListingTasksIVeStarted];
-    
     TaskGroupItem *groupToSwitchTo = [self taskGroupItem];
     self.title = groupToSwitchTo.title;
     
@@ -354,14 +362,15 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         {
             [self.myTasks clearAllTasks];
             [self.myTasks addAndApplyFilteringToTasks:pagingResult.objects];
-            self.myTasks.hasMoreItems = pagingResult.hasMoreItems;
+            //There're some cases in older versions of Alfresco when the server sends an incorrect hasMoreItems value. In order to prevent an infinite loop of fetching new pages, we test if the current pagingResults contains any objects. See https://issues.alfresco.com/jira/browse/MNT-13567
+            self.myTasks.hasMoreItems = pagingResult.hasMoreItems && pagingResult.objects.count;
             self.tableViewData = [self.myTasks.tasksAfterFiltering mutableCopy];
         }
         else
         {
             [self.tasksIStarted clearAllTasks];
             [self.tasksIStarted addAndApplyFilteringToTasks:pagingResult.objects];
-            self.tasksIStarted.hasMoreItems = pagingResult.hasMoreItems;
+            self.tasksIStarted.hasMoreItems = pagingResult.hasMoreItems && pagingResult.objects.count;
             self.tableViewData = [self.tasksIStarted.tasksAfterFiltering mutableCopy];
         }
         
@@ -375,7 +384,7 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     {
         TaskGroupItem *currentGroupedItem = [self taskGroupItem];
         [currentGroupedItem addAndApplyFilteringToTasks:pagingResult.objects];
-        currentGroupedItem.hasMoreItems = pagingResult.hasMoreItems;
+        currentGroupedItem.hasMoreItems = pagingResult.hasMoreItems && pagingResult.objects.count;
         self.tableViewData = [currentGroupedItem.tasksAfterFiltering mutableCopy];
         [self.tableView reloadData];
     }
@@ -438,13 +447,16 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(currentTaskGroup.numberOfTasksBeforeFiltering) intValue]];
         if ([currentTaskGroup hasMoreItems])
         {
             // show more items are loading ...
             UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
             [spinner startAnimating];
             self.tableView.tableFooterView = spinner;
+            
+            int maxItems = self.defaultListingContext.maxItems;
+            int skipCount = self.defaultListingContext.skipCount + (int)[currentTaskGroup numberOfTasksBeforeFiltering];
+            AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:maxItems skipCount:skipCount];
 
             [self loadDataWithListingContext:moreListingContext forceRefresh:NO completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                 [self addMoreToTableViewWithPagingResult:pagingResult error:error];
