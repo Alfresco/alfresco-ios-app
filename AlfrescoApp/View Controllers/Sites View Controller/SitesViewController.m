@@ -46,7 +46,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 
 @implementation SitesViewController
 
-- (id)initWithSession:(id<AlfrescoSession>)session
+- (instancetype)initWithSession:(id<AlfrescoSession>)session
 {
     self = [super init];
     if (self)
@@ -55,6 +55,18 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
         self.title = NSLocalizedString(@"sites.title", @"Sites Title");
         self.activeAccountOnPremise = [AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeOnPremise;
     }
+    return self;
+}
+
+- (instancetype)initWithSession:(id<AlfrescoSession>)session listingContext:(AlfrescoListingContext *)listingContext
+{
+    self = [self initWithSession:session];
+    
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
+    
     return self;
 }
 
@@ -70,6 +82,18 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
             self.title = title;
         }
     }
+    return self;
+}
+
+- (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session listingContext:(AlfrescoListingContext *)listingContext
+{
+    self = [self initWithSitesListFilter:filter title:title session:session];
+    
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
+    
     return self;
 }
 
@@ -128,13 +152,13 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 {
     [super viewDidLoad];
     
-    self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self];
+    self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self listingContext:self.defaultListingContext];
     self.favoritesVC.view.frame = self.favoritesContainerView.bounds;
     [self.favoritesContainerView addSubview:self.favoritesVC.view];
     [self addChildViewController:self.favoritesVC];
     [self.favoritesVC didMoveToParentViewController:self];
     
-    self.mySitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionMySites session:self.session pushHandler:self];
+    self.mySitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionMySites session:self.session pushHandler:self listingContext:self.defaultListingContext];
     self.mySitesVC.view.frame = self.mySitesContainerView.bounds;
     [self.mySitesContainerView addSubview:self.mySitesVC.view];
     [self addChildViewController:self.mySitesVC];
@@ -156,7 +180,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     }
     else
     {
-        self.allSitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self];
+        self.allSitesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionAllSites session:self.session pushHandler:self listingContext:self.defaultListingContext];
         self.allSitesVC.view.frame = self.siteFinderContainerView.bounds;
         [self.siteFinderContainerView addSubview:self.allSitesVC.view];
         [self addChildViewController:self.allSitesVC];

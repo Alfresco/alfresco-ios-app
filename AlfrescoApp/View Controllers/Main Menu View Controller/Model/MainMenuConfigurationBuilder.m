@@ -496,6 +496,8 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Sites
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
         SitesViewController *sitesListViewController = nil;
         
         if ([parameterKeys containsObject:kAlfrescoConfigViewParameterShowKey])
@@ -519,11 +521,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                 filter = SitesListViewFilterNoFilter;
             }
             
-            sitesListViewController = [[SitesViewController alloc] initWithSitesListFilter:filter title:viewConfig.label session:self.session];
+            sitesListViewController = [[SitesViewController alloc] initWithSitesListFilter:filter title:viewConfig.label session:self.session listingContext:listingContext];
         }
         else
         {
-            sitesListViewController = [[SitesViewController alloc] initWithSession:self.session];
+            sitesListViewController = [[SitesViewController alloc] initWithSession:self.session listingContext:listingContext];
         }
         
         associatedObject = sitesListViewController;

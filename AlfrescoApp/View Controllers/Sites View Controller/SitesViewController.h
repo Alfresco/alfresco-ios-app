@@ -21,7 +21,8 @@
 @interface SitesViewController : UIViewController
 
 - (instancetype)initWithSession:(id<AlfrescoSession>)session;
-
+- (instancetype)initWithSession:(id<AlfrescoSession>)session listingContext:(AlfrescoListingContext *)listingContext;
 - (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session;
+- (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session listingContext:(AlfrescoListingContext *)listingContext;
 
 @end

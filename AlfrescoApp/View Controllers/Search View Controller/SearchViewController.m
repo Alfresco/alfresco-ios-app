@@ -118,7 +118,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         {
             case SearchViewControllerDataSourceTypeSearchSites:
             {
-                resultsController = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionSearch session:self.session pushHandler:self.sitesPushHandler];
+                resultsController = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionSearch session:self.session pushHandler:self.sitesPushHandler listingContext:nil];
                 break;
             }
             default:
@@ -351,7 +351,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         {
             NSArray *array = (NSArray *)[self.dataSource.dataSourceArrays objectAtIndex:indexPath.section];
             NSString *selectedString = [array objectAtIndex:indexPath.row];
-            SitesTableListViewController *resultsController = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionSearch session:self.session pushHandler:self.sitesPushHandler];
+            SitesTableListViewController *resultsController = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionSearch session:self.session pushHandler:self.sitesPushHandler listingContext:nil];
             [self.searchService searchSiteWithName:selectedString showOnController:resultsController];
             resultsController.title = selectedString;
             [self.sitesPushHandler.navigationController pushViewController:resultsController animated:YES];

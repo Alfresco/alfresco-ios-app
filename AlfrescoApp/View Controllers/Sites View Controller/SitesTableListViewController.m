@@ -39,7 +39,7 @@
 
 @implementation SitesTableListViewController
 
-- (instancetype)initWithType:(SiteListTypeSelection)listType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController
+- (instancetype)initWithType:(SiteListTypeSelection)listType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController listingContext:(AlfrescoListingContext *)listingContext
 {
     self = [super initWithSession:session];
     
@@ -47,6 +47,12 @@
     {
         self.listType = listType;
         self.pushHandler = viewController;
+        
+        if (listingContext)
+        {
+            self.defaultListingContext = listingContext;
+        }
+        
         [self createAlfrescoServicesWithSession:session];
     }
     
@@ -131,7 +137,9 @@
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tableViewData.count) intValue]];
+        int maxItems = self.defaultListingContext.maxItems;
+        int skipCount = self.defaultListingContext.skipCount + (int)self.tableViewData.count;
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:maxItems skipCount:skipCount];
         if (self.moreItemsAvailable)
         {
             // show more items are loading ...
