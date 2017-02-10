@@ -28,7 +28,7 @@
 
 @implementation SitesCollectionViewDataSource
 
-- (instancetype)initWithSiteShortname:(NSString *)siteShortName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)initWithSiteShortname:(NSString *)siteShortName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext
 {
     self = [super init];
     if(!self)
@@ -40,6 +40,11 @@
     self.delegate = delegate;
     self.siteShortName = siteShortName;
     self.session = session;
+    
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
     
     [self reloadDataSource];
     

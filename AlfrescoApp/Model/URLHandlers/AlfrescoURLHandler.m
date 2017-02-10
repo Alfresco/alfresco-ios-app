@@ -181,7 +181,7 @@ static NSString * const kParamTypePath = @"path";
             if (paramValueId.length > 0)
             {
                 NSString *nodeRef = [NSString stringWithFormat:@"workspace://SpacesStore/%@", paramValueId];
-                viewControllerToPresent = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:nil session:session];
+                viewControllerToPresent = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:nil listingContext:nil session:session];
                 handled = YES;
             }
         }
@@ -193,7 +193,7 @@ static NSString * const kParamTypePath = @"path";
         {
             if (paramValueId.length > 0)
             {
-                viewControllerToPresent = [[FileFolderCollectionViewController alloc] initWithSiteShortname:paramValueId sitePermissions:nil siteDisplayName:nil session:session];
+                viewControllerToPresent = [[FileFolderCollectionViewController alloc] initWithSiteShortname:paramValueId sitePermissions:nil siteDisplayName:nil listingContext:nil session:session];
                 handled = YES;
             }
         }

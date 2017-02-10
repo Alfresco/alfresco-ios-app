@@ -89,12 +89,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (self)
     {
         self.controllerType = FileFolderCollectionViewControllerTypeFolderNode;
-        self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:folder folderDisplayName:displayName folderPermissions:permissions session:session delegate:self];
+        self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:folder folderDisplayName:displayName folderPermissions:permissions session:session delegate:self listingContext:nil];
     }
     return self;
 }
 
-- (instancetype)initWithSiteShortname:(NSString *)siteShortName sitePermissions:(AlfrescoPermissions *)permissions siteDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
+- (instancetype)initWithSiteShortname:(NSString *)siteShortName sitePermissions:(AlfrescoPermissions *)permissions siteDisplayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
@@ -102,13 +102,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if (siteShortName)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeSiteShortName;
-            self.dataSource = [[SitesCollectionViewDataSource alloc] initWithSiteShortname:siteShortName session:session delegate:self];
+            self.dataSource = [[SitesCollectionViewDataSource alloc] initWithSiteShortname:siteShortName session:session delegate:self listingContext:listingContext];
         }
     }
     return self;
 }
 
-- (instancetype)initWithFolderPath:(NSString *)folderPath folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
+- (instancetype)initWithFolderPath:(NSString *)folderPath folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
@@ -116,13 +116,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if (folderPath)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeFolderPath;
-            self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolderPath:folderPath folderDisplayName:displayName folderPermissions:permissions session:session delegate:self];
+            self.dataSource = [[FolderCollectionViewDataSource alloc] initWithFolderPath:folderPath folderDisplayName:displayName folderPermissions:permissions session:session delegate:self listingContext:listingContext];
         }
     }
     return self;
 }
 
-- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
+- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName listingContext:listingContext session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
@@ -130,7 +130,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if (nodeRef)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeNodeRef;
-            [NodeCollectionViewDataSource collectionViewDataSourceWithNodeRef:nodeRef session:session delegate:self];
+            [NodeCollectionViewDataSource collectionViewDataSourceWithNodeRef:nodeRef session:session delegate:self listingContext:listingContext];
         }
     }
     return self;
@@ -144,7 +144,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if (nodeRef)
         {
             self.controllerType = FileFolderCollectionViewControllerTypeNodeRef;
-            [NodeCollectionViewDataSource collectionViewDataSourceWithNodeRef:nodeRef session:session delegate:self];
+            [NodeCollectionViewDataSource collectionViewDataSourceWithNodeRef:nodeRef session:session delegate:self listingContext:nil];
             self.shouldAutoSelectFirstItem = YES;
         }
     }
@@ -180,7 +180,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session
+- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
@@ -196,7 +196,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
         
         self.controllerType = FileFolderCollectionViewControllerTypeCustomFolderType;
-        self.dataSource = [[FolderCollectionViewDataSource alloc] initWithCustomFolderType:folderType folderDisplayName:displayName session:self.session delegate:self];
+        self.dataSource = [[FolderCollectionViewDataSource alloc] initWithCustomFolderType:folderType folderDisplayName:displayName session:self.session delegate:self listingContext:listingContext];
     }
     
     return self;

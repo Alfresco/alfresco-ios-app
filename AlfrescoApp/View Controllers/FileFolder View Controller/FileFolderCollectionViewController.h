@@ -53,9 +53,10 @@
  @param siteShortName - the site short name to which the document library folder should be shown. Providing nil will result in Company Home being displayed.
  @param permissions - the permissions of the site
  @param displayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param listingContext - the listing context with a paging definition that's used to retrieve the content of the site.
  @param session - an active session
  */
-- (instancetype)initWithSiteShortname:(NSString *)siteShortName sitePermissions:(AlfrescoPermissions *)permissions siteDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+- (instancetype)initWithSiteShortname:(NSString *)siteShortName sitePermissions:(AlfrescoPermissions *)permissions siteDisplayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 /**
  Use the folder path initialiser to display the contents of a folder node at a given path. Failure to provide a folder path will result in a company home controller.
@@ -63,9 +64,10 @@
  @param folderPath - the folder path for which the contents should be shown. Providing nil will result in Company Home being displayed.
  @param permissions - the folder's permissions
  @param displayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param listingContext - the listing context with a paging definition that's used to retrieve the children.
  @param session - an active session
  */
-- (instancetype)initWithFolderPath:(NSString *)folderPath folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+- (instancetype)initWithFolderPath:(NSString *)folderPath folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 /**
  Use the folder node ref initialiser to display the contents of a the folder associated to the nodeRef. Failure to provide a folder path will result in a company home controller.
@@ -73,9 +75,10 @@
  @param nodeRef - the folder's node ref for which the contents should be shown. Providing nil will result in Company Home being displayed.
  @param permissions - the folder's permissions
  @param folderDisplayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param listingContext - the listing context with a paging definition that's used to retrieve the children.
  @param session - an active session
  */
-- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName listingContext:listingContext session:(id<AlfrescoSession>)session;
 
 /**
  Use the document path initialiser to display the contents of the file. Failure to provide a document path will result in a company home controller.
@@ -106,9 +109,10 @@
  
  @param (CustomFolderServiceFolderType)folderType - the custom folder type to display
  @param folderDisplayName - the name that will be visible to the user when at the root of the navigation stack.
+ @param listingContext - the listing context with a paging definition that's used to retrieve the children.
  @param session - an active session
  */
-- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 /**
  Use when needing to display the list of top level favorite nodes

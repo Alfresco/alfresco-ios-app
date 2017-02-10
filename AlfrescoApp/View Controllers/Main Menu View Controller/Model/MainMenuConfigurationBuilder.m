@@ -303,17 +303,20 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // File Folder
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
+
         FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
         
         if ([parameterKeys containsObject:kAlfrescoConfigViewParameterSiteShortNameKey])
         {
             NSString *siteShortName = viewConfig.parameters[kAlfrescoConfigViewParameterSiteShortNameKey];
-            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSiteShortname:siteShortName sitePermissions:nil siteDisplayName:viewConfig.label session:self.session];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSiteShortname:siteShortName sitePermissions:nil siteDisplayName:viewConfig.label listingContext:listingContext session:self.session];
         }
         else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterPathKey])
         {
             NSString *folderPath = viewConfig.parameters[kAlfrescoConfigViewParameterPathKey];
-            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolderPath:folderPath folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithFolderPath:folderPath folderPermissions:nil folderDisplayName:viewConfig.label listingContext:listingContext session:self.session];
         }
         else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterFolderTypeKey])
         {
@@ -323,18 +326,18 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             if ([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeMyFiles])
             {
                 displayName = displayName ?: NSLocalizedString(@"myFiles.title", @"My Files");
-                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:displayName session:self.session];
+                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:displayName listingContext:listingContext session:self.session];
             }
             else if ([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeShared])
             {
                 displayName = displayName ?: NSLocalizedString(@"sharedFiles.title", @"Shared Files");
-                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeSharedFiles folderDisplayName:displayName session:self.session];
+                fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeSharedFiles folderDisplayName:displayName listingContext:listingContext session:self.session];
             }
         }
         else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterNodeRefKey])
         {
             NSString *nodeRef = viewConfig.parameters[kAlfrescoConfigViewParameterNodeRefKey];
-            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:viewConfig.label listingContext:listingContext session:self.session];
         }
         else
         {
@@ -373,7 +376,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         // Favorites
         NSString *filter = nil;
         NSDictionary *favoritesFilters = viewConfig.parameters[kAlfrescoConfigViewParameterFavoritesFiltersKey];
-        
         if (favoritesFilters)
         {
             filter = favoritesFilters[kAlfrescoConfigViewParameterFavoritesFiltersModeKey];
@@ -439,7 +441,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         if ([parameterKeys containsObject:kAlfrescoConfigViewParameterNodeRefKey])
         {
             NSString *nodeRef = viewConfig.parameters[kAlfrescoConfigViewParameterNodeRefKey];
-            galleryViewController = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:viewConfig.label session:self.session];
+            galleryViewController = [[FileFolderCollectionViewController alloc] initWithNodeRef:nodeRef folderPermissions:nil folderDisplayName:viewConfig.label listingContext:nil session:self.session];
             galleryViewController.style = CollectionViewStyleGrid;
         }
         

@@ -20,6 +20,6 @@
 
 @interface SitesCollectionViewDataSource : RepositoryCollectionViewDataSource
 
-- (instancetype)initWithSiteShortname:(NSString *)siteShortName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
+- (instancetype)initWithSiteShortname:(NSString *)siteShortName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext;
 
 @end
