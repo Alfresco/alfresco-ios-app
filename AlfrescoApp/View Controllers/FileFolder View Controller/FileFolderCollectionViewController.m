@@ -122,7 +122,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName listingContext:listingContext session:(id<AlfrescoSession>)session
+- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)

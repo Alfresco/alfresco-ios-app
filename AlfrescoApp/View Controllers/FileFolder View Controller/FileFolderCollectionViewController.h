@@ -78,7 +78,7 @@
  @param listingContext - the listing context with a paging definition that's used to retrieve the children.
  @param session - an active session
  */
-- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName listingContext:listingContext session:(id<AlfrescoSession>)session;
+- (instancetype)initWithNodeRef:(NSString *)nodeRef folderPermissions:(AlfrescoPermissions *)permissions folderDisplayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 /**
  Use the document path initialiser to display the contents of the file. Failure to provide a document path will result in a company home controller.
