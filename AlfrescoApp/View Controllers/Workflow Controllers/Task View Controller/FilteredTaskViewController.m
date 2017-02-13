@@ -54,12 +54,17 @@ static NSString * const kTaskCellIdentifier = @"FilteredTaskCell";
 
 @implementation FilteredTaskViewController
 
-- (id)initWithFilter:(TaskViewFilter *)filter session:(id<AlfrescoSession>)session
+- (id)initWithFilter:(TaskViewFilter *)filter listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [self initWithSession:session];
     if (self)
     {
         self.activeTaskFilter = filter;
+        
+        if (listingContext)
+        {
+            self.defaultListingContext = listingContext;
+        }
     }
     return self;
 }
@@ -210,11 +215,7 @@ static NSString * const kTaskCellIdentifier = @"FilteredTaskCell";
     if (pagingResult)
     {
         [self.tasksGroupItem clearAllTasks];
-        [self.tasksGroupItem addAndApplyFilteringToTasks:pagingResult.objects];
-        self.tasksGroupItem.hasMoreItems = pagingResult.hasMoreItems;
-        self.tableViewData = [self.tasksGroupItem.tasksAfterFiltering mutableCopy];
-        
-        [self.tableView reloadData];
+        [self addMoreToTableViewWithPagingResult:pagingResult error:error];
     }
 }
 
@@ -223,7 +224,9 @@ static NSString * const kTaskCellIdentifier = @"FilteredTaskCell";
     if (pagingResult)
     {
         [self.tasksGroupItem addAndApplyFilteringToTasks:pagingResult.objects];
-        self.tasksGroupItem.hasMoreItems = pagingResult.hasMoreItems;
+        
+        //There're some cases in older versions of Alfresco when the server sends an incorrect hasMoreItems value. In order to prevent an infinite loop of fetching new pages, we test if the current pagingResults contains any objects. See https://issues.alfresco.com/jira/browse/MNT-13567
+        self.tasksGroupItem.hasMoreItems = pagingResult.hasMoreItems && pagingResult.objects.count;
         self.tableViewData = [self.tasksGroupItem.tasksAfterFiltering mutableCopy];
         
         [self.tableView reloadData];
@@ -257,7 +260,9 @@ static NSString * const kTaskCellIdentifier = @"FilteredTaskCell";
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.row == lastRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.tasksGroupItem.numberOfTasksBeforeFiltering) intValue]];
+        int maxItems = self.defaultListingContext.maxItems;
+        int skipCount = self.defaultListingContext.skipCount + (int)[self.tasksGroupItem numberOfTasksBeforeFiltering];
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:maxItems skipCount:skipCount];
         moreListingContext.listingFilter = self.activeTaskFilter.listingFilter;
         
         if ([self.tasksGroupItem hasMoreItems])

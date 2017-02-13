@@ -20,7 +20,7 @@
 
 @interface SitesTableListViewController : ParentListViewController
 
-- (instancetype)initWithType:(SiteListTypeSelection)sitesType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController;
+- (instancetype)initWithType:(SiteListTypeSelection)listType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController listingContext:(AlfrescoListingContext *)listingContext;
 
 - (void)reloadTableViewWithSearchResults:(NSMutableArray *)searchResults;
 

@@ -21,9 +21,9 @@
 @interface ActivitiesViewController : ParentListViewController
 
 /*
- * Use this initialier to create an acitivity stream controller for a specific site. If the site short name is nil
- * a repository wide activity stream controller will be returned.
+ * Use this initialier to create an acitivity stream controller for a specific site.
+ * If the site short name is nil a repository wide activity stream controller will be returned.
  */
-- (instancetype)initWithSiteShortName:(NSString *)siteShortName session:(id<AlfrescoSession>)session;
+- (instancetype)initWithSiteShortName:(NSString *)siteShortName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 @end

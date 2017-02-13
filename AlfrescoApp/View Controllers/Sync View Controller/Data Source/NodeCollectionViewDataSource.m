@@ -22,7 +22,7 @@
 
 @implementation NodeCollectionViewDataSource
 
-+ (void)collectionViewDataSourceWithNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
++ (void)collectionViewDataSourceWithNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext
 {
     AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
     
@@ -35,7 +35,7 @@
         {
             if ([nodeRefNode isKindOfClass:[AlfrescoFolder class]])
             {
-                FolderCollectionViewDataSource *folderDataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:(AlfrescoFolder *)nodeRefNode folderDisplayName:nil folderPermissions:nil session:session delegate:delegate];
+                FolderCollectionViewDataSource *folderDataSource = [[FolderCollectionViewDataSource alloc] initWithFolder:(AlfrescoFolder *)nodeRefNode folderDisplayName:nil folderPermissions:nil session:session delegate:delegate listingContext:listingContext];
                 [delegate setNodeDataSource:folderDataSource];
             }
             else if([nodeRefNode isKindOfClass:[AlfrescoDocument class]])

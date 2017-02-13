@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,13 +16,9 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
+@interface AlfrescoListingContext (Dictionary)
 
-@interface SitesViewController : UIViewController
-
-- (instancetype)initWithSession:(id<AlfrescoSession>)session;
-- (instancetype)initWithSession:(id<AlfrescoSession>)session listingContext:(AlfrescoListingContext *)listingContext;
-- (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session;
-- (instancetype)initWithSitesListFilter:(SitesListViewFilter)filter title:(NSString *)title session:(id<AlfrescoSession>)session listingContext:(AlfrescoListingContext *)listingContext;
++ (AlfrescoListingContext *)listingContextFromDictionary:(NSDictionary *)dictionary;
+- (AlfrescoListingContext *)initWithDictionary:(NSDictionary *)dictionary;
 
 @end

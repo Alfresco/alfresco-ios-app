@@ -20,7 +20,7 @@
 
 @interface SiteMembersViewController : ParentListViewController
 
-- (instancetype)initWithSiteShortName:(NSString *)siteShortName session:(id<AlfrescoSession>)session displayName:(NSString *)displayName;
+- (instancetype)initWithSiteShortName:(NSString *)siteShortName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session displayName:(NSString *)displayName;
 - (instancetype)initWithSite:(AlfrescoSite *)site session:(id<AlfrescoSession>)session;
 - (instancetype)initWithUsername:(NSString *)username session:(id<AlfrescoSession>)session;
 
