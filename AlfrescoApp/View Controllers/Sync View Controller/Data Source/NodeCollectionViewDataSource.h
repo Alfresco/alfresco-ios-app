@@ -20,6 +20,6 @@
 
 @interface NodeCollectionViewDataSource : RepositoryCollectionViewDataSource
 
-+ (void)collectionViewDataSourceWithNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
++ (void)collectionViewDataSourceWithNodeRef:(NSString *)nodeRef session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext;
 
 @end

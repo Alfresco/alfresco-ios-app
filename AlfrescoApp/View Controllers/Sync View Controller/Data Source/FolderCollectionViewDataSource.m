@@ -28,12 +28,17 @@
 
 @implementation FolderCollectionViewDataSource
 
-- (instancetype)initWithFolder:(AlfrescoFolder *)folder folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)initWithFolder:(AlfrescoFolder *)folder folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext
 {
     self = [super init];
     if(!self)
     {
         return nil;
+    }
+    
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
     }
     
     self.shouldAllowMultiselect = YES;
@@ -70,7 +75,7 @@
     return self;
 }
 
-- (instancetype)initWithFolderPath:(NSString *)folderPath folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)initWithFolderPath:(NSString *)folderPath folderDisplayName:(NSString *)folderDisplayName folderPermissions:(AlfrescoPermissions *)permissions session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext
 {
     self = [super init];
     if(!self)
@@ -81,6 +86,12 @@
     __weak typeof(self) weakSelf = self;
     self.session = session;
     self.shouldAllowMultiselect = YES;
+    
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
+    
     [self.documentService retrieveNodeWithFolderPath:folderPath completionBlock:^(AlfrescoNode *folderPathNode, NSError *folderPathNodeError) {
         if (folderPathNodeError)
         {
@@ -102,7 +113,7 @@
     return self;
 }
 
-- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)initWithCustomFolderType:(CustomFolderServiceFolderType)folderType folderDisplayName:(NSString *)displayName session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext
 {
     self = [super init];
     if(!self)
@@ -113,6 +124,12 @@
     self.session = session;
     self.shouldAllowMultiselect = YES;
     self.delegate = delegate;
+    
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
+    
     if(displayName)
     {
         self.screenTitle = displayName;

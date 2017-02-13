@@ -102,7 +102,10 @@
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.item == lastSiteRowIndex)
     {
-        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:[@(self.dataSource.numberOfNodesInCollection) intValue]];
+        int maxItems = self.dataSource.defaultListingContext.maxItems;
+        int skipCount = self.dataSource.defaultListingContext.skipCount + (int)self.dataSource.numberOfNodesInCollection;
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:maxItems skipCount:skipCount];
+
         if (self.dataSource.moreItemsAvailable)
         {
             // show more items are loading ...
