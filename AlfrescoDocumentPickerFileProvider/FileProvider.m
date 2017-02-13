@@ -152,7 +152,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         }
         else
         {
-            [versionService checkinDocument:checkoutDocument asMajorVersion:NO contentFile:contentFile properties:nil comment:nil completionBlock:^(AlfrescoDocument *checkinDocument, NSError *checkinError) {
+            [versionService checkinDocument:document asMajorVersion:NO contentFile:contentFile properties:nil comment:nil completionBlock:^(AlfrescoDocument *checkinDocument, NSError *checkinError) {
                 completionBlock(checkinDocument, checkinError);
             } progressBlock:nil];
         }
