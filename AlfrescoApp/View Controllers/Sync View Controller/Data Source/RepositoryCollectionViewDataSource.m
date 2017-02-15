@@ -17,7 +17,6 @@
  ******************************************************************************/
 
 #import "RepositoryCollectionViewDataSource+Internal.h"
-#import "FileFolderCollectionViewCell.h"
 #import "LoadingCollectionViewCell.h"
 #import "BaseCollectionViewFlowLayout.h"
 #import "SearchCollectionSectionHeader.h"
@@ -81,16 +80,12 @@
 }
 
 #pragma mark - Reload methods
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
-{
-    [self reloadCollectionViewWithPagingResult:pagingResult data:nil error:error];
-}
 
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
+- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
 {
     if (pagingResult)
     {
-        self.dataSourceCollection = data ?: [pagingResult.objects mutableCopy];
+        self.dataSourceCollection = [pagingResult.objects mutableCopy];
         self.moreItemsAvailable = pagingResult.hasMoreItems;
         [self.delegate dataSourceUpdated];
     }
@@ -98,25 +93,19 @@
     {
         [self.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed")];
     }
+
 }
 
-- (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error
+- (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
 {
     if (pagingResult)
     {
-        if (data)
+        NSMutableArray *arrayOfIndexPaths = [NSMutableArray new];
+        for(NSInteger initialIndex = self.dataSourceCollection.count; initialIndex < self.dataSourceCollection.count + pagingResult.objects.count; initialIndex ++)
         {
-            self.dataSourceCollection = data;
+            [arrayOfIndexPaths addObject:[NSIndexPath indexPathForItem:initialIndex inSection:0]];
         }
-        else
-        {
-            NSMutableArray *arrayOfIndexPaths = [NSMutableArray new];
-            for(NSInteger initialIndex = self.dataSourceCollection.count; initialIndex < self.dataSourceCollection.count + pagingResult.objects.count; initialIndex ++)
-            {
-                [arrayOfIndexPaths addObject:[NSIndexPath indexPathForItem:initialIndex inSection:0]];
-            }
-            [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
-        }
+        [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
         
         self.moreItemsAvailable = pagingResult.hasMoreItems;
         [self.delegate dataSourceUpdated];
@@ -170,22 +159,14 @@
     }
     
     FileFolderCollectionViewCell *nodeCell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
-    
     AlfrescoNode *node = self.dataSourceCollection[indexPath.item];
-    
     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    BOOL isSyncOn = [node isNodeInSyncList];
-    BOOL isTopLevelNode = [node isTopLevelSyncNode];
     
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
     [nodeCell registerForNotifications];
     
-    [nodeCell updateStatusIconsIsFavoriteNode:NO isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
-    [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-        [nodeCell updateStatusIconsIsFavoriteNode:isFavorite isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
-    }];
+    [self updateFavoriteStatusIconForNodeCell:nodeCell node:node];
     
     BaseCollectionViewFlowLayout *currentLayout = [self.delegate currentSelectedLayout];
     
@@ -388,7 +369,7 @@
 - (void)retrieveNextItems:(AlfrescoListingContext *)moreListingContext
 {
     [self retrieveContentOfFolder:(AlfrescoFolder *)self.parentNode usingListingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self addMoreToCollectionViewWithPagingResult:pagingResult data:nil error:error];
+        [self addMoreToCollectionViewWithPagingResult:pagingResult error:error];
     }];
 }
 
@@ -575,6 +556,17 @@
         {
             completionBlock(pagingResult, error);
         }
+    }];
+}
+
+- (void)updateFavoriteStatusIconForNodeCell:(FileFolderCollectionViewCell *)nodeCell node:(AlfrescoNode *)node
+{
+    BOOL isSyncOn = [node isNodeInSyncList];
+    BOOL isTopLevelNode = [node isTopLevelSyncNode];
+
+    [nodeCell updateStatusIconsIsFavoriteNode:NO isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
+    [[FavouriteManager sharedManager] isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+        [nodeCell updateStatusIconsIsFavoriteNode:isFavorite isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
     }];
 }
 

@@ -118,9 +118,10 @@
  Use when needing to display the list of top level favorite nodes
  
  @param filter - values: all|folders|files
+ @param listingContext - the listing context with a paging definition that's used to retrieve favorite nodes.
  @param session - an active session
  */
-- (instancetype)initForFavoritesWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session;
+- (instancetype)initForFavoritesWithFilter:(NSString *)filter listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 /**
  Use the search statement initialiser to initiate a CMIS search

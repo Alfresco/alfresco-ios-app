@@ -289,12 +289,13 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     NavigationViewController *navigationController = nil;
     id associatedObject = nil;
     
+    NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
+    AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
+    
     if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeActivities])
     {
         // Activities
         NSString *siteShortName = viewConfig.parameters[kAlfrescoConfigViewParameterSiteShortNameKey];
-        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
-        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
         
         ActivitiesViewController *activityListViewController = [[ActivitiesViewController alloc] initWithSiteShortName:siteShortName listingContext:listingContext session:self.session];
         associatedObject = activityListViewController;
@@ -303,9 +304,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // File Folder
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
-        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
-        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
-
         FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
         
         if ([parameterKeys containsObject:kAlfrescoConfigViewParameterSiteShortNameKey])
@@ -356,8 +354,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Tasks
         NSDictionary *taskFilters = viewConfig.parameters[kAlfrescoConfigViewParameterTaskFiltersKey];
-        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
-        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
 
         if (taskFilters.count > 0)
         {
@@ -381,7 +377,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             filter = favoritesFilters[kAlfrescoConfigViewParameterFavoritesFiltersModeKey];
         }
         
-        FileFolderCollectionViewController *favoritesViewController = [[FileFolderCollectionViewController alloc] initForFavoritesWithFilter:filter session:self.session];
+        FileFolderCollectionViewController *favoritesViewController = [[FileFolderCollectionViewController alloc] initForFavoritesWithFilter:filter listingContext:listingContext session:self.session];
         associatedObject = favoritesViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSync])
@@ -418,8 +414,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
 
         if(siteShortName)
         {
-            NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
-            AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
             membersViewController = [[SiteMembersViewController alloc] initWithSiteShortName:siteShortName listingContext:listingContext session:self.session displayName:nil];
         }
         else
@@ -471,6 +465,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         // Search repository
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
         FileFolderCollectionViewController *fileFolderCollectionViewController = nil;
+        
         if([parameterKeys containsObject:kAlfrescoConfigViewParameterKeywordsKey])
         {
             AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:[viewConfig.parameters[kAlfrescoConfigViewParameterIsExactKey] boolValue] includeContent:[viewConfig.parameters[kAlfrescoConfigViewParameterFullTextKey] boolValue]];
@@ -498,8 +493,6 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     {
         // Sites
         NSArray *parameterKeys = viewConfig.parameters.allKeys;
-        NSDictionary *paginationDictionary = viewConfig.parameters[kAlfrescoConfigViewParameterPaginationKey];
-        AlfrescoListingContext *listingContext = [AlfrescoListingContext listingContextFromDictionary:paginationDictionary];
         SitesViewController *sitesListViewController = nil;
         
         if ([parameterKeys containsObject:kAlfrescoConfigViewParameterShowKey])
