@@ -23,7 +23,6 @@
 #import "ThumbnailManager.h"
 #import "FavouriteManager.h"
 #import "RealmSyncManager.h"
-#import "FavoritesCollectionViewDataSource.h"
 
 @implementation RepositoryCollectionViewDataSource
 
