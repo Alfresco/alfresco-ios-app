@@ -33,6 +33,5 @@
 - (void)retrievePermissionsForNode:(AlfrescoNode *)node;
 - (void)retrieveAndSetPermissionsOfCurrentFolder;
 - (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error;
-- (void)reloadCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult data:(NSMutableArray *)data error:(NSError *)error;
 
 @end

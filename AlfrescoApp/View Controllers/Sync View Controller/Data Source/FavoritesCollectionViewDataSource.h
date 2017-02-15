@@ -20,8 +20,6 @@
 
 @interface FavoritesCollectionViewDataSource : RepositoryCollectionViewDataSource
 
-- (instancetype)initWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
-
-- (void)reloadDataSourceIgnoringCache:(BOOL)ignoreCache;
+- (instancetype)initWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext;
 
 @end

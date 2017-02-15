@@ -202,13 +202,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initForFavoritesWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session
+- (instancetype)initForFavoritesWithFilter:(NSString *)filter listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
     {
         self.controllerType = FileFolderCollectionViewControllerTypeFavorites;
-        self.dataSource = [[FavoritesCollectionViewDataSource alloc] initWithFilter:filter session:session delegate:self];
+        self.dataSource = [[FavoritesCollectionViewDataSource alloc] initWithFilter:filter session:session delegate:self listingContext:listingContext];
     }
     
     return self;
@@ -570,21 +570,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 #pragma mark - UIRefreshControl Functions
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl
 {
-    void (^reloadDataBlock)() = ^{
-        if ([self.dataSource isKindOfClass:[FavoritesCollectionViewDataSource class]])
-        {
-            [(FavoritesCollectionViewDataSource *)self.dataSource reloadDataSourceIgnoringCache:YES];
-        }
-        else
-        {
-            [self.dataSource reloadDataSource];
-        }
-    };
-    
     [self showLoadingTextInRefreshControl:refreshControl];
+    
     if (self.session)
     {
-        reloadDataBlock();
+        [self.dataSource reloadDataSource];
     }
     else
     {
@@ -593,7 +583,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
-                reloadDataBlock();
+                [self.dataSource reloadDataSource];
             }
         }];
     }

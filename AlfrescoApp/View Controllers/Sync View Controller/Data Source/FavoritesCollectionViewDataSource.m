@@ -28,7 +28,7 @@
 
 @implementation FavoritesCollectionViewDataSource
 
-- (instancetype)initWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)initWithFilter:(NSString *)filter session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext
 {
     self = [super initWithParentNode:nil session:session delegate:delegate];
     if(!self)
@@ -40,6 +40,11 @@
     self.shouldAllowMultiselect = NO;
     self.screenTitle = NSLocalizedString(@"favourites.title", @"Favorites Title");
     self.emptyMessage = NSLocalizedString(@"favourites.empty", @"No Favorites");
+    
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
     
     [self registerForNotifications];
     [self reloadDataSource];
@@ -62,24 +67,27 @@
 
 - (void)reloadDataSource
 {
-    [self reloadDataSourceIgnoringCache:NO];
+    [self.dataSourceCollection removeAllObjects];
+    
+    [self retrieveNextItems:self.defaultListingContext];
 }
 
-- (void)reloadDataSourceIgnoringCache:(BOOL)ignoreCache
+#pragma mark - Public Methods
+
+- (void)retrieveNextItems:(AlfrescoListingContext *)moreListingContext
 {
     __weak typeof(self) weakSelf = self;
     
-    [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session filter:self.filter ignoreCache:ignoreCache completionBlock:^(NSArray *array, NSError *error) {
-        if(array)
+    [[FavouriteManager sharedManager] topLevelFavoriteNodesWithSession:self.session filter:self.filter listingContext:moreListingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+        if(pagingResult)
         {
-            self.dataSourceCollection = [array mutableCopy];
-            
-            if (ignoreCache == NO)
+            if (self.dataSourceCollection == nil)
             {
-                NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
-                [self.dataSourceCollection sortUsingDescriptors:@[sortDescriptor]];
+                self.dataSourceCollection = [NSMutableArray array];
             }
+            [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
             
+            self.moreItemsAvailable = pagingResult.hasMoreItems;
             [weakSelf.delegate dataSourceUpdated];
         }
         else

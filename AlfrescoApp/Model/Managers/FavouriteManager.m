@@ -141,12 +141,12 @@
     }];
 }
 
-- (void)topLevelFavoriteNodesWithSession:(id<AlfrescoSession>)session filter:(NSString *)filter ignoreCache:(BOOL)ignoreCache completionBlock:(AlfrescoArrayCompletionBlock)completionBlock
+- (void)topLevelFavoriteNodesWithSession:(id<AlfrescoSession>)session filter:(NSString *)filter listingContext:(AlfrescoListingContext *)listingContext completionBlock:(AlfrescoPagingResultCompletionBlock)completionBlock
 {
-    void (^retrieveCompletionBlock)(NSArray *, NSError *) = ^void(NSArray *array, NSError *error) {
+    void (^retrieveCompletionBlock)(AlfrescoPagingResult *, NSError *) = ^void(AlfrescoPagingResult *pagingResult, NSError *error) {
         if(completionBlock)
         {
-            completionBlock(array, error);
+            completionBlock(pagingResult, error);
         }
     };
     
@@ -156,22 +156,19 @@
         [self createServicesWithSession:session];
     }
     
-    if (ignoreCache)
-    {
-        [self.documentFolderService clear];
-    }
+    [self.documentFolderService clear];
     
     if ([filter isEqualToString:kAlfrescoConfigViewParameterFavoritesFiltersFiles])
     {
-        [self.documentFolderService retrieveFavoriteDocumentsWithCompletionBlock:retrieveCompletionBlock];
+        [self.documentFolderService retrieveFavoriteDocumentsWithListingContext:listingContext completionBlock:retrieveCompletionBlock];
     }
     else if ([filter isEqualToString:kAlfrescoConfigViewParameterFavoritesFiltersFolders])
     {
-        [self.documentFolderService retrieveFavoriteFoldersWithCompletionBlock:retrieveCompletionBlock];
+        [self.documentFolderService retrieveFavoriteFoldersWithListingContext:listingContext completionBlock:retrieveCompletionBlock];
     }
     else if ([filter isEqualToString:kAlfrescoConfigViewParameterFavoritesFiltersAll])
     {
-        [self.documentFolderService retrieveFavoriteNodesWithCompletionBlock:retrieveCompletionBlock];
+        [self.documentFolderService retrieveFavoriteNodesWithListingContext:listingContext completionBlock:retrieveCompletionBlock];
     }
 }
 
