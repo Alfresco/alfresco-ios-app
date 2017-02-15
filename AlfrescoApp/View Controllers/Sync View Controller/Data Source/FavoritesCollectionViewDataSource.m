@@ -97,6 +97,16 @@
     }];
 }
 
+#pragma mark - Private Methods
+
+- (void)updateFavoriteStatusIconForNodeCell:(FileFolderCollectionViewCell *)nodeCell node:(AlfrescoNode *)node
+{
+    BOOL isSyncOn = [node isNodeInSyncList];
+    BOOL isTopLevelNode = [node isTopLevelSyncNode];
+
+    [nodeCell updateStatusIconsIsFavoriteNode:YES isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
+}
+
 #pragma mark - Notifications Handlers
 
 - (void)didAddNodeToFavorites:(NSNotification *)notification

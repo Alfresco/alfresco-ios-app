@@ -19,6 +19,7 @@
 #import "RepositoryCollectionViewDataSource.h"
 #import "AlfrescoNode+Sync.h"
 #import "AlfrescoNode+Networking.h"
+#import "FileFolderCollectionViewCell.h"
 
 @interface RepositoryCollectionViewDataSource ()
 

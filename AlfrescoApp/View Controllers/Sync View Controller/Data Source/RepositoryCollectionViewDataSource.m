@@ -17,7 +17,6 @@
  ******************************************************************************/
 
 #import "RepositoryCollectionViewDataSource+Internal.h"
-#import "FileFolderCollectionViewCell.h"
 #import "LoadingCollectionViewCell.h"
 #import "BaseCollectionViewFlowLayout.h"
 #import "SearchCollectionSectionHeader.h"
@@ -161,29 +160,14 @@
     }
     
     FileFolderCollectionViewCell *nodeCell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
-    
     AlfrescoNode *node = self.dataSourceCollection[indexPath.item];
-    
     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-    FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-    BOOL isSyncOn = [node isNodeInSyncList];
-    BOOL isTopLevelNode = [node isTopLevelSyncNode];
     
     SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
     [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
     [nodeCell registerForNotifications];
     
-    if ([self isKindOfClass:[FavoritesCollectionViewDataSource class]])
-    {
-        [nodeCell updateStatusIconsIsFavoriteNode:YES isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
-    }
-    else
-    {
-        [nodeCell updateStatusIconsIsFavoriteNode:NO isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
-        [favoriteManager isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-            [nodeCell updateStatusIconsIsFavoriteNode:isFavorite isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
-        }];
-    }
+    [self updateFavoriteStatusIconForNodeCell:nodeCell node:node];
     
     BaseCollectionViewFlowLayout *currentLayout = [self.delegate currentSelectedLayout];
     
@@ -573,6 +557,17 @@
         {
             completionBlock(pagingResult, error);
         }
+    }];
+}
+
+- (void)updateFavoriteStatusIconForNodeCell:(FileFolderCollectionViewCell *)nodeCell node:(AlfrescoNode *)node
+{
+    BOOL isSyncOn = [node isNodeInSyncList];
+    BOOL isTopLevelNode = [node isTopLevelSyncNode];
+
+    [nodeCell updateStatusIconsIsFavoriteNode:NO isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
+    [[FavouriteManager sharedManager] isNodeFavorite:node session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
+        [nodeCell updateStatusIconsIsFavoriteNode:isFavorite isSyncNode:isSyncOn isTopLevelSyncNode:isTopLevelNode animate:NO];
     }];
 }
 
