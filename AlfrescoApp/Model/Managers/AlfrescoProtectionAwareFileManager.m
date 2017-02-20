@@ -243,7 +243,10 @@ static BOOL sFileProtectionEnabled = NO;
         options = NSDirectoryEnumerationSkipsHiddenFiles;
     }
     
-    NSEnumerator *folderContents = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL URLWithString:[directory stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
+    NSCharacterSet *set = [NSCharacterSet URLHostAllowedCharacterSet];
+    NSString *string = [directory stringByAddingPercentEncodingWithAllowedCharacters:set];
+    
+    NSEnumerator *folderContents = [[NSFileManager defaultManager] enumeratorAtURL:[NSURL URLWithString:string]
                                                         includingPropertiesForKeys:@[NSURLNameKey]
                                                                            options:options
                                                                       errorHandler:^BOOL(NSURL *url, NSError *fileError) {
