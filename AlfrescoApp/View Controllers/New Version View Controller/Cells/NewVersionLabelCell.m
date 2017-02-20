@@ -26,6 +26,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     self.valueTextField.textColor = [UIColor textDimmedColor];
     [self.valueTextField setValue:[UIColor textDimmedColor] forKeyPath:@"_placeholderLabel.textColor"];
 }

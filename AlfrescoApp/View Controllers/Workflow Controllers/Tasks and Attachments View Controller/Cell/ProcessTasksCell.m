@@ -34,6 +34,8 @@ static NSString * const kProcessTasksCellIdentifier = @"ProcessTasksCellIdentifi
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     self.taskStatusTextLabel.text = @"";
     self.taskEndedAtTextLabel.text = @"";
 }
