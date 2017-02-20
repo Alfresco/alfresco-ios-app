@@ -15,10 +15,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
- 
-#import <MediaPlayer/MediaPlayer.h>
-#import <AVFoundation/AVFoundation.h>
 
+#import <AVFoundation/AVFoundation.h>
+#import <AVKit/AVKit.h>
 #import "FilePreviewViewController.h"
 #import "ThumbnailImageView.h"
 #import "ThumbnailManager.h"
@@ -46,7 +45,7 @@ static CGFloat sDownloadProgressHeight;
 @property (nonatomic, strong) AlfrescoDocument *document;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoRequest *downloadRequest;
-@property (nonatomic, strong) MPMoviePlayerViewController *mediaPlayerViewController;
+@property (nonatomic, strong) AVPlayerViewController *playerViewController;
 @property (nonatomic, strong) FullScreenAnimationController *animationController;
 // Used for the file path initialiser
 @property (nonatomic, strong) NSString *filePathForFileToLoad;
@@ -152,8 +151,8 @@ static CGFloat sDownloadProgressHeight;
 
 - (IBAction)playButtonPressed:(id)sender
 {
-    [self.mediaPlayerViewController.moviePlayer prepareToPlay];
-    [self presentMoviePlayerViewControllerAnimated:self.mediaPlayerViewController];
+    [self.playerViewController.player play];
+    [self presentViewController:self.playerViewController animated:YES completion:nil];
 }
 
 #pragma mark - Private Functions
@@ -274,7 +273,7 @@ static CGFloat sDownloadProgressHeight;
 }
 
 /**
- * Create or destroy an MPMoviePlayerController
+ * Create or destroy an AVPlayerViewController
  */
 
 - (void)createMediaPlayerForFilePath:(NSString *)filePath animated:(BOOL)animated
@@ -283,10 +282,9 @@ static CGFloat sDownloadProgressHeight;
     
     NSURL *fileURL = [NSURL fileURLWithPath:filePath];
     
-    MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] init];
-    moviePlayer.moviePlayer.contentURL = fileURL;
-    
-    self.mediaPlayerViewController = moviePlayer;
+    AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+    playerViewController.player = [AVPlayer playerWithURL:fileURL];
+    self.playerViewController = playerViewController;
     
     // Generate a movie preview
     // Synchronously generates a preview
@@ -335,14 +333,14 @@ static CGFloat sDownloadProgressHeight;
         } completion:^(BOOL finished) {
             self.moviePlayerContainer.hidden = YES;
             self.moviePlayerPreviewImageView.image = nil;
-            self.mediaPlayerViewController = nil;
+            self.playerViewController = nil;
         }];
     }
     else
     {
         self.moviePlayerContainer.alpha = 0.0f;
         self.moviePlayerPreviewImageView.image = nil;
-        self.mediaPlayerViewController = nil;
+        self.playerViewController = nil;
         self.moviePlayerContainer.hidden = YES;
     }
 }

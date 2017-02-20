@@ -218,11 +218,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     [[AccountManager sharedManager] saveAccountsToKeychain];
 }
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
-#else
-- (NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
-#endif
 {
     // default is to support all orientations
     UIInterfaceOrientationMask supportedOrientations = UIInterfaceOrientationMaskAll;
@@ -245,12 +241,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                 {
                     supportedOrientations = [presentedController supportedInterfaceOrientations];
                 }
-            }
-            else if ([modalViewController isKindOfClass:[MPMoviePlayerViewController class]])
-            {
-                MPMoviePlaybackState playbackState = [(MPMoviePlayerViewController *)modalViewController moviePlayer].playbackState;
-                
-                supportedOrientations = (playbackState == MPMoviePlaybackStateStopped || playbackState == MPMoviePlaybackStatePaused) ? supportedOrientations : UIInterfaceOrientationMaskAllButUpsideDown;
             }
             else
             {
