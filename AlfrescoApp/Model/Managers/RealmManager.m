@@ -362,7 +362,7 @@
     // once sync problem is resolved (document synced or saved) set its isUnfavoritedHasLocalChanges flag to NO so node is deleted later
     RealmSyncNodeInfo *nodeInfo = [self syncNodeInfoForObject:document ifNotExistsCreateNew:NO inRealm:realm];
     [realm beginWriteTransaction];
-    nodeInfo.isRemovedFromSyncHasLocalChanges = [NSNumber numberWithBool:NO];
+    nodeInfo.isRemovedFromSyncHasLocalChanges = NO;
     [realm commitWriteTransaction];
 }
 
