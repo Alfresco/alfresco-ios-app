@@ -492,20 +492,27 @@ static NSInteger const kTagAccountDetailsCell = 4;
         }
         else
         {
-            UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
-                                                                   message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
-                                                                  delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
-                                                         otherButtonTitles:NSLocalizedString(@"connectiondiagnostic.button.retrywithdiagnostic", @"Retry with diagnostic"), nil];
-            [failureAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                if (!isCancelButton)
-                {
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
-                    ConnectionDiagnosticViewController *viewController = (ConnectionDiagnosticViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
-                    [viewController setupWithParent:self andSelector:@selector(retryLoginForConnectionDiagnostic)];
-                    [self.navigationController pushViewController:viewController animated:YES];
-                }
-            }];
+            void (^retryBlock)() = ^(){
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
+                ConnectionDiagnosticViewController *viewController = (ConnectionDiagnosticViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
+                [viewController setupWithParent:self andSelector:@selector(retryLoginForConnectionDiagnostic)];
+                [self.navigationController pushViewController:viewController animated:YES];
+            };
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+                                                                                     message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", @"Done")
+                                                                 style:UIAlertActionStyleCancel
+                                                               handler:nil];
+            [alertController addAction:doneAction];
+            UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"connectiondiagnostic.button.retrywithdiagnostic", @"Retry with diagnostic")
+                                                                  style:UIAlertActionStyleDefault
+                                                                handler:^(UIAlertAction * _Nonnull action) {
+                                                                    retryBlock();
+                                                                }];
+            [alertController addAction:retryAction];
+            [self presentViewController:alertController animated:YES completion:nil];
         }
     }];
 }

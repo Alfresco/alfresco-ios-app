@@ -107,20 +107,22 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
 - (void)cancelSyncOperations:(id)sender
 {
     RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.cancelAll.alert.title", @"Sync")
-                                                    message:NSLocalizedString(@"sync.cancelAll.alert.message", @"Would you like to...")
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"sync.cancelAll.alert.button.continue", @"Continue")
-                                          otherButtonTitles:NSLocalizedString(@"sync.cancelAll.alert.button.stop", @"Stop Sync"), nil];
-    
-    [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        
-        if (!isCancelButton)
-        {
-            [syncManager cancelAllSyncOperations];
-            [self hideSyncProgressDetails];
-        }
-    }];
+
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"sync.cancelAll.alert.title", @"Sync")
+                                                                             message:NSLocalizedString(@"sync.cancelAll.alert.message", @"Would you like to...")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *continueAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"sync.cancelAll.alert.button.continue", @"Continue")
+                                                             style:UIAlertActionStyleCancel
+                                                           handler:nil];
+    [alertController addAction:continueAction];
+    UIAlertAction *stopAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"sync.cancelAll.alert.button.stop", @"Stop Sync")
+                                                         style:UIAlertActionStyleDefault
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                           [syncManager cancelAllSyncOperations];
+                                                           [self hideSyncProgressDetails];
+                                                       }];
+    [alertController addAction:stopAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)showSyncProgressDetails

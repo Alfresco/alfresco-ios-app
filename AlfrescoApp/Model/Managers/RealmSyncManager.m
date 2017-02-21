@@ -27,6 +27,7 @@
 #import "AlfrescoNode+Networking.h"
 #import "UserAccount+FileHandling.h"
 #import "MainMenuItemsVisibilityUtils.h"
+#import "UniversalDevice.h"
 
 @implementation RealmSyncManager
 
@@ -1203,22 +1204,22 @@
     unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodes];
     if(totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title")
-                                                        message:[NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"Sync download size"), stringForLongFileSize(totalDownloadSize)]
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"sync.downloadsize.prompt.cancel", @"Don't Sync")
-                                              otherButtonTitles:NSLocalizedString(@"sync.downloadsize.prompt.confirm", @"Sync Now"), nil];
-        
-        [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (!isCancelButton)
-            {
-                proceedBlock(YES);
-            }
-            else
-            {
-                proceedBlock(NO);
-            }
-        }];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title")
+                                                                                 message:[NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"Sync download size"), stringForLongFileSize(totalDownloadSize)]
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.cancel", @"Don't Sync")
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                                 proceedBlock(NO);
+                                                             }];
+        [alertController addAction:cancelAction];
+        UIAlertAction *syncAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.confirm", @"Sync Now")
+                                                             style:UIAlertActionStyleDefault
+                                                           handler:^(UIAlertAction * _Nonnull action) {
+                                                               proceedBlock(YES);
+                                                           }];
+        [alertController addAction:syncAction];
+        [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
     }
     else
     {

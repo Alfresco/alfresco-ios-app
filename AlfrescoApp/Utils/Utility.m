@@ -90,18 +90,28 @@ SystemNotice *displayInformationMessageWithTitle(NSString *message, NSString *ti
 UIView *activeView(void)
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    ContainerViewController *containerController = (ContainerViewController *)appDelegate.window.rootViewController;
+    UIView *view = nil;
     
     if (appDelegate.window.rootViewController.presentedViewController)
     {
         //To work around a system notice that is tried to be presented in a modal view controller
-        return appDelegate.window.rootViewController.presentedViewController.view;
+        UIViewController *presentedViewController = appDelegate.window.rootViewController.presentedViewController;
+        
+        if ([presentedViewController isKindOfClass:[UIAlertController class]])
+        {
+            view = presentedViewController.view.superview;
+        }
+        else
+        {
+            view = presentedViewController.view;
+        }
     }
-    else if (IS_IPAD)
+    else
     {
-        return containerController.view;
+        view = appDelegate.window.rootViewController.view;
     }
-    return appDelegate.window.rootViewController.view;
+    
+    return view;
 }
 
 UIImage *smallImageForType(NSString *type)
@@ -827,22 +837,20 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 
 + (void)showLocalizedAlertWithTitle:(NSString *)title message:(NSString *)message
 {
-    NSString *localizedTitle = NSLocalizedString(title, @"");
-    NSString *localizedMessage = NSLocalizedString(message, @"");
-    NSString *localizedOkButton = NSLocalizedString(@"OK", @"OK");
-    NSString *localizedOpenSettingsButton = NSLocalizedString(@"permissions.settings.button", @"Open Settings");
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:localizedTitle
-                                                        message:localizedMessage
-                                                       delegate:nil
-                                              cancelButtonTitle:localizedOkButton
-                                              otherButtonTitles:localizedOpenSettingsButton, nil];
-    [alertView showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (buttonIndex == 1)
-        {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-        }
-    }];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(title, @"")
+                                                                             message:NSLocalizedString(message, @"")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                       style:UIAlertActionStyleCancel
+                                                     handler:nil];
+    [alertController addAction:okAction];
+    UIAlertAction *changeSettingsAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"permissions.settings.button", @"Change Settings")
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * _Nonnull action) {
+                                                                   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                                                               }];
+    [alertController addAction:changeSettingsAction];
+    [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

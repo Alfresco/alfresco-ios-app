@@ -634,7 +634,6 @@
 		73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580017A6750E0099FB84 /* UniversalDevice.m */; };
 		73B9585717A6750F0099FB84 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580217A6750E0099FB84 /* Utility.m */; };
 		73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580517A6750E0099FB84 /* AlfrescoDocument+ALF.m */; };
-		73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */; };
 		73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580A17A6750E0099FB84 /* SystemNotice.m */; };
 		73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */; };
 		73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9582717A6750E0099FB84 /* NavigationViewController.m */; };
@@ -1799,8 +1798,6 @@
 		73B9580217A6750E0099FB84 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Utility.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B9580417A6750E0099FB84 /* AlfrescoDocument+ALF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoDocument+ALF.h"; sourceTree = "<group>"; };
 		73B9580517A6750E0099FB84 /* AlfrescoDocument+ALF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoDocument+ALF.m"; sourceTree = "<group>"; };
-		73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+ALF.h"; sourceTree = "<group>"; };
-		73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+ALF.m"; sourceTree = "<group>"; };
 		73B9580917A6750E0099FB84 /* SystemNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNotice.h; sourceTree = "<group>"; };
 		73B9580A17A6750E0099FB84 /* SystemNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SystemNotice.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B9580D17A6750E0099FB84 /* SystemNoticeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeManager.h; sourceTree = "<group>"; };
@@ -3818,8 +3815,6 @@
 				7366F7481ACAD8DE008DD92E /* NSDictionary+Extension.h */,
 				7366F7491ACAD8DE008DD92E /* NSDictionary+Extension.m */,
 				73345E35195C299D000CADC7 /* NSObject+DebugCheck.h */,
-				73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */,
-				73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */,
 				73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */,
 				73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */,
 				73881F5418883BE10052C75F /* UIColor+Custom.h */,
@@ -5151,7 +5146,6 @@
 				7390B3591B03681E00E7191F /* AlfrescoConfigConstants.m in Sources */,
 				2B9031FA1C0EF78B005C10ED /* SearchService.m in Sources */,
 				736474F51B1879E400715B4F /* MainMenuConfigurationViewController.m in Sources */,
-				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				2B4E0CAD1D3D19020031FD3A /* AlfrescoNode+Sync.m in Sources */,
 				731A8F51192F5B1F0099BE7B /* NewVersionTextViewCell.m in Sources */,

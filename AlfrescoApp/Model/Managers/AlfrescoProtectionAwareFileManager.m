@@ -19,6 +19,7 @@
 #import "AlfrescoProtectionAwareFileManager.h"
 #import "AccountManager.h"
 #import "PreferenceManager.h"
+#import "UniversalDevice.h"
 
 static BOOL sFileProtectionEnabled = NO;
 
@@ -85,18 +86,21 @@ static BOOL sFileProtectionEnabled = NO;
 
 - (void)firstPaidAccountAdded:(NSNotification *)notification
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"fileprotection.title", @"File Protection")
-                                                    message:NSLocalizedString(@"fileprotection.available.message", @"Enable File Protection?")
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                          otherButtonTitles:NSLocalizedString(@"fileprotection.available.confirm", @"Enable Protection"), nil];
-    [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
-        {
-            // Update the preference flag
-            [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsFileProtectionIdentifier];
-        }
-    }];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"fileprotection.title", @"File Protection")
+                                                                             message:NSLocalizedString(@"fileprotection.available.message", @"Enable File Protection?")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No")
+                                                       style:UIAlertActionStyleCancel
+                                                     handler:nil];
+    [alertController addAction:noAction];
+    UIAlertAction *enableProtectionAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"fileprotection.available.confirm", @"Enable Protection")
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:^(UIAlertAction * _Nonnull action) {
+                                                                       // Update the preference flag
+                                                                       [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsFileProtectionIdentifier];
+                                                                   }];
+    [alertController addAction:enableProtectionAction];
+    [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)lastPaidAccountRemoved:(NSNotification *)notification

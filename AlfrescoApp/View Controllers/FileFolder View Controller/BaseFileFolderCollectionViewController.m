@@ -508,11 +508,20 @@
     }
     else
     {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload Failed")
-                                    message:errorDescription
-                                   delegate:self
-                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                          otherButtonTitles:NSLocalizedString(@"Retry", @"Retry"), nil] show];
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload Failed")
+                                                                                 message:errorDescription
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", @"Close")
+                                                              style:UIAlertActionStyleCancel handler:nil];
+        [alertController addAction:closeAction];
+        UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Retry", @"Retry")
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction * _Nonnull action) {
+                                                                [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
+                                                            }];
+        [alertController addAction:retryAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
     }
 }
 
@@ -772,16 +781,6 @@
     [self presentViewController:alertController animated:YES completion:nil];
     
     self.alertControllerSender = sender;
-}
-
-#pragma mark - UIAlertViewDelegate Methods
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1)
-    {
-        [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
-    }
 }
 
 #pragma mark - UIAlertController UIAlertAction definitions

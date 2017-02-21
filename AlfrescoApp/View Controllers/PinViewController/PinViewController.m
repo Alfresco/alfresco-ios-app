@@ -298,12 +298,12 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
             [_bulletsView shakeWithCompletionBlock:^{
                 if (_remainingAttempts == 0)
                 {
-                    if (weakSelf.completionBlock)
-                    {
-                        weakSelf.completionBlock(PinFlowCompletionStatusReset);
-                    }
-
-                    [weakSelf unsetPinAndDismiss];
+                    [weakSelf unsetPinAndDismissWithCompletionBlock:^{
+                        if (weakSelf.completionBlock)
+                        {
+                            weakSelf.completionBlock(PinFlowCompletionStatusReset);
+                        }
+                    }];
                 }
                 else
                 {
@@ -404,12 +404,12 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                if (self.completionBlock)
-                {
-                    self.completionBlock(PinFlowCompletionStatusReset);
-                }
-                
-                [weakSelf unsetPinAndDismiss];
+                [weakSelf unsetPinAndDismissWithCompletionBlock:^{
+                    if (self.completionBlock)
+                    {
+                        self.completionBlock(PinFlowCompletionStatusReset);
+                    }
+                }];
             }
             else
             {
@@ -486,7 +486,7 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         {
             self.completionBlock(PinFlowCompletionStatusSuccess);
         }
-        [self unsetPinAndDismiss];
+        [self unsetPinAndDismissWithCompletionBlock:nil];
     }
     else
     {
@@ -499,11 +499,12 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                if (weakSelf.completionBlock)
-                {
-                    weakSelf.completionBlock(PinFlowCompletionStatusReset);
-                }
-                [weakSelf unsetPinAndDismiss];
+                [weakSelf unsetPinAndDismissWithCompletionBlock:^{
+                    if (weakSelf.completionBlock)
+                    {
+                        weakSelf.completionBlock(PinFlowCompletionStatusReset);
+                    }
+                }];
             }
             else
             {
@@ -542,13 +543,13 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
     return nil;
 }
 
-- (void)unsetPinAndDismiss
+- (void)unsetPinAndDismissWithCompletionBlock:(void (^)(void))completionBlock
 {
     NSError *error;
     [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
     [KeychainUtils deleteItemForKey:kPinKey error:&error];
     
-    [self dismissViewControllerAnimated:self.animatedDismiss completion:nil];
+    [self dismissViewControllerAnimated:self.animatedDismiss completion:completionBlock];
 }
 
 - (void)showNumberOfAttemptsRemaining

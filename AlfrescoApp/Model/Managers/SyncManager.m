@@ -30,6 +30,7 @@
 #import "PreferenceManager.h"
 #import "AccountSyncProgress.h"
 #import "AlfrescoFileManager+Extensions.h"
+#import "UniversalDevice.h"
 
 @interface SyncManager ()
 @property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
@@ -516,19 +517,20 @@
                 
                 if (totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
                 {
-                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title")
-                                                                    message:[NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"Sync download size"), stringForLongFileSize(totalDownloadSize)]
-                                                                   delegate:nil
-                                                          cancelButtonTitle:NSLocalizedString(@"sync.downloadsize.prompt.cancel", @"Don't Sync")
-                                                          otherButtonTitles:NSLocalizedString(@"sync.downloadsize.prompt.confirm", @"Sync Now"), nil];
-                    
-                    [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                        if (!isCancelButton)
-                        {
-                            syncProgress.totalSyncSize += totalDownloadSize;
-                            [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
-                        }
-                    }];
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title")
+                                                                                             message:[NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"Sync download size"), stringForLongFileSize(totalDownloadSize)]
+                                                                                      preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.cancel", @"Don't Sync")
+                                                                           style:UIAlertActionStyleCancel
+                                                                         handler:nil];
+                    [alertController addAction:cancelAction];
+                    UIAlertAction *syncAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.confirm", @"Sync Now")
+                                                                         style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                                                             syncProgress.totalSyncSize += totalDownloadSize;
+                                                                             [self downloadContentsForNodes:nodesToDownload withCompletionBlock:nil];
+                                                                         }];
+                    [alertController addAction:syncAction];
+                    [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
                 }
                 else
                 {
@@ -1427,21 +1429,36 @@
 - (void)showSyncAlertWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     AccountManager *accountManager = [AccountManager sharedManager];
-    UserAccount *selectedAccount = accountManager.selectedAccount;
+    UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
     
     if ([self isFirstUse] && !selectedAccount.isSyncOn)
     {
         NSString *message = [NSString stringWithFormat:NSLocalizedString(@"sync.enable.message", @"Would you like to automatically keep your favorite documents in sync with this %@?"), [[UIDevice currentDevice] model]];
-        [self displayConfirmationAlertWithTitle:NSLocalizedString(@"sync.enable.title", @"Sync Documents")
-                                        message:message
-                                completionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                                    
-                                    selectedAccount.didAskToSync = YES;
-                                    selectedAccount.isSyncOn = !isCancelButton;
-                                    [accountManager saveAccountsToKeychain];
-                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:selectedAccount];
-                                    completionBlock(YES);
-                                }];
+        
+        void (^enableSyncBlock)(BOOL) = ^(BOOL syncIsOn){
+            selectedAccount.didAskToSync = YES;
+            selectedAccount.isSyncOn = syncIsOn;
+            [accountManager saveAccountsToKeychain];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:selectedAccount];
+            completionBlock(YES);
+        };
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"sync.enable.title", @"Sync Documents")
+                                                                                 message:message
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                             enableSyncBlock(NO);
+                                                         }];
+        [alertController addAction:noAction];
+        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes")
+                                                            style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * _Nonnull action) {
+                                                              enableSyncBlock(YES);
+                                                          }];
+        [alertController addAction:yesAction];
+        [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
     }
     else
     {
@@ -1449,17 +1466,7 @@
     }
 }
 
-- (void)displayConfirmationAlertWithTitle:(NSString *)title message:(NSString *)message completionBlock:(UIAlertViewDismissBlock)completionBlock
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:message
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-    [alert showWithCompletionBlock:completionBlock];
-}
-
-#pragma mark - UIAlertview Methods
+#pragma mark - Private Methods
 
 - (void)updateFolderSizes:(BOOL)updateFolderSizes andCheckIfAnyFileModifiedLocally:(BOOL)checkIfModified
 {

@@ -32,7 +32,7 @@
 
 static CGFloat const kCellHeight = 64.0f;
 
-@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, UIPopoverControllerDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate, UIImagePickerControllerDelegate, DownloadsPickerDelegate, UINavigationControllerDelegate, UploadFormViewControllerDelegate, UIAlertViewDelegate>
+@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, UIPopoverControllerDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate, UIImagePickerControllerDelegate, DownloadsPickerDelegate, UINavigationControllerDelegate, UploadFormViewControllerDelegate>
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 @property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
