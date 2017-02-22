@@ -31,7 +31,7 @@
 #import "RealmSyncManager.h"
 #import "FailedTransferDetailViewController.h"
 #import "AlfrescoNode+Sync.h"
-#import <AssetsLibrary/AssetsLibrary.h>
+#import <Photos/Photos.h>
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -1173,12 +1173,21 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
         else
         {
-            ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
-            [assetLibrary assetForURL:info[UIImagePickerControllerReferenceURL] resultBlock:^(ALAsset *asset) {
-                NSDictionary *assetMetadata = [[asset defaultRepresentation] metadata];
-                displayUploadForm(assetMetadata, NO);
-            } failureBlock:^(NSError *error) {
-                AlfrescoLogError(@"Unable to extract metadata from item for URL: %@. Error: %@", info[UIImagePickerControllerReferenceURL], error.localizedDescription);
+            PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[info[UIImagePickerControllerReferenceURL]] options:nil];
+            PHAsset *asset = [result firstObject];
+            
+            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
+                CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
+                CFDictionaryRef imageMetaData = CGImageSourceCopyPropertiesAtIndex(source,0,NULL);
+                NSDictionary *assetMetadata = (__bridge NSDictionary *)imageMetaData;
+                if (assetMetadata)
+                {
+                    displayUploadForm(assetMetadata, NO);
+                }
+                else
+                {
+                    AlfrescoLogError(@"Unable to extract metadata from item for URL: %@.", info[UIImagePickerControllerReferenceURL]);
+                }
             }];
         }
     }
