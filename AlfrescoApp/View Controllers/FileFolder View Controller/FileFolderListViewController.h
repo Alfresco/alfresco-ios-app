@@ -31,8 +31,7 @@
     UploadFormViewControllerDelegate,
     UIActionSheetDelegate,
     UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate,
-    UIPopoverControllerDelegate
+    UINavigationControllerDelegate
     >
 
 /**

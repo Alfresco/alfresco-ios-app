@@ -39,19 +39,19 @@ static CGFloat const kSearchBarDisabledAlpha = 0.7f;
 static CGFloat const kSearchBarEnabledAlpha = 1.0f;
 static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
-@interface FileFolderListViewController () <UISearchControllerDelegate>
+@interface FileFolderListViewController () <UISearchControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic, strong) AlfrescoPermissions *folderPermissions;
 @property (nonatomic, strong) NSString *folderDisplayName;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) AlfrescoFolder *initialFolder;
 @property (nonatomic, assign) UIBarButtonItem *alertControllerSender;
-@property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) UIViewController *popover;
 @property (nonatomic, strong) NSMutableDictionary *nodePermissions;
 @property (nonatomic, strong) UIImagePickerController *imagePickerController;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, assign) BOOL capturingMedia;
-@property (nonatomic, strong) UIPopoverController *retrySyncPopover;
+@property (nonatomic, strong) FailedTransferDetailViewController *syncFailedDetailController;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
 @property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
@@ -225,11 +225,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     // if going to landscape, use the screen height as the popover width and screen width as the popover height
     if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
     {
-        self.popover.contentViewController.preferredContentSize = CGSizeMake(screenRect.size.height, screenRect.size.width);
+        self.popover.preferredContentSize = CGSizeMake(screenRect.size.height, screenRect.size.width);
     }
     else
     {
-        self.popover.contentViewController.preferredContentSize = CGSizeMake(screenRect.size.width, screenRect.size.height);
+        self.popover.preferredContentSize = CGSizeMake(screenRect.size.width, screenRect.size.height);
     }
 }
 
@@ -358,9 +358,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     self.alertControllerSender = sender;
 
     alertController.modalPresentationStyle = UIModalPresentationPopover;
-    
-    UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
-    popoverPresenter.barButtonItem = sender;
+    alertController.popoverPresentationController.barButtonItem = sender;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -433,9 +431,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [alertController addAction:[self alertActionCancel]];
         
         alertController.modalPresentationStyle = UIModalPresentationPopover;
-        
-        UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
-        popoverPresenter.barButtonItem = self.alertControllerSender;
+        alertController.popoverPresentationController.barButtonItem = self.alertControllerSender;
         [self presentViewController:alertController animated:YES completion:nil];
     }];
 }
@@ -513,11 +509,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     if (IS_IPAD)
     {
-        UIPopoverController *popoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
-        popoverController.delegate = self;
-        self.popover = popoverController;
-        self.popover.contentViewController = controller;
-        [self.popover presentPopoverFromBarButtonItem:self.alertControllerSender permittedArrowDirections:UIPopoverArrowDirectionUp animated:animated];
+        self.popover = controller;
+        
+        controller.modalPresentationStyle = UIModalPresentationPopover;
+        controller.popoverPresentationController.delegate = self;
+        controller.popoverPresentationController.barButtonItem = self.alertControllerSender;
+        controller.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+        
+        [self presentViewController:controller animated:animated completion:nil];
     }
     else
     {
@@ -529,9 +528,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     if (IS_IPAD)
     {
-        if ([self.popover isPopoverVisible])
+        if (self.popover)
         {
-            [self.popover dismissPopoverAnimated:YES];
+            [self.popover dismissViewControllerAnimated:YES completion:nil];
         }
         self.popover = nil;
         if (completionBlock != NULL)
@@ -1271,14 +1270,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
 }
 
-#pragma mark - UIPopoverControllerDelegate Functions
+#pragma mark - UIPopoverPresentationControllerDelegate Methods
 
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
     return !self.capturingMedia;
 }
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
     [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
 }
@@ -1347,23 +1346,25 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (IS_IPAD)
     {
-        FailedTransferDetailViewController *syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
-                                                                                       message:errorDescription retryCompletionBlock:^() {
-                                                                                           [self retrySyncAndCloseRetryPopover];
-                                                                                       }];
-        
-        if (self.retrySyncPopover)
+        if (self.syncFailedDetailController)
         {
-            [self.retrySyncPopover dismissPopoverAnimated:YES];
+            [self.syncFailedDetailController dismissViewControllerAnimated:YES completion:nil];
         }
-        self.retrySyncPopover = [[UIPopoverController alloc] initWithContentViewController:syncFailedDetailController];
-        self.retrySyncPopover.popoverContentSize = syncFailedDetailController.view.frame.size;
-        
+        self.syncFailedDetailController = [[FailedTransferDetailViewController alloc] initWithTitle:NSLocalizedString(@"sync.state.failed-to-sync", @"Upload failed popover title")
+                                                                                         message:errorDescription retryCompletionBlock:^() {
+                                                                                             [self retrySyncAndCloseRetryPopover];
+                                                                                         }];
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        self.syncFailedDetailController.modalPresentationStyle = UIModalPresentationPopover;
+        self.syncFailedDetailController.preferredContentSize = self.syncFailedDetailController.view.frame.size;
+        self.syncFailedDetailController.popoverPresentationController.sourceView = cell;
+        self.syncFailedDetailController.popoverPresentationController.sourceRect = cell.accessoryView.frame;
+        self.syncFailedDetailController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
         
         if (cell.accessoryView.window != nil)
         {
-            [self.retrySyncPopover presentPopoverFromRect:cell.accessoryView.frame inView:cell permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [self presentViewController:self.syncFailedDetailController animated:YES completion:nil];
         }
     }
     else
@@ -1389,9 +1390,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)retrySyncAndCloseRetryPopover
 {
     [[RealmSyncManager sharedManager] retrySyncForDocument:(AlfrescoDocument *)self.retrySyncNode completionBlock:nil];
-    [self.retrySyncPopover dismissPopoverAnimated:YES];
+    [self.syncFailedDetailController dismissViewControllerAnimated:YES completion:nil];
+    self.syncFailedDetailController = nil;
     self.retrySyncNode = nil;
-    self.retrySyncPopover = nil;
 }
 
 @end

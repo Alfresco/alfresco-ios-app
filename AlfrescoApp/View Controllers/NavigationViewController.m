@@ -81,15 +81,6 @@
     self.rootViewController = viewController;
     self.viewControllers = @[viewController];
     [self updateView];
-    [self dismissMasterPopoverIfVisible];
-}
-
-- (void)dismissMasterPopoverIfVisible
-{
-    if (self.masterPopoverController.popoverVisible)
-    {
-        [self.masterPopoverController dismissPopoverAnimated:YES];
-    }
 }
 
 - (void)expandOrCollapseDetailView:(id)sender

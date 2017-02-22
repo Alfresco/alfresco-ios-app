@@ -45,7 +45,7 @@
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoRatingService *ratingService;
 @property (nonatomic, strong) UIDocumentInteractionController *documentInteractionController;
-@property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) NavigationViewController *downloadPickerNavigationController;
 @property (nonatomic, strong) NSMutableArray *queuedCompletionBlocks;
 @property (nonatomic, assign) InAppDocumentLocation documentLocation;
 
@@ -661,16 +661,20 @@
     DownloadsViewController *downloadPicker = [[DownloadsViewController alloc] init];
     downloadPicker.isDownloadPickerEnabled = YES;
     downloadPicker.downloadPickerDelegate = self;
-    NavigationViewController *downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
+    self.downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
     
     if (IS_IPAD)
     {
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:downloadPickerNavigationController];
-        [self.popover presentPopoverFromRect:view.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        self.downloadPickerNavigationController.modalPresentationStyle = UIModalPresentationPopover;
+        self.downloadPickerNavigationController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        self.downloadPickerNavigationController.popoverPresentationController.sourceView = inView;
+        self.downloadPickerNavigationController.popoverPresentationController.sourceRect = view.frame;
+        
+        [[UniversalDevice topPresentedViewController] presentViewController:self.downloadPickerNavigationController animated:YES completion:nil];
     }
     else
     {
-        [UniversalDevice displayModalViewController:downloadPickerNavigationController onController:self.controller withCompletionBlock:nil];
+        [UniversalDevice displayModalViewController:self.downloadPickerNavigationController onController:self.controller withCompletionBlock:nil];
     }
 }
 
@@ -857,10 +861,10 @@
     
     if (IS_IPAD)
     {
-        if (self.popover.isPopoverVisible)
+        if (self.downloadPickerNavigationController.popoverPresentationController)
         {
-            [self.popover dismissPopoverAnimated:YES];
-            self.popover = nil;
+            [self.downloadPickerNavigationController dismissViewControllerAnimated:YES completion:nil];
+            self.downloadPickerNavigationController = nil;
             displayUploadViewController();
         }
     }
