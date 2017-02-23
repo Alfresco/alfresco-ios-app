@@ -139,14 +139,14 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
                     [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:YES];
                 }
                 
-                [accountManager addAccount:account];
-
                 [self dismissViewControllerAnimated:YES completion:^{
                     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
                     {
                         [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:YES];
                     }
                 }];
+                
+                [accountManager addAccount:account];
             }
             else
             {
