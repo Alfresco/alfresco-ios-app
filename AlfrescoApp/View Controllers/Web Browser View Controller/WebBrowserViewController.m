@@ -143,11 +143,53 @@ static CGFloat const kProgressBarHeight = 2.0f;
 - (void)initiateHTTPRequestToURL:(NSURL *)url
 {
     [self showWebView];
+    
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
+        void (^processResponse)(NSURLResponse *) = ^(NSURLResponse *response) {
+            if ([response isKindOfClass:[NSHTTPURLResponse class]])
+            {
+                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                NSInteger statusCode = httpResponse.statusCode;
+                
+                // If the page receives a 404, and is the initial request, redirect to the fallback URL, error URL or hide the webview
+                if (statusCode == 404 && !self.webView.canGoBack)
+                {
+                    if (self.fallbackURL)
+                    {
+                        NSURLRequest *redirectURLRequest = [NSURLRequest requestWithURL:self.fallbackURL];
+                        [self.webView loadRequest:redirectURLRequest];
+                    }
+                    else if (self.errorURL)
+                    {
+                        NSURLRequest *errorURLRequest = [NSURLRequest requestWithURL:self.errorURL];
+                        [self.webView loadRequest:errorURLRequest];
+                    }
+                    else
+                    {
+                        [self hideWebView];
+                    }
+                }
+                else
+                {
+                    [self makeInitialWebViewRequest];
+                }
+            }
+        };
+        
         NSURLRequest *httpRequest = [NSURLRequest requestWithURL:url];
-        NSURLConnection *connection = [NSURLConnection connectionWithRequest:httpRequest delegate:self];
-        [connection start];
+        NSURLSession *urlSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:nil];
+        NSURLSessionDataTask *urlSessionDataTask = [urlSession dataTaskWithRequest:httpRequest completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+            if (error)
+            {
+                [self hideWebView];
+            }
+            else
+            {
+                processResponse(response);
+            }
+        }];
+        [urlSessionDataTask resume];
     }
     else if (self.errorURL)
     {
@@ -202,15 +244,19 @@ static CGFloat const kProgressBarHeight = 2.0f;
 
 - (void)showWebView
 {
-    self.webView.hidden = NO;
-    [self updateButtons];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.webView.hidden = NO;
+        [self updateButtons];
+    });
 }
 
 - (void)hideWebView
 {
-    self.webView.hidden = YES;
-    self.backButton.enabled = NO;
-    self.forwardButton.enabled = NO;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.webView.hidden = YES;
+        self.backButton.enabled = NO;
+        self.forwardButton.enabled = NO;
+    });
 }
 
 - (void)setupProgressView
@@ -254,45 +300,6 @@ static CGFloat const kProgressBarHeight = 2.0f;
 - (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
 {
     self.progressView.progress = progress;
-}
-
-#pragma mark - NSURLConnectionDataDelegate Methods
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    if ([response isKindOfClass:[NSHTTPURLResponse class]])
-    {
-        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-        NSInteger statusCode = httpResponse.statusCode;
-        
-        // If the page receives a 404, and is the initial request, redirect to the fallback URL, error URL or hide the webview
-        if (statusCode == 404 && !self.webView.canGoBack)
-        {
-            if (self.fallbackURL)
-            {
-                NSURLRequest *redirectURLRequest = [NSURLRequest requestWithURL:self.fallbackURL];
-                [self.webView loadRequest:redirectURLRequest];
-            }
-            else if (self.errorURL)
-            {
-                NSURLRequest *errorURLRequest = [NSURLRequest requestWithURL:self.errorURL];
-                [self.webView loadRequest:errorURLRequest];
-            }
-            else
-            {
-                [self hideWebView];
-            }
-        }
-        else
-        {
-            [self makeInitialWebViewRequest];
-        }
-    }
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    [self hideWebView];
 }
 
 @end
