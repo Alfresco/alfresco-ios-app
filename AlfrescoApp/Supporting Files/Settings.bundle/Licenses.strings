@@ -48,3 +48,7 @@
 /* Google Analytics */
 
 "Google Analytics" = "Copyright 2015 Google Inc.\n\nRefer to http://www.google.com/analytics/terms/us.html for full terms.";
+
+/* Realm */
+
+"Realm" = "Refer to https://github.com/realm/realm-cocoa/blob/master/LICENSE for full terms.";
