@@ -368,7 +368,7 @@
  * About View Controller
  */
 "about.title" = "バージョン情報";
-"about.content" = "Alfresco は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Mobile は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco in the Cloud と、Alfresco One、Alfresco Community Edition (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。このモバイルアプリケーションでは、Alfresco のログイン資格情報を使って (HTTP または HTTPS 経由で) 社内の Alfresco リポジトリに接続し、権限に基づいてアクセスを管理します。";
+"about.content" = "Alfresco は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Mobile は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco Content Services Cloud、Alfresco Content Services と Alfresco Community Edition (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。このモバイルアプリケーションでは、Alfresco のログイン資格情報を使って (HTTP または HTTPS 経由で) 社内の Alfresco リポジトリに接続し、権限に基づいてアクセスを管理します。";
 "about.version.number" = "バージョン:%@ (%@)";
 "about.build.date.time" = "ビルド日時:%s %s";
 
