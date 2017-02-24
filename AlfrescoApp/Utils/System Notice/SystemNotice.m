@@ -106,13 +106,13 @@ CGFloat hiddenYOrigin;
     [[SystemNoticeManager sharedManager] queueSystemNotice:self];
 }
 
-#pragma mark - Internal Create & View methods
-
 - (void)canDisplay
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationWillChange:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
     [self displayNotice];
 }
+
+#pragma mark - Internal Create & View methods
 
 - (void)createNotice
 {

@@ -1057,7 +1057,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 else
                 {
                     NSString *contentPath = [selectedNode contentPath];
-                    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
+                    BOOL isDirectory = NO;
+                    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:&isDirectory])
                     {
                         contentPath = nil;
                     }

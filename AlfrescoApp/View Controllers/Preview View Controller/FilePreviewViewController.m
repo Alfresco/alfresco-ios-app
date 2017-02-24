@@ -475,7 +475,8 @@ static CGFloat sDownloadProgressHeight;
     if ([self.document isNodeInSyncList])
     {
         NSString *contentPath = [self.document contentPath];
-        if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
+        BOOL isDirectory = NO;
+        if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:&isDirectory])
         {
             contentPath = nil;
         }

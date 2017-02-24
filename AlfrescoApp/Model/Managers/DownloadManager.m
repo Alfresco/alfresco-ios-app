@@ -443,8 +443,9 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 - (BOOL)copyDocumentFrom:(NSString *)filePath destinationFilename:(NSString *)destinationFilename overwriteExisting:(BOOL)overwrite error:(NSError **)error
 {
     NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename];
-
-    if (overwrite && [self.fileManager fileExistsAtPath:downloadPath isDirectory:NO])
+    BOOL isDirectory = NO;
+    
+    if (overwrite && [self.fileManager fileExistsAtPath:downloadPath isDirectory:&isDirectory])
     {
         // remove the file to be overwritten first
         if (![self.fileManager removeItemAtPath:downloadPath error:error])

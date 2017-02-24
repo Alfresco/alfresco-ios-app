@@ -323,12 +323,14 @@ static NSInteger const kTagProfileCell = 3;
 
 - (void)cancel:(id)sender
 {
-    if ([self.delegate respondsToSelector:@selector(accountInfoViewControllerWillDismiss:)])
+    SEL newAccountViewControllerWillDismissSelector = NSSelectorFromString(@"accountInfoViewControllerWillDismiss:");
+    if ([self.delegate respondsToSelector:newAccountViewControllerWillDismissSelector])
     {
         [self.delegate newAccountViewControllerWillDismiss:self];
     }
     [self dismissViewControllerAnimated:YES completion:^{
-        if ([self.delegate respondsToSelector:@selector(accountInfoViewControllerDidDismiss:)])
+        SEL newAccountViewControllerDidDismissSelector = NSSelectorFromString(@"accountInfoViewControllerDidDismiss:");
+        if ([self.delegate respondsToSelector:newAccountViewControllerDidDismissSelector])
         {
             [self.delegate newAccountViewControllerDidDismiss:self];
         }

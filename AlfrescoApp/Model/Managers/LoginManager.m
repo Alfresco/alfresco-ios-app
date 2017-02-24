@@ -60,7 +60,6 @@
     if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoAccessDeniedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appPolicyUpdated:) name:kAlfrescoApplicationPolicyUpdatedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
     }
     return self;
