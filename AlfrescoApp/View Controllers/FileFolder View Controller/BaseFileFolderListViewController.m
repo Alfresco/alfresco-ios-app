@@ -19,6 +19,7 @@
 #import "BaseFileFolderListViewController.h"
 #import "PreferenceManager.h"
 #import "RealmSyncManager.h"
+#import "UISearchBar+Paste.h"
 
 @interface BaseFileFolderListViewController ()
 
@@ -194,6 +195,13 @@
     self.searchResults = nil;
     self.isDisplayingSearch = NO;
     [self.tableView reloadData];
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    [searchBar enableReturnKeyForPastedText:text range:range];
+    
+    return YES;
 }
 
 @end

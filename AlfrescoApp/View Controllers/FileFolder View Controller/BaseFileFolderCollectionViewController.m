@@ -20,6 +20,7 @@
 #import "SearchCollectionViewDataSource.h"
 #import "PermissionChecker.h"
 #import <Photos/Photos.h>
+#import "UISearchBar+Paste.h"
 
 @implementation BaseFileFolderCollectionViewController
 
@@ -157,6 +158,13 @@
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
     
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    [searchBar enableReturnKeyForPastedText:text range:range];
+    
+    return YES;
 }
 
 #pragma mark - Public methods
