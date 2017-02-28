@@ -454,6 +454,8 @@
         [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if(successful && !self.completionBlockCalledFromLoginViewController)
             {
+                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                delegate.mainMenuViewController.autoselectDefaultMenuOption = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
             }
             else if (self.completionBlockCalledFromLoginViewController)
