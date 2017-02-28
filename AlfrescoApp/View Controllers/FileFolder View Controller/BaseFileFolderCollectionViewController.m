@@ -198,7 +198,10 @@
                 }
                 else if(CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton))
                 {
-                    [self.dataSource collectionView:self.collectionView didSwipeToDeleteItemAtIndex:properLayout.selectedIndexPathForSwipeToDelete];
+                    [self showHUD];
+                    [self.dataSource collectionView:self.collectionView didSwipeToDeleteItemAtIndex:properLayout.selectedIndexPathForSwipeToDelete completionBlock:^{
+                        [self hideHUD];
+                    }];
                 }
             }
         }
