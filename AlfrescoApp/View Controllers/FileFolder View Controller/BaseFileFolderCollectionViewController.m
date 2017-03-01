@@ -22,6 +22,8 @@
 #import <Photos/Photos.h>
 #import "UISearchBar+Paste.h"
 
+static const CGSize kUploadPopoverPreferedSize = {320, 640};
+
 @implementation BaseFileFolderCollectionViewController
 
 - (void)viewDidLoad
@@ -375,6 +377,7 @@
     if (IS_IPAD)
     {
         self.popover = controller;
+        self.popover.preferredContentSize = kUploadPopoverPreferedSize;
         
         controller.modalPresentationStyle = UIModalPresentationPopover;
         controller.popoverPresentationController.delegate = self;
@@ -556,17 +559,6 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    // if going to landscape, use the screen height as the popover width and screen width as the popover height
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
-    {
-        self.popover.preferredContentSize = CGSizeMake(screenRect.size.height, screenRect.size.width);
-    }
-    else
-    {
-        self.popover.preferredContentSize = CGSizeMake(screenRect.size.width, screenRect.size.height);
-    }
-    
     if (self.syncFailedDetailController && UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
     {
         [self.syncFailedDetailController dismissViewControllerAnimated:YES completion:nil];
