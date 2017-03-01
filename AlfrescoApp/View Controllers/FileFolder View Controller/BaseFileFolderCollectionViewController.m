@@ -566,6 +566,12 @@
     {
         self.popover.preferredContentSize = CGSizeMake(screenRect.size.width, screenRect.size.height);
     }
+    
+    if (self.syncFailedDetailController && UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+    {
+        [self.syncFailedDetailController dismissViewControllerAnimated:YES completion:nil];
+        self.syncFailedDetailController = nil;
+    }
 }
 
 #pragma mark - UIAdaptivePresentationControllerDelegate methods
