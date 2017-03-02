@@ -102,7 +102,15 @@ static NSInteger const kTagAccountDetailsCell = 4;
         self.canEditAccounts = (canEditAccounts) ? canEditAccounts.boolValue : YES;
         
         NSNumber *canReorderMenuItems = configuration[kAppConfigurationUserCanEditMainMenuKey];
-        self.canReorderMainMenuItems = ((canReorderMenuItems.boolValue && account == [AccountManager sharedManager].selectedAccount) || [account serverConfigurationExists]) ? canReorderMenuItems.boolValue : YES;
+        
+        if (account == [AccountManager sharedManager].selectedAccount)
+        {
+            self.canReorderMainMenuItems = canReorderMenuItems.boolValue;
+        }
+        else
+        {
+            self.canReorderMainMenuItems = [account serverConfigurationExists] == NO;
+        }
     }
     return self;
 }
@@ -338,7 +346,7 @@ static NSInteger const kTagAccountDetailsCell = 4;
         configurationCell.valueLabel.text = @"";
         if (!self.canReorderMainMenuItems)
         {
-            configurationCell.userInteractionEnabled = self.canReorderMainMenuItems;
+            configurationCell.userInteractionEnabled = NO;
             configurationCell.titleLabel.textColor = [UIColor lightGrayColor];
         }
         
