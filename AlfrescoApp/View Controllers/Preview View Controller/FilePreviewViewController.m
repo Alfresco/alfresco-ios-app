@@ -222,33 +222,36 @@ static CGFloat sDownloadProgressHeight;
     }
     
     previewVC.gestureDelegate = self;
-    previewVC.view.hidden = YES;
-    previewVC.previewController.currentPreviewItemIndex = 1;
-    previewVC.view.frame = self.view.bounds;
-    [self.view addSubview:previewVC.view];
     
-    self.previewController = previewVC;
-    
-    [self.previewController changeButtonImageIsFullscreen:self.fullScreenMode];
-    if(self.fullScreenMode)
-    {
-        [self.previewController hideButton:YES];
-    }
-    
-    if (animated)
-    {
-        previewVC.view.alpha = 0.0f;
-        previewVC.view.hidden = NO;
-        [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
-            self.previewThumbnailImageView.alpha = 0.0f;
-            previewVC.view.alpha = 1.0f;
-        }];
-    }
-    else
-    {
-        previewVC.view.hidden = NO;
-        previewVC.view.alpha = 1.0;
-    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        previewVC.view.hidden = YES;
+        previewVC.previewController.currentPreviewItemIndex = 1;
+        previewVC.view.frame = self.view.bounds;
+        [self.view addSubview:previewVC.view];
+        
+        self.previewController = previewVC;
+        
+        [self.previewController changeButtonImageIsFullscreen:self.fullScreenMode];
+        if(self.fullScreenMode)
+        {
+            [self.previewController hideButton:YES];
+        }
+        
+        if (animated)
+        {
+            previewVC.view.alpha = 0.0f;
+            previewVC.view.hidden = NO;
+            [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
+                self.previewThumbnailImageView.alpha = 0.0f;
+                previewVC.view.alpha = 1.0f;
+            }];
+        }
+        else
+        {
+            previewVC.view.hidden = NO;
+            previewVC.view.alpha = 1.0;
+        }
+    });
 }
 
 - (void)destroyPreviewerAnimated:(BOOL)animated
