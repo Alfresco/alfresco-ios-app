@@ -60,6 +60,14 @@
 			<key>File</key>
 			<string>Reachability</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+			<key>Title</key>
+			<string>Realm</string>
+			<key>File</key>
+			<string>Realm</string>
+		</dict>
 	</array>
 </dict>
 </plist>

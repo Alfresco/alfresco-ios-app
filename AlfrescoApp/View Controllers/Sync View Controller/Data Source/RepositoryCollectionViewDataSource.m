@@ -93,7 +93,6 @@
     {
         [self.delegate requestFailedWithError:error stringFormat:NSLocalizedString(@"error.filefolder.content.failedtoretrieve", @"Retrieve failed")];
     }
-
 }
 
 - (void)addMoreToCollectionViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
@@ -434,7 +433,7 @@
 }
 
 #pragma mark - SwipeToDeleteDelegate methods
-- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath
+- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath completionBlock:(void (^)())completionBlock
 {
     AlfrescoNode *nodeToDelete = self.dataSourceCollection[indexPath.item];
     
@@ -446,6 +445,11 @@
                 BaseCollectionViewFlowLayout *properLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
                 [properLayout setSelectedIndexPathForSwipeToDelete:nil];
             }
+        }
+        
+        if (completionBlock)
+        {
+            completionBlock();
         }
     }];
 }

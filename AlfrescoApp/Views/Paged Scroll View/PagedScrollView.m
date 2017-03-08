@@ -50,6 +50,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     [self sortOutDelegates];
 }
 

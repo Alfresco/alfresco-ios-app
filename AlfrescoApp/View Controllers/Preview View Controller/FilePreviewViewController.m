@@ -15,10 +15,9 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
- 
-#import <MediaPlayer/MediaPlayer.h>
-#import <AVFoundation/AVFoundation.h>
 
+#import <AVFoundation/AVFoundation.h>
+#import <AVKit/AVKit.h>
 #import "FilePreviewViewController.h"
 #import "ThumbnailImageView.h"
 #import "ThumbnailManager.h"
@@ -46,7 +45,7 @@ static CGFloat sDownloadProgressHeight;
 @property (nonatomic, strong) AlfrescoDocument *document;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong) AlfrescoRequest *downloadRequest;
-@property (nonatomic, strong) MPMoviePlayerViewController *mediaPlayerViewController;
+@property (nonatomic, strong) AVPlayerViewController *playerViewController;
 @property (nonatomic, strong) FullScreenAnimationController *animationController;
 // Used for the file path initialiser
 @property (nonatomic, strong) NSString *filePathForFileToLoad;
@@ -152,8 +151,8 @@ static CGFloat sDownloadProgressHeight;
 
 - (IBAction)playButtonPressed:(id)sender
 {
-    [self.mediaPlayerViewController.moviePlayer prepareToPlay];
-    [self presentMoviePlayerViewControllerAnimated:self.mediaPlayerViewController];
+    [self.playerViewController.player play];
+    [self presentViewController:self.playerViewController animated:YES completion:nil];
 }
 
 #pragma mark - Private Functions
@@ -223,33 +222,36 @@ static CGFloat sDownloadProgressHeight;
     }
     
     previewVC.gestureDelegate = self;
-    previewVC.view.hidden = YES;
-    previewVC.previewController.currentPreviewItemIndex = 1;
-    previewVC.view.frame = self.view.bounds;
-    [self.view addSubview:previewVC.view];
     
-    self.previewController = previewVC;
-    
-    [self.previewController changeButtonImageIsFullscreen:self.fullScreenMode];
-    if(self.fullScreenMode)
-    {
-        [self.previewController hideButton:YES];
-    }
-    
-    if (animated)
-    {
-        previewVC.view.alpha = 0.0f;
-        previewVC.view.hidden = NO;
-        [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
-            self.previewThumbnailImageView.alpha = 0.0f;
-            previewVC.view.alpha = 1.0f;
-        }];
-    }
-    else
-    {
-        previewVC.view.hidden = NO;
-        previewVC.view.alpha = 1.0;
-    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        previewVC.view.hidden = YES;
+        previewVC.previewController.currentPreviewItemIndex = 1;
+        previewVC.view.frame = self.view.bounds;
+        [self.view addSubview:previewVC.view];
+        
+        self.previewController = previewVC;
+        
+        [self.previewController changeButtonImageIsFullscreen:self.fullScreenMode];
+        if(self.fullScreenMode)
+        {
+            [self.previewController hideButton:YES];
+        }
+        
+        if (animated)
+        {
+            previewVC.view.alpha = 0.0f;
+            previewVC.view.hidden = NO;
+            [UIView animateWithDuration:kAnimationFadeSpeed animations:^{
+                self.previewThumbnailImageView.alpha = 0.0f;
+                previewVC.view.alpha = 1.0f;
+            }];
+        }
+        else
+        {
+            previewVC.view.hidden = NO;
+            previewVC.view.alpha = 1.0;
+        }
+    });
 }
 
 - (void)destroyPreviewerAnimated:(BOOL)animated
@@ -274,7 +276,7 @@ static CGFloat sDownloadProgressHeight;
 }
 
 /**
- * Create or destroy an MPMoviePlayerController
+ * Create or destroy an AVPlayerViewController
  */
 
 - (void)createMediaPlayerForFilePath:(NSString *)filePath animated:(BOOL)animated
@@ -283,10 +285,9 @@ static CGFloat sDownloadProgressHeight;
     
     NSURL *fileURL = [NSURL fileURLWithPath:filePath];
     
-    MPMoviePlayerViewController *moviePlayer = [[MPMoviePlayerViewController alloc] init];
-    moviePlayer.moviePlayer.contentURL = fileURL;
-    
-    self.mediaPlayerViewController = moviePlayer;
+    AVPlayerViewController *playerViewController = [[AVPlayerViewController alloc] init];
+    playerViewController.player = [AVPlayer playerWithURL:fileURL];
+    self.playerViewController = playerViewController;
     
     // Generate a movie preview
     // Synchronously generates a preview
@@ -335,14 +336,14 @@ static CGFloat sDownloadProgressHeight;
         } completion:^(BOOL finished) {
             self.moviePlayerContainer.hidden = YES;
             self.moviePlayerPreviewImageView.image = nil;
-            self.mediaPlayerViewController = nil;
+            self.playerViewController = nil;
         }];
     }
     else
     {
         self.moviePlayerContainer.alpha = 0.0f;
         self.moviePlayerPreviewImageView.image = nil;
-        self.mediaPlayerViewController = nil;
+        self.playerViewController = nil;
         self.moviePlayerContainer.hidden = YES;
     }
 }
@@ -477,7 +478,8 @@ static CGFloat sDownloadProgressHeight;
     if ([self.document isNodeInSyncList])
     {
         NSString *contentPath = [self.document contentPath];
-        if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
+        BOOL isDirectory = NO;
+        if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:&isDirectory])
         {
             contentPath = nil;
         }

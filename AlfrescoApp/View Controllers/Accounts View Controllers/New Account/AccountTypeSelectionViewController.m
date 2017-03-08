@@ -139,22 +139,25 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
                     [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:YES];
                 }
                 
-                [accountManager addAccount:account];
-
                 [self dismissViewControllerAnimated:YES completion:^{
                     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
                     {
                         [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:YES];
                     }
                 }];
+                
+                [accountManager addAccount:account];
             }
             else
             {
-                UIAlertView *failureAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
-                                                                       message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
-                                                                      delegate:nil cancelButtonTitle:NSLocalizedString(@"Done", @"Done")
-                                                             otherButtonTitles:nil, nil];
-                [failureAlert show];
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+                                                                                         message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", @"Done")
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:nil];
+                [alertController addAction:doneAction];
+                [self presentViewController:alertController animated:YES completion:nil];
             }
         }];
     }

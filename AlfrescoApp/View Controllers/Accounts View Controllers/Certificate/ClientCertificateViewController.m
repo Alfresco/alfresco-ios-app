@@ -173,20 +173,21 @@ static CGFloat const kTableViewCellHeight = 54.0f;
 
 - (void)deleteCertificate
 {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"certificate-details.delete.title", @"Title for the delete certificate prompt")
-                                                    message:NSLocalizedString(@"certificate-details.delete.message", @"Message for the delete certificate prompt")
-                                                   delegate:nil
-                                          cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                          otherButtonTitles:NSLocalizedString(@"certificate-details.delete.confirm", @"Remove button label for the Remove certificate prompt"), nil];
-    
-    [alert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        
-        if (!isCancelButton)
-        {
-            self.account.accountCertificate = nil;
-            [self constructTableGroups];
-        }
-    }];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"certificate-details.delete.title", @"Title for the delete certificate prompt")
+                                                                             message:NSLocalizedString(@"certificate-details.delete.message", @"Message for the delete certificate prompt")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    [alertController addAction:cancelAction];
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"certificate-details.delete.confirm", @"Remove button label for the Remove certificate prompt")
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:^(UIAlertAction * _Nonnull action) {
+                                                             self.account.accountCertificate = nil;
+                                                             [self constructTableGroups];
+                                                         }];
+    [alertController addAction:deleteAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 @end

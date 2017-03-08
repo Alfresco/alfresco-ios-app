@@ -22,6 +22,7 @@
 #import "AccountManager.h"
 #import "LoginManager.h"
 #import "NodePickerScopeViewController.h"
+#import "UISearchBar+Paste.h"
 
 static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('cmis:name:%@') AND IN_TREE('%@')";
 
@@ -253,6 +254,13 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     self.searchResults = nil;
     self.isDisplayingSearch = NO;
     [self.tableView reloadData];
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    [searchBar enableReturnKeyForPastedText:text range:range];
+    
+    return YES;
 }
 
 #pragma mark - UIRefreshControl Functions

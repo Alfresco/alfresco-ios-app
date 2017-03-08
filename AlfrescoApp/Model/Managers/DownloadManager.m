@@ -17,8 +17,7 @@
  ******************************************************************************/
  
 #import "DownloadManager.h"
-
-static NSUInteger const kOverwriteConfirmationOptionYes = 0;
+#import "UniversalDevice.h"
 
 static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 
@@ -118,21 +117,10 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
         }
         else
         {
-            [self displayOverwriteConfirmationWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                NSString *blockFilePath;
+            void (^copyDocumentBlock)(BOOL) = ^(BOOL overwrite){
                 NSError *blockError = nil;
-                
-                if (buttonIndex == kOverwriteConfirmationOptionYes)
-                {
-                    // User chose to overwrite existing file
-                    blockFilePath = [self copyToDownloadsFolder:document documentName:documentName contentPath:contentPath overwriteExisting:YES error:&blockError];
-                }
-                else
-                {
-                    // Don't allow overwriting existing content
-                    blockFilePath = [self copyToDownloadsFolder:document documentName:documentName contentPath:contentPath overwriteExisting:NO error:&blockError];
-                }
-                
+                NSString *blockFilePath = [self copyToDownloadsFolder:document documentName:documentName contentPath:contentPath overwriteExisting:overwrite error:&blockError];;
+
                 if (!suppressAlerts && blockFilePath != nil)
                 {
                     if ([blockFilePath.lastPathComponent isEqualToString:contentPath.lastPathComponent])
@@ -155,7 +143,24 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
                 {
                     completionBlock(blockFilePath);
                 }
-            }];
+            };
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                     message:NSLocalizedString(@"download.overwrite.prompt.message", @"overwrite alert message")
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * _Nonnull action) {
+                                                                  copyDocumentBlock(YES);
+                                                              }];
+            [alertController addAction:yesAction];
+            UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No")
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                                 copyDocumentBlock(NO);
+                                                             }];
+            [alertController addAction:noAction];
+            [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
         }
     }
 }
@@ -220,20 +225,9 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
         }
         else
         {
-            [self displayOverwriteConfirmationWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                NSString *blockFilePath;
+            void (^moveDocumentBlock)(BOOL) = ^(BOOL overwrite){
                 NSError *blockError = nil;
-                
-                if (buttonIndex == kOverwriteConfirmationOptionYes)
-                {
-                    // User chose to overwrite existing file
-                    blockFilePath = [self moveFileToDownloadsFolderFromAbsolutePath:absolutePath overwriteExisting:YES error:&blockError];
-                }
-                else
-                {
-                    // Don't allow overwriting existing content
-                    blockFilePath = [self moveFileToDownloadsFolderFromAbsolutePath:absolutePath overwriteExisting:NO error:&blockError];
-                }
+                NSString *blockFilePath = [self moveFileToDownloadsFolderFromAbsolutePath:absolutePath overwriteExisting:overwrite error:&blockError];
                 
                 if (blockFilePath != nil)
                 {
@@ -249,7 +243,24 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
                 {
                     completionBlock(blockFilePath);
                 }
-            }];
+            };
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                                     message:NSLocalizedString(@"download.overwrite.prompt.message", @"overwrite alert message")
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes")
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * _Nonnull action) {
+                                                                  moveDocumentBlock(YES);
+                                                              }];
+            [alertController addAction:yesAction];
+            UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No")
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                                 moveDocumentBlock(NO);
+                                                             }];
+            [alertController addAction:noAction];
+            [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
         }
     }
 }
@@ -432,8 +443,9 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 - (BOOL)copyDocumentFrom:(NSString *)filePath destinationFilename:(NSString *)destinationFilename overwriteExisting:(BOOL)overwrite error:(NSError **)error
 {
     NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename];
-
-    if (overwrite && [self.fileManager fileExistsAtPath:downloadPath isDirectory:NO])
+    BOOL isDirectory = NO;
+    
+    if (overwrite && [self.fileManager fileExistsAtPath:downloadPath isDirectory:&isDirectory])
     {
         // remove the file to be overwritten first
         if (![self.fileManager removeItemAtPath:downloadPath error:error])
@@ -579,16 +591,6 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }
     
     return safeFilename;
-}
-
-- (void)displayOverwriteConfirmationWithCompletionBlock:(UIAlertViewDismissBlock)completionBlock
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@""
-                                                    message:NSLocalizedString(@"download.overwrite.prompt.message", @"overwrite alert message")
-                                                   delegate:nil
-                                          cancelButtonTitle:nil
-                                          otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), NSLocalizedString(@"No", @"No"), nil];
-    [alert showWithCompletionBlock:completionBlock];
 }
 
 @end

@@ -45,7 +45,7 @@
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AlfrescoRatingService *ratingService;
 @property (nonatomic, strong) UIDocumentInteractionController *documentInteractionController;
-@property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) NavigationViewController *downloadPickerNavigationController;
 @property (nonatomic, strong) NSMutableArray *queuedCompletionBlocks;
 @property (nonatomic, assign) InAppDocumentLocation documentLocation;
 
@@ -485,124 +485,146 @@
 - (AlfrescoRequest *)pressedDeleteActionItem:(ActionCollectionItem *)actionItem
 {
     __block AlfrescoRequest *deleteRequest = nil;
-    UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"action.delete.confirmation.title", @"Delete Confirmation Title")
-                                                              message:NSLocalizedString(@"action.delete.confirmation.message", @"Delete Confirmation Message")
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                    otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-    [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
+    
+    void (^deleteBlock)() = ^void(){
+        if ([self.controller respondsToSelector:@selector(displayProgressIndicator)])
         {
-            if ([self.controller respondsToSelector:@selector(displayProgressIndicator)])
+            [self.controller displayProgressIndicator];
+        }
+        __weak typeof(self) weakSelf = self;
+        deleteRequest = [self.documentService deleteNode:self.node completionBlock:^(BOOL succeeded, NSError *error) {
+            if ([self.controller respondsToSelector:@selector(hideProgressIndicator)])
             {
-                [self.controller displayProgressIndicator];
+                [self.controller hideProgressIndicator];
             }
-            __weak typeof(self) weakSelf = self;
-            deleteRequest = [self.documentService deleteNode:self.node completionBlock:^(BOOL succeeded, NSError *error) {
-                if ([self.controller respondsToSelector:@selector(hideProgressIndicator)])
+            if (succeeded)
+            {
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                                  action:kAnalyticsEventActionDelete
+                                                                   label:[weakSelf analyticsLabel]
+                                                                   value:@1];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.node];
+                [UniversalDevice clearDetailViewController];
+                RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
+                if ([weakSelf.node isNodeInSyncList])
                 {
-                    [self.controller hideProgressIndicator];
-                }
-                if (succeeded)
-                {
-                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                                      action:kAnalyticsEventActionDelete
-                                                                       label:[weakSelf analyticsLabel]
-                                                                       value:@1];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDocumentDeletedOnServerNotification object:weakSelf.node];
-                    [UniversalDevice clearDetailViewController];
-                    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-                    if ([weakSelf.node isNodeInSyncList])
-                    {
-                        [syncManager deleteNodeFromSync:weakSelf.node deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally) {
-                            
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                NSString *successMessage = @"";
-                                if (savedLocally)
-                                {
-                                    successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), weakSelf.node.name];
-                                }
-                                else
-                                {
-                                    successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
-                                }
-                                displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
-                            });
-                        }];
-                    }
-                    else
-                    {
-                        NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
-                        displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
-                    }
+                    [syncManager deleteNodeFromSync:weakSelf.node deleteRule:DeleteRuleAllNodes withCompletionBlock:^(BOOL savedLocally) {
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSString *successMessage = @"";
+                            if (savedLocally)
+                            {
+                                successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message.sync", @"Delete Success Message"), weakSelf.node.name];
+                            }
+                            else
+                            {
+                                successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
+                            }
+                            displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
+                        });
+                    }];
                 }
                 else
                 {
-                    NSString *failedMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.failed.message", @"Delete Failed Message"), weakSelf.node.name];
-                    displayErrorMessageWithTitle(failedMessage, NSLocalizedString(@"action.delete.failed.title", @"Delete Failed Title"));
-                    [Notifier notifyWithAlfrescoError:error];
+                    NSString *successMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.success.message", @"Delete Success Message"), weakSelf.node.name];
+                    displayInformationMessageWithTitle(successMessage, NSLocalizedString(@"action.delete.success.title", @"Delete Success Title"));
                 }
-            }];
-        }
-    }];
+            }
+            else
+            {
+                NSString *failedMessage = [NSString stringWithFormat:NSLocalizedString(@"action.delete.failed.message", @"Delete Failed Message"), weakSelf.node.name];
+                displayErrorMessageWithTitle(failedMessage, NSLocalizedString(@"action.delete.failed.title", @"Delete Failed Title"));
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    };
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.delete.confirmation.title", @"Delete Confirmation Title")
+                                                                             message:NSLocalizedString(@"action.delete.confirmation.message", @"Delete Confirmation Message")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No")
+                                                       style:UIAlertActionStyleCancel
+                                                     handler:nil];
+    [alertController addAction:noAction];
+    UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          deleteBlock();
+                                                      }];
+    [alertController addAction:yesAction];
+    [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
     
     return deleteRequest;
 }
 
 - (void)pressedDeleteLocalFileActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath
 {
-    UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"action.delete.confirmation.title", @"Delete Confirmation Title")
-                                                              message:NSLocalizedString(@"action.delete.confirmation.message", @"Delete Confirmation Message")
-                                                             delegate:self
-                                                    cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                    otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-    [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
-        {
-            NSString *mimetype = [Utility mimeTypeForFileExtension:documentPath.pathExtension];
-            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-                                                              action:kAnalyticsEventActionDelete
-                                                               label:mimetype
-                                                               value:@1];
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDeleteLocalDocumentNotification object:documentPath];
-            [UniversalDevice clearDetailViewController];
-        }
-    }];
+    void (^deleteBlock)() = ^void(){
+        NSString *mimetype = [Utility mimeTypeForFileExtension:documentPath.pathExtension];
+        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+                                                          action:kAnalyticsEventActionDelete
+                                                           label:mimetype
+                                                           value:@1];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDeleteLocalDocumentNotification object:documentPath];
+        [UniversalDevice clearDetailViewController];
+    };
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"action.delete.confirmation.title", @"Delete Confirmation Title")
+                                                                             message:NSLocalizedString(@"action.delete.confirmation.message", @"Delete Confirmation Message")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No")
+                                                       style:UIAlertActionStyleCancel
+                                                     handler:nil];
+    [alertController addAction:noAction];
+    UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes")
+                                                        style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                                            deleteBlock();
+                                                        }];
+    [alertController addAction:yesAction];
+    [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
 }
 
 - (AlfrescoRequest *)pressedCreateSubFolderActionItem:(ActionCollectionItem *)actionItem inFolder:(AlfrescoFolder *)folder
 {
     __block AlfrescoRequest *createFolderRequest = nil;
-    UIAlertView *createFolderAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
-                                                                message:NSLocalizedString(@"browser.alertview.addfolder.message", @"Create Folder Message")
-                                                               delegate:self
-                                                      cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                      otherButtonTitles:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder"), nil];
-    createFolderAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [createFolderAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
-        {
-            NSString *desiredFolderName = [[createFolderAlert textFieldAtIndex:0] text];
-            createFolderRequest = [self.documentService createFolderWithName:desiredFolderName inParentFolder:folder properties:nil completionBlock:^(AlfrescoFolder *createdFolder, NSError *error) {
-                if (createdFolder)
-                {
-                    NSString *folderCreatedMessage = [NSString stringWithFormat:NSLocalizedString(@"action.subfolder.success.message", @"Created Message"), desiredFolderName];
-                    displayInformationMessageWithTitle(folderCreatedMessage, NSLocalizedString(@"action.subfolder.success.title", @"Created Title"));
-                    
-                    NSDictionary *notificationObject = @{kAlfrescoNodeAddedOnServerParentFolderKey : folder, kAlfrescoNodeAddedOnServerSubNodeKey : createdFolder};
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoNodeAddedOnServerNotification object:notificationObject];
-                }
-                else
-                {
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"action.subfolder.failure.title", @"Creation Failed"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-            }];
-        }
-    }];
     
+    void (^createFolderBlock)(NSString *) = ^void(NSString *desiredFolderName){
+        createFolderRequest = [self.documentService createFolderWithName:desiredFolderName inParentFolder:folder properties:nil completionBlock:^(AlfrescoFolder *createdFolder, NSError *error) {
+            if (createdFolder)
+            {
+                NSString *folderCreatedMessage = [NSString stringWithFormat:NSLocalizedString(@"action.subfolder.success.message", @"Created Message"), desiredFolderName];
+                displayInformationMessageWithTitle(folderCreatedMessage, NSLocalizedString(@"action.subfolder.success.title", @"Created Title"));
+                
+                NSDictionary *notificationObject = @{kAlfrescoNodeAddedOnServerParentFolderKey : folder, kAlfrescoNodeAddedOnServerSubNodeKey : createdFolder};
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoNodeAddedOnServerNotification object:notificationObject];
+            }
+            else
+            {
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"action.subfolder.failure.title", @"Creation Failed"), [ErrorDescriptions descriptionForError:error]]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
+        }];
+    };
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"browser.alertview.addfolder.title", @"Create Folder Title")
+                                                                             message:NSLocalizedString(@"browser.alertview.addfolder.message", @"Create Folder Message")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    [alertController addAction:cancelAction];
+    UIAlertAction *createFolderAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.alertview.addfolder.create", @"Create Folder")
+                                                                 style:UIAlertActionStyleDefault
+                                                               handler:^(UIAlertAction * _Nonnull action) {
+                                                                   NSString *folderName = [alertController.textFields.firstObject text];
+                                                                   createFolderBlock(folderName);
+                                                               }];
+    [alertController addAction:createFolderAction];
+    [alertController addTextFieldWithConfigurationHandler:nil];
+    [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
+
     return createFolderRequest;
 }
 
@@ -639,16 +661,20 @@
     DownloadsViewController *downloadPicker = [[DownloadsViewController alloc] init];
     downloadPicker.isDownloadPickerEnabled = YES;
     downloadPicker.downloadPickerDelegate = self;
-    NavigationViewController *downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
+    self.downloadPickerNavigationController = [[NavigationViewController alloc] initWithRootViewController:downloadPicker];
     
     if (IS_IPAD)
     {
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:downloadPickerNavigationController];
-        [self.popover presentPopoverFromRect:view.frame inView:inView permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        self.downloadPickerNavigationController.modalPresentationStyle = UIModalPresentationPopover;
+        self.downloadPickerNavigationController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        self.downloadPickerNavigationController.popoverPresentationController.sourceView = inView;
+        self.downloadPickerNavigationController.popoverPresentationController.sourceRect = view.frame;
+        
+        [[UniversalDevice topPresentedViewController] presentViewController:self.downloadPickerNavigationController animated:YES completion:nil];
     }
     else
     {
-        [UniversalDevice displayModalViewController:downloadPickerNavigationController onController:self.controller withCompletionBlock:nil];
+        [UniversalDevice displayModalViewController:self.downloadPickerNavigationController onController:self.controller withCompletionBlock:nil];
     }
 }
 
@@ -835,10 +861,10 @@
     
     if (IS_IPAD)
     {
-        if (self.popover.isPopoverVisible)
+        if (self.downloadPickerNavigationController.popoverPresentationController)
         {
-            [self.popover dismissPopoverAnimated:YES];
-            self.popover = nil;
+            [self.downloadPickerNavigationController dismissViewControllerAnimated:YES completion:nil];
+            self.downloadPickerNavigationController = nil;
             displayUploadViewController();
         }
     }

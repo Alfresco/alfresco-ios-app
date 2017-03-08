@@ -21,7 +21,6 @@
 @interface NavigationViewController : UINavigationController
 
 @property (nonatomic, strong) UIViewController *rootViewController;
-@property (nonatomic, strong) UIPopoverController *masterPopoverController;
 @property (nonatomic, assign) BOOL isCurrentlyExpanded;
 
 - (void)resetRootViewControllerWithViewController:(UIViewController *)viewController;

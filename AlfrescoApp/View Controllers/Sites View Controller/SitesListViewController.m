@@ -29,6 +29,7 @@
 #import "FilePreviewViewController.h"
 #import "PreferenceManager.h"
 #import "SiteMembersViewController.h"
+#import "UISearchBar+Paste.h"
 
 static CGFloat const kSearchBarSpeed = 0.3f;
 
@@ -702,6 +703,13 @@ static CGFloat kSearchCellHeight = 60.0f;
     self.searchResults = nil;
     self.isDisplayingSearch = NO;
     [self.tableView reloadData];
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    [searchBar enableReturnKeyForPastedText:text range:range];
+    
+    return YES;
 }
 
 #pragma mark - UISearchControllerDelegate Methods

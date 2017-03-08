@@ -162,12 +162,7 @@
                                                        label:kAnalyticsEventLabelPartial
                                                        value:@1];
     
-    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                           message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                 otherButtonTitles:nil];
-    [confirmation show];
+    [self showConfirmationAlert];
 }
 
 + (void)resetEntireApp
@@ -190,12 +185,7 @@
                                                        label:kAnalyticsEventLabelFull
                                                        value:@1];
     
-    UIAlertView *confirmation = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
-                                                           message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
-                                                          delegate:nil
-                                                 cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                 otherButtonTitles:nil];
-    [confirmation show];
+    [self showConfirmationAlert];
 }
 
 - (BOOL)forceResetIfNecessary
@@ -221,6 +211,19 @@
 }
 
 #pragma mark - Private Methods
+
++ (void)showConfirmationAlert
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Reset Complete Title")
+                                                                             message:NSLocalizedString(@"settings.reset.confirmation.message", @"Reset Complete Message")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", @"Close")
+                                                          style:UIAlertActionStyleCancel
+                                                        handler:nil];
+    [alertController addAction:closeAction];
+    
+    [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
+}
 
 - (UIWindow *)pinAndBlankScreensWindow
 {

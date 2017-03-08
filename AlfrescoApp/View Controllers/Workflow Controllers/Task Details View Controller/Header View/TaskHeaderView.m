@@ -46,6 +46,8 @@ typedef NS_ENUM(NSUInteger, WorkflowPriorityType)
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     [self commonInit];
 }
 

@@ -368,7 +368,7 @@
  * About View Controller
  */
 "about.title" = "Acerca de";
-"about.content" = "Alfresco es la plataforma abierta para la gestión de contenido empresarial crítico y la colaboración.\n\nAlfresco Mobile ha sido diseñado y desarrollado por Alfresco Software, Inc. y se conecta a los servidores de Alfresco in the Cloud, Alfresco One y Alfresco Community Edition (3.4.8 y posteriores) para ofrecerle acceso seguro a los ficheros corporativos cuando no está en la oficina. Esta aplicación móvil conecta con su repositorio de Alfresco empleando sus credenciales de inicio de sesión de Alfresco (sobre HTTP o HTTPS) y gestiona el acceso en base a sus permisos.";
+"about.content" = "Alfresco es la plataforma abierta para la gestión de contenido empresarial crítico y la colaboración.\n\nAlfresco Mobile ha sido diseñado y desarrollado por Alfresco Software, Inc. y se conecta a los servidores de Alfresco Content Services Cloud, Alfresco Content Services y Alfresco Community Edition (3.4.8 y posteriores) para ofrecerle acceso seguro a los ficheros corporativos cuando no está en la oficina. Esta aplicación móvil conecta con su repositorio de Alfresco empleando sus credenciales de inicio de sesión de Alfresco (sobre HTTP o HTTPS) y gestiona el acceso en base a sus permisos.";
 "about.version.number" = "Versión: %@ (%@)";
 "about.build.date.time" = "Fecha de creación: %s %s";
 

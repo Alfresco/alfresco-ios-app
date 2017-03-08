@@ -51,7 +51,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
 @property (nonatomic, strong) NSMutableArray *attachments;
 @property (nonatomic) BOOL documentReview;
 @property (nonatomic, strong) DatePickerViewController *datePickerViewController;
-@property (nonatomic, strong) UIPopoverController *datePopoverController;
+@property (nonatomic, strong) UINavigationController *datePickerNavigationViewController;
 @property (nonatomic, strong) NSDate *dueDate;
 @property (nonatomic, strong) UIBarButtonItem *createTaskButton;
 
@@ -298,15 +298,18 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
     
     if (IS_IPAD)
     {
-        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:self.datePickerViewController];
-        
         CGSize datePickerViewSize = self.datePickerViewController.view.frame.size;
         self.datePickerViewController.preferredContentSize = CGSizeMake(datePickerViewSize.width, datePickerViewSize.height + kNavigationBarHeight);
         
-        self.datePopoverController = [[UIPopoverController alloc] initWithContentViewController:navigationController];
-        
         CGRect popoverRect = [self.view convertRect:positionInTableView fromView:self.tableView];
-        [self.datePopoverController presentPopoverFromRect:popoverRect inView:self.view permittedArrowDirections:UIPopoverArrowDirectionUp animated:YES];
+        
+        self.datePickerNavigationViewController = [[UINavigationController alloc] initWithRootViewController:self.datePickerViewController];
+        self.datePickerNavigationViewController.modalPresentationStyle = UIModalPresentationPopover;
+        self.datePickerNavigationViewController.popoverPresentationController.sourceView = self.view;
+        self.datePickerNavigationViewController.popoverPresentationController.sourceRect = popoverRect;
+        self.datePickerNavigationViewController.popoverPresentationController.permittedArrowDirections = UIPopoverArrowDirectionUp;
+
+        [self presentViewController:self.datePickerNavigationViewController animated:YES completion:nil];
     }
     else
     {
@@ -332,10 +335,10 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
         }
     }
     
-    if (self.datePopoverController)
+    if (self.datePickerNavigationViewController)
     {
-        [self.datePopoverController dismissPopoverAnimated:YES];
-        self.datePopoverController = nil;
+        [self.datePickerNavigationViewController dismissViewControllerAnimated:YES completion:nil];
+        self.datePickerNavigationViewController = nil;
     }
 }
 

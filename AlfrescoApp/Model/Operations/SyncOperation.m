@@ -151,7 +151,7 @@
         if(self.downloadCompletionBlock)
         {
             NSError *error = [AlfrescoErrors alfrescoErrorWithAlfrescoErrorCode:kAlfrescoErrorCodeNetworkRequestCancelled];
-            self.downloadCompletionBlock(nil, error);
+            self.downloadCompletionBlock(NO, error);
         }
     }
     else

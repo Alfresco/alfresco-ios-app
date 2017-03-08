@@ -50,6 +50,8 @@ static CGFloat const kDefaultMaxHeight = 30.0f;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     [self setup];
 }
 

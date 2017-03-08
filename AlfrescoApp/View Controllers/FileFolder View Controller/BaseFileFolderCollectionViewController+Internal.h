@@ -32,7 +32,7 @@
 
 static CGFloat const kCellHeight = 64.0f;
 
-@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, UIPopoverControllerDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate, UIImagePickerControllerDelegate, DownloadsPickerDelegate, UINavigationControllerDelegate, UploadFormViewControllerDelegate, UIAlertViewDelegate>
+@interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate, UIImagePickerControllerDelegate, DownloadsPickerDelegate, UINavigationControllerDelegate, UploadFormViewControllerDelegate>
 
 @property (nonatomic, strong) UITapGestureRecognizer *tapToDismissDeleteAction;
 @property (nonatomic, strong) ALFSwipeToDeleteGestureRecognizer *swipeToDeleteGestureRecognizer;
@@ -40,8 +40,8 @@ static CGFloat const kCellHeight = 64.0f;
 @property (nonatomic) BOOL shouldShowOrHideDelete;
 @property (nonatomic) CGFloat cellActionViewWidth;
 @property (nonatomic, strong) AlfrescoNode *retrySyncNode;
-@property (nonatomic, strong) UIPopoverController *retrySyncPopover;
-@property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, strong) FailedTransferDetailViewController *syncFailedDetailController;
+@property (nonatomic, strong) UIViewController *popover;
 @property (nonatomic, assign) UIBarButtonItem *alertControllerSender;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic) BOOL hasRequestFinished;

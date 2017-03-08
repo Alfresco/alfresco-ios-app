@@ -220,17 +220,19 @@ static NSString * const kTextFileMimeType = @"text/plain";
             NSString *alertTitleKey = self.editingDocument ? @"document.edit.button.discard" : @"createtextfile.dismiss.confirmation.title";
             NSString *alertMessageKey = self.editingDocument ? @"document.edit.dismiss.confirmation.message" : @"createtextfile.dismiss.confirmation.message";
             
-            UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(alertTitleKey, @"Discard Title")
-                                                                        message:NSLocalizedString(alertMessageKey, @"Discard Message")
-                                                                       delegate:self
-                                                              cancelButtonTitle:NSLocalizedString(@"document.edit.discard", @"Discard")
-                                                              otherButtonTitles:NSLocalizedString(@"document.edit.continue.editing", @"Continue Editing"), nil];
-            [confirmationAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                if (isCancelButton)
-                {
-                    dismissController();
-                }
-            }];
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(alertTitleKey, @"Discard Title")
+                                                                                     message:NSLocalizedString(alertMessageKey, @"Discard Message")
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *discardAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.discard", @"Discard")
+                                                                    style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                                                                        dismissController();
+                                                                    }];
+            [alertController addAction:discardAction];
+            UIAlertAction *continueAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.continue.editing", @"Continue Editing")
+                                                                     style:UIAlertActionStyleDefault
+                                                                   handler:nil];
+            [alertController addAction:continueAction];
+            [self presentViewController:alertController animated:YES completion:nil];
         }
         else
         {
@@ -283,21 +285,28 @@ static NSString * const kTextFileMimeType = @"text/plain";
                 }
                 else
                 {
-                    UIAlertView *confirmDeletion = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"document.edit.failed.title", @"Edit Document Save Failed Title")
-                                                                              message:NSLocalizedString(@"document.edit.savefailed.message", @"Edit Document Save Failed Message")
-                                                                             delegate:self
-                                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                                    otherButtonTitles:NSLocalizedString(@"document.edit.button.save", @"Save to Local Files"), nil];
-                    [confirmDeletion showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-                        if (!isCancelButton)
-                        {
-                            [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.temporaryFilePath showOverrideAlert:false completionBlock:^(NSString *filePath) {
-                                [self dismissViewControllerAnimated:YES completion:^{
-                                    displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"download.success-as.message", @"Download succeeded"), filePath.lastPathComponent]);
-                                }];
+                    void (^saveBlock)() = ^(){
+                        [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.temporaryFilePath showOverrideAlert:false completionBlock:^(NSString *filePath) {
+                            [self dismissViewControllerAnimated:YES completion:^{
+                                displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"download.success-as.message", @"Download succeeded"), filePath.lastPathComponent]);
                             }];
-                        }
-                    }];
+                        }];
+                    };
+                    
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"document.edit.failed.title", @"Edit Document Save Failed Title")
+                                                                                             message:NSLocalizedString(@"document.edit.savefailed.message", @"Edit Document Save Failed Message")
+                                                                                      preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                                           style:UIAlertActionStyleCancel
+                                                                         handler:nil];
+                    [alertController addAction:cancelAction];
+                    UIAlertAction *saveAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"document.edit.button.save", @"Save to Local Files")
+                                                                         style:UIAlertActionStyleDefault
+                                                                       handler:^(UIAlertAction * _Nonnull action) {
+                                                                           saveBlock();
+                                                                       }];
+                    [alertController addAction:saveAction];
+                    [self presentViewController:alertController animated:YES completion:nil];
                 }
             } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
                 // Update progress HUD
