@@ -22,6 +22,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     self.valueTextView.contentInset = UIEdgeInsetsMake(-8, 0, 0, 0);
 }
 

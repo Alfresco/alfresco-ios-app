@@ -44,7 +44,7 @@ typedef NS_ENUM(NSUInteger, UploadFormType)
 
 @end
 
-@interface UploadFormViewController : ParentListViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIGestureRecognizerDelegate, TagPickerViewControllerDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate, UIAlertViewDelegate>
+@interface UploadFormViewController : ParentListViewController <UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UIGestureRecognizerDelegate, TagPickerViewControllerDelegate, AVAudioRecorderDelegate, AVAudioPlayerDelegate>
 
 /**
  * Use this initialiser to upload an image to a given folder

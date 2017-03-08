@@ -56,6 +56,8 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     [self setup];
 }
 

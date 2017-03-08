@@ -99,6 +99,7 @@
 		2329C48F1CE48C38001AAB62 /* alfrescoColourLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A41844C9F8002C82C1 /* alfrescoColourLogo.png */; };
 		2329C4941CE48C3B001AAB62 /* alfrescoColourLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */; };
 		232D38A81D7D937100B2F2E8 /* PermissionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D38A71D7D937100B2F2E8 /* PermissionChecker.m */; };
+		235CA9791E60888800447FC5 /* UISearchBar+Paste.m in Sources */ = {isa = PBXBuildFile; fileRef = 235CA9781E60888800447FC5 /* UISearchBar+Paste.m */; };
 		23944CF31C74B00400E0FF99 /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
 		23A681E21CA2A1E200E90D89 /* BulletView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A681E11CA2A1E200E90D89 /* BulletView.m */; };
 		23A829241D48C75100A44281 /* NodePickerSyncedContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23A829231D48C75100A44281 /* NodePickerSyncedContentViewController.m */; };
@@ -634,7 +635,6 @@
 		73B9585617A6750F0099FB84 /* UniversalDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580017A6750E0099FB84 /* UniversalDevice.m */; };
 		73B9585717A6750F0099FB84 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580217A6750E0099FB84 /* Utility.m */; };
 		73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580517A6750E0099FB84 /* AlfrescoDocument+ALF.m */; };
-		73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */; };
 		73B9585A17A6750F0099FB84 /* SystemNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580A17A6750E0099FB84 /* SystemNotice.m */; };
 		73B9585C17A6750F0099FB84 /* SystemNoticeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9580E17A6750E0099FB84 /* SystemNoticeManager.m */; };
 		73B9586917A6750F0099FB84 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B9582717A6750E0099FB84 /* NavigationViewController.m */; };
@@ -1024,6 +1024,8 @@
 		231A0B4E1CABCCCD0029A10E /* SecurityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecurityManager.m; sourceTree = "<group>"; };
 		232D38A61D7D937100B2F2E8 /* PermissionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionChecker.h; sourceTree = "<group>"; };
 		232D38A71D7D937100B2F2E8 /* PermissionChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PermissionChecker.m; sourceTree = "<group>"; };
+		235CA9771E60888800447FC5 /* UISearchBar+Paste.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UISearchBar+Paste.h"; sourceTree = "<group>"; };
+		235CA9781E60888800447FC5 /* UISearchBar+Paste.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UISearchBar+Paste.m"; sourceTree = "<group>"; };
 		23A681E01CA2A1E200E90D89 /* BulletView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BulletView.h; sourceTree = "<group>"; };
 		23A681E11CA2A1E200E90D89 /* BulletView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BulletView.m; sourceTree = "<group>"; };
 		23A829221D48C75100A44281 /* NodePickerSyncedContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodePickerSyncedContentViewController.h; sourceTree = "<group>"; };
@@ -1799,8 +1801,6 @@
 		73B9580217A6750E0099FB84 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = Utility.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B9580417A6750E0099FB84 /* AlfrescoDocument+ALF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoDocument+ALF.h"; sourceTree = "<group>"; };
 		73B9580517A6750E0099FB84 /* AlfrescoDocument+ALF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoDocument+ALF.m"; sourceTree = "<group>"; };
-		73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+ALF.h"; sourceTree = "<group>"; };
-		73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+ALF.m"; sourceTree = "<group>"; };
 		73B9580917A6750E0099FB84 /* SystemNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNotice.h; sourceTree = "<group>"; };
 		73B9580A17A6750E0099FB84 /* SystemNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SystemNotice.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		73B9580D17A6750E0099FB84 /* SystemNoticeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemNoticeManager.h; sourceTree = "<group>"; };
@@ -3818,8 +3818,6 @@
 				7366F7481ACAD8DE008DD92E /* NSDictionary+Extension.h */,
 				7366F7491ACAD8DE008DD92E /* NSDictionary+Extension.m */,
 				73345E35195C299D000CADC7 /* NSObject+DebugCheck.h */,
-				73B9580617A6750E0099FB84 /* UIAlertView+ALF.h */,
-				73B9580717A6750E0099FB84 /* UIAlertView+ALF.m */,
 				73A04F31187FFAF500C4EAB4 /* UICollectionView+AutoLayout.h */,
 				73A04F32187FFAF500C4EAB4 /* UICollectionView+AutoLayout.m */,
 				73881F5418883BE10052C75F /* UIColor+Custom.h */,
@@ -3840,6 +3838,8 @@
 				2308BF951DD22828009C3D8B /* UserAccount+FileHandling.m */,
 				23DC9A491E48D3F000A33725 /* AlfrescoListingContext+Dictionary.h */,
 				23DC9A4A1E48D3F000A33725 /* AlfrescoListingContext+Dictionary.m */,
+				235CA9771E60888800447FC5 /* UISearchBar+Paste.h */,
+				235CA9781E60888800447FC5 /* UISearchBar+Paste.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -4297,7 +4297,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = ALF;
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = Alfresco;
 				TargetAttributes = {
 					08E89C9817E7593B006936DF = {
@@ -5151,7 +5151,6 @@
 				7390B3591B03681E00E7191F /* AlfrescoConfigConstants.m in Sources */,
 				2B9031FA1C0EF78B005C10ED /* SearchService.m in Sources */,
 				736474F51B1879E400715B4F /* MainMenuConfigurationViewController.m in Sources */,
-				73B9585917A6750F0099FB84 /* UIAlertView+ALF.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				2B4E0CAD1D3D19020031FD3A /* AlfrescoNode+Sync.m in Sources */,
 				731A8F51192F5B1F0099BE7B /* NewVersionTextViewCell.m in Sources */,
@@ -5284,6 +5283,7 @@
 				2308BF901DD1DC55009C3D8B /* ConfigurationFilesUtils.m in Sources */,
 				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
 				7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */,
+				235CA9791E60888800447FC5 /* UISearchBar+Paste.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				275D6AD01BDEDB2E00FC5B60 /* FilteredTaskViewController.m in Sources */,
@@ -5497,28 +5497,38 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
 					"NS_BLOCK_ASSERTIONS=1",
 				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",
@@ -5800,32 +5810,42 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -5837,28 +5857,38 @@
 			baseConfigurationReference = 08A7D09118226DBE007B3C12 /* AlfrescoApp.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
 					"NS_BLOCK_ASSERTIONS=1",
 				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-DNS_BLOCK_ASSERTIONS=1",

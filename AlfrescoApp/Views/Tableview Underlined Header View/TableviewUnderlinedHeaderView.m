@@ -35,6 +35,8 @@ static CGFloat const kBottomPadding = 2.0f;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    
     self.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.98];
 }
 

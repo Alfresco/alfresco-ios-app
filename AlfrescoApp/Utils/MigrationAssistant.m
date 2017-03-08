@@ -151,12 +151,12 @@ static NSString * const kOldAccountCMISServicePath = @"/service/cmis";
     {
         for (NSString *fileName in documentsContent)
         {
-            BOOL *isDir = NO;
+            BOOL isDirectory = NO;
             NSString *absoluteSourceFilePath = [fileManager.documentsDirectory stringByAppendingPathComponent:fileName];
             
-            if ([fileManager fileExistsAtPath:absoluteSourceFilePath isDirectory:isDir])
+            if ([fileManager fileExistsAtPath:absoluteSourceFilePath isDirectory:&isDirectory])
             {
-                if (!isDir && ![fileName hasPrefix:@"."])
+                if (!isDirectory && ![fileName hasPrefix:@"."])
                 {
                     NSError *moveError = nil;
                     NSString *absoluteTargetPath = [fileManager.downloadsContentFolderPath stringByAppendingPathComponent:fileName];

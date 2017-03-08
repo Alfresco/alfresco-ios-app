@@ -25,6 +25,8 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     CGRect siteOptionViewFrame = self.siteOptionsContainerView.frame;
     siteOptionViewFrame.origin.y = self.contentView.frame.size.height;
     self.siteOptionsContainerView.frame = siteOptionViewFrame;

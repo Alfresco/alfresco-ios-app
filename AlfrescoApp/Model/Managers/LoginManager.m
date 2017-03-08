@@ -60,7 +60,6 @@
     if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoAccessDeniedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appPolicyUpdated:) name:kAlfrescoApplicationPolicyUpdatedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
     }
     return self;
@@ -455,6 +454,8 @@
         [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if(successful && !self.completionBlockCalledFromLoginViewController)
             {
+                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                delegate.mainMenuViewController.autoselectDefaultMenuOption = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
             }
             else if (self.completionBlockCalledFromLoginViewController)

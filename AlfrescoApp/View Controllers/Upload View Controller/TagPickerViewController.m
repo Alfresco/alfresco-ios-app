@@ -164,31 +164,36 @@
 
 - (void)addNewTagButtonPressed
 {
-    UIAlertView *addNewTagAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"tagselection.newTag.alertTitle", @"Add New Tag")
-                                                             message:nil
-                                                            delegate:self
-                                                   cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                   otherButtonTitles:NSLocalizedString(@"Add", @"Add"), nil];
-    
-    addNewTagAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [addNewTagAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
+    void (^addNewTagBlock)(NSString *) = ^(NSString *newTag){
+        newTag = [[newTag lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        if ((newTag == nil) || (newTag.length == 0))
         {
-            NSString *newTag = [[addNewTagAlert textFieldAtIndex:0] text];
-            newTag = [[newTag lowercaseString] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-            
-            if ((newTag == nil) || (newTag.length == 0))
-            {
-                displayErrorMessageWithTitle(NSLocalizedString(@"tagselection.newTag.error.invalidtag.message", @"Tags must contain text"),
-                                             NSLocalizedString(@"tagselection.newTag.error.invalidtag.title", @"Invalid Tag"));
-            }
-            else
-            {
-                [self addNewTag:newTag];
-                [self.selectedTags addObject:newTag];
-            }
+            displayErrorMessageWithTitle(NSLocalizedString(@"tagselection.newTag.error.invalidtag.message", @"Tags must contain text"),
+                                         NSLocalizedString(@"tagselection.newTag.error.invalidtag.title", @"Invalid Tag"));
         }
-    }];
+        else
+        {
+            [self addNewTag:newTag];
+            [self.selectedTags addObject:newTag];
+        }
+    };
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"tagselection.newTag.alertTitle", @"Add New Tag")
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
+                                                           style:UIAlertActionStyleCancel
+                                                         handler:nil];
+    [alertController addAction:cancelAction];
+    UIAlertAction *addNewTagAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Add", @"Add")
+                                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                                                                  NSString *newTag = alertController.textFields.firstObject.text;
+                                                                  addNewTagBlock(newTag);
+                                                              }];
+    [alertController addAction:addNewTagAction];
+    [alertController addTextFieldWithConfigurationHandler:nil];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)addNewTag:(NSString *)newTag

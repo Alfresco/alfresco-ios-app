@@ -31,7 +31,7 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 @property (nonatomic, strong, readwrite) MainMenuGroup *contentGroup;
 @property (nonatomic, strong, readwrite) MainMenuGroup *footerGroup;
 @property (nonatomic, weak, readwrite) id<MainMenuViewControllerDelegate> delegate;
-@property (nonatomic, strong, readwrite) NSIndexPath *previouslySelectedIndexPath;
+@property (nonatomic, strong, readwrite) NSString *previouslySelectedIdentifier;
 @property (nonatomic, assign, readwrite) BOOL headersVisible;
 // Views
 @property (nonatomic, weak) UITableView *tableView;
@@ -168,6 +168,8 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 
 - (void)removeSectionAtIndex:(NSUInteger)index fromGroupType:(MainMenuGroupType)groupType
 {
+    [self savePreviouslySelectedIdentifier];
+    
     MainMenuGroup *currentGroup = [self groupForGroupType:groupType];
     [currentGroup removeSectionAtIndex:index];
 }
@@ -235,6 +237,15 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
         }
     }
     self.headersVisible = !hidden;
+}
+
+- (void)savePreviouslySelectedIdentifier
+{
+    NSIndexPath *indexPath = self.tableView.indexPathForSelectedRow;
+    MainMenuSection *section = self.tableViewData[indexPath.section];
+    MainMenuItem *item = section.visibleSectionItems[indexPath.row];
+    
+    self.previouslySelectedIdentifier = item.itemIdentifier;
 }
 
 #pragma mark - Public Methods
@@ -376,6 +387,8 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 
 - (void)clearGroupType:(MainMenuGroupType)groupType
 {
+    [self savePreviouslySelectedIdentifier];
+
     MainMenuGroup *currentGroup = [self groupForGroupType:groupType];
     [currentGroup clearGroup];
 }
@@ -485,8 +498,6 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 
 - (void)mainMenuGroupDidChange:(MainMenuGroup *)group
 {
-    // Get the currently selected index path
-    NSIndexPath *currentlySelected = self.tableView.indexPathForSelectedRow;
     // recalculate the table view data
     self.tableViewData = [self allTableViewSectionsItems];
     // reload the table view
@@ -494,8 +505,15 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self visibilityForSectionHeadersHidden:YES animated:YES];
     });
-    // select the previous index path
-    [self.tableView selectRowAtIndexPath:currentlySelected animated:NO scrollPosition:UITableViewScrollPositionNone];
+
+    // Select the previous selected item identifier. If not found, select the first item.
+    NSIndexPath *indexPath = [self indexPathForItemWithIdentifier:self.previouslySelectedIdentifier];
+    if (indexPath == nil)
+    {
+        indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    }
+    
+    [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
 
 #pragma mark - Public methods

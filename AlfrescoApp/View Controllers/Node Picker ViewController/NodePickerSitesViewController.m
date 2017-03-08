@@ -18,6 +18,7 @@
  
 #import "NodePickerSitesViewController.h"
 #import "NodePickerFileFolderListViewController.h"
+#import "UISearchBar+Paste.h"
 
 static NSString * const kSitesFolderLocation = @"/Sites";
 static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHERE CONTAINS ('cmis:name:%@') AND IN_TREE('%@')";
@@ -214,6 +215,13 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     {
         [super searchBarSearchButtonClicked:searchBar];
     }
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    [searchBar enableReturnKeyForPastedText:text range:range];
+    
+    return YES;
 }
 
 @end

@@ -21,13 +21,13 @@
 
 @protocol SwipeToDeleteDelegate <NSObject>
 
-- (void) collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath;
+- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath completionBlock:(void (^)())completionBlock;
 
 @end
 
 @protocol CollectionViewCellAccessoryViewDelegate <NSObject>
 
-- (void) didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node;
+- (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node;
 
 @end
 

@@ -284,7 +284,8 @@ static CGFloat const kCellHeight = 73.0f;
                 else
                 {
                     NSString *contentPath = [[SyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)currentNode];
-                    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:NO])
+                    BOOL isDirectory = NO;
+                    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:&isDirectory])
                     {
                         contentPath = nil;
                     }

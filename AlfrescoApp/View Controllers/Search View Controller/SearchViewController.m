@@ -26,8 +26,8 @@
 #import "AccountManager.h"
 #import "SitesTableListViewController.h"
 #import "PreferenceManager.h"
-
 #import "SearchService.h"
+#import "UISearchBar+Paste.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
 static CGFloat const kCellHeightSearchScope = 64.0f;
@@ -458,6 +458,13 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
+    return YES;
+}
+
+- (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    [searchBar enableReturnKeyForPastedText:text range:range];
+    
     return YES;
 }
 

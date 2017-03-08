@@ -19,6 +19,13 @@
 #import "PinBulletsView.h"
 #import "BulletView.h"
 
+static NSString * const kShakeAnimationKey = @"shake";
+static CGFloat const kShakeAnimationDuration = 0.5f;
+
+@interface PinBulletsView() <CAAnimationDelegate>
+
+@end
+
 @implementation PinBulletsView
 {
     IBOutletCollection(BulletView) NSArray *_bullets;
@@ -50,9 +57,9 @@
     CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.translation.x"];
     animation.delegate = self;
     animation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-    animation.duration = 0.5;
+    animation.duration = kShakeAnimationDuration;
     animation.values = @[@(-20), @(20), @(-20), @(20), @(-10), @(10), @(-5), @(5), @(0)];
-    [self.layer addAnimation:animation forKey:@"shake"];
+    [self.layer addAnimation:animation forKey:kShakeAnimationKey];
 }
 
 - (void)fillBullets:(BOOL)fill forPin:(NSString *)pin
@@ -71,11 +78,11 @@
 
 #pragma mark - Animations
 
-- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag
+- (void)animationDidStop:(CAAnimation *)animation finished:(BOOL)flag
 {
     if (flag)
     {
-        [self.layer removeAnimationForKey:@"shake"];
+        [self.layer removeAnimationForKey:kShakeAnimationKey];
     }
     
     if (_completionBlock)

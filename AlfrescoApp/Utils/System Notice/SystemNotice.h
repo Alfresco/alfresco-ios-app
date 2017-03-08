@@ -36,6 +36,7 @@ typedef enum
 
 - (id)initWithStyle:(SystemNoticeStyle)style inView:(UIView *)view;
 - (void)show;
+- (void)canDisplay;
 
 /**
  * Preferred API entrypoints

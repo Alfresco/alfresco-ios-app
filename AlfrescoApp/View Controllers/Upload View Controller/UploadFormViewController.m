@@ -496,12 +496,14 @@ static NSString * const kAudioFileName = @"audio.m4a";
             }
             else
             {
-                UIAlertView *microphonePermissionAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"upload.audio.setting.disabled.title", @"Permission Alert Title")
-                                                                                    message:NSLocalizedString(@"upload.audio.setting.disabled.message", @"Permission Alert Message")
-                                                                                   delegate:self
-                                                                          cancelButtonTitle:NSLocalizedString(@"Close", @"Close")
-                                                                          otherButtonTitles:nil];
-                [microphonePermissionAlert show];
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"upload.audio.setting.disabled.title", @"Permission Alert Title")
+                                                                                         message:NSLocalizedString(@"upload.audio.setting.disabled.message", @"Permission Alert Message")
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *closeAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Close", @"Close")
+                                                                      style:UIAlertActionStyleCancel
+                                                                    handler:nil];
+                [alertController addAction:closeAction];
+                [self presentViewController:alertController animated:YES completion:nil];
             }
         }];
     }
@@ -881,33 +883,35 @@ static NSString * const kAudioFileName = @"audio.m4a";
 
 - (void)closeUploadForm:(id)sender
 {
-    if ([self shouldConfirmDismissalOfModalViewController])
-    {
-        UIAlertView *confirmationAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"upload.confirm.dismissal.title", @"Dismiss Title")
-                                                                    message:NSLocalizedString(@"upload.confirm.dismissal.message", @"Dismissal Message")
-                                                                   delegate:self
-                                                          cancelButtonTitle:NSLocalizedString(@"upload.confirm.dismissal.cancel", @"Cancel Upload")
-                                                          otherButtonTitles:NSLocalizedString(@"Upload", @"Upload"), nil];
-        [confirmationAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-            if (isCancelButton)
-            {
-                [self dismissViewControllerAnimated:YES completion:^{
-                    if ([self.delegate respondsToSelector:@selector(didCancelUpload)])
-                    {
-                         [self.delegate didCancelUpload];
-                    }
-                }];
-            }
-        }];
-    }
-    else
-    {
+    void (^cancelBlock)() = ^(){
         [self dismissViewControllerAnimated:YES completion:^{
             if ([self.delegate respondsToSelector:@selector(didCancelUpload)])
             {
                 [self.delegate didCancelUpload];
             }
         }];
+    };
+    
+    if ([self shouldConfirmDismissalOfModalViewController])
+    {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"upload.confirm.dismissal.title", @"Dismiss Title")
+                                                                                 message:NSLocalizedString(@"upload.confirm.dismissal.message", @"Dismissal Message")
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"upload.confirm.dismissal.cancel", @"Cancel Upload")
+                                                               style:UIAlertActionStyleCancel
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                                 cancelBlock();
+                                                             }];
+        [alertController addAction:cancelAction];
+        UIAlertAction *uploadAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Upload", @"Upload")
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:nil];
+        [alertController addAction:uploadAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    else
+    {
+        cancelBlock();
     }
 }
 

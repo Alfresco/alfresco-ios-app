@@ -25,6 +25,8 @@ static CGFloat const kMaxiPadSpeechBubbleWidth = 350.0f;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     self.contentTextLabel.preferredMaxLayoutWidth = (IS_IPAD) ? kMaxiPadSpeechBubbleWidth : kMaxiPhoneSpeechBubbleWidth;
 }
 

@@ -24,7 +24,6 @@
 #import "AboutViewController.h"
 #import "AccountManager.h"
 #import "SettingButtonCell.h"
-#import "UIAlertView+ALF.h"
 #import <MessageUI/MessageUI.h>
 #import <sys/utsname.h>
 #import "PinViewController.h"
@@ -265,36 +264,38 @@
 
 - (void)resetAccountsHandler
 {
-    UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
-                                                                message:NSLocalizedString(@"settings.reset.accounts.confirmation.message", @"Clear Accounts Message")
-                                                               delegate:self
-                                                      cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                      otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-     __weak typeof(self) weakSelf = self;
-    
-    [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
-        {
-            [weakSelf reloadDataAfterResetWithType:ResetTypeAccounts];
-        }
-    }];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"settings.reset.accounts.confirmation.title", @"Clear Accounts")
+                                                                             message:NSLocalizedString(@"settings.reset.accounts.confirmation.message", @"Clear Accounts Message")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No")
+                                                       style:UIAlertActionStyleCancel
+                                                     handler:nil];
+    [alertController addAction:noAction];
+    UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [self reloadDataAfterResetWithType:ResetTypeAccounts];
+                                                      }];
+    [alertController addAction:yesAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)resetEntireAppHandler
 {
-    UIAlertView *resetAccountAlert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Clear Accounts, Cache and Downloads Title")
-                                                                message:NSLocalizedString(@"settings.reset.entire.app.confirmation.message", @"Clear Accounts, Cache and Downloads Message")
-                                                               delegate:self
-                                                      cancelButtonTitle:NSLocalizedString(@"No", @"No")
-                                                      otherButtonTitles:NSLocalizedString(@"Yes", @"Yes"), nil];
-    __weak typeof(self) weakSelf = self;
-    
-    [resetAccountAlert showWithCompletionBlock:^(NSUInteger buttonIndex, BOOL isCancelButton) {
-        if (!isCancelButton)
-        {
-            [weakSelf reloadDataAfterResetWithType:ResetTypeEntireApp];
-        }
-    }];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"settings.reset.confirmation.title", @"Clear Accounts, Cache and Downloads Title")
+                                                                             message:NSLocalizedString(@"settings.reset.entire.app.confirmation.message", @"Clear Accounts, Cache and Downloads Message")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *noAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"No", @"No")
+                                                       style:UIAlertActionStyleCancel
+                                                     handler:nil];
+    [alertController addAction:noAction];
+    UIAlertAction *yesAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Yes", @"Yes")
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [self reloadDataAfterResetWithType:ResetTypeEntireApp];
+                                                      }];
+    [alertController addAction:yesAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 - (void)reloadDataAfterResetWithType:(ResetType)resetType

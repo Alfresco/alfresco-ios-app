@@ -22,6 +22,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     self.lineWidth = 0.5f;
     self.lineColor = [UIColor lightGrayColor];
 }
