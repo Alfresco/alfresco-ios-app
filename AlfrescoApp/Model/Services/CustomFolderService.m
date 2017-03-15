@@ -87,24 +87,9 @@
     else
     {
         [self createAlfrescoServices];
-
-        // Alfresco versions 5.0 and newer support retrieving the home folder via cmis:item support
-        request = [self.documentFolderService retrieveHomeFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
-            if (error)
-            {
-                self.myFilesFolder = nil;
-                completionBlock(nil, error);
-            }
-            else
-            {
-                self.myFilesFolder = folder;
-                completionBlock(folder, error);
-            }
-        }];
         
-        if (!request)
-        {
-            // Fallback option: attempt to retrieve the home folder using the username
+        // Fallback option: attempt to retrieve the home folder using the username
+        void (^fallbackHomeFolderRetrieval)(void) = ^{
             NSString *escapedUsername = [[self.session.personIdentifier stringByReplacingOccurrencesOfString:@"@" withString:@"_x0040_"] stringByReplacingOccurrencesOfString:@" " withString:@"_x0020_"];
             NSString *searchQuery = [NSString stringWithFormat:@"SELECT * FROM cmis:folder WHERE CONTAINS ('QNAME:\"app:company_home/app:user_homes/cm:%@\"')", escapedUsername];
             
@@ -120,6 +105,24 @@
                     completionBlock(array.firstObject, error);
                 }
             }];
+        };
+
+        // Alfresco versions 5.0 and newer support retrieving the home folder via cmis:item support
+        request = [self.documentFolderService retrieveHomeFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+            if (error)
+            {
+                fallbackHomeFolderRetrieval();
+            }
+            else
+            {
+                self.myFilesFolder = folder;
+                completionBlock(folder, error);
+            }
+        }];
+        
+        if (!request)
+        {
+            fallbackHomeFolderRetrieval();
         }
     }
     
