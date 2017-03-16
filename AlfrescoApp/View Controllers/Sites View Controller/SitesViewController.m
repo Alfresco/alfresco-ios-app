@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -166,7 +166,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     
     if (self.isActiveAccountOnPremise)
     {
-        self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites session:self.session];
+        self.searchVC = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites listingContext:nil session:self.session];
         self.searchVC.sitesPushHandler = self;
         self.searchVC.shouldHideNavigationBarOnSearchControllerPresentation = NO;
         

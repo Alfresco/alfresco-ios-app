@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -21,7 +21,7 @@
 @interface SitesTableListViewController : ParentListViewController
 
 - (instancetype)initWithType:(SiteListTypeSelection)listType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController listingContext:(AlfrescoListingContext *)listingContext;
-
-- (void)reloadTableViewWithSearchResults:(NSMutableArray *)searchResults;
+- (void)search:(NSString *)searchString;
+- (void)clearDataSource;
 
 @end

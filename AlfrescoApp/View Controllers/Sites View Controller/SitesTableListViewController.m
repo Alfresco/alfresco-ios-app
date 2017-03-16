@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -26,14 +26,17 @@
 // View Controllers
 #import "SiteMembersViewController.h"
 #import "FileFolderCollectionViewController.h"
+// Data Sources
+#import "SearchResultsTableViewDataSource.h"
 
-@interface SitesTableListViewController () < UITableViewDelegate, UITableViewDataSource, SiteCellDelegate >
+@interface SitesTableListViewController () < UITableViewDelegate, UITableViewDataSource, SiteCellDelegate, SearchResultsTableViewDataSourceDelegate>
 
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) NSIndexPath *expandedCellIndexPath;
 @property (nonatomic) SiteListTypeSelection listType;
 @property (nonatomic, weak) UIViewController *pushHandler;
+@property (nonatomic, strong) SearchResultsTableViewDataSource *dataSource;
 
 @end
 
@@ -147,10 +150,17 @@
             [spinner startAnimating];
             self.tableView.tableFooterView = spinner;
             
-            [self loadSitesForSiteType:self.listType listingContext:moreListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-                [self addMoreToTableViewWithPagingResult:pagingResult error:error];
-                self.tableView.tableFooterView = nil;
-            }];
+            if (self.dataSource)
+            {
+                [self.dataSource retrieveNextItems:moreListingContext];
+            }
+            else
+            {
+                [self loadSitesForSiteType:self.listType listingContext:moreListingContext withCompletionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
+                    [self addMoreToTableViewWithPagingResult:pagingResult error:error];
+                    self.tableView.tableFooterView = nil;
+                }];
+            }
         }
     }
 }
@@ -163,7 +173,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.expandedCellIndexPath = nil;
-    
+
     AlfrescoSite *selectedSite = [self.tableViewData objectAtIndex:indexPath.row];
     
     [self showHUD];
@@ -240,6 +250,18 @@
     {
         [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+}
+
+#pragma mark - Custom Getters
+
+- (NSArray *)tableViewData
+{
+    return self.dataSource ? self.dataSource.searchResultsArray : [super tableViewData];
+}
+
+- (BOOL)moreItemsAvailable
+{
+    return self.dataSource ? self.dataSource.moreItemsAvailable : [super moreItemsAvailable];
 }
 
 #pragma mark - UIRefreshControl Functions
@@ -608,10 +630,23 @@
 }
 
 #pragma mark - Public methods
-- (void)reloadTableViewWithSearchResults:(NSMutableArray *)searchResults
+
+- (void)search:(NSString *)searchString
 {
-    self.tableViewData = searchResults;
+    self.dataSource = [[SearchResultsTableViewDataSource alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites searchString:searchString session:self.session delegate:self listingContext:self.defaultListingContext];
+}
+
+- (void)clearDataSource
+{
+    [self.dataSource clearDataSource];
+}
+
+#pragma mark - SearchResultsTableViewDataSourceDelegate
+
+- (void)dataSourceUpdated
+{
     [self.tableView reloadData];
+    self.tableView.tableFooterView = nil;
 }
 
 @end

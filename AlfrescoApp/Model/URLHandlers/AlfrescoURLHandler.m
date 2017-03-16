@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -215,8 +215,7 @@ static NSString * const kParamTypePath = @"path";
                     }
                     else
                     {
-                        SearchResultsTableViewController *controller = [[SearchResultsTableViewController alloc] initWithDataType:SearchViewControllerDataSourceTypeSearchUsers session:session pushesSelection:YES];
-                        controller.results = [NSMutableArray arrayWithObject:person];
+                       SearchResultsTableViewController *controller = [[SearchResultsTableViewController alloc] initWithDataType:SearchViewControllerDataSourceTypeSearchUsers session:session pushesSelection:YES dataSourceArray:@[person]];
                         controller.shouldAutoPushFirstResult = YES;
                         [self presentViewControllerFromURL:controller];
                     }

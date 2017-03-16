@@ -113,6 +113,7 @@
 		23D2B9B91D4A553E00215431 /* BaseNodePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23D2B9B81D4A553E00215431 /* BaseNodePickerViewController.m */; };
 		23DC9A4B1E48D3F000A33725 /* AlfrescoListingContext+Dictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 23DC9A4A1E48D3F000A33725 /* AlfrescoListingContext+Dictionary.m */; };
 		23E0E1A31C68B002001A6F1B /* AnalyticsConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */; };
+		23ECA5721E6EBBAE00E82DB3 /* SearchResultsTableViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 23ECA5711E6EBBAE00E82DB3 /* SearchResultsTableViewDataSource.m */; };
 		2711979E1912ADE60073C3EC /* ALFTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2711979D1912ADE60073C3EC /* ALFTableView.m */; };
 		2715E03719300C520049FA32 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2715E03619300C520049FA32 /* Images.xcassets */; };
 		27185B2819363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27185B2719363D1E00D418F0 /* ActionCollectionViewCell~ipad.xib */; };
@@ -265,7 +266,6 @@
 		2B841D531DD47BA2008D7F40 /* exitFullScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B841D511DD47BA2008D7F40 /* exitFullScreen@2x.png */; };
 		2B8CF8101C7C57D40079BB99 /* RealmSyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */; };
 		2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */; };
-		2B9031FA1C0EF78B005C10ED /* SearchService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9031F91C0EF78B005C10ED /* SearchService.m */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
 		2B9C608E1C9714F400898161 /* ic_sync_focus.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B9C608A1C9714F400898161 /* ic_sync_focus.png */; };
@@ -1045,6 +1045,8 @@
 		23DC9A4A1E48D3F000A33725 /* AlfrescoListingContext+Dictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoListingContext+Dictionary.m"; sourceTree = "<group>"; };
 		23E0E1A11C68B002001A6F1B /* AnalyticsConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsConstants.h; sourceTree = "<group>"; };
 		23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsConstants.m; sourceTree = "<group>"; };
+		23ECA5701E6EBBAE00E82DB3 /* SearchResultsTableViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultsTableViewDataSource.h; sourceTree = "<group>"; };
+		23ECA5711E6EBBAE00E82DB3 /* SearchResultsTableViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultsTableViewDataSource.m; sourceTree = "<group>"; };
 		23FBC9FB1D3D11DD00E935B2 /* RealmSyncManager+Internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RealmSyncManager+Internal.h"; sourceTree = "<group>"; };
 		2711979C1912ADE60073C3EC /* ALFTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALFTableView.h; sourceTree = "<group>"; };
 		2711979D1912ADE60073C3EC /* ALFTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ALFTableView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -1251,8 +1253,6 @@
 		2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncManager.m; sourceTree = "<group>"; };
 		2B8CF8181C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RealmSyncManager+CoreDataMigration.h"; sourceTree = "<group>"; };
 		2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RealmSyncManager+CoreDataMigration.m"; sourceTree = "<group>"; };
-		2B9031F81C0EF78B005C10ED /* SearchService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchService.h; path = "../../View Controllers/Search View Controller/SearchService.h"; sourceTree = "<group>"; };
-		2B9031F91C0EF78B005C10ED /* SearchService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchService.m; path = "../../View Controllers/Search View Controller/SearchService.m"; sourceTree = "<group>"; };
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
 		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConnectionDiagnosticStoryboard.storyboard; sourceTree = "<group>"; };
@@ -2378,6 +2378,8 @@
 				2B5592081B90AB1C00D85C7B /* SearchResultsTableViewController.h */,
 				2B5592091B90AB1C00D85C7B /* SearchResultsTableViewController.m */,
 				2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */,
+				23ECA5701E6EBBAE00E82DB3 /* SearchResultsTableViewDataSource.h */,
+				23ECA5711E6EBBAE00E82DB3 /* SearchResultsTableViewDataSource.m */,
 			);
 			path = "Search View Controller";
 			sourceTree = "<group>";
@@ -3718,8 +3720,6 @@
 				73B957D817A6750E0099FB84 /* LoginManager.m */,
 				7384BE0317F42CA800C6A54F /* PreferenceManager.h */,
 				7384BE0417F42CA800C6A54F /* PreferenceManager.m */,
-				2B9031F81C0EF78B005C10ED /* SearchService.h */,
-				2B9031F91C0EF78B005C10ED /* SearchService.m */,
 				0833244217F19D6800EE6AA8 /* SyncHelper.h */,
 				0833244317F19D6800EE6AA8 /* SyncHelper.m */,
 				08E89C9217E7488C006936DF /* SyncManager.h */,
@@ -5107,6 +5107,7 @@
 				08244AAF192B99AE00228AD6 /* AccountSyncProgress.m in Sources */,
 				2B314C861B7B7D750031E965 /* UserAccountWrapper.m in Sources */,
 				739B0A2E18CF7C9B00239584 /* TableviewUnderlinedHeaderView.m in Sources */,
+				23ECA5721E6EBBAE00E82DB3 /* SearchResultsTableViewDataSource.m in Sources */,
 				23DC9A4B1E48D3F000A33725 /* AlfrescoListingContext+Dictionary.m in Sources */,
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				2BDC6FA51D660731003F9324 /* AlfrescoNode+Networking.m in Sources */,
@@ -5149,7 +5150,6 @@
 				2BFD96AF1C8864A700FDABA5 /* SyncInfoViewController.m in Sources */,
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
 				7390B3591B03681E00E7191F /* AlfrescoConfigConstants.m in Sources */,
-				2B9031FA1C0EF78B005C10ED /* SearchService.m in Sources */,
 				736474F51B1879E400715B4F /* MainMenuConfigurationViewController.m in Sources */,
 				0833248317FEB9C400EE6AA8 /* SyncObstaclesViewController.m in Sources */,
 				2B4E0CAD1D3D19020031FD3A /* AlfrescoNode+Sync.m in Sources */,

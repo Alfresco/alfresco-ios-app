@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -30,7 +30,7 @@
 
 @implementation SearchCollectionViewDataSource
 
-- (instancetype)initWithSearchStatement:(NSString *)searchStatement session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)initWithSearchStatement:(NSString *)searchStatement session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext
 {
     self = [super init];
     if(!self)
@@ -42,12 +42,17 @@
     self.delegate = delegate;
     self.searchStatement = searchStatement;
     
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
+    
     [self reloadDataSource];
     
     return self;
 }
 
-- (instancetype)initWithSearchString:(NSString *)searchString searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)initWithSearchString:(NSString *)searchString searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate listingContext:(AlfrescoListingContext *)listingContext
 {
     self = [super init];
     if(!self)
@@ -60,6 +65,11 @@
     self.delegate = delegate;
     self.searchString = searchString;
     self.searchOptions = options;
+    
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
     
     [self reloadDataSource];
     
@@ -76,19 +86,27 @@
     }
 }
 
-- (void)reloadDataSource
+#pragma mark - Public Methods
+
+- (void)retrieveNextItems:(AlfrescoListingContext *)moreListingContext
 {
     __weak typeof(self) weakSelf = self;
     
-    void (^completionBlock)(NSArray *array, NSError *error) = ^void(NSArray *array, NSError *error){
-        if(array)
+    void (^completionBlock)(AlfrescoPagingResult *, NSError *) = ^void(AlfrescoPagingResult *pagingResult, NSError *error){
+        if(pagingResult)
         {
-            weakSelf.dataSourceCollection = [array mutableCopy];
+            if (self.dataSourceCollection == nil)
+            {
+                self.dataSourceCollection = [NSMutableArray array];
+            }
+            [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
+            
+            self.moreItemsAvailable = pagingResult.hasMoreItems;
             [weakSelf.delegate dataSourceUpdated];
         }
         else
         {
-             NSString *stringFormat = NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed");
+            NSString *stringFormat = NSLocalizedString(@"error.filefolder.search.searchfailed", @"Search failed");
             
             if (error == nil)
             {
@@ -99,14 +117,21 @@
         }
     };
     
-    if(self.searchStatement)
+    if (self.searchStatement)
     {
-        [self.searchService searchWithStatement:self.searchStatement language:AlfrescoSearchLanguageCMIS completionBlock:completionBlock];
+        [self.searchService searchWithStatement:self.searchStatement language:AlfrescoSearchLanguageCMIS listingContext:moreListingContext completionBlock:completionBlock];
     }
-    else if(self.searchString)
+    else if (self.searchString)
     {
-        [self.searchService searchWithKeywords:self.searchString options:self.searchOptions completionBlock:completionBlock];
+        [self.searchService searchWithKeywords:self.searchString options:self.searchOptions listingContext:moreListingContext completionBlock:completionBlock];
     }
+}
+
+- (void)reloadDataSource
+{
+    [self.dataSourceCollection removeAllObjects];
+    
+    [self retrieveNextItems:self.defaultListingContext];
 }
 
 @end

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -20,7 +20,8 @@
 #import "AlfrescoNodeCell.h"
 #import "ThumbnailManager.h"
 #import "UniversalDevice.h"
-#import "SyncManager.h"
+#import "RealmSyncManager.h"
+#import "AlfrescoNode+Sync.h"
 #import "SearchViewController.h"
 #import "FavouriteManager.h"
 #import "PersonCell.h"
@@ -28,11 +29,11 @@
 #import "PersonProfileViewController.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
-#import "SearchService.h"
+#import "SearchResultsTableViewDataSource.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
-@interface SearchResultsTableViewController ()
+@interface SearchResultsTableViewController () <SearchResultsTableViewDataSourceDelegate>
 
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) NSString *emptyMessage;
@@ -40,7 +41,7 @@ static CGFloat const kCellHeight = 73.0f;
 @property (nonatomic, assign) NSNumber *alfPreviousSeparatorStyle;
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic) BOOL shouldPush;
-@property (nonatomic, strong) SearchService *searchService;
+@property (nonatomic, strong) SearchResultsTableViewDataSource *dataSource;
 
 @end
 
@@ -55,6 +56,16 @@ static CGFloat const kCellHeight = 73.0f;
         self.session = session;
         self.shouldPush = shouldPush;
         self.shouldAutoPushFirstResult = NO;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithDataType:(SearchViewControllerDataSourceType)dataType session:(id<AlfrescoSession>)session pushesSelection:(BOOL)shouldPush dataSourceArray:(NSArray *)dataSourceArray
+{
+    if (self = [self initWithDataType:dataType session:session pushesSelection:shouldPush])
+    {
+        self.dataSource = [[SearchResultsTableViewDataSource alloc] initWithDataSourceType:dataType results:dataSourceArray delegate:self];
     }
     
     return self;
@@ -102,48 +113,13 @@ static CGFloat const kCellHeight = 73.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    if(self.shouldAutoPushFirstResult)
-    {
-        if (!IS_IPAD)
-        {
-            UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-            if (self.navigationController.viewControllers.firstObject == self)
-            {
-                self.navigationItem.leftBarButtonItem = hamburgerButtom;
-            }
-        }
-        [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-        self.shouldAutoPushFirstResult = NO;
-    }
-    
-    NSString *screenName = nil;
-    
-    switch (self.dataType)
-    {
-        case SearchViewControllerDataSourceTypeSearchFiles:
-            screenName = kAnalyticsViewSearchResultFiles;
-            break;
-            
-        case SearchViewControllerDataSourceTypeSearchFolders:
-            screenName = kAnalyticsViewSearchResultFolders;
-            break;
-            
-        case SearchViewControllerDataSourceTypeSearchUsers:
-            screenName = kAnalyticsViewSearchResultPeople;
-            break;
-            
-        default:
-            break;
-    }
-    
-    if (screenName)
-    {
-        [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
-    }
+        
+    [self updateEmptyView];
+    [self autoPushFirstResultIfNeeded];
+    [self trackScreenName];
 }
 
-#pragma mark - Table view data source
+#pragma mark - TableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -152,7 +128,7 @@ static CGFloat const kCellHeight = 73.0f;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.results.count;
+    return self.dataSource.searchResultsArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -165,11 +141,11 @@ static CGFloat const kCellHeight = 73.0f;
         {
             AlfrescoNodeCell *properCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier] forIndexPath:indexPath];
             
-            AlfrescoNode *currentNode = [self.results objectAtIndex:indexPath.row];
-            SyncManager *syncManager = [SyncManager sharedManager];
+            AlfrescoNode *currentNode = [self.dataSource.searchResultsArray objectAtIndex:indexPath.row];
+            RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
             FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
             
-            BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+            BOOL isSyncNode = [currentNode isNodeInSyncList];
             SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
             [properCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
             [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
@@ -216,11 +192,11 @@ static CGFloat const kCellHeight = 73.0f;
         {
             AlfrescoNodeCell *properCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier] forIndexPath:indexPath];
             
-            AlfrescoNode *currentNode = [self.results objectAtIndex:indexPath.row];
-            SyncManager *syncManager = [SyncManager sharedManager];
+            AlfrescoNode *currentNode = [self.dataSource.searchResultsArray objectAtIndex:indexPath.row];
+            RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
             FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
             
-            BOOL isSyncNode = [syncManager isNodeInSyncList:currentNode];
+            BOOL isSyncNode = [currentNode isNodeInSyncList];
             SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
             [properCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
             [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
@@ -238,7 +214,7 @@ static CGFloat const kCellHeight = 73.0f;
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
             PersonCell *properCell = (PersonCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([PersonCell class]) forIndexPath:indexPath];
-            AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.results objectAtIndex:indexPath.row];
+            AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.dataSource.searchResultsArray objectAtIndex:indexPath.row];
             properCell.nameLabel.text = currentPerson.fullName;
             
             AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:currentPerson.identifier session:self.session];
@@ -266,16 +242,17 @@ static CGFloat const kCellHeight = 73.0f;
     return kCellHeight;
 }
 
-#pragma mark - Table view delegate
+#pragma mark - UITableViewDelegate methods
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNode *currentNode = [self.results objectAtIndex:indexPath.row];
+    AlfrescoNode *currentItem = self.dataSource.searchResultsArray[indexPath.row];
     
     switch (self.dataType)
     {
         case SearchViewControllerDataSourceTypeSearchFiles:
         {
-            [self.documentService retrievePermissionsOfNode:currentNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+            [self.documentService retrievePermissionsOfNode:currentItem completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 if (error)
                 {
                     displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
@@ -283,7 +260,7 @@ static CGFloat const kCellHeight = 73.0f;
                 }
                 else
                 {
-                    NSString *contentPath = [[SyncManager sharedManager] contentPathForNode:(AlfrescoDocument *)currentNode];
+                    NSString *contentPath = [(AlfrescoDocument *)currentItem contentPath];
                     BOOL isDirectory = NO;
                     if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:&isDirectory])
                     {
@@ -293,7 +270,7 @@ static CGFloat const kCellHeight = 73.0f;
                     if([self.presentingViewController isKindOfClass:[SearchViewController class]])
                     {
                         SearchViewController *vc = (SearchViewController *)self.presentingViewController;
-                        [vc pushDocument:currentNode contentPath:contentPath permissions:permissions];
+                        [vc pushDocument:currentItem contentPath:contentPath permissions:permissions];
                     }
                 }
             }];
@@ -301,13 +278,13 @@ static CGFloat const kCellHeight = 73.0f;
         }
         case SearchViewControllerDataSourceTypeSearchFolders:
         {
-            [self.documentService retrievePermissionsOfNode:currentNode completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+            [self.documentService retrievePermissionsOfNode:currentItem completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
                 if (permissions)
                 {
                     if([self.presentingViewController isKindOfClass:[SearchViewController class]])
                     {
                         SearchViewController *vc = (SearchViewController *)self.presentingViewController;
-                        [vc pushFolder:(AlfrescoFolder *)currentNode folderPermissions:permissions];
+                        [vc pushFolder:(AlfrescoFolder *)currentItem folderPermissions:permissions];
                     }
                 }
                 else
@@ -321,7 +298,7 @@ static CGFloat const kCellHeight = 73.0f;
         }
         case SearchViewControllerDataSourceTypeSearchUsers:
         {
-            AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.results objectAtIndex:indexPath.row];
+            AlfrescoPerson *currentPerson = (AlfrescoPerson *)currentItem;
             if(self.shouldPush)
             {
                 PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:currentPerson.identifier session:self.session];
@@ -350,7 +327,7 @@ static CGFloat const kCellHeight = 73.0f;
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNode *selectedNode = [self.results objectAtIndex:indexPath.row];
+    AlfrescoNode *selectedNode = self.dataSource.searchResultsArray[indexPath.row];
     
     if (selectedNode.isFolder)
     {
@@ -375,66 +352,33 @@ static CGFloat const kCellHeight = 73.0f;
     }
 }
 
-#pragma mark - Custom setters/getters
-
-- (void)setResults:(NSMutableArray *)results
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    _results = results;
-    [self updateEmptyView];
-    [self.tableView reloadData];
-}
-
-- (void)updateEmptyView
-{
-    if (!self.alfEmptyLabel)
+    NSUInteger lastRowIndex = self.dataSource.searchResultsArray.count - 1;
+    
+    if (indexPath.row == lastRowIndex)
     {
-        UILabel *emptyLabel = [[UILabel alloc] init];
-        emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
-        emptyLabel.numberOfLines = 0;
-        emptyLabel.textAlignment = NSTextAlignmentCenter;
-        emptyLabel.textColor = [UIColor noItemsTextColor];
-        emptyLabel.hidden = YES;
+        int maxItems = self.dataSource.defaultListingContext.maxItems;
+        int skipCount = self.dataSource.defaultListingContext.skipCount + (int)self.dataSource.searchResultsArray.count;
+        AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:maxItems skipCount:skipCount];
         
-        [self.tableView addSubview:emptyLabel];
-        self.alfEmptyLabel = emptyLabel;
+        if (self.dataSource.moreItemsAvailable)
+        {
+            // show more items are loading ...
+            UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            [spinner startAnimating];
+            self.tableView.tableFooterView = spinner;
+
+            [self.dataSource retrieveNextItems:moreListingContext];
+        }
     }
-    
-    CGRect frame = self.tableView.bounds;
-    frame.origin = CGPointMake(0, 0);
-    frame = UIEdgeInsetsInsetRect(frame, UIEdgeInsetsMake(CGRectGetHeight(self.tableView.tableHeaderView.frame), 0, 0, 0));
-    frame.size.height -= self.tableView.contentInset.top;
-    
-    self.alfEmptyLabel.frame = frame;
-    self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
-    self.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
-    self.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
-    
-    BOOL shouldShowEmptyLabel = [self isDataSetEmpty];
-    BOOL isShowingEmptyLabel = !self.alfEmptyLabel.hidden;
-    
-    if (shouldShowEmptyLabel == isShowingEmptyLabel)
-    {
-        // Nothing to do
-        return;
-    }
-    
-    // Need to remove the separator lines in empty mode and restore afterwards
-    if (shouldShowEmptyLabel)
-    {
-        self.previousSeparatorStyle = self.tableView.separatorStyle;
-        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    }
-    else
-    {
-        self.tableView.separatorStyle = self.previousSeparatorStyle;
-    }
-    self.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
 }
+
+#pragma mark - Custom setters/getters
 
 - (BOOL)isDataSetEmpty
 {
-    BOOL result = (self.results.count == 0);
-    return result;
+    return self.dataSource.searchResultsArray.count == 0;
 }
 
 - (UITableViewCellSeparatorStyle)previousSeparatorStyle
@@ -477,19 +421,140 @@ static CGFloat const kCellHeight = 73.0f;
 
 - (void)loadViewWithKeyword:(NSString *)keyword
 {
-    if(!self.searchService)
-    {
-        self.searchService = [[SearchService alloc] initWithSession:self.session];
-    }
     self.title = keyword;
-    [self.searchService searchUserWithName:keyword showOnController:self];
+    
+    [self search:keyword listingContext:nil];
+}
+
+- (void)search:(NSString *)searchString listingContext:(AlfrescoListingContext *)listingContext
+{
+    if (self.dataSource == nil)
+    {
+        self.dataSource = [[SearchResultsTableViewDataSource alloc] initWithDataSourceType:self.dataType searchString:searchString session:self.session delegate:self listingContext:listingContext];
+    }
+    else
+    {
+        [self.dataSource searchKeyword:searchString session:self.session listingContext:listingContext];
+    }
+}
+
+- (void)clearDataSource
+{
+    [self.dataSource clearDataSource];
 }
 
 #pragma mark - Private methods
 
+- (void)updateEmptyView
+{
+    if (!self.alfEmptyLabel)
+    {
+        UILabel *emptyLabel = [[UILabel alloc] init];
+        emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
+        emptyLabel.numberOfLines = 0;
+        emptyLabel.textAlignment = NSTextAlignmentCenter;
+        emptyLabel.textColor = [UIColor noItemsTextColor];
+        emptyLabel.hidden = YES;
+        
+        [self.tableView addSubview:emptyLabel];
+        self.alfEmptyLabel = emptyLabel;
+    }
+    
+    CGRect frame = self.tableView.bounds;
+    frame.origin = CGPointZero;
+    frame = UIEdgeInsetsInsetRect(frame, UIEdgeInsetsMake(CGRectGetHeight(self.tableView.tableHeaderView.frame), 0, 0, 0));
+    frame.size.height -= self.tableView.contentInset.top;
+    
+    self.alfEmptyLabel.frame = frame;
+    self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
+    self.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
+    self.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
+    
+    BOOL shouldShowEmptyLabel = [self isDataSetEmpty];
+    BOOL isShowingEmptyLabel = !self.alfEmptyLabel.hidden;
+    
+    if (shouldShowEmptyLabel == isShowingEmptyLabel)
+    {
+        // Nothing to do
+        return;
+    }
+    
+    // Need to remove the separator lines in empty mode and restore afterwards
+    if (shouldShowEmptyLabel)
+    {
+        self.previousSeparatorStyle = self.tableView.separatorStyle;
+        self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    else
+    {
+        self.tableView.separatorStyle = self.previousSeparatorStyle;
+    }
+    self.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
+}
+
 - (void)expandRootRevealController
 {
     [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
+}
+
+- (void)autoPushFirstResultIfNeeded
+{
+    if(self.shouldAutoPushFirstResult)
+    {
+        if (!IS_IPAD)
+        {
+            UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
+            if (self.navigationController.viewControllers.firstObject == self)
+            {
+                self.navigationItem.leftBarButtonItem = hamburgerButtom;
+            }
+        }
+        
+        if ([self.tableView numberOfRowsInSection:0])
+        {
+            [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            self.shouldAutoPushFirstResult = NO;
+        }
+    }
+}
+
+- (void)trackScreenName
+{
+    NSString *screenName = nil;
+    
+    switch (self.dataType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+            screenName = kAnalyticsViewSearchResultFiles;
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchFolders:
+            screenName = kAnalyticsViewSearchResultFolders;
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchUsers:
+            screenName = kAnalyticsViewSearchResultPeople;
+            break;
+            
+        default:
+            break;
+    }
+    
+    if (screenName)
+    {
+        [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
+    }
+}
+
+#pragma mark - SearchResultsTableViewDataSourceDelegate methods
+
+- (void)dataSourceUpdated
+{
+    [self updateEmptyView];
+    [self.tableView reloadData];
+    self.tableView.tableFooterView = nil;
+    
+    [self autoPushFirstResultIfNeeded];
 }
 
 @end

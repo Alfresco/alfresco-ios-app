@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -23,7 +23,7 @@
 @property (nonatomic, weak) UIViewController *sitesPushHandler;
 @property (nonatomic) BOOL shouldHideNavigationBarOnSearchControllerPresentation;
 
-- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType session:(id<AlfrescoSession>)session;
+- (instancetype)initWithDataSourceType:(SearchViewControllerDataSourceType)dataSourceType listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 - (void)pushDocument:(AlfrescoNode *)node contentPath:(NSString *)contentPath permissions:(AlfrescoPermissions *)permissions;
 - (void)pushFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions;
 - (void)pushFolderPreviewForAlfrescoFolder:(AlfrescoFolder *)node folderPermissions:(AlfrescoPermissions *)permissions;

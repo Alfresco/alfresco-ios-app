@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -100,9 +100,10 @@
  Use the previous search string initialiser to initiate the specified search
  
  @param string - previous search string
+ @param listingContext - the listing context with a paging definition that's used to retrieve search nodes
  @param session - an active session
  */
-- (instancetype)initWithSearchString:(NSString *)string searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage session:(id<AlfrescoSession>)session;
+- (instancetype)initWithSearchString:(NSString *)string searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 /**
  Use the folder type id initialiser when needing to display folders such as "My Files" or "Shared Files"
@@ -128,8 +129,9 @@
 
  @param statement - the CMIS statement
  @param displayName - the name that will be visible to the user
+ @param listingContext - the listing context with a paging definition that's used to retrieve search nodes
  @param session - an active session
  */
-- (instancetype)initWithSearchStatement:(NSString *)statement displayName:(NSString *)displayName session:(id<AlfrescoSession>)session;
+- (instancetype)initWithSearchStatement:(NSString *)statement displayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session;
 
 @end

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -69,23 +69,11 @@
                 break;
             }
             case SearchViewControllerDataSourceTypeSearchFiles:
-            {
-                [self setupDataSourceForSearchType:SearchViewControllerDataSourceTypeSearchFiles];
-                break;
-            }
             case SearchViewControllerDataSourceTypeSearchFolders:
-            {
-                [self setupDataSourceForSearchType:SearchViewControllerDataSourceTypeSearchFolders];
-                break;
-            }
             case SearchViewControllerDataSourceTypeSearchSites:
-            {
-                [self setupDataSourceForSearchType:SearchViewControllerDataSourceTypeSearchSites];
-                break;
-            }
             case SearchViewControllerDataSourceTypeSearchUsers:
             {
-                [self setupDataSourceForSearchType:SearchViewControllerDataSourceTypeSearchUsers];
+                [self setupDataSourceForSearchType:dataSourceType];
                 break;
             }
         }
@@ -189,10 +177,8 @@
     }
     [previousSearchesDict setObject:savedStringsForCurrentDataSourceType forKey:[self userDefaultsKeyForSearchType:searchType]];
     
-    
     [[NSUserDefaults standardUserDefaults] setObject:previousSearchesDict forKey:userSearchSpecificIdentifier];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
+
     [self setupDataSourceForSearchType:searchType];
 }
 
@@ -209,13 +195,16 @@
         userSearchSpecificIdentifier = self.account.selectedNetworkId;
     }
     
-    NSDictionary *previousSearchesDict = [[NSUserDefaults standardUserDefaults] objectForKey:userSearchSpecificIdentifier];
-    if(previousSearchesDict)
+    if (userSearchSpecificIdentifier)
     {
-        NSArray *searchStringsArray = [previousSearchesDict objectForKey:[self userDefaultsKeyForSearchType:searchType]];
-        if(searchStringsArray)
+        NSDictionary *previousSearchesDict = [[NSUserDefaults standardUserDefaults] objectForKey:userSearchSpecificIdentifier];
+        if(previousSearchesDict)
         {
-            previousSearchStringsArray = searchStringsArray;
+            NSArray *searchStringsArray = [previousSearchesDict objectForKey:[self userDefaultsKeyForSearchType:searchType]];
+            if(searchStringsArray)
+            {
+                previousSearchStringsArray = searchStringsArray;
+            }
         }
     }
     
