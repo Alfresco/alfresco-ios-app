@@ -26,7 +26,7 @@
 "settings.about" = "About";
 "settings.about.version" = "Version";
 "settings.about.acknowledgements" = "Acknowledgements";
-"settings.about.footer" = "© 2016 Alfresco Software, Inc. All Rights Reserved.";
+"settings.about.footer" = "© 2017 Alfresco Software, Inc. All Rights Reserved.";
 "settings.advanced" = "Advanced";
 "settings.advanced.safe.mode" = "Safe Mode";
 "settings.advanced.footer" = "Safe mode allows you to get access to the app, but doesn't automatically log you into the default account.\n\nNote, you must terminate the app before this setting is taken into effect.";

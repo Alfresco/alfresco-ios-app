@@ -26,7 +26,7 @@
 "settings.about" = "关于";
 "settings.about.version" = "版本";
 "settings.about.acknowledgements" = "确认";
-"settings.about.footer" = "© 2016 Alfresco Software, Inc. 保留所有权利。";
+"settings.about.footer" = "© 2017 Alfresco Software, Inc. 保留所有权利。";
 "settings.advanced" = "高级";
 "settings.advanced.safe.mode" = "安全模式";
 "settings.advanced.footer" = "安全模式允许您访问应用程序，但是您无法自动登录默认帐户。\n\n请注意，您必须终止应用程序此设置才会生效。";
