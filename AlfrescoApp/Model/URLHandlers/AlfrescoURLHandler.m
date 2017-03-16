@@ -159,6 +159,10 @@ static NSString * const kParamTypePath = @"path";
         {
             paramValueId = pathComponents[2];
         }
+        else
+        {
+            paramValueId = pathComponents[1];
+        }
         
         /**
          * Document
