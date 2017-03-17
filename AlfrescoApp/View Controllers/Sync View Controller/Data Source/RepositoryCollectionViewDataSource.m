@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -26,16 +26,29 @@
 
 @implementation RepositoryCollectionViewDataSource
 
-- (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+- (instancetype)init
 {
     self = [super init];
+    
+    if (!self)
+    {
+        return nil;
+    }
+    
+    self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
+    
+    return self;
+}
+
+- (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate
+{
+    self = [self init];
     if(!self)
     {
         return nil;
     }
     
     [self setupWithParentNode:node session:session delegate:delegate];
-    self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
     
     return self;
 }

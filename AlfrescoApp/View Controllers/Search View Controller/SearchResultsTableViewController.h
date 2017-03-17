@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -20,8 +20,8 @@
 @interface SearchResultsTableViewController : UITableViewController
 
 - (instancetype)initWithDataType:(SearchViewControllerDataSourceType)dataType session:(id<AlfrescoSession>)session pushesSelection:(BOOL)shouldPush;
+- (instancetype)initWithDataType:(SearchViewControllerDataSourceType)dataType session:(id<AlfrescoSession>)session pushesSelection:(BOOL)shouldPush dataSourceArray:(NSArray *)dataSourceArray;
 
-@property (nonatomic, strong) NSMutableArray *results;
 @property (nonatomic) SearchViewControllerDataSourceType dataType;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic) BOOL shouldAutoPushFirstResult;
@@ -31,5 +31,7 @@
 - (void)hideHUD;
 
 - (void)loadViewWithKeyword:(NSString *)keyword;
+- (void)search:(NSString *)searchString listingContext:(AlfrescoListingContext *)listingContext;
+- (void)clearDataSource;
 
 @end

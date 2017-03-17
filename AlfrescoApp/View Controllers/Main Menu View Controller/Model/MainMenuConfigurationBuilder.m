@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -470,18 +470,18 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         {
             AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:[viewConfig.parameters[kAlfrescoConfigViewParameterIsExactKey] boolValue] includeContent:[viewConfig.parameters[kAlfrescoConfigViewParameterFullTextKey] boolValue]];
             searchOptions.includeDescendants = [viewConfig.parameters[kAlfrescoConfigViewParameterSearchFolderOnlyKey] boolValue];
-            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSearchString:viewConfig.parameters[kAlfrescoConfigViewParameterKeywordsKey] searchOptions:searchOptions emptyMessage:nil session:self.session];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSearchString:viewConfig.parameters[kAlfrescoConfigViewParameterKeywordsKey] searchOptions:searchOptions emptyMessage:nil listingContext:listingContext session:self.session];
         }
         else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterStatementKey])
         {
-            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSearchStatement:viewConfig.parameters[kAlfrescoConfigViewParameterStatementKey] displayName:viewConfig.label session:self.session];
+            fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithSearchStatement:viewConfig.parameters[kAlfrescoConfigViewParameterStatementKey] displayName:viewConfig.label listingContext:listingContext session:self.session];
         }
         associatedObject = fileFolderCollectionViewController;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearch])
     {
         // Search
-        SearchViewController *controller = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeLandingPage session:self.session];
+        SearchViewController *controller = [[SearchViewController alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeLandingPage listingContext:listingContext session:self.session];
         associatedObject = controller;
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearchAdvanced])
