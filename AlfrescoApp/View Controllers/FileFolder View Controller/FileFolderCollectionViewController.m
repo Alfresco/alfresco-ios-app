@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -168,13 +168,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initWithSearchString:(NSString *)string searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage session:(id<AlfrescoSession>)session
+- (instancetype)initWithSearchString:(NSString *)string searchOptions:(AlfrescoKeywordSearchOptions *)options emptyMessage:(NSString *)emptyMessage listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if (self)
     {
         self.controllerType = FileFolderCollectionViewControllerTypeSearchString;
-        self.dataSource = [[SearchCollectionViewDataSource alloc] initWithSearchString:string searchOptions:options emptyMessage:emptyMessage session:session delegate:self];
+        self.dataSource = [[SearchCollectionViewDataSource alloc] initWithSearchString:string searchOptions:options emptyMessage:emptyMessage session:session delegate:self listingContext:listingContext];
     }
     
     return self;
@@ -214,13 +214,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     return self;
 }
 
-- (instancetype)initWithSearchStatement:(NSString *)statement displayName:(NSString *)displayName session:(id<AlfrescoSession>)session
+- (instancetype)initWithSearchStatement:(NSString *)statement displayName:(NSString *)displayName listingContext:(AlfrescoListingContext *)listingContext session:(id<AlfrescoSession>)session
 {
     self = [super initWithSession:session];
     if(self)
     {
         self.controllerType = FileFolderCollectionViewControllerTypeCMISSearch;
-        self.dataSource = [[SearchCollectionViewDataSource alloc] initWithSearchStatement:statement session:session delegate:self];
+        self.dataSource = [[SearchCollectionViewDataSource alloc] initWithSearchStatement:statement session:session delegate:self listingContext:listingContext];
     }
     
     return self;

@@ -26,7 +26,7 @@
 "settings.about" = "バージョン情報";
 "settings.about.version" = "バージョン";
 "settings.about.acknowledgements" = "謝辞";
-"settings.about.footer" = "© 2016 Alfresco Software, Inc. All Rights Reserved.";
+"settings.about.footer" = "© 2017 Alfresco Software, Inc. All Rights Reserved.";
 "settings.advanced" = "詳細設定";
 "settings.advanced.safe.mode" = "セーフモード";
 "settings.advanced.footer" = "セーフモードでは、このアプリにアクセスできますが、デフォルトのアカウントで自動的にはログインされません。\n\nこの設定を有効にするには、このアプリをいったん終了する必要があります。";

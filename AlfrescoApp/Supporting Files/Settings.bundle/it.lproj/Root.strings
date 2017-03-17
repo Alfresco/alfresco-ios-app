@@ -26,7 +26,7 @@
 "settings.about" = "Informazioni";
 "settings.about.version" = "Versione";
 "settings.about.acknowledgements" = "Riconoscimenti";
-"settings.about.footer" = "© 2016 Alfresco Software, Inc. Tutti i diritti riservati.";
+"settings.about.footer" = "© 2017 Alfresco Software, Inc. Tutti i diritti riservati.";
 "settings.advanced" = "Avanzate";
 "settings.advanced.safe.mode" = "Modalità sicura";
 "settings.advanced.footer" = "Con la modalità sicura puoi accedere all'app ma non puoi accedere automaticamente al tuo account predefinito.\n\nNota: è necessario chiudere l'app prima di rendere effettiva questa impostazione.";

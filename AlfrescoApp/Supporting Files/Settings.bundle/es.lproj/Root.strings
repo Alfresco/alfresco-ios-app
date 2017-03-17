@@ -26,7 +26,7 @@
 "settings.about" = "Acerca de";
 "settings.about.version" = "Versión";
 "settings.about.acknowledgements" = "Reconocimientos";
-"settings.about.footer" = "© 2016 Alfresco Software, Inc. Todos los derechos reservados.";
+"settings.about.footer" = "© 2017 Alfresco Software, Inc. Todos los derechos reservados.";
 "settings.advanced" = "Avanzado";
 "settings.advanced.safe.mode" = "Modo seguro";
 "settings.advanced.footer" = "El modo seguro le permite acceder a la aplicación, pero no inicia una sesión automáticamente en la cuenta predeterminada.\n\nTenga en cuenta que debe cerrar  la aplicación para que esta configuración surta efecto.";

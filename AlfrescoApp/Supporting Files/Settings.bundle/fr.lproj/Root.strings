@@ -26,7 +26,7 @@
 "settings.about" = "À propos";
 "settings.about.version" = "Version";
 "settings.about.acknowledgements" = "Remerciements";
-"settings.about.footer" = "© 2016 Alfresco Software, Inc. Tous droits réservés.";
+"settings.about.footer" = "© 2017 Alfresco Software, Inc. Tous droits réservés.";
 "settings.advanced" = "Avancé";
 "settings.advanced.safe.mode" = "Mode sécurisé";
 "settings.advanced.footer" = "Le mode sécurisé vous permet d'accéder à l'application, sans vous connecter automatiquement au compte par défaut.\n\nÀ noter que vous devez fermer l'application pour que ce paramètre soit effectif.";

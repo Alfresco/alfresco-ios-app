@@ -26,7 +26,7 @@
 "settings.about" = "Info";
 "settings.about.version" = "Version";
 "settings.about.acknowledgements" = "Hinweise";
-"settings.about.footer" = "© 2016 Alfresco Software, Inc. Alle Rechte vorbehalten.";
+"settings.about.footer" = "© 2017 Alfresco Software, Inc. Alle Rechte vorbehalten.";
 "settings.advanced" = "Erweitert";
 "settings.advanced.safe.mode" = "Sicherer Modus";
 "settings.advanced.footer" = "Im sicheren Modus können Sie auf die App zugreifen, werden aber nicht automatisch im Standard-Account angemeldet.\n\nHinweis: Sie müssen die App beenden, bevor diese Einstellung übernommen wird.";
