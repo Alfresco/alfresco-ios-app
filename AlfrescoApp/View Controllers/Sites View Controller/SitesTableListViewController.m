@@ -631,8 +631,13 @@
 
 #pragma mark - Public methods
 
-- (void)search:(NSString *)searchString
+- (void)search:(NSString *)searchString listingContext:(AlfrescoListingContext *)listingContext
 {
+    if (listingContext)
+    {
+        self.defaultListingContext = listingContext;
+    }
+    
     self.dataSource = [[SearchResultsTableViewDataSource alloc] initWithDataSourceType:SearchViewControllerDataSourceTypeSearchSites searchString:searchString session:self.session delegate:self listingContext:self.defaultListingContext];
 }
 

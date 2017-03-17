@@ -305,7 +305,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
                                                                                                          session:self.session
                                                                                                      pushHandler:self.sitesPushHandler
                                                                                                   listingContext:self.listingContext];
-            [resultsController search:selectedString];
+            [resultsController search:selectedString listingContext:self.listingContext];
             resultsController.title = selectedString;
             [self.sitesPushHandler.navigationController pushViewController:resultsController animated:YES];
             
@@ -421,7 +421,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             if ([self.searchController.searchResultsController isKindOfClass:[SitesTableListViewController class]])
             {
                 SitesTableListViewController *resultsController = (SitesTableListViewController *)self.searchController.searchResultsController;
-                [resultsController search:searchString];
+                [resultsController search:searchString listingContext:self.listingContext];
             }
             break;
         }

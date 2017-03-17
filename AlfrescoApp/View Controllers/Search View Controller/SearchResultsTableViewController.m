@@ -18,14 +18,10 @@
 
 #import "SearchResultsTableViewController.h"
 #import "AlfrescoNodeCell.h"
-#import "ThumbnailManager.h"
 #import "UniversalDevice.h"
-#import "RealmSyncManager.h"
 #import "AlfrescoNode+Sync.h"
 #import "SearchViewController.h"
-#import "FavouriteManager.h"
 #import "PersonCell.h"
-#import "AvatarManager.h"
 #import "PersonProfileViewController.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
@@ -66,6 +62,7 @@ static CGFloat const kCellHeight = 73.0f;
     if (self = [self initWithDataType:dataType session:session pushesSelection:shouldPush])
     {
         self.dataSource = [[SearchResultsTableViewDataSource alloc] initWithDataSourceType:dataType results:dataSourceArray delegate:self];
+        self.tableView.dataSource = self.dataSource;
     }
     
     return self;
@@ -119,130 +116,12 @@ static CGFloat const kCellHeight = 73.0f;
     [self trackScreenName];
 }
 
-#pragma mark - TableViewDataSource methods
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return self.dataSource.searchResultsArray.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = nil;
-    
-    switch (self.dataType)
-    {
-        case SearchViewControllerDataSourceTypeSearchFiles:
-        {
-            AlfrescoNodeCell *properCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier] forIndexPath:indexPath];
-            
-            AlfrescoNode *currentNode = [self.dataSource.searchResultsArray objectAtIndex:indexPath.row];
-            RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-            FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-            
-            BOOL isSyncNode = [currentNode isNodeInSyncList];
-            SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-            [properCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
-            [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
-            
-            [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-                
-                [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
-            }];
-            
-            AlfrescoDocument *documentNode = (AlfrescoDocument *)currentNode;
-            UIImage *thumbnail = [[ThumbnailManager sharedManager] thumbnailForDocument:documentNode renditionType:kRenditionImageDocLib];
-            if (thumbnail)
-            {
-                [properCell.image setImage:thumbnail withFade:NO];
-            }
-            else
-            {
-                [properCell.image setImage:smallImageForType([documentNode.name pathExtension]) withFade:NO];
-                [[ThumbnailManager sharedManager] retrieveImageForDocument:documentNode renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                    @try
-                    {
-                        if (image)
-                        {
-                            // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
-                            // by the time completion block is called the table view could have been unloaded.
-                            if (tableView && indexPath)
-                            {
-                                AlfrescoNodeCell *updateCell = (AlfrescoNodeCell *)[tableView cellForRowAtIndexPath:indexPath];
-                                [updateCell.image setImage:image withFade:YES];
-                            }
-                        }
-                    }
-                    @catch (NSException *exception)
-                    {
-                        AlfrescoLogError(@"Exception thrown is %@", exception);
-                    }
-                }];
-            }
-
-            cell = properCell;
-            break;
-        }
-        case SearchViewControllerDataSourceTypeSearchFolders:
-        {
-            AlfrescoNodeCell *properCell = (AlfrescoNodeCell *)[tableView dequeueReusableCellWithIdentifier:[AlfrescoNodeCell cellIdentifier] forIndexPath:indexPath];
-            
-            AlfrescoNode *currentNode = [self.dataSource.searchResultsArray objectAtIndex:indexPath.row];
-            RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-            FavouriteManager *favoriteManager = [FavouriteManager sharedManager];
-            
-            BOOL isSyncNode = [currentNode isNodeInSyncList];
-            SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:currentNode.identifier];
-            [properCell updateCellInfoWithNode:currentNode nodeStatus:nodeStatus];
-            [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:NO animate:NO];
-            
-            [favoriteManager isNodeFavorite:currentNode session:self.session completionBlock:^(BOOL isFavorite, NSError *error) {
-                
-                [properCell updateStatusIconsIsSyncNode:isSyncNode isFavoriteNode:isFavorite animate:NO];
-            }];
-            
-            [properCell.image setImage:smallImageForType(@"folder") withFade:NO];
-            
-            cell = properCell;
-            break;
-        }
-        case SearchViewControllerDataSourceTypeSearchUsers:
-        {
-            PersonCell *properCell = (PersonCell *)[tableView dequeueReusableCellWithIdentifier:NSStringFromClass([PersonCell class]) forIndexPath:indexPath];
-            AlfrescoPerson *currentPerson = (AlfrescoPerson *)[self.dataSource.searchResultsArray objectAtIndex:indexPath.row];
-            properCell.nameLabel.text = currentPerson.fullName;
-            
-            AvatarConfiguration *configuration = [AvatarConfiguration defaultConfigurationWithIdentifier:currentPerson.identifier session:self.session];
-            configuration.ignoreCache = YES;
-            [[AvatarManager sharedManager] retrieveAvatarWithConfiguration:configuration completionBlock:^(UIImage *image, NSError *error) {
-                properCell.avatarImageView.image = image;
-            }];
-            
-            cell = properCell;
-            break;
-        }
-        default:
-        {
-            break;
-        }
-    }
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    return cell;
-}
+#pragma mark - UITableViewDelegate methods
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return kCellHeight;
 }
-
-#pragma mark - UITableViewDelegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -431,6 +310,7 @@ static CGFloat const kCellHeight = 73.0f;
     if (self.dataSource == nil)
     {
         self.dataSource = [[SearchResultsTableViewDataSource alloc] initWithDataSourceType:self.dataType searchString:searchString session:self.session delegate:self listingContext:listingContext];
+        self.tableView.dataSource = self.dataSource;
     }
     else
     {

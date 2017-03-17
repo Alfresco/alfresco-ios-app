@@ -23,7 +23,7 @@
 - (void)dataSourceUpdated;
 @end
 
-@interface SearchResultsTableViewDataSource : NSObject
+@interface SearchResultsTableViewDataSource : NSObject <UITableViewDataSource>
 
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, assign) BOOL moreItemsAvailable;
