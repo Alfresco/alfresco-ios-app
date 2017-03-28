@@ -46,10 +46,9 @@
     self.userCancelledLoading = NO;
 
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.owningView];
-    hud.labelText = NSLocalizedString(@"action.print", @"Print");
-    hud.detailsLabelText = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
+    hud.label.text = NSLocalizedString(@"action.print", @"Print");
+    hud.detailsLabel.text = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
     hud.graceTime = 1.0;
-    hud.taskInProgress = YES;
     hud.mode = MBProgressHUDModeDeterminate;
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleProgressTap:)];
@@ -58,7 +57,7 @@
     [hud addGestureRecognizer:tap];
 
     [self.owningView addSubview:hud];
-    [hud show:YES];
+    [hud showAnimated:YES];
     self.hud = hud;
 
     self.progress = 0.0;
@@ -71,8 +70,7 @@
 {
     [self.timer invalidate];
     self.hud.progress = 1.0;
-    self.hud.taskInProgress = NO;
-    [self.hud hide:YES];
+    [self.hud hideAnimated:YES];
 }
 
 #pragma mark - UIWebViewDelegate

@@ -397,8 +397,8 @@
 {
     MBProgressHUD *progress = [[MBProgressHUD alloc] initWithView:view];
     progress.removeFromSuperViewOnHide = YES;
-    progress.labelText = NSLocalizedString(@"login.hud.label", @"Connecting...");
-    progress.detailsLabelText = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
+    progress.label.text = NSLocalizedString(@"login.hud.label", @"Connecting...");
+    progress.detailsLabel.text = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tappedCancelLoginRequest:)];
     tap.numberOfTapsRequired = 1;
@@ -406,7 +406,7 @@
     [progress addGestureRecognizer:tap];
     
     [view addSubview:progress];
-    [progress show:YES];
+    [progress showAnimated:YES];
     
     if (self.progressHUD)
     {
@@ -424,7 +424,7 @@
 
 - (void)hideHUD
 {
-    [self.progressHUD hide:YES];
+    [self.progressHUD hideAnimated:YES];
     self.progressHUD = nil;
 }
 

@@ -191,14 +191,14 @@
             [self.view addSubview:self.progressHUD];
         }
         self.progressHUD.mode = mode;
-        [self.progressHUD show:YES];
+        [self.progressHUD showAnimated:YES];
     });
 }
 
 - (void)hideHUD
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.progressHUD hide:YES];
+        [self.progressHUD hideAnimated:YES];
         self.progressHUD.mode = MBProgressHUDModeIndeterminate;
     });
 }

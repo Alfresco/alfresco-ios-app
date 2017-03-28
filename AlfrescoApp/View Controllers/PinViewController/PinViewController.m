@@ -101,7 +101,7 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillshowAnimated:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showKeyboardInPinScreen:) name:kShowKeyboardInPinScreenNotification object:nil];
     
     [self becomeFirstResponder];
@@ -140,7 +140,7 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
     });
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification
+- (void)keyboardWillshowAnimated:(NSNotification *)notification
 {
     NSDictionary *info = [notification userInfo];
     CGRect keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];

@@ -95,8 +95,8 @@
     if (!self.hud)
     {
         MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:self.view];
-        hud.labelText = NSLocalizedString(@"action.print", @"Print");
-        hud.detailsLabelText = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
+        hud.label.text = NSLocalizedString(@"action.print", @"Print");
+        hud.detailsLabel.text = NSLocalizedString(@"login.hud.cancel.label", @"Tap To Cancel");
         hud.graceTime = 1.0;
         hud.mode = MBProgressHUDModeDeterminate;
         
@@ -110,15 +110,13 @@
     }
 
     self.hud.progress = 0;
-    self.hud.taskInProgress = YES;
-    [self.hud show:YES];
+    [self.hud showAnimated:YES];
 }
 
 - (void)hideHUD
 {
     self.hud.progress = 1;
-    self.hud.taskInProgress = NO;
-    [self.hud hide:YES];
+    [self.hud hideAnimated:YES];
 }
 
 - (void)displayError:(NSError *)error

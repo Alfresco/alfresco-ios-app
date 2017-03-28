@@ -45,12 +45,12 @@
 {
     self.searchProgressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
     [self.tableView addSubview:self.searchProgressHUD];
-    [self.searchProgressHUD show:YES];
+    [self.searchProgressHUD showAnimated:YES];
 }
 
 - (void)hideSearchProgressHUD
 {
-    [self.searchProgressHUD hide:YES];
+    [self.searchProgressHUD hideAnimated:YES];
     self.searchProgressHUD = nil;
 }
 

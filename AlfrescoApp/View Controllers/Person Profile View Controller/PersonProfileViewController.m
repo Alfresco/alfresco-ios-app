@@ -150,9 +150,9 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         [self.view addSubview:progressHUD];
         progressHUD.removeFromSuperViewOnHide = YES;
         
-        [progressHUD show:YES];
+        [progressHUD showAnimated:YES];
         [self retrievePersonForUsername:self.username completionBlock:^(AlfrescoPerson *person, NSError *personError) {
-            [progressHUD hide:YES];
+            [progressHUD hideAnimated:YES];
         }];
     }
 }

@@ -198,9 +198,9 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
             if (selectedAccount.accountType == UserAccountTypeCloud)
             {
                 NSString *networkID = selectedAccount.accountNetworks[[accountListIndexPath indexAtPosition:1]];
-                [progressHUD show:YES];
+                [progressHUD showAnimated:YES];
                 [[LoginManager sharedManager] authenticateCloudAccount:selectedAccount networkId:networkID navigationController:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                    [progressHUD hide:YES];
+                    [progressHUD hideAnimated:YES];
                     if (successful && alfrescoSession)
                     {
                         [self displayNodePickerWithSession:alfrescoSession navigationContoller:self.navigationController];
@@ -212,9 +212,9 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
             {
                 if (selectedAccount.password.length == 0)
                 {
-                    [progressHUD show:YES];
+                    [progressHUD showAnimated:YES];
                     [[LoginManager sharedManager] authenticateOnPremiseAccount:selectedAccount password:selectedAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                        [progressHUD hide:YES];
+                        [progressHUD hideAnimated:YES];
                         if (successful)
                         {
                             [self displayNodePickerWithSession:alfrescoSession navigationContoller:self.navigationController];
@@ -248,9 +248,9 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
 {
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:loginViewController.navigationController.view];
     [loginViewController.navigationController.view addSubview:progressHUD];
-    [progressHUD show:YES];
+    [progressHUD showAnimated:YES];
     [[LoginManager sharedManager] authenticateOnPremiseAccount:account password:password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-        [progressHUD hide:YES];
+        [progressHUD hideAnimated:YES];
         if (successful)
         {
             [self displayNodePickerWithSession:alfrescoSession navigationContoller:self.navigationController];

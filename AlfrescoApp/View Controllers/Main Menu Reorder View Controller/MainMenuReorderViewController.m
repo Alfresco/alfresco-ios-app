@@ -147,10 +147,10 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 {
     MBProgressHUD *progress = [[MBProgressHUD alloc] initWithView:self.view];
     progress.mode = MBProgressHUDModeIndeterminate;
-    progress.labelText = NSLocalizedString(@"main.menu.reorder.retrieving.profiles", @"");
+    progress.label.text = NSLocalizedString(@"main.menu.reorder.retrieving.profiles", @"");
     progress.removeFromSuperViewOnHide = YES;
     [self.view addSubview:progress];
-    [progress show:YES];
+    [progress showAnimated:YES];
     
     [self.mainMenuBuilder sectionsForContentGroupWithCompletionBlock:^(NSArray *sections) {
         NSMutableArray *sectionsForConfigGroup = sections.mutableCopy;
@@ -174,7 +174,7 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         
         [self determineSyncMenuItemInitialStatus];
         
-        [progress hide:YES];
+        [progress hideAnimated:YES];
         [self.tableView reloadData];
     }];
 }

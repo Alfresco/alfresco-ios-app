@@ -178,7 +178,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
     NSString *processDefinitionKey = [WorkflowHelper processDefinitionKeyForWorkflowType:self.workflowType numberOfAssignees:self.assignees.count session:self.session];
     
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
-    [progressHUD show:YES];
+    [progressHUD showAnimated:YES];
     
     [self.workflowService retrieveProcessDefinitionWithKey:processDefinitionKey completionBlock:^(AlfrescoWorkflowProcessDefinition *processDefinition, NSError *error) {
         
@@ -205,7 +205,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                                                        attachments:self.attachments
                                                    completionBlock:^(AlfrescoWorkflowProcess *process, NSError *error) {
                                                        
-                                                       [progressHUD hide:YES];
+                                                       [progressHUD hideAnimated:YES];
                                                        if (error)
                                                        {
                                                            displayErrorMessageWithTitle(NSLocalizedString(@"task.create.error", @"Failed to create Task"), [ErrorDescriptions descriptionForError:error]);
@@ -239,7 +239,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
         }
         else
         {
-            [progressHUD hide:YES];
+            [progressHUD hideAnimated:YES];
             displayErrorMessageWithTitle(NSLocalizedString(@"task.create.error", @"Failed to create Task"), [ErrorDescriptions descriptionForError:error]);
         }
     }];

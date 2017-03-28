@@ -185,12 +185,12 @@
         progressHUD.mode = MBProgressHUDModeDeterminate;
         
         [selectionController.navigationController.view addSubview:progressHUD];
-        [progressHUD show:YES];
+        [progressHUD showAnimated:YES];
         
         [documentFolderService createDocumentWithName:fileName inParentFolder:folder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
             // success block
             void (^successBlock)(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) = ^(AlfrescoDocument *createdDocument, NSInputStream *creationInputStream) {
-                [progressHUD hide:YES];
+                [progressHUD hideAnimated:YES];
                 [creationInputStream close];
                 
                 [[RealmSyncManager sharedManager] didUploadNode:createdDocument fromPath:filePath toFolder:folder];
@@ -205,7 +205,7 @@
             
             // failure block
             void (^failureBlock)(NSError *creationError, NSInputStream *creationInputStream) = ^(NSError *creationError, NSInputStream *creationInputStream) {
-                [progressHUD hide:YES];
+                [progressHUD hideAnimated:YES];
                 [creationInputStream close];
                 NSString *title = NSLocalizedString(@"saveback.upload.failed.title", @"Upload Failed");
                 NSString *message = [NSString stringWithFormat:NSLocalizedString(@"saveback.upload.failed.message", @"Upload Failed"), filePath.lastPathComponent, folder.name];
