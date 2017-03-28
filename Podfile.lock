@@ -18,7 +18,7 @@ PODS:
   - HockeySDK (3.8.4):
     - HockeySDK/AllFeaturesLib (= 3.8.4)
   - HockeySDK/AllFeaturesLib (3.8.4)
-  - MBProgressHUD (0.9.1)
+  - MBProgressHUD (1.0.0)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
     - NJKWebViewProgress/ProgressView (= 0.2.3)
@@ -31,7 +31,7 @@ PODS:
 DEPENDENCIES:
   - Google/Analytics (from `http://alfresco.github.io/alfresco-ios-app/Google.podspec.json`)
   - HockeySDK (~> 3.8)
-  - MBProgressHUD (~> 0.9)
+  - MBProgressHUD (~> 1.0)
   - NJKWebViewProgress (~> 0.2)
   - Realm (~> 2.0.2)
 
@@ -47,8 +47,10 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 82ad9f93d3615244b3f4ce440f5ab2515e8b4f56
   GoogleUtilities: 8ed9134debe11719097881711464752900668f10
   HockeySDK: 464a9eb01c42718515629d8d1d406983e5f855dc
-  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   Realm: 0f5a194af0b7e6158b83db41b4ee1a00be7ddf1a
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 4155754905e22a918c5d272d59847dc8700aceeb
+
+COCOAPODS: 1.2.0
