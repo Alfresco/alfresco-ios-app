@@ -273,10 +273,10 @@ static NSString * const kTextFileMimeType = @"text/plain";
         {
             MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.view];
             progressHUD.mode = MBProgressHUDModeDeterminate;
-            [progressHUD show:YES];
+            [progressHUD showAnimated:YES];
             
             [self.documentFolderService updateContentOfDocument:self.editingDocument contentFile:contentFile completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                [progressHUD hide:YES];
+                [progressHUD hideAnimated:YES];
                 if (document)
                 {
                     [self updateSourceFileFromTemporaryFile];

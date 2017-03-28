@@ -152,7 +152,7 @@ static UILayoutPriority const kLowPriority = 250;
 - (void)registerForNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillshowAnimated:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
@@ -284,7 +284,7 @@ static UILayoutPriority const kLowPriority = 250;
     return isReviewTask || isInvitePendingTask;
 }
 
-- (void)keyboardWillShow:(NSNotification *)notification
+- (void)keyboardWillshowAnimated:(NSNotification *)notification
 {
     NSDictionary *info = [notification userInfo];
     
@@ -343,14 +343,14 @@ static UILayoutPriority const kLowPriority = 250;
 {
     __block MBProgressHUD *completingProgressHUD = [[MBProgressHUD alloc] initWithView:self.view];
     [self.view addSubview:completingProgressHUD];
-    [completingProgressHUD show:YES];
+    [completingProgressHUD showAnimated:YES];
     
     [self enableActionButtons:NO];
     [self.textView resignFirstResponder];
     
     __weak typeof(self) weakSelf = self;
     [self.workflowService completeTask:self.task variables:properties completionBlock:^(AlfrescoWorkflowTask *task, NSError *error) {
-        [completingProgressHUD hide:YES];
+        [completingProgressHUD hideAnimated:YES];
         completingProgressHUD = nil;
         [weakSelf enableActionButtons:YES];
         

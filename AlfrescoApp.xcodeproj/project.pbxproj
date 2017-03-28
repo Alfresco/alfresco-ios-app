@@ -240,7 +240,7 @@
 		2B2BEFF51D00824E0090B45B /* DocumentCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2BEFF41D00824E0090B45B /* DocumentCollectionViewDataSource.m */; };
 		2B2D5F341D3F676900428730 /* SyncOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D5F331D3F676900428730 /* SyncOperationQueue.m */; };
 		2B314C861B7B7D750031E965 /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
-		2B314C8B1B7B8A8A0031E965 /* AlfrescoKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
+		2B314C8B1B7B8A8A0031E965 /* ReferenceProxy in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
 		2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */; };
 		2B34468B1B6A62EC00853B7D /* LoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */; };
 		2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */; };
@@ -306,7 +306,8 @@
 		2BFE12981AC2E734000EB19D /* circle_tick@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BFE12941AC2E734000EB19D /* circle_tick@2x.png */; };
 		2BFECF581BB57D660007ABA2 /* SitesTableListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFECF571BB57D660007ABA2 /* SitesTableListViewController.m */; };
 		2BFECF5F1BB587310007ABA2 /* SitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BFECF5E1BB587310007ABA2 /* SitesViewController.m */; };
-		65E3284E24B215E500C5C83C /* libPods-AlfrescoDocumentPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5EB8B1BCCC8F9161DE364C96 /* libPods-AlfrescoDocumentPicker.a */; };
+		659CA43A2CE38651500FF748 /* libPods-AlfrescoDocumentPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A544CBC5CD8C7DE64C27C0EB /* libPods-AlfrescoDocumentPicker.a */; };
+		6C2913BE59154B74A223E37F /* libPods-AlfrescoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ECC79C36D4668D49BB1C70B /* libPods-AlfrescoApp.a */; };
 		7300DE9518EF010F00F5F57E /* FullScreenAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */; };
 		7302475419544AD50034D861 /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475219544AD50034D861 /* playButton.png */; };
 		7302475519544AD50034D861 /* playButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7302475319544AD50034D861 /* playButton@2x.png */; };
@@ -379,7 +380,7 @@
 		734B87841AA741260093E702 /* NSFileManager+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F14C1F1A8CDDF50042D91E /* NSFileManager+Extension.m */; };
 		734BFE561899606A00692AB4 /* hamburger.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE541899606A00692AB4 /* hamburger.png */; };
 		734BFE571899606A00692AB4 /* hamburger@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE551899606A00692AB4 /* hamburger@2x.png */; };
-		734CC3B11A6FBC90005D148E /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
+		734CC3B11A6FBC90005D148E /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
 		734CC3F31A700808005D148E /* DocumentPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734CC3F21A700808005D148E /* DocumentPickerViewController.m */; };
 		734CC4011A700809005D148E /* FileProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 734CC4001A700809005D148E /* FileProvider.m */; };
 		734CC4041A700809005D148E /* AlfrescoDocumentPickerFileProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 734CC3FA1A700808005D148E /* AlfrescoDocumentPickerFileProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -396,8 +397,8 @@
 		735DDC2A1B30268D0091D7B4 /* mainmenu-search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 735DDC201B30268D0091D7B4 /* mainmenu-search@2x.png */; };
 		735DDC2B1B30268D0091D7B4 /* mainmenu-user.png in Resources */ = {isa = PBXBuildFile; fileRef = 735DDC211B30268D0091D7B4 /* mainmenu-user.png */; };
 		735DDC2C1B30268D0091D7B4 /* mainmenu-user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 735DDC221B30268D0091D7B4 /* mainmenu-user@2x.png */; };
-		735F95CF1A71038600D8B81E /* AlfrescoKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
-		735F95D01A71038F00D8B81E /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
+		735F95CF1A71038600D8B81E /* ReferenceProxy in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
+		735F95D01A71038F00D8B81E /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
 		735F95D61A711A2B00D8B81E /* DocumentPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735F95D51A711A2B00D8B81E /* DocumentPickerViewController.xib */; };
 		735F95D71A71204500D8B81E /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
 		73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD01802C679007172EE /* ActionCollectionView.m */; };
@@ -426,7 +427,7 @@
 		73697B9D1A9B738F009F10BA /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
 		73697BA21A9B74A3009F10BA /* UserAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* UserAccount.m */; };
 		73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
-		73697BAB1A9B81D5009F10BA /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
+		73697BAB1A9B81D5009F10BA /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
 		73697BB31A9B8DC0009F10BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73697BB21A9B8DC0009F10BA /* SystemConfiguration.framework */; };
 		73697BB51A9B8DDA009F10BA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73697BB41A9B8DDA009F10BA /* MobileCoreServices.framework */; };
 		736C4BFD1B8F1920008B7663 /* contact-details-email.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BF51B8F1920008B7663 /* contact-details-email.png */; };
@@ -723,7 +724,6 @@
 		73FF558C18ACE2370009CA56 /* large_xml@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557418ACE2370009CA56 /* large_xml@2x.png */; };
 		73FF558D18ACE2370009CA56 /* large_zip.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557518ACE2370009CA56 /* large_zip.png */; };
 		73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557618ACE2370009CA56 /* large_zip@2x.png */; };
-		81A19F41D0BFF1B200699669 /* libPods-AlfrescoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B9C8363C10BDC21F10B8547 /* libPods-AlfrescoApp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1316,11 +1316,9 @@
 		2BFECF571BB57D660007ABA2 /* SitesTableListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesTableListViewController.m; sourceTree = "<group>"; };
 		2BFECF5D1BB587310007ABA2 /* SitesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesViewController.h; sourceTree = "<group>"; };
 		2BFECF5E1BB587310007ABA2 /* SitesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesViewController.m; sourceTree = "<group>"; };
-		2DDAD7488C5D07BE47218131 /* Pods-AlfrescoDocumentPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.release.xcconfig"; sourceTree = "<group>"; };
-		386644BAD9E13F10A635FE60 /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.adhoc.xcconfig"; sourceTree = "<group>"; };
-		5E94C5EF6AA4498598C65FBE /* Pods-AlfrescoDocumentPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.debug.xcconfig"; sourceTree = "<group>"; };
-		5EB8B1BCCC8F9161DE364C96 /* libPods-AlfrescoDocumentPicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoDocumentPicker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		7006227549426FE6F19F5794 /* Pods-AlfrescoApp.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoApp.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp.adhoc.xcconfig"; sourceTree = "<group>"; };
+		3ECC79C36D4668D49BB1C70B /* libPods-AlfrescoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		44C129C2E866DB088D73003D /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.adhoc.xcconfig"; sourceTree = "<group>"; };
+		557E8155997D9FC30FA5A23E /* Pods-AlfrescoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp.release.xcconfig"; sourceTree = "<group>"; };
 		7300DE9318EF010F00F5F57E /* FullScreenAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenAnimationController.h; sourceTree = "<group>"; };
 		7300DE9418EF010F00F5F57E /* FullScreenAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenAnimationController.m; sourceTree = "<group>"; };
 		7302475219544AD50034D861 /* playButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playButton.png; sourceTree = "<group>"; };
@@ -1912,11 +1910,11 @@
 		73FF557418ACE2370009CA56 /* large_xml@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_xml@2x.png"; sourceTree = "<group>"; };
 		73FF557518ACE2370009CA56 /* large_zip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_zip.png; sourceTree = "<group>"; };
 		73FF557618ACE2370009CA56 /* large_zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_zip@2x.png"; sourceTree = "<group>"; };
-		827808CF335E5340A6DBDCCC /* Pods-AlfrescoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp.debug.xcconfig"; sourceTree = "<group>"; };
-		8B9C8363C10BDC21F10B8547 /* libPods-AlfrescoApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		9DB5D92344964A91B3E95A3F /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E79EDF428481D75323F4ACA9 /* Pods-AlfrescoApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp.release.xcconfig"; sourceTree = "<group>"; };
-		FA0528FF52881483B110A628 /* Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPickerFileProvider/Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig"; sourceTree = "<group>"; };
+		75DA78F13ED7FC2F0AF24D6E /* Pods-AlfrescoDocumentPicker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.debug.xcconfig"; sourceTree = "<group>"; };
+		7BE90474C10CFAC6CAE97D58 /* Pods-AlfrescoDocumentPicker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoDocumentPicker.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker.release.xcconfig"; sourceTree = "<group>"; };
+		80BFF6FCEAD31D1A36EB49BF /* Pods-AlfrescoApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp.debug.xcconfig"; sourceTree = "<group>"; };
+		A544CBC5CD8C7DE64C27C0EB /* libPods-AlfrescoDocumentPicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoDocumentPicker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E49C6C6B447478825EEDA62B /* Pods-AlfrescoApp.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoApp.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp.adhoc.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1931,8 +1929,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				735F95D01A71038F00D8B81E /* libAlfrescoKit.a in Frameworks */,
-				65E3284E24B215E500C5C83C /* libPods-AlfrescoDocumentPicker.a in Frameworks */,
+				735F95D01A71038F00D8B81E /* ReferenceProxy in Frameworks */,
+				659CA43A2CE38651500FF748 /* libPods-AlfrescoDocumentPicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1942,7 +1940,7 @@
 			files = (
 				73697BB51A9B8DDA009F10BA /* MobileCoreServices.framework in Frameworks */,
 				73697BB31A9B8DC0009F10BA /* SystemConfiguration.framework in Frameworks */,
-				73697BAB1A9B81D5009F10BA /* libAlfrescoKit.a in Frameworks */,
+				73697BAB1A9B81D5009F10BA /* ReferenceProxy in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1950,15 +1948,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				734CC3B11A6FBC90005D148E /* libAlfrescoKit.a in Frameworks */,
+				734CC3B11A6FBC90005D148E /* ReferenceProxy in Frameworks */,
 				272C41D419C7AF2600DABBF0 /* libFlurry_5.3.0.a in Frameworks */,
-				81A19F41D0BFF1B200699669 /* libPods-AlfrescoApp.a in Frameworks */,
+				6C2913BE59154B74A223E37F /* libPods-AlfrescoApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		062418B6C5B8D8B767D01664 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				80BFF6FCEAD31D1A36EB49BF /* Pods-AlfrescoApp.debug.xcconfig */,
+				557E8155997D9FC30FA5A23E /* Pods-AlfrescoApp.release.xcconfig */,
+				E49C6C6B447478825EEDA62B /* Pods-AlfrescoApp.adhoc.xcconfig */,
+				75DA78F13ED7FC2F0AF24D6E /* Pods-AlfrescoDocumentPicker.debug.xcconfig */,
+				7BE90474C10CFAC6CAE97D58 /* Pods-AlfrescoDocumentPicker.release.xcconfig */,
+				44C129C2E866DB088D73003D /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		0804DCA5181962A400E3ACC2 /* Accounts View Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -2840,7 +2851,7 @@
 				734CC3FB1A700809005D148E /* AlfrescoDocumentPickerFileProvider */,
 				7373B4F717A66E9400869949 /* Frameworks */,
 				7373B4F617A66E9400869949 /* Products */,
-				CE0AF57B8038B86BE84A37DE /* Pods */,
+				062418B6C5B8D8B767D01664 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2860,9 +2871,8 @@
 			children = (
 				73697BB41A9B8DDA009F10BA /* MobileCoreServices.framework */,
 				73697BB21A9B8DC0009F10BA /* SystemConfiguration.framework */,
-				9DB5D92344964A91B3E95A3F /* libPods.a */,
-				8B9C8363C10BDC21F10B8547 /* libPods-AlfrescoApp.a */,
-				5EB8B1BCCC8F9161DE364C96 /* libPods-AlfrescoDocumentPicker.a */,
+				3ECC79C36D4668D49BB1C70B /* libPods-AlfrescoApp.a */,
+				A544CBC5CD8C7DE64C27C0EB /* libPods-AlfrescoDocumentPicker.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -4184,20 +4194,6 @@
 			name = "Text File View Controller";
 			sourceTree = "<group>";
 		};
-		CE0AF57B8038B86BE84A37DE /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				827808CF335E5340A6DBDCCC /* Pods-AlfrescoApp.debug.xcconfig */,
-				E79EDF428481D75323F4ACA9 /* Pods-AlfrescoApp.release.xcconfig */,
-				7006227549426FE6F19F5794 /* Pods-AlfrescoApp.adhoc.xcconfig */,
-				5E94C5EF6AA4498598C65FBE /* Pods-AlfrescoDocumentPicker.debug.xcconfig */,
-				2DDAD7488C5D07BE47218131 /* Pods-AlfrescoDocumentPicker.release.xcconfig */,
-				386644BAD9E13F10A635FE60 /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */,
-				FA0528FF52881483B110A628 /* Pods-AlfrescoDocumentPickerFileProvider.debug.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -4224,13 +4220,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 734CC4131A70080A005D148E /* Build configuration list for PBXNativeTarget "AlfrescoDocumentPicker" */;
 			buildPhases = (
-				9C3AC43C93FE13CCAE253A58 /* Check Pods Manifest.lock */,
+				90BA3CED147009DF75519CDF /* [CP] Check Pods Manifest.lock */,
 				734CC3E81A700808005D148E /* Sources */,
 				734CC3E91A700808005D148E /* Frameworks */,
 				734CC3EA1A700808005D148E /* Resources */,
-				4A85F07FD6BD54E7AA6F045C /* Copy Pods Resources */,
-				5422E8CCEC988FB609E4FA96 /* Embed Pods Frameworks */,
 				2751BF131BF254D700B7CC42 /* Remove "Frameworks" folder (CocoaPods #4203) */,
+				49FEC8D6AFB06EE6BAB320E7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -4268,13 +4263,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7373B51217A66E9400869949 /* Build configuration list for PBXNativeTarget "AlfrescoApp" */;
 			buildPhases = (
-				04FED5E599354B4D859C6385 /* Check Pods Manifest.lock */,
+				4700755425EEE6AEE5969CD4 /* [CP] Check Pods Manifest.lock */,
 				7373B4F117A66E9400869949 /* Sources */,
 				7373B4F217A66E9400869949 /* Frameworks */,
 				7373B4F317A66E9400869949 /* Resources */,
-				05B92CA8B70C4731A2DDEA50 /* Copy Pods Resources */,
 				734CC4141A70080A005D148E /* Embed App Extensions */,
-				128EEEFF91E8D83D94B8D338 /* Embed Pods Frameworks */,
+				12177178F7D2FEAB324DFDD6 /* [CP] Embed Pods Frameworks */,
+				FAFE97CD9538712FA81BF163 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -4454,7 +4449,7 @@
 				27E0FE411B0A009F00CD6C5D /* Localizable.strings in Resources */,
 				2329C48F1CE48C38001AAB62 /* alfrescoColourLogo.png in Resources */,
 				2311ADC11CE1FB3300F2E1AC /* Settings.bundle in Resources */,
-				735F95CF1A71038600D8B81E /* AlfrescoKitBundle.bundle in Resources */,
+				735F95CF1A71038600D8B81E /* ReferenceProxy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4845,51 +4840,21 @@
 				73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */,
 				73881FD6188FF6B00052C75F /* actionsheet-open-in.png in Resources */,
 				272962781B557BF90041C32D /* mainmenu-grid@2x.png in Resources */,
-				2B314C8B1B7B8A8A0031E965 /* AlfrescoKitBundle.bundle in Resources */,
+				2B314C8B1B7B8A8A0031E965 /* ReferenceProxy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		04FED5E599354B4D859C6385 /* Check Pods Manifest.lock */ = {
+		12177178F7D2FEAB324DFDD6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		05B92CA8B70C4731A2DDEA50 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		128EEEFF91E8D83D94B8D338 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4911,14 +4876,29 @@
 			shellPath = /bin/sh;
 			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\nif [[ -d \"Frameworks\" ]]; then\n   rm -rf Frameworks\nfi";
 		};
-		4A85F07FD6BD54E7AA6F045C /* Copy Pods Resources */ = {
+		4700755425EEE6AEE5969CD4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		49FEC8D6AFB06EE6BAB320E7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4926,34 +4906,34 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5422E8CCEC988FB609E4FA96 /* Embed Pods Frameworks */ = {
+		90BA3CED147009DF75519CDF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AlfrescoDocumentPicker/Pods-AlfrescoDocumentPicker-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		9C3AC43C93FE13CCAE253A58 /* Check Pods Manifest.lock */ = {
+		FAFE97CD9538712FA81BF163 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -5541,7 +5521,7 @@
 		};
 		277F715417FEB6FD00B2E958 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7006227549426FE6F19F5794 /* Pods-AlfrescoApp.adhoc.xcconfig */;
+			baseConfigurationReference = E49C6C6B447478825EEDA62B /* Pods-AlfrescoApp.adhoc.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
@@ -5600,7 +5580,7 @@
 		};
 		734CC4081A70080A005D148E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E94C5EF6AA4498598C65FBE /* Pods-AlfrescoDocumentPicker.debug.xcconfig */;
+			baseConfigurationReference = 75DA78F13ED7FC2F0AF24D6E /* Pods-AlfrescoDocumentPicker.debug.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -5636,7 +5616,7 @@
 		};
 		734CC4091A70080A005D148E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2DDAD7488C5D07BE47218131 /* Pods-AlfrescoDocumentPicker.release.xcconfig */;
+			baseConfigurationReference = 7BE90474C10CFAC6CAE97D58 /* Pods-AlfrescoDocumentPicker.release.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -5669,7 +5649,7 @@
 		};
 		734CC40A1A70080A005D148E /* AdHoc */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 386644BAD9E13F10A635FE60 /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */;
+			baseConfigurationReference = 44C129C2E866DB088D73003D /* Pods-AlfrescoDocumentPicker.adhoc.xcconfig */;
 			buildSettings = {
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
@@ -5901,7 +5881,7 @@
 		};
 		7373B51317A66E9400869949 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 827808CF335E5340A6DBDCCC /* Pods-AlfrescoApp.debug.xcconfig */;
+			baseConfigurationReference = 80BFF6FCEAD31D1A36EB49BF /* Pods-AlfrescoApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
@@ -5936,7 +5916,7 @@
 		};
 		7373B51417A66E9400869949 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E79EDF428481D75323F4ACA9 /* Pods-AlfrescoApp.release.xcconfig */;
+			baseConfigurationReference = 557E8155997D9FC30FA5A23E /* Pods-AlfrescoApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";

@@ -266,10 +266,10 @@ static NSInteger const kSearchResultsIndex = 0;
     [searchBar resignFirstResponder];
     
     MBProgressHUD *progressHUD = [[MBProgressHUD alloc] initWithView:self.tableView];
-    [progressHUD show:YES];
+    [progressHUD showAnimated:YES];
     
     [self.personService searchWithKeywords:self.searchBar.text completionBlock:^(NSArray *array, NSError *error) {
-        [progressHUD hide:YES];
+        [progressHUD hideAnimated:YES];
         
         NSMutableArray *searchResults = self.tableViewData[kSearchResultsIndex];
         [searchResults removeAllObjects];

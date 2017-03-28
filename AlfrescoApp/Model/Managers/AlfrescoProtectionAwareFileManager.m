@@ -118,10 +118,10 @@ static BOOL sFileProtectionEnabled = NO;
     
     UIView *view = activeView();
     MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:view];
-    hud.detailsLabelText = NSLocalizedString(sFileProtectionEnabled ? @"fileprotection.protecting.message" : @"fileprotection.unprotecting.message", @"Protecting/Unprotecting");
+    hud.detailsLabel.text = NSLocalizedString(sFileProtectionEnabled ? @"fileprotection.protecting.message" : @"fileprotection.unprotecting.message", @"Protecting/Unprotecting");
     hud.minShowTime = 1;
     [view addSubview:hud];
-    [hud show:YES];
+    [hud showAnimated:YES];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         for (NSString *folder in userContentFolders)
         {
@@ -129,7 +129,7 @@ static BOOL sFileProtectionEnabled = NO;
                 [self updateProtectionForFileAtPath:fullFilePath];
             } error:nil];
         }
-        [hud hide:YES];
+        [hud hideAnimated:YES];
     });
 }
 

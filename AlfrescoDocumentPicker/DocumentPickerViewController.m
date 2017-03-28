@@ -275,11 +275,11 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     // Show a progress indicator
     MBProgressHUD *spinner = [self spinningHUDForView:controller.view];
     [controller.view addSubview:spinner];
-    [spinner show:YES];
+    [spinner showAnimated:YES];
     // Get shared and my file folders
     [self.customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *myFilesFolder, NSError *error) {
         [self.customFolderService retrieveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *sharedFilesFolder, NSError *error) {
-            [spinner hide:YES];
+            [spinner hideAnimated:YES];
             NSArray *scopeItems = [self scopeItemsForAccount:account myFilesFolder:myFilesFolder sharedFilesFolder:sharedFilesFolder];
             createAndPushScopeViewController(scopeItems, self);
         }];
@@ -427,12 +427,12 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         // Show Progress HUD
         MBProgressHUD *progressHUD = [self progressHUDForView:controller.view];
         [controller.view addSubview:progressHUD];
-        [progressHUD show:YES];
+        [progressHUD showAnimated:YES];
         
         NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:outURL append:NO];
         AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [docService retrieveContentOfDocument:document outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-            [progressHUD hide:YES];
+            [progressHUD hideAnimated:YES];
             if (error)
             {
                 [self displayErrorAlertWithMessage:error.localizedDescription error:error];
@@ -461,12 +461,12 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         MBProgressHUD *progressHUD = [self progressHUDForView:controller.view];
         progressHUD.mode = MBProgressHUDModeIndeterminate;
         [controller.view addSubview:progressHUD];
-        [progressHUD show:YES];
+        [progressHUD showAnimated:YES];
         
         // Retrieve Permissions
         AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
         [documentService retrievePermissionsOfNode:document completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-            [progressHUD hide:YES];
+            [progressHUD hideAnimated:YES];
             if (error)
             {
                 [self displayErrorAlertWithMessage:error.localizedDescription error:error];
@@ -660,7 +660,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 // Show Progress HUD
                 MBProgressHUD *progressHUD = [self progressHUDForView:namingController.view];
                 [namingController.view addSubview:progressHUD];
-                [progressHUD show:YES];
+                [progressHUD showAnimated:YES];
                 
                 // Initiate the upload
                 AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
@@ -670,7 +670,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 NSInputStream *inputStream = [NSInputStream inputStreamWithURL:outURL];
                 AlfrescoContentStream *contentStream = [[AlfrescoContentStream alloc] initWithStream:inputStream mimeType:contentFile.mimeType length:contentFile.length];
                 [docService createDocumentWithName:fileName inParentFolder:uploadFolder contentStream:contentStream properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                    [progressHUD hide:YES];
+                    [progressHUD hideAnimated:YES];
                     if (error)
                     {
                         [self displayErrorAlertWithMessage:error.localizedDescription error:error];
@@ -762,7 +762,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 {
     MBProgressHUD *spinner = [self spinningHUDForView:controller.view];
     [controller.view addSubview:spinner];
-    [spinner show:YES];
+    [spinner showAnimated:YES];
 }
 
 - (void)controller:(UIViewController *)controller didCompleteRequest:(AlfrescoRequest *)request error:(NSError *)error
@@ -772,7 +772,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         if ([subview isKindOfClass:[MBProgressHUD class]])
         {
             MBProgressHUD *hud = (MBProgressHUD *)subview;
-            [hud hide:YES];
+            [hud hideAnimated:YES];
         }
     }
 }

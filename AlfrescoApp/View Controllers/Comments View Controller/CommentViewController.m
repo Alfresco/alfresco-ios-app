@@ -317,12 +317,12 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         
         __block MBProgressHUD *postingCommentHUD = [[MBProgressHUD alloc] initWithView:self.view];
         [self.view addSubview:postingCommentHUD];
-        [postingCommentHUD show:YES];
+        [postingCommentHUD showAnimated:YES];
         
         self.postCommentButton.enabled = NO;
         __weak typeof(self) weakSelf = self;
         [self.commentService addCommentToNode:self.node content:self.addCommentTextView.text title:nil completionBlock:^(AlfrescoComment *comment, NSError *error) {
-            [postingCommentHUD hide:YES];
+            [postingCommentHUD hideAnimated:YES];
             postingCommentHUD = nil;
             weakSelf.postCommentButton.enabled = YES;
             
