@@ -59,9 +59,9 @@
 /*
  * Security
  */
-"document.picker.scope.launch.main.app" = "Please launch the Alfresco app before using this extension.";
-"settings.security.passcode.touch.id.description" = "Allow your fingerprint to unlock the Alfresco app.";
-"settings.security.passcode.attempts.1" = "1 attempt remaining. If this attempt is unsuccessful, Alfresco Mobile will be restarted and your account details, synced files, and local files will be wiped.";
+"document.picker.scope.launch.main.app" = "Launch the ALfresco Content Services app before using this extension.";
+"settings.security.passcode.touch.id.description" = "Allow your fingerprint to unlock the app.";
+"settings.security.passcode.attempts.1" = "1 attempt remaining. If this attempt is unsuccessful, Alfresco Content Services will be restarted and your account details, synced files, and local files will be wiped.";
 "settings.security.passcode.attempts.several" = "%d attempts remaining";
 "settings.security.passcode.enter.title" = "Enter Passcode";
-"settings.security.passcode.enter" = "Enter your Alfresco Passcode";
+"settings.security.passcode.enter" = "Enter your Passcode";
