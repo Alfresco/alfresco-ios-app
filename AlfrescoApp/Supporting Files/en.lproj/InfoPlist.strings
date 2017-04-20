@@ -24,7 +24,7 @@
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationWhenInUseUsageDescription = "Your location will be used to geotag photos taken with this device and uploaded to Alfresco.";
-NSMicrophoneUsageDescription = "The microphone will be used to record sound which can then be uploaded to Alfresco.";
-NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to Alfresco.";
-NSCameraUsageDescription = "You can take photos to upload to Alfresco.";
+NSLocationWhenInUseUsageDescription = "Your location will be used to geotag photos taken with this device and uploaded to this app.";
+NSMicrophoneUsageDescription = "The microphone will be used to record sound which can then be uploaded to this app.";
+NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
+NSCameraUsageDescription = "You can take photos to upload to this app.";
