@@ -215,6 +215,10 @@
                 }
             }
         }
+        else
+        {
+            typeToReturn = SyncActivityTypeDownload;
+        }
     }
     
     return typeToReturn;
