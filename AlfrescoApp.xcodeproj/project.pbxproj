@@ -240,7 +240,7 @@
 		2B2BEFF51D00824E0090B45B /* DocumentCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2BEFF41D00824E0090B45B /* DocumentCollectionViewDataSource.m */; };
 		2B2D5F341D3F676900428730 /* SyncOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D5F331D3F676900428730 /* SyncOperationQueue.m */; };
 		2B314C861B7B7D750031E965 /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
-		2B314C8B1B7B8A8A0031E965 /* ReferenceProxy in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
+		2B314C8B1B7B8A8A0031E965 /* AlfrescoKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
 		2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */; };
 		2B34468B1B6A62EC00853B7D /* LoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */; };
 		2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */; };
@@ -260,6 +260,7 @@
 		2B55920C1B90AB1C00D85C7B /* SearchResultsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */; };
 		2B7169F71B567CC1009A4487 /* large_folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F51B567CC1009A4487 /* large_folder.png */; };
 		2B7169F81B567CC1009A4487 /* large_folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F61B567CC1009A4487 /* large_folder@2x.png */; };
+		2B73E93F1EADFBD400B96560 /* AccessibilityConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B73E93E1EADFBD400B96560 /* AccessibilityConstants.m */; };
 		2B81257A1D0807A100AC0AD9 /* SearchCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8125791D0807A100AC0AD9 /* SearchCollectionViewDataSource.m */; };
 		2B8366731D06F3C900CC77DC /* NodeCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8366721D06F3C900CC77DC /* NodeCollectionViewDataSource.m */; };
 		2B841D521DD47BA2008D7F40 /* enterFullScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B841D501DD47BA2008D7F40 /* enterFullScreen@2x.png */; };
@@ -380,7 +381,7 @@
 		734B87841AA741260093E702 /* NSFileManager+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 73F14C1F1A8CDDF50042D91E /* NSFileManager+Extension.m */; };
 		734BFE561899606A00692AB4 /* hamburger.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE541899606A00692AB4 /* hamburger.png */; };
 		734BFE571899606A00692AB4 /* hamburger@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 734BFE551899606A00692AB4 /* hamburger@2x.png */; };
-		734CC3B11A6FBC90005D148E /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
+		734CC3B11A6FBC90005D148E /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
 		734CC3F31A700808005D148E /* DocumentPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 734CC3F21A700808005D148E /* DocumentPickerViewController.m */; };
 		734CC4011A700809005D148E /* FileProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 734CC4001A700809005D148E /* FileProvider.m */; };
 		734CC4041A700809005D148E /* AlfrescoDocumentPickerFileProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 734CC3FA1A700808005D148E /* AlfrescoDocumentPickerFileProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -397,8 +398,8 @@
 		735DDC2A1B30268D0091D7B4 /* mainmenu-search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 735DDC201B30268D0091D7B4 /* mainmenu-search@2x.png */; };
 		735DDC2B1B30268D0091D7B4 /* mainmenu-user.png in Resources */ = {isa = PBXBuildFile; fileRef = 735DDC211B30268D0091D7B4 /* mainmenu-user.png */; };
 		735DDC2C1B30268D0091D7B4 /* mainmenu-user@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 735DDC221B30268D0091D7B4 /* mainmenu-user@2x.png */; };
-		735F95CF1A71038600D8B81E /* ReferenceProxy in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
-		735F95D01A71038F00D8B81E /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
+		735F95CF1A71038600D8B81E /* AlfrescoKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
+		735F95D01A71038F00D8B81E /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
 		735F95D61A711A2B00D8B81E /* DocumentPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 735F95D51A711A2B00D8B81E /* DocumentPickerViewController.xib */; };
 		735F95D71A71204500D8B81E /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
 		73632ADA1802C679007172EE /* ActionCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AD01802C679007172EE /* ActionCollectionView.m */; };
@@ -427,7 +428,7 @@
 		73697B9D1A9B738F009F10BA /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E21417E9AF7A00A198B4 /* KeychainUtils.m */; };
 		73697BA21A9B74A3009F10BA /* UserAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = 73E9E20C17E7394900A198B4 /* UserAccount.m */; };
 		73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
-		73697BAB1A9B81D5009F10BA /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
+		73697BAB1A9B81D5009F10BA /* libAlfrescoKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 734CC3A91A6FBC4C005D148E /* libAlfrescoKit.a */; };
 		73697BB31A9B8DC0009F10BA /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73697BB21A9B8DC0009F10BA /* SystemConfiguration.framework */; };
 		73697BB51A9B8DDA009F10BA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73697BB41A9B8DDA009F10BA /* MobileCoreServices.framework */; };
 		736C4BFD1B8F1920008B7663 /* contact-details-email.png in Resources */ = {isa = PBXBuildFile; fileRef = 736C4BF51B8F1920008B7663 /* contact-details-email.png */; };
@@ -1243,6 +1244,8 @@
 		2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewController.xib; sourceTree = "<group>"; };
 		2B7169F51B567CC1009A4487 /* large_folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_folder.png; sourceTree = "<group>"; };
 		2B7169F61B567CC1009A4487 /* large_folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_folder@2x.png"; sourceTree = "<group>"; };
+		2B73E93D1EADFBD400B96560 /* AccessibilityConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityConstants.h; sourceTree = "<group>"; };
+		2B73E93E1EADFBD400B96560 /* AccessibilityConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibilityConstants.m; sourceTree = "<group>"; };
 		2B8125781D0807A100AC0AD9 /* SearchCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCollectionViewDataSource.h; sourceTree = "<group>"; };
 		2B8125791D0807A100AC0AD9 /* SearchCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCollectionViewDataSource.m; sourceTree = "<group>"; };
 		2B8366711D06F3C900CC77DC /* NodeCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeCollectionViewDataSource.h; sourceTree = "<group>"; };
@@ -1929,7 +1932,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				735F95D01A71038F00D8B81E /* ReferenceProxy in Frameworks */,
+				735F95D01A71038F00D8B81E /* libAlfrescoKit.a in Frameworks */,
 				659CA43A2CE38651500FF748 /* libPods-AlfrescoDocumentPicker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1940,7 +1943,7 @@
 			files = (
 				73697BB51A9B8DDA009F10BA /* MobileCoreServices.framework in Frameworks */,
 				73697BB31A9B8DC0009F10BA /* SystemConfiguration.framework in Frameworks */,
-				73697BAB1A9B81D5009F10BA /* ReferenceProxy in Frameworks */,
+				73697BAB1A9B81D5009F10BA /* libAlfrescoKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1948,7 +1951,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				734CC3B11A6FBC90005D148E /* ReferenceProxy in Frameworks */,
+				734CC3B11A6FBC90005D148E /* libAlfrescoKit.a in Frameworks */,
 				272C41D419C7AF2600DABBF0 /* libFlurry_5.3.0.a in Frameworks */,
 				6C2913BE59154B74A223E37F /* libPods-AlfrescoApp.a in Frameworks */,
 			);
@@ -3670,6 +3673,8 @@
 				23E0E1A21C68B002001A6F1B /* AnalyticsConstants.m */,
 				1DE9507B1CAE6D09009299C8 /* SyncConstants.h */,
 				1DE9507C1CAE6D09009299C8 /* SyncConstants.m */,
+				2B73E93D1EADFBD400B96560 /* AccessibilityConstants.h */,
+				2B73E93E1EADFBD400B96560 /* AccessibilityConstants.m */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -4449,7 +4454,7 @@
 				27E0FE411B0A009F00CD6C5D /* Localizable.strings in Resources */,
 				2329C48F1CE48C38001AAB62 /* alfrescoColourLogo.png in Resources */,
 				2311ADC11CE1FB3300F2E1AC /* Settings.bundle in Resources */,
-				735F95CF1A71038600D8B81E /* ReferenceProxy in Resources */,
+				735F95CF1A71038600D8B81E /* AlfrescoKitBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4840,7 +4845,7 @@
 				73B95B1A17A6AE010099FB84 /* InfoPlist.strings in Resources */,
 				73881FD6188FF6B00052C75F /* actionsheet-open-in.png in Resources */,
 				272962781B557BF90041C32D /* mainmenu-grid@2x.png in Resources */,
-				2B314C8B1B7B8A8A0031E965 /* ReferenceProxy in Resources */,
+				2B314C8B1B7B8A8A0031E965 /* AlfrescoKitBundle.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5079,6 +5084,7 @@
 				23B462E01CA590AA009C13EB /* PinBulletsView.m in Sources */,
 				7390B3621B03681E00E7191F /* AlfrescoActionConfig.m in Sources */,
 				7390B3791B03681E00E7191F /* AlfrescoPlaceholderConfigService.m in Sources */,
+				2B73E93F1EADFBD400B96560 /* AccessibilityConstants.m in Sources */,
 				7366F74D1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				7390B36C1B03681E00E7191F /* AlfrescoFormConfig.m in Sources */,
