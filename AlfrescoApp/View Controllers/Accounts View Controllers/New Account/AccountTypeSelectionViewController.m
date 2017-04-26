@@ -65,6 +65,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
                                                                             target:self
                                                                             action:@selector(cancel:)];
     self.navigationItem.leftBarButtonItem = cancel;
+    [self setAccessibilityIdentifiers];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -100,12 +101,14 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     {
         cell.imageView.image = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
         cell.textLabel.text = NSLocalizedString(@"accounttype.cloud", @"Alfresco in the Cloud");
+        cell.accessibilityIdentifier = kAccountTypeSelectionVCCloudCellIdentifier;
     }
     else
     {
         cell.imageView.image = [UIImage imageNamed:@"account-type-onpremise.png"];
         cell.textLabel.text = NSLocalizedString(@"accounttype.alfrescoServer", @"Alfresco Server");
         cell.accessoryView = nil;
+        cell.accessibilityIdentifier = kAccountTypeSelectionVCOnPremiseCellIdentifier;
     }
     
     return cell;
@@ -181,6 +184,11 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 }
 
 #pragma mark - private functions
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kAccountTypeSelectionVCViewIdentifier;
+}
 
 - (void)cancel:(id)sender
 {
