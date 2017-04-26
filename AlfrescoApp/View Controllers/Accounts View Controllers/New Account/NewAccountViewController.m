@@ -56,6 +56,7 @@ static NSInteger const kTagProfileCell = 3;
 @property (nonatomic, weak) UISwitch *protocolSwitch;
 @property (nonatomic, weak) UISwitch *syncPreferenceSwitch;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UserAccount *formBackupAccount;
 @property (nonatomic, strong) UITextField *activeTextField;
@@ -106,12 +107,13 @@ static NSInteger const kTagProfileCell = 3;
     self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButtonClicked:)];
     [self.navigationItem setRightBarButtonItem:self.saveButton];
     self.saveButton.enabled = NO;
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
-    self.navigationItem.leftBarButtonItem = cancel;
+    self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancel:)];
+    self.navigationItem.leftBarButtonItem = self.cancelButton;
     
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.allowsPullToRefresh = NO;
     [self constructTableCellsForAlfrescoServer];
+    [self setAccessibilityIdentifiers];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -335,6 +337,20 @@ static NSInteger const kTagProfileCell = 3;
             [self.delegate newAccountViewControllerDidDismiss:self];
         }
     }];
+}
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kNewAccountVCViewIdentifier;
+    self.cancelButton.accessibilityIdentifier = kNewAccountVCCancelButtonIdentifier;
+    self.saveButton.accessibilityIdentifier = kNewAccountVCSaveButtonIdentifier;
+    self.usernameTextField.accessibilityIdentifier = kNewAccountVCUsernameTextfieldIdentifier;
+    self.passwordTextField.accessibilityIdentifier = kNewAccountVCPasswordTextfieldIdentifier;
+    self.serverAddressTextField.accessibilityIdentifier = kNewAccountVCHostnameTextfieldIdentifier;
+    self.descriptionTextField.accessibilityIdentifier = kNewAccountVCDescriptionTextfieldIdentifier;
+    self.protocolSwitch.accessibilityIdentifier = kNewAccountVCHTTPSSwitchIdentifier;
+    self.portTextField.accessibilityIdentifier = kNewAccountVCPortTextfieldIdentifier;
+    self.serviceDocumentTextField.accessibilityIdentifier = kNewAccountVCServiceTextfieldIdentifier;
 }
 
 #pragma mark - TableView Datasource

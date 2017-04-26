@@ -46,6 +46,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 @property (nonatomic, strong) NSMutableDictionary *configuration;
 @property (nonatomic, assign) BOOL canAddAccounts;
 @property (nonatomic, assign) BOOL canRemoveAccounts;
+@property (nonatomic, strong) UIBarButtonItem *addAccountsButton;
 @end
 
 @implementation AccountsViewController
@@ -88,10 +89,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     
     if (self.canAddAccounts)
     {
-        UIBarButtonItem *addAccount = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+        self.addAccountsButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                     target:self
                                                                                     action:@selector(addAccount:)];
-        self.navigationItem.rightBarButtonItem = addAccount;
+        self.navigationItem.rightBarButtonItem = self.addAccountsButton;
     }
 }
 
@@ -532,6 +533,13 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 - (void)hideDeleteButton
 {
     [self.tableView setEditing:NO animated:YES];
+}
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kAccountVCViewIdentifier;
+    self.addAccountsButton.accessibilityIdentifier = kAccountVCAddAccountButtonIdentifier;
+    self.tableView.accessibilityIdentifier = KAccountVCTableViewIdentifier;
 }
 
 @end

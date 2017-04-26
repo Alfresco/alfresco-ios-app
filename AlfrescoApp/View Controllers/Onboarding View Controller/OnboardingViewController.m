@@ -51,6 +51,7 @@ static CGFloat const kButtonCornerRadius = 5.0f;
     self.view.backgroundColor = [UIColor onboardingOffWhiteColor];
     
     [self localiseUI];
+    [self setAccessibilityIdentifiers];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -78,6 +79,13 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 {
     [self.useExistingAccountButton setTitle:NSLocalizedString(@"onboarding.setup.existing.account.button.title", @"I already have an account") forState:UIControlStateNormal];
     [self.helpButton setTitle:NSLocalizedString(@"onboarding.help.button.title", @"Help") forState:UIControlStateNormal];
+}
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kOnboardingVCViewIdentifier;
+    self.closeWelcomeScreenButton.accessibilityIdentifier = kOnboardingVCCloseButtonIdentifier;
+    self.useExistingAccountButton.accessibilityIdentifier = kOnboardingVCLoginButtonIdentifier;
 }
 
 #pragma mark - IBAction Functions
