@@ -490,6 +490,7 @@ static NSInteger const kTagProfileCell = 3;
         certificateCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.client-certificate", @"Client Certificate");
         certificateCell.valueLabel.text = self.account.accountCertificate.summary;
         self.certificateLabel = certificateCell.valueLabel;
+        certificateCell.accessibilityIdentifier = kNewAccountVCClientCetificateCellIdentifier;
         
         /**
          * Selectively disable some controls if required
