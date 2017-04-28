@@ -31,6 +31,9 @@ static CGFloat const kAccountTypeTitleFontSize = 18.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
 @interface AccountTypeSelectionViewController () <NewAccountViewControllerDelegate>
+
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
+
 @end
 
 @implementation AccountTypeSelectionViewController
@@ -61,10 +64,10 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     self.allowsPullToRefresh = NO;
     self.title = NSLocalizedString(@"accountdetails.title.newaccount", @"New Account");
     
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+    self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                             target:self
                                                                             action:@selector(cancel:)];
-    self.navigationItem.leftBarButtonItem = cancel;
+    self.navigationItem.leftBarButtonItem = self.cancelButton;
     [self setAccessibilityIdentifiers];
 }
 
@@ -188,6 +191,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 - (void)setAccessibilityIdentifiers
 {
     self.view.accessibilityIdentifier = kAccountTypeSelectionVCViewIdentifier;
+    self.cancelButton.accessibilityIdentifier = kAccountTypeSelectionVCCancelButtonIdentifier;
 }
 
 - (void)cancel:(id)sender

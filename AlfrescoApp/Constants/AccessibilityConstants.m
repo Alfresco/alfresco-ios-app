@@ -21,10 +21,12 @@
 NSString * const kOnboardingVCViewIdentifier = @"onboarding_view";
 NSString * const kOnboardingVCLoginButtonIdentifier = @"onboarding_login_button";
 NSString * const kOnboardingVCCloseButtonIdentifier = @"onboarding_close_button";
+NSString * const kOnboardingVCHelpButtonIdentifier = @"onboarding_help_button";
 
 NSString * const kAccountTypeSelectionVCViewIdentifier = @"accountSelection_view";
 NSString * const kAccountTypeSelectionVCCloudCellIdentifier = @"accountSelection_cloud_cell";
 NSString * const kAccountTypeSelectionVCOnPremiseCellIdentifier = @"accountSelection_onpremise_cell";
+NSString * const kAccountTypeSelectionVCCancelButtonIdentifier = @"accountSelection_cancel_button";
 
 NSString * const kNewAccountVCViewIdentifier = @"newAccount_view";
 NSString * const kNewAccountVCCancelButtonIdentifier = @"newAccount_cancel_button";
