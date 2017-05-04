@@ -21,10 +21,12 @@
 extern NSString * const kOnboardingVCViewIdentifier;
 extern NSString * const kOnboardingVCLoginButtonIdentifier;
 extern NSString * const kOnboardingVCCloseButtonIdentifier;
+extern NSString * const kOnboardingVCHelpButtonIdentifier;
 
 extern NSString * const kAccountTypeSelectionVCViewIdentifier;
 extern NSString * const kAccountTypeSelectionVCCloudCellIdentifier;
 extern NSString * const kAccountTypeSelectionVCOnPremiseCellIdentifier;
+extern NSString * const kAccountTypeSelectionVCCancelButtonIdentifier;
 
 extern NSString * const kNewAccountVCViewIdentifier;
 extern NSString * const kNewAccountVCCancelButtonIdentifier;
