@@ -54,14 +54,14 @@
  * Permissions
  */
 "document.picker.scope.permissions.cannot.edit.title" = "编辑权限";
-"document.picker.scope.permissions.cannot.edit.message" = "您没有编辑权限。\n\n您所做的任何更改都将被保存回 Alfresco 应用程序中的''本地文件''。";
+"document.picker.scope.permissions.cannot.edit.message" = "您没有编辑权限。\n\n您所做的任何更改都将被保存回本地文件。";
 
 /*
  * Security
  */
-"document.picker.scope.launch.main.app" = "在使用此扩展方式之前，请启动 Alfresco 应用程序。";
-"settings.security.passcode.touch.id.description" = "允许用您的指纹解锁 Alfresco 应用程序。";
-"settings.security.passcode.attempts.1" = "还有 1 次输入机会。 如果此次输入失败，Alfresco Mobile 将重新启动，并且您的帐户详细资料、已同步文件和本地文件将被擦除。";
+"document.picker.scope.launch.main.app" = "在使用此扩展方式之前，请启动 Alfresco Content Services 应用程序。";
+"settings.security.passcode.touch.id.description" = "允许用您的指纹解锁应用程序。";
+"settings.security.passcode.attempts.1" = "还有 1 次输入机会。 如果此次输入失败，Alfresco Content Services 将重新启动，并且您的帐户详细资料、已同步文件和本地文件将被擦除。";
 "settings.security.passcode.attempts.several" = "剩余 %d 次输入机会";
 "settings.security.passcode.enter.title" = "输入密码";
-"settings.security.passcode.enter" = "输入您的 Alfresco 密码";
+"settings.security.passcode.enter" = "输入您的密码";

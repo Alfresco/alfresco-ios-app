@@ -54,14 +54,14 @@
  * Permissions
  */
 "document.picker.scope.permissions.cannot.edit.title" = "Permissions en modification";
-"document.picker.scope.permissions.cannot.edit.message" = "Vous n'avez pas les permissions en modification.\n\nTous les changements effectués seront enregistrés dans les fichiers locaux dans l'application Alfresco.";
+"document.picker.scope.permissions.cannot.edit.message" = "Vous n'avez pas les permissions en modification.\n\nTous les changements effectués seront enregistrés dans les fichiers locaux.";
 
 /*
  * Security
  */
-"document.picker.scope.launch.main.app" = "Veuillez lancer l'application Alfresco avant d'utiliser cette extension.";
-"settings.security.passcode.touch.id.description" = "Déverrouillez l'application Alfresco avec votre empreinte.";
-"settings.security.passcode.attempts.1" = "1 tentative restante. En cas d'échec, Alfresco Mobile sera redémarré et les détails de votre compte, vos fichiers synchronisés et vos fichiers locaux seront effacés.";
+"document.picker.scope.launch.main.app" = "Veuillez lancer l'application Alfresco Content Services avant d'utiliser cette extension.";
+"settings.security.passcode.touch.id.description" = "Déverrouillez l'application avec votre empreinte.";
+"settings.security.passcode.attempts.1" = "1 tentative restante. En cas d'échec, Alfresco Content Services sera redémarré et les détails de votre compte, vos fichiers synchronisés et vos fichiers locaux seront effacés.";
 "settings.security.passcode.attempts.several" = "%d tentatives restantes";
 "settings.security.passcode.enter.title" = "Taper le code";
-"settings.security.passcode.enter" = "Tapez votre code Alfresco";
+"settings.security.passcode.enter" = "Tapez votre code";
