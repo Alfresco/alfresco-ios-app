@@ -54,14 +54,14 @@
  * Permissions
  */
 "document.picker.scope.permissions.cannot.edit.title" = "Permessi di modifica";
-"document.picker.scope.permissions.cannot.edit.message" = "Non hai i permessi di modifica necessari.\n\nTutte le modifiche verranno comunque salvate nei file locali dell'app Alfresco.";
+"document.picker.scope.permissions.cannot.edit.message" = "Non hai i permessi di modifica necessari.\n\nTutte le modifiche verranno comunque salvate nei file locali.";
 
 /*
  * Security
  */
-"document.picker.scope.launch.main.app" = "Avvia l'app Alfresco prima di utilizzare questa estensione.";
-"settings.security.passcode.touch.id.description" = "Consente di sbloccare l'app Alfresco con la tua impronta digitale.";
-"settings.security.passcode.attempts.1" = "Ti resta 1 tentativo. Se il tentativo non riesce, Alfresco Mobile sarà riavviato e i dettagli dell'account, i file sincronizzati e i file locali saranno cancellati.";
+"document.picker.scope.launch.main.app" = "Avvia l'app Alfresco Content Services prima di utilizzare questa estensione.";
+"settings.security.passcode.touch.id.description" = "Consente di sbloccare l'app con la tua impronta digitale.";
+"settings.security.passcode.attempts.1" = "Ti resta 1 tentativo. Se il tentativo non riesce, Alfresco Content Services sarà riavviato e i dettagli dell'account, i file sincronizzati e i file locali saranno cancellati.";
 "settings.security.passcode.attempts.several" = "Ti restano %d tentativi";
 "settings.security.passcode.enter.title" = "Inserisci codice";
-"settings.security.passcode.enter" = "Inserisci il tuo codice Alfresco";
+"settings.security.passcode.enter" = "Inserisci il tuo codice";
