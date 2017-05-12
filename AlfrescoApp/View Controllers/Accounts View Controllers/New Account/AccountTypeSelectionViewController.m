@@ -19,8 +19,8 @@
 #import "AccountTypeSelectionViewController.h"
 #import "LoginManager.h"
 #import "AccountManager.h"
-#import "NewAccountViewController.h"
 #import "RealmSyncManager.h"
+#import "AccountDetailsViewController.h"
 
 static NSInteger const kNumberAccountTypes = 2;
 static NSInteger const kNumberOfTypesPerSection = 1;
@@ -30,7 +30,7 @@ static NSInteger const kCloudSectionNumber = 0;
 static CGFloat const kAccountTypeTitleFontSize = 18.0f;
 static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 
-@interface AccountTypeSelectionViewController () <NewAccountViewControllerDelegate>
+@interface AccountTypeSelectionViewController () <AccountDetailsViewControllerDelegate>
 @end
 
 @implementation AccountTypeSelectionViewController
@@ -166,9 +166,9 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     }
     else
     {
-        NewAccountViewController *accountInfoController = [[NewAccountViewController alloc] initWithAccount:nil configuration:nil];
-        accountInfoController.delegate = self;
-        [self.navigationController pushViewController:accountInfoController animated:YES];
+        AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountServer account:nil configuration:nil session:nil];
+        accountDetailsViewController.delegate = self;
+        [self.navigationController pushViewController:accountDetailsViewController animated:YES];
     }
 }
 
@@ -204,9 +204,9 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     }];
 }
 
-#pragma mark - AccountInfoViewControllerDelegate Functions
+#pragma mark - AccountDetailsViewControllerDelegate Methods
 
-- (void)newAccountViewControllerWillDismiss:(NewAccountViewController *)controller
+- (void)accountDetailsViewControllerWillDismiss:(AccountDetailsViewController *)controller
 {
     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
     {
@@ -214,7 +214,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     }
 }
 
-- (void)newAccountViewControllerDidDismiss:(NewAccountViewController *)controller
+- (void)accountDetailsViewControllerDidDismiss:(AccountDetailsViewController *)controller
 {
     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
     {
@@ -222,7 +222,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     }
 }
 
-- (void)newAccountViewController:(NewAccountViewController *)controller willDismissAfterAddingAccount:(UserAccount *)account
+- (void)accountDetailsViewController:(AccountDetailsViewController *)controller willDismissAfterAddingAccount:(UserAccount *)account
 {
     BOOL accountAdded = (account != nil);
     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
@@ -231,7 +231,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     }
 }
 
-- (void)newAccountViewController:(NewAccountViewController *)controller didDismissAfterAddingAccount:(UserAccount *)account
+- (void)accountDetailsViewController:(AccountDetailsViewController *)controller didDismissAfterAddingAccount:(UserAccount *)account
 {
     BOOL accountAdded = (account != nil);
     if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])

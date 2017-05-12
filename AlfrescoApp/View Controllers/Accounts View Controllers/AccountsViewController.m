@@ -20,15 +20,14 @@
 #import "AccountManager.h"
 #import "AccountTypeSelectionViewController.h"
 #import "NavigationViewController.h"
-#import "AccountInfoViewController.h"
 #import "LoginManager.h"
-#import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
 #import "PinViewController.h"
 #import "PreferenceManager.h"
 #import "TouchIDManager.h"
 #import "RealmSyncManager.h"
 #import "SecurityManager.h"
+#import "AccountDetailsViewController.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -321,10 +320,8 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         else
         {
             // Only offer the AccountInfoViewController the session if it's the currently selected one
-            viewController = [[AccountInfoViewController alloc] initWithAccount:account
-                                                            accountActivityType:AccountActivityTypeEditAccount
-                                                                  configuration:self.configuration
-                                                                        session:account.isSelectedAccount ? self.session : nil];
+            AccountDataSourceType dataSourceType = account.accountType == UserAccountTypeCloud ? AccountDataSourceTypeCloudAccountSettings : AccountDataSourceTypeAccountDetails;
+            viewController = [[AccountDetailsViewController alloc] initWithDataSourceType:dataSourceType account:account configuration:self.configuration session:account.isSelectedAccount ? self.session : nil];
         }
         
         if (viewController)

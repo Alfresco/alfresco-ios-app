@@ -26,9 +26,12 @@ extern NSString * const kAccountTypeSelectionVCViewIdentifier;
 extern NSString * const kAccountTypeSelectionVCCloudCellIdentifier;
 extern NSString * const kAccountTypeSelectionVCOnPremiseCellIdentifier;
 
-extern NSString * const kNewAccountVCViewIdentifier;
-extern NSString * const kNewAccountVCCancelButtonIdentifier;
+extern NSString * const kNewAccountVCServerViewIdentifier;
+extern NSString * const kNewAccountVCCredentialsViewIdentifier;
+extern NSString * const kNewAccountVCServerCancelButtonIdentifier;
+extern NSString * const kNewAccountVCCredentialsCancelButtonIdentifier;
 extern NSString * const kNewAccountVCSaveButtonIdentifier;
+extern NSString * const kNewAccountVCNextButtonIdentifier;
 extern NSString * const kNewAccountVCUsernameTextfieldIdentifier;
 extern NSString * const kNewAccountVCPasswordTextfieldIdentifier;
 extern NSString * const kNewAccountVCHostnameTextfieldIdentifier;

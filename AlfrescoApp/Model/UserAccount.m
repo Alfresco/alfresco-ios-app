@@ -144,6 +144,7 @@ static NSString * const kAccountSelectedProfileNameKey = @"kAccountSelectedProfi
     
     if (account)
     {
+        account.accountIdentifier = self.accountIdentifier;
         account.username = self.username;
         account.password = self.password;
         account.accountDescription = self.accountDescription;
@@ -159,6 +160,24 @@ static NSString * const kAccountSelectedProfileNameKey = @"kAccountSelectedProfi
         account.selectedProfileName = self.selectedProfileName;
     }
     return account;
+}
+
+- (NSString *)description
+{
+    NSMutableString *string = [NSMutableString string];
+    
+    [string appendFormat:@"\nidentifier: %@\n", self.accountIdentifier];
+    [string appendFormat:@"username: %@\n", self.username];
+    [string appendFormat:@"password: %@\n", self.password];
+    [string appendFormat:@"server: %@\n", self.serverAddress];
+    [string appendFormat:@"port: %@\n", self.serverPort];
+    [string appendFormat:@"protocol: %@\n", self.protocol];
+    [string appendFormat:@"serviceDocument: %@\n", self.serviceDocument];
+    [string appendFormat:@"clientCertificate: %@\n", self.accountCertificate.summary];
+    [string appendFormat:@"accountDescription: %@\n", self.accountDescription];
+    [string appendFormat:@"address: %p", self];
+    
+    return string;
 }
 
 @end

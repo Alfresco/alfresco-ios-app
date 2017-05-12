@@ -25,7 +25,6 @@
 #import "UserAccount.h"
 #import "AccountManager.h"
 #import "NavigationViewController.h"
-#import "AccountInfoViewController.h"
 
 @interface LoginManager()
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
