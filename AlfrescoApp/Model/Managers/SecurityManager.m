@@ -132,6 +132,11 @@
 
 + (void)resetWithType:(ResetType)resetType
 {
+    [SecurityManager resetWithType:resetType showConfirmation:YES];
+}
+
++ (void)resetWithType:(ResetType)resetType showConfirmation:(BOOL)showConfirmation
+{
     switch (resetType)
     {
         case ResetTypeAccounts:
@@ -147,6 +152,11 @@
     }
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kAppResetedNotification object:nil];
+    
+    if (showConfirmation)
+    {
+        [self showConfirmationAlert];
+    }
 }
 
 + (void)resetAccounts
@@ -161,8 +171,6 @@
                                                       action:kAnalyticsEventActionClearData
                                                        label:kAnalyticsEventLabelPartial
                                                        value:@1];
-    
-    [self showConfirmationAlert];
 }
 
 + (void)resetEntireApp
@@ -184,8 +192,6 @@
                                                       action:kAnalyticsEventActionClearData
                                                        label:kAnalyticsEventLabelFull
                                                        value:@1];
-    
-    [self showConfirmationAlert];
 }
 
 - (BOOL)forceResetIfNecessary
@@ -222,7 +228,21 @@
                                                         handler:nil];
     [alertController addAction:closeAction];
     
-    [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
+    UIViewController *controller = [UniversalDevice topPresentedViewController];
+    
+    if ([controller isKindOfClass:[UINavigationController class]])
+    {
+        UIViewController *top = [(UINavigationController *)controller topViewController];
+        
+        if ([top isKindOfClass:[PinViewController class]])
+        {
+            controller = controller.presentingViewController;
+        }
+    }
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(FADE_ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [controller presentViewController:alertController animated:YES completion:nil];
+    });
 }
 
 - (UIWindow *)pinAndBlankScreensWindow
@@ -284,14 +304,16 @@
         {
             case PinFlowCompletionStatusSuccess:
             {
-                [self switchToMainWindow];
+                [self switchToMainWindowWithCompletionBlock:nil];
                 [[FileHandlerManager sharedManager] handleCachedPackage];
             }
                 break;
             case PinFlowCompletionStatusReset:
             {
-                [self switchToMainWindow];
-                [SecurityManager resetWithType:ResetTypeEntireApp];
+                [SecurityManager resetWithType:ResetTypeEntireApp showConfirmation:NO];
+                [self switchToMainWindowWithCompletionBlock:^{
+                    [SecurityManager  showConfirmationAlert];
+                }];
             }
                 break;
                 
@@ -394,7 +416,7 @@
             
             if (self.pinScreenWindow && [self.pinScreenWindow isKeyWindow])
             {
-                [self switchToMainWindow];
+                [self switchToMainWindowWithCompletionBlock:nil];
             }
             [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
             
@@ -411,7 +433,7 @@
     }];
 }
 
-- (void)switchToMainWindow
+- (void)switchToMainWindowWithCompletionBlock:(void (^)(void))completionBlock
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         [((AppDelegate *)([UIApplication sharedApplication].delegate)).window makeKeyAndVisible];
@@ -419,6 +441,11 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(FADE_ANIMATION_DURATION * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             self.pinScreenWindow.rootViewController = nil;
             self.pinScreenWindow = nil;
+            
+            if (completionBlock)
+            {
+                completionBlock();
+            }
         });
     });
 }

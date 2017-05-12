@@ -24,7 +24,8 @@
  */
 
 /* Localized versions of Info.plist keys */
-NSLocationWhenInUseUsageDescription = "Votre emplacement géographique servira à géotaguer les photos prises avec cet appareil et ajoutées dans Alfresco.";
-NSMicrophoneUsageDescription = "Le microphone servira à enregistrer du son qui pourra alors être ajouté dans Alfresco.";
-NSPhotoLibraryUsageDescription = "Vous pouvez ajouter des photos et des vidéos de votre photothèque dans Alfresco.";
-NSCameraUsageDescription = "Vous pouvez prendre des photos et les ajouter dans Alfresco.";
+NSLocationWhenInUseUsageDescription = "Votre emplacement géographique servira à géotaguer les photos prises avec cet appareil et ajoutées dans cette application.";
+NSMicrophoneUsageDescription = "Le microphone servira à enregistrer du son qui pourra alors être ajouté dans cette application.";
+NSPhotoLibraryUsageDescription = "Vous pouvez ajouter des photos et des vidéos de votre photothèque dans cette application.";
+NSCameraUsageDescription = "Vous pouvez prendre des photos et les ajouter dans cette application.";
+CFBundleDisplayName = "Contenu";

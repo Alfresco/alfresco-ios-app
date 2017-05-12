@@ -93,6 +93,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                                                                                     action:@selector(addAccount:)];
         self.navigationItem.rightBarButtonItem = self.addAccountsButton;
     }
+    [self setAccessibilityIdentifiers];
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -101,7 +101,7 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
 {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillshowAnimated:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShowAnimated:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showKeyboardInPinScreen:) name:kShowKeyboardInPinScreenNotification object:nil];
     
     [self becomeFirstResponder];
@@ -140,7 +140,7 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
     });
 }
 
-- (void)keyboardWillshowAnimated:(NSNotification *)notification
+- (void)keyboardWillShowAnimated:(NSNotification *)notification
 {
     NSDictionary *info = [notification userInfo];
     CGRect keyboardFrame = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
@@ -404,12 +404,12 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         [_bulletsView shakeWithCompletionBlock:^{
             if (_remainingAttempts == 0)
             {
-                [weakSelf unsetPinAndDismissWithCompletionBlock:^{
-                    if (self.completionBlock)
-                    {
-                        self.completionBlock(PinFlowCompletionStatusReset);
-                    }
-                }];
+                if (self.completionBlock)
+                {
+                    self.completionBlock(PinFlowCompletionStatusReset);
+                }
+                
+                [weakSelf unsetPinAndDismissWithCompletionBlock:nil];
             }
             else
             {
