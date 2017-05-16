@@ -21,14 +21,19 @@
 NSString * const kOnboardingVCViewIdentifier = @"onboarding_view";
 NSString * const kOnboardingVCLoginButtonIdentifier = @"onboarding_login_button";
 NSString * const kOnboardingVCCloseButtonIdentifier = @"onboarding_close_button";
+NSString * const kOnboardingVCHelpButtonIdentifier = @"onboarding_help_button";
 
 NSString * const kAccountTypeSelectionVCViewIdentifier = @"accountSelection_view";
 NSString * const kAccountTypeSelectionVCCloudCellIdentifier = @"accountSelection_cloud_cell";
 NSString * const kAccountTypeSelectionVCOnPremiseCellIdentifier = @"accountSelection_onpremise_cell";
+NSString * const kAccountTypeSelectionVCCancelButtonIdentifier = @"accountSelection_cancel_button";
 
-NSString * const kNewAccountVCViewIdentifier = @"newAccount_view";
-NSString * const kNewAccountVCCancelButtonIdentifier = @"newAccount_cancel_button";
+NSString * const kNewAccountVCServerViewIdentifier = @"newAccount_server_view";
+NSString * const kNewAccountVCCredentialsViewIdentifier = @"newAccount_credentials_view";
+NSString * const kNewAccountVCServerCancelButtonIdentifier = @"newAccount_server_cancel_button";
+NSString * const kNewAccountVCCredentialsCancelButtonIdentifier = @"newAccount_credentials_cancel_button";
 NSString * const kNewAccountVCSaveButtonIdentifier = @"newAccount_save_button";
+NSString * const kNewAccountVCNextButtonIdentifier = @"newAccount_next_button";
 NSString * const kNewAccountVCUsernameTextfieldIdentifier = @"newAccount_username_textfield";
 NSString * const kNewAccountVCPasswordTextfieldIdentifier = @"newAccount_password_textfield";
 NSString * const kNewAccountVCHostnameTextfieldIdentifier = @"newAccount_hostname_textfield";

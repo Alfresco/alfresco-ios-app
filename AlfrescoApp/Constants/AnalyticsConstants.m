@@ -22,6 +22,7 @@
 
 // Account
 NSString * const kAnalyticsViewAccountCreateTypePicker      = @"Account - Create - Type Picker";
+NSString * const kAnalyticsViewAccountCreateServer          = @"Account - Create - Server";
 NSString * const kAnalyticsViewAccountCreateCredentials     = @"Account - Create - Credentials";
 NSString * const kAnalyticsViewAccountCreateDiagnostics     = @"Account - Create - Diagnostics";
 NSString * const kAnalyticsViewAccountEdit                  = @"Account - Edit";

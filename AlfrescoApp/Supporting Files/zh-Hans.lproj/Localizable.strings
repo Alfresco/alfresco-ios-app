@@ -106,8 +106,8 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "同步错误";
-"sync-errors.deleted-on-server-with-local-changes.header" = "下列文件已在 Alfresco 上删除，但副本已保存到您的 \"本地文件\"";
-"sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。选择如何继续处理每个文件。\n\n文件将被保存到 \"本地文件\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "下列文件已在 Alfresco Content Services 上删除，但副本已保存到您的\"本地文件\"";
+"sync-errors.pending-sync-on-server-with-local-changes.header" = "下列文件正在等待同步并且有本地更改。选择如何继续处理每个文件。\n\n文件将被保存到\"本地文件\"";
 "sync-errors.button.sync" = "同步"; // string length should not be extended
 "sync-errors.button.save" = "保存"; // string length should not be extended
 
@@ -151,7 +151,7 @@
 "error.no.internet.access.message" = "检查您是否已连接到 Internet 并重试。您仍可以访问下载的文件，无需连接。";
 "error.access.permissions.message" = "检查您是否有进行此操作的权限";
 "error.host.unreachable.title" = "连接错误";
-"error.host.unreachable.message" = "您的设置可能是错误的，或者您可能需要激活 VPN 码。在帐户设置中检查您的主机名称。";
+"error.host.unreachable.message" = "您的设置可能是错误的，或者您可能需要激活 VPN 码。在帐户设置中检查您的连接详细信息。";
 "error.retrieving.metadata" = "无法加载 %@ 的属性。";
 "error.server.message" = "服务器上出现一个错误。";
 // Workflow
@@ -176,22 +176,22 @@
  */
 // Camera permissions
 "permissions.camera.denied.title" = "摄像头已关闭";
-"permissions.camera.denied.message" = "您先前已关闭 Alfresco 对摄像头的访问权限。";
+"permissions.camera.denied.message" = "您先前已关闭对摄像头的访问权限。";
 "permissions.camera.restricted.title" = "摄像头已关闭";
-"permissions.camera.restricted.message" = "您没有让 Alfresco 使用您摄像头的权限。";
+"permissions.camera.restricted.message" = "您没有让此应用程序使用您摄像头的权限。";
 // Library permissions
 "permissions.library.denied.title" = "照片图库已关闭";
-"permissions.library.denied.message" = "您先前已关闭 Alfresco 对照片图库的访问权限。";
+"permissions.library.denied.message" = "您先前已关闭对照片图库的访问权限。";
 "permissions.library.restricted.title" = "照片图库已关闭";
-"permissions.library.restricted.message" = "您没有让 Alfresco 使用照片图库的权限。";
+"permissions.library.restricted.message" = "您没有让此应用程序使用您照片图库的权限。";
 // Microphone permissions
 "permissions.microphone.denied.title" = "麦克风已关闭";
-"permissions.microphone.denied.message" = "您先前已关闭 Alfresco 对麦克风的访问权限。";
+"permissions.microphone.denied.message" = "您先前已关闭对麦克风的访问权限。";
 // Location permissions
 "permissions.location.denied.title" = "位置数据已关闭";
-"permissions.location.denied.message" = "您先前已关闭 Alfresco 对位置数据的访问权限。";
+"permissions.location.denied.message" = "您先前已关闭对位置数据的访问权限。";
 "permissions.location.restricted.title" = "位置数据已关闭";
-"permissions.location.restricted.message" = "您没有让 Alfresco 使用位置数据的权限。";
+"permissions.location.restricted.message" = "您没有让此应用程序使用您位置数据的权限。";
 "permissions.location.disabled.title" = "位置数据已关闭";
 "permissions.location.disabled.message" = "您设备上的位置数据已关闭。";
 // Settings button
@@ -234,17 +234,17 @@
 "accounts.empty" = "无帐户";
 "accountdetails.title.newaccount" = "新建帐户";
 "accountdetails.title.editingaccount" = "编辑帐户";
-"accounttype.cloud" = "Alfresco in the Cloud";
-"accounttype.alfrescoServer" = "Alfresco 服务器";
+"accounttype.cloud" = "Content Services in the Cloud";
+"accounttype.alfrescoServer" = "Content Services";
 
-"accounttype.footer.alfrescoServer" = "连接至 Alfresco 服务器";
-"accounttype.footer.alfrescoCloud" = "连接至您的 Alfresco in the Cloud 帐户";
+"accounttype.footer.alfrescoServer" = "连接至 Content Services";
+"accounttype.footer.alfrescoCloud" = "连接至您的 Content Services in the Cloud 帐户";
 
 "accountdetails.placeholder.required" = "必填";
 "accountdetails.placeholder.optional" = "可选";
 "accountdetails.fields.email" = "电子邮件";
 "accountdetails.placeholder.email" = "example@alfresco.com";
-"accountdetails.fields.hostname" = "主机名";
+"accountdetails.fields.hostname" = "连接至";
 "accountdetails.fields.description" = "说明";
 "accountdetails.fields.port" = "端口";
 "accountdetails.fields.protocol" = "HTTPS";
@@ -329,14 +329,14 @@
  */
 "multiselect.button.delete" = "删除";
 "multiselect.button.delete.counter" = "删除 (%u)";
-"multiselect.delete.confirmation.message.one-item" = "是否要从 Alfresco 中删除 1 个文件？";
-"multiselect.delete.confirmation.message.n-items" = "是否要从 Alfresco 中删除 %d 个文件？";
+"multiselect.delete.confirmation.message.one-item" = "是否要删除 1 个文件？";
+"multiselect.delete.confirmation.message.n-items" = "是否要删除 %d 个文件？";
 "multiselect.delete.confirmation.message.one-download" = "是否要从本地文件中删除 1 个文件？";
 "multiselect.delete.confirmation.message.n-downloads" = "是否要从本地文件中删除 %d 个文件？";
 "multiselect.delete.completed.title" = "删除完成但有错误";
-"multiselect.delete.completed.message" = "已从 Alfresco 中删除 %@ 个文件。";
-"multiselect.delete.partial.message" = "已从 Alfresco 中删除 %@ 个文件。有些文件无法删除";
-"multiselect.delete.failure.message" = "所有文件都无法从 Alfresco 中删除。";
+"multiselect.delete.completed.message" = "已删除 %@ 个文件。";
+"multiselect.delete.partial.message" = "已删除 %@ 个文件。有些文件无法删除";
+"multiselect.delete.failure.message" = "所有文件都无法删除。";
 
 /**
  * Node Picker
@@ -368,7 +368,7 @@
  * About View Controller
  */
 "about.title" = "关于";
-"about.content" = "Alfresco 是适用于业务关键型内容管理和协作的开放式平台。Alfresco Mobile 由 Alfresco Software, Inc. 设计和开发，可连接至 Alfresco Content Services Cloud、Alfresco Content Services 和 Alfresco Community Edition（3.4.8 及以上版本），进而提供对您当前企业文件的安全访问。该移动应用将使用您的 Alfresco 登录凭证（通过 HTTP 或 HTTPS）连接至您的 Alfresco 存储库，基于您的权限管理访问。";
+"about.content" = "Alfresco Content Services 是业务关键型内容管理和协作的开放平台。\n\nAlfresco Content Services 移动应用程序由 Alfresco Software, Inc. 设计和开发，连接 Alfresco Content Services in the Cloud 和 Alfresco Content Services 和 Alfresco Community Edition（3.4.8 和更高版本）以随时安全访问您的企业文件。此移动应用程序使用您的 Alfresco Content Services 登录凭据连接（通过 HTTP 或 HTTPS），并根据您的权限管理访问。";
 "about.version.number" = "版本：%@ (%@)";
 "about.build.date.time" = "创建日期：%s %s";
 
@@ -403,7 +403,7 @@
 "upload.audio.cell.button.play" = "播放";
 "upload.audio.cell.button.stop" = "停止";
 "upload.audio.setting.disabled.title" = "权限";
-"upload.audio.setting.disabled.message" = "Alfresco 没有访问麦克风的权限。\n\n在您设备的 \"设置\" > \"隐私\" > \"麦克风\" 中更改此权限。";
+"upload.audio.setting.disabled.message" = "此应用程序没有访问麦克风的权限。\n\n在您设备的\"设置\" > \"隐私\" > \"麦克风\"中更改此权限。";
 // confirmation
 "upload.confirm.dismissal.title" = "未保存的内容";
 "upload.confirm.dismissal.message" = "是否要上传此内容？如果现在不上传，您的内容会丢失。";
@@ -439,9 +439,9 @@
 /**
  * Document Preview Controller
  */
-"document.video.not.supported" = "\"播放\" 不可用";
-"document.open-in.not.supported.title" = "\"打开方式\" 不可用";
-"document.open-in.not.supported.message" = "此应用程序不支持 \"打开方式\" 选项。";
+"document.video.not.supported" = "\"播放\"不可用";
+"document.open-in.not.supported.title" = "\"打开方式\"不可用";
+"document.open-in.not.supported.message" = "此应用程序不支持\"打开方式\"选项。";
 "document.open-in.noapps.title" = "没有支持的应用程序";
 "document.open-in.noapps.message" = "此设备中未安装可以打开此文件的任何应用程序。";
 
@@ -484,7 +484,7 @@
  * Help
  */
 "help.title" = "帮助";
-"help.no.internet.message" = "无法访问 Alfresco Mobile 帮助，因为您处于离线状态。\n\n请在您联机之后重试。";
+"help.no.internet.message" = "无法访问帮助，因为您处于离线状态。\n\n请在您联机之后重试。";
 
 /**
  * Metadata View Controller
@@ -568,7 +568,7 @@
 "document.edit.button.discard" = "放弃更改";
 "document.edit.button.save" = "保存";
 "document.edit.failed.title" = "保存文件";
-"document.edit.savefailed.message" = "无法保存至 Alfresco。是否要将文件保存至您的 \"本地文件\"？";
+"document.edit.savefailed.message" = "无法保存文件。是否要将文件保存至您的\"本地文件\"？";
 "document.edit.dismiss.confirmation.message" = "如果您没有保存更改，您的工作将得不到保存。";
 "document.edit.discard" = "放弃";
 "document.edit.continue.editing" = "继续编辑";
@@ -676,37 +676,37 @@
 "settings.sync.on.cellular" = "使用数据同步";
 "settings.sync.on.cellular.description" = "当您有 Wi-Fi 连接时，关闭以仅同步内容。";
 "settings.send.diagnostics" = "发送诊断数据";
-"settings.send.diagnostics.description" = "为了帮助我们改进 Alfresco Mobile，我们收集匿名技术诊断数据。如果愿意，请关闭。";
+"settings.send.diagnostics.description" = "为了帮助我们改进此应用程序，我们收集匿名技术诊断数据。如果愿意，取消选择。";
 "settings.security.title" = "安全性";
 "settings.security.file.protection" = "文件保护";
 "settings.security.file.protection.description" = "当此设备锁定时，加密其上存储的文件。";
 "settings.security.passcode.lock" = "密码锁";
-"settings.security.passcode.lock.description" = "在尝试输入 %d 次失败后您的 Alfresco 帐户详细资料、已同步文件和本地文件将被擦除。";
+"settings.security.passcode.lock.description" = "在尝试输入 %d 次失败后您的帐户详细资料、已同步文件和本地文件将被擦除。";
 "settings.security.passcode.lock.title" = "密码";
 "settings.security.passcode.touch.id" = "Touch ID";
-"settings.security.passcode.touch.id.description" = "允许用您的指纹解锁 Alfresco 应用程序。";
+"settings.security.passcode.touch.id.description" = "允许用您的指纹解锁 Alfresco Content Services 应用程序。";
 "settings.security.passcode.change" = "更改密码";
 "settings.security.passcode.turn.on" = "打开密码";
 "settings.security.passcode.turn.off" = "关闭密码";
 "settings.security.passcode.set.title" = "设定密码";
 "settings.security.passcode.enter.title" = "输入密码";
-"settings.security.passcode.enter" = "输入您的 Alfresco 密码";
-"settings.security.passcode.re-enter" = "重新输入您的 Alfresco 密码";
+"settings.security.passcode.enter" = "输入您的密码";
+"settings.security.passcode.re-enter" = "重新输入您的密码";
 "settings.security.passcode.missmatch" = "密码不匹配。请再试一次。";
-"settings.security.passcode.enter.new" = "输入您的新 Alfresco 密码";
-"settings.security.passcode.enter.old" = "输入您的旧 Alfresco 密码";
+"settings.security.passcode.enter.new" = "输入您的新密码";
+"settings.security.passcode.enter.old" = "输入您的旧密码";
 "settings.security.passcode.re-enter.new" = "重新输入您的新密码";
-"settings.security.passcode.attempts.1" = "还有 1 次输入机会。如果此次输入失败，Alfresco Mobile 将重新启动，并且您的帐户详细资料、已同步文件和本地文件将被擦除。";
+"settings.security.passcode.attempts.1" = "还有 1 次输入机会。如果此次输入失败，Alfresco Content Services 将重新启动，并且您的帐户详细资料、已同步文件和本地文件将被擦除。";
 "settings.security.passcode.attempts.several" = "剩余 %d 次输入机会";
 "settings.reset.title" = "清除数据";
 "settings.reset.accounts" = "清除帐户";
 "settings.reset.accounts.confirmation.title" = "清除帐户";
-"settings.reset.accounts.confirmation.message" = "是否确定要删除所有帐户\n\n您无法撤销此操作。";
+"settings.reset.accounts.confirmation.message" = "是否确定要删除所有帐户？\n\n您无法撤销此操作。";
 "settings.reset.entire.app" = "清除帐户、缓存和下载";
 "settings.reset.entire.app.confirmation.title" = "是否清除帐户、缓存和下载？";
-"settings.reset.entire.app.confirmation.message" = "是否确定要删除所有帐户、缓存的数据和下载\n\n无法撤销此操作";
+"settings.reset.entire.app.confirmation.message" = "是否确定要删除所有帐户、缓存的数据和下载？\n\n您无法撤销此操作";
 "settings.reset.confirmation.title" = "清除数据";
-"settings.reset.confirmation.message" = "请重新启动 Alfresco 以完成。\n\n要重新启动，请按两次设备的 \"主页\" 按钮以显示正在运行的应用程序。滑动 Alfresco 离开屏幕顶部，以将其清除。您现在可以重新使用 Alfresco。";
+"settings.reset.confirmation.message" = "请重新启动此应用程序以完成。\n\n要重新启动，请按两次设备的“主页”按钮以显示正在运行的应用程序。滑动 Alfresco 离开屏幕顶部，以将其清除。您现在可以重新使用 Alfresco。";
 "settings.reset.description" = "清除帐户会从应用程序中删除所有帐户。清除帐户、缓存和下载会将应用程序重新设置为全新安装。";
 "settings.full.text.search" = "全文搜索";
 "settings.full.text.search.description" = "搜索时，打开完整内容搜索以搜索文件及其内容。";
@@ -752,7 +752,7 @@
 "action.delete.confirmation.message" = "是否确定要删除此文件？";
 "action.delete.success.title" = "删除成功";
 "action.delete.success.message" = "成功删除了 %@。";
-"action.delete.success.message.sync" = "成功删除了 %@，一个副本已保存到 \"本地文件\"";
+"action.delete.success.message.sync" = "成功删除了 %@，一个副本已保存到\"本地文件\"";
 "action.delete.failed.title" = "删除失败";
 "action.delete.failed.message" = "无法删除 %@。";
 "action.confirmation.back.message" = "是否要保存对此帐户所做更改？";
@@ -761,7 +761,7 @@
 "action.disablesync.message" = "此操作将会关闭同步功能并删除所有已同步的内容。";
 "action.disablesync.confirm" = "关闭同步";
 "action.pendingoperations.title" = "未完成同步";
-"action.pendingoperations.message" = "有些文件仍在同步至 Alfresco。如果现在关闭同步，这些将无法完成。";
+"action.pendingoperations.message" = "有些文件仍在同步。如果现在关闭同步，这些将无法完成。";
 "action.pendingoperations.cancel" = "继续同步";
 "action.pendingoperations.confirm" = "关闭同步";
 
@@ -772,7 +772,7 @@
 "saveback.hud.message" = "正在保存...";
 "saveback.saved.successfully.message" = "成功保存文件 %@。";
 "saveback.completed.title" = "保存回操作已完成";
-"saveback.completed.message" = "%@ 已成功保存回 Alfresco";
+"saveback.completed.message" = "%@ 已成功保存回";
 "saveback.failed.title" = "保存回失败";
 "saveback.failed.message" = "%@ 已保存至本地文件";
 // Location Picker
@@ -810,7 +810,7 @@
 "fileprotection.unavailable.message" = "文件保护不再可用";
 "fileprotection.protecting.message" = "正在保护本地文件...";
 "fileprotection.unprotecting.message" = "正在取消保护本地文件...";
-"alfresco-one-features.title" = "Alfresco One 特点";
+"alfresco-one-features.title" = "Alfresco Content Services 特点";
 "alfresco-one-features.message" = "文件保护和密码安全不再可用";
 
 /**
@@ -829,7 +829,7 @@
  */
 // Profiles
 "profile.default.title" = "默认设置";
-"profile.default.summary" = "Alfresco Mobile 默认设置";
+"profile.default.summary" = "Content Services 默认设置";
 // Views
 "view-activities-default" = "活动";
 "view-repository-default" = "存储库";
@@ -852,7 +852,7 @@
 "main.menu.reorder.title" = "编辑菜单";
 "main.menu.reorder.retrieving.profiles" = "正在检索配置文件 ...";
 "main.menu.reorder.header.visible.title" = "可见";
-"main.menu.reorder.footer.visible.description" = "要隐藏菜单项，请将它们拖到 \"隐藏\" 上。";
+"main.menu.reorder.footer.visible.description" = "要隐藏菜单项，请将它们拖到\"隐藏\" 上。";
 "main.menu.reorder.header.hidden.title" = "隐藏";
 
 /**
@@ -892,8 +892,8 @@
  */
 "connectiondiagnostic.event.reachability" = "正在检查网络连接";
 "connectiondiagnostic.event.serverversion" = "正在检查服务器连接";
-"connectiondiagnostic.event.repositoriesavailable" = "正在对 Alfresco 进行验证";
-"connectiondiagnostic.event.connectrepository" = "正在连接 Alfresco";
+"connectiondiagnostic.event.repositoriesavailable" = "正在验证...";
+"connectiondiagnostic.event.connectrepository" = "正在连接...";
 "connectiondiagnostic.event.retrieverootfolder" = "正在检查存储库连接";
 "connectiondiagnostic.button.retrywithdiagnostic" = "重试诊断";
 "connectiondiagnostic.title" = "连接诊断";

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,16 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-/**
- * InfoPlist.strings
- * AlfrescoApp
- *
- * German (de)
- */
+#import "AccountDataSource.h"
 
-/* Localized versions of Info.plist keys */
-NSLocationWhenInUseUsageDescription = "Ihre Position wird verwendet, um mit diesem Gerät aufgenommene und zu dieser App hochgeladene Fotos mit einem Geo-Tag zu versehen.";
-NSMicrophoneUsageDescription = "Das Mikrofon wird für Tonaufnahmen verwendet, die dann zu dieser App hochgeladen werden können.";
-NSPhotoLibraryUsageDescription = "Sie können Fotos und Videos aus Ihrer Fotobibliothek zu dieser App hochladen.";
-NSCameraUsageDescription =  "Sie können Fotos machen und zu dieser App hochladen.";
-CFBundleDisplayName = "Inhalt";
+@interface AccountDetailsDataSource : AccountDataSource
+
+@end

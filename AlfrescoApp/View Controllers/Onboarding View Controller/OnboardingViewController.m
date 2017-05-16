@@ -86,6 +86,7 @@ static CGFloat const kButtonCornerRadius = 5.0f;
     self.view.accessibilityIdentifier = kOnboardingVCViewIdentifier;
     self.closeWelcomeScreenButton.accessibilityIdentifier = kOnboardingVCCloseButtonIdentifier;
     self.useExistingAccountButton.accessibilityIdentifier = kOnboardingVCLoginButtonIdentifier;
+    self.helpButton.accessibilityIdentifier = kOnboardingVCHelpButtonIdentifier;
 }
 
 #pragma mark - IBAction Functions
