@@ -152,6 +152,8 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+    
     self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self listingContext:self.defaultListingContext];
     self.favoritesVC.view.frame = self.favoritesContainerView.bounds;
     [self.favoritesContainerView addSubview:self.favoritesVC.view];
@@ -204,6 +206,11 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     [super viewDidAppear:animated];
     
     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSites];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Private methods
@@ -283,6 +290,11 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 - (void)expandRootRevealController
 {
     [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 @end

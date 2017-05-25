@@ -54,7 +54,6 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         self.permissions = permissions;
         self.delegate = delegate;
         [self createAlfrescoServicesWithSession:session];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     }
     return self;
 }

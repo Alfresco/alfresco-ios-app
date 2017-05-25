@@ -116,6 +116,8 @@ extern NSString * const kAlfrescoAppConfigurationUpdatedNotification;
 
 // Notifications
 extern NSString * const kAlfrescoSessionReceivedNotification;
+extern NSString * const kAlfrescoSessionRefreshedNotification;
+extern NSString * const kAlfrescoTokenExpiredNotification;
 extern NSString * const kAlfrescoSiteRequestsCompletedNotification;
 extern NSString * const kAlfrescoAccessDeniedNotification;
 extern NSString * const kAlfrescoApplicationPolicyUpdatedNotification;

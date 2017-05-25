@@ -42,6 +42,7 @@
         self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:document session:session controller:self];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localDocumentWasRenamed:) name:kAlfrescoLocalDocumentRenamedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     }
     return self;
 }
@@ -159,5 +160,11 @@
     self.documentContentFilePath = [notification.userInfo objectForKey:kAlfrescoLocalDocumentNewName];
 }
 
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+    self.ratingService = [[AlfrescoRatingService alloc] initWithSession:self.session];
+}
 
 @end

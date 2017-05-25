@@ -136,6 +136,8 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         }
     }
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+    
     [self initialViewSetup];
     
     if (self.person)
@@ -164,7 +166,18 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewUserDetails];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Private Methods
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+    [self createServicesWithSession:self.session];
+}
 
 - (void)createServicesWithSession:(id<AlfrescoSession>)session
 {

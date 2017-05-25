@@ -90,6 +90,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionButtons) name:kFavoritesListUpdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateActionViewVisibility) name:kAlfrescoConnectivityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -309,6 +310,11 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     CommentViewController *commentsViewController = [self.pagingControllers objectAtIndex:PagingScrollViewSegmentFolderTypeComments];
     [commentsViewController focusCommentEntry:shouldFocusComments];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 #pragma mark - IBActions

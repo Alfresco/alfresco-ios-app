@@ -66,7 +66,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
     
     [self setupScreenTitle];
@@ -89,6 +89,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 - (void)dealloc
 {
     [_searchController.view removeFromSuperview];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -441,6 +442,11 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     {
         self.navigationController.navigationBar.translucent = YES;
     }
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 #pragma mark - UISearchBarDelegate and UISearchResultsUpdating methods

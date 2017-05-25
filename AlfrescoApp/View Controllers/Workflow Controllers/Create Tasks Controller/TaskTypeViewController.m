@@ -52,6 +52,8 @@ static NSInteger const kSectionNumberAdHoc = 0;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                                                                                   target:self
                                                                                   action:@selector(cancelButtonTapped:)];
@@ -75,6 +77,12 @@ static NSInteger const kSectionNumberAdHoc = 0;
 - (void)dealloc
 {
     _tableView.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 #pragma mark - TableView Delegate and Datasource Methods

@@ -77,7 +77,9 @@ NSString * const kHTTPMethodGET = @"GET";
 
 // Notifications
 NSString * const kAlfrescoSessionReceivedNotification = @"AlfrescoSessionReceivedNotification";
-NSString * const kAlfrescoSiteRequestsCompletedNotification = @"AlfrescoSiteRequestsCompleted";
+NSString * const kAlfrescoSessionRefreshedNotification = @"AlfrescoSessionRefreshedNotification";
+NSString * const kAlfrescoTokenExpiredNotification = @"AlfrescoTokenExpiredNotification";
+NSString * const kAlfrescoSiteRequestsCompletedNotification = @"AlfrescoSiteRequestsCompletedNotification";
 NSString * const kAlfrescoAccessDeniedNotification = @"AlfrescoUnauthorizedAccessNotification";
 NSString * const kAlfrescoApplicationPolicyUpdatedNotification = @"AlfrescoApplicationPolicyUpdatedNotification";
 NSString * const kAlfrescoDocumentDownloadedNotification = @"AlfrescoDocumentDownloadedNotification";

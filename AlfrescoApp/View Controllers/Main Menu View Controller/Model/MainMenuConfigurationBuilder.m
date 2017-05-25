@@ -60,8 +60,15 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         _iconTypeMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
         plistPath = [[NSBundle mainBundle] pathForResource:kMenuIconIdentifierMappingFileName ofType:@"plist"];
         _iconIdentifierMappings = [NSDictionary dictionaryWithContentsOfFile:plistPath];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Public Methods
@@ -186,6 +193,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
 }
 
 #pragma mark - Private Methods
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+}
 
 - (void)buildSectionsForRootView:(AlfrescoViewGroupConfig *)rootView completionBlock:(void (^)(NSArray *sections))completionBlock
 {
