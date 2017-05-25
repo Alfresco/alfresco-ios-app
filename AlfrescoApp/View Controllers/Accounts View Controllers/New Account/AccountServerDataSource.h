@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,18 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "ParentListViewController.h"
+#import "AccountDataSource.h"
 
-@protocol AccountInfoDetailsDelegate <NSObject>
-
-- (void)accountInfoChanged:(UserAccount *)newAccount;
-
-@end
-
-@interface AccountInfoDetailsViewController : ParentListViewController <UITextFieldDelegate>
-
-@property (nonatomic, weak) id<AccountInfoDetailsDelegate> delegate;
-
-- (instancetype)initWithAccount:(UserAccount *)account configuration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session delegate:(id<AccountInfoDetailsDelegate>)delegate;
+@interface AccountServerDataSource : AccountDataSource
 
 @end

@@ -22,6 +22,7 @@
 
 // Account
 extern NSString * const kAnalyticsViewAccountCreateTypePicker;
+extern NSString * const kAnalyticsViewAccountCreateServer;
 extern NSString * const kAnalyticsViewAccountCreateCredentials;
 extern NSString * const kAnalyticsViewAccountCreateDiagnostics;
 extern NSString * const kAnalyticsViewAccountEdit;

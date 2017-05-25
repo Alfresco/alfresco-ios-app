@@ -54,14 +54,14 @@
  * Permissions
  */
 "document.picker.scope.permissions.cannot.edit.title" = "編集権限";
-"document.picker.scope.permissions.cannot.edit.message" = "編集する権限がありません。\n\n加える変更はすべて元の Alfresco アプリの [ローカルファイル] に保存されます。";
+"document.picker.scope.permissions.cannot.edit.message" = "編集する権限がありません。\n\n加える変更はすべて元の[ローカルファイル] に保存されます。";
 
 /*
  * Security
  */
-"document.picker.scope.launch.main.app" = "この拡張機能を使うには、Alfresco アプリを起動する必要があります。";
-"settings.security.passcode.touch.id.description" = "Alfresco アプリのロックをあなたの指紋で解除できます。";
-"settings.security.passcode.attempts.1" = "あと 1 回しか入力できません。 また失敗すると、Alfresco Mobile が再起動され、お使いのアカウントの情報、同期されているファイル、このデバイス上のファイルが消去されます。";
+"document.picker.scope.launch.main.app" = "この拡張機能を使うには、Alfresco Content Services アプリを起動する必要があります。";
+"settings.security.passcode.touch.id.description" = "このアプリのロックをあなたの指紋で解除できます。";
+"settings.security.passcode.attempts.1" = "あと 1 回しか入力できません。 また失敗すると、Alfresco Content Services が再起動され、お使いのアカウントの情報、同期されているファイル、このデバイス上のファイルが消去されます。";
 "settings.security.passcode.attempts.several" = "残り入力回数: %d";
 "settings.security.passcode.enter.title" = "パスコードの入力";
-"settings.security.passcode.enter" = "Alfresco 用のパスコードを入力してください";
+"settings.security.passcode.enter" = "パスコードを入力してください";

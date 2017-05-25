@@ -28,3 +28,4 @@ NSLocationWhenInUseUsageDescription = "Your location will be used to geotag phot
 NSMicrophoneUsageDescription = "The microphone will be used to record sound which can then be uploaded to this app.";
 NSPhotoLibraryUsageDescription = "You can upload photos and videos from your Photo Library to this app.";
 NSCameraUsageDescription = "You can take photos to upload to this app.";
+CFBundleDisplayName = "Content";

@@ -95,7 +95,7 @@
 "sync.enable.title" = "ファイルを同期する";
 "sync.state.waiting-to-sync" = "同期待ち...";
 "sync.state.failed-to-sync" = "同期失敗";
-"sync.progress.label.singular" = "1 個のファイルを同期しています。残り %@"; // example: "Syncing 1 file, 238.3 MB left"
+"sync.progress.label.singular" = "1 個のファイルを同期しています。 残り %@"; // example: "Syncing 1 file, 238.3 MB left"
 "sync.progress.label.plural" = "%d 個のファイル。残り %@"; // example: "Syncing 5 files, 238.3 MB left"
 "sync.cancelAll.alert.title" = "同期";
 "sync.cancelAll.alert.message" = "すべての同期をキャンセルしますか?";
@@ -106,7 +106,7 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "同期エラー";
-"sync-errors.deleted-on-server-with-local-changes.header" = "次のファイルは Alfresco では削除されていますが、コピーが [ローカルファイル] に保存されています。";
+"sync-errors.deleted-on-server-with-local-changes.header" = "次のファイルは Alfresco Content Services では削除されていますが、コピーが [ローカルファイル] に保存されています。";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "次のファイルは同期待ちで、ローカルでは変更されています。各ファイルの処理方法を選択してください。\n\nファイルは [ローカルファイル] に保存されます。";
 "sync-errors.button.sync" = "同期"; // string length should not be extended
 "sync-errors.button.save" = "保存"; // string length should not be extended
@@ -115,7 +115,7 @@
  * Errors
  */
 "error.generic.title" = "問題が発生しました";
-"error.generic.noaccess.message" = "このプロフィールではすべての情報にアクセスできない可能性があります。IT 担当者に確認するか、別のプロフィールを選択してください。";
+"error.generic.noaccess.message" = "このプロフィールのすべての情報を表示する権限がない可能性があります。IT 担当者に問い合わせるか、別のプロフィールを選択してください。";
 "error.filefolder.rootfolder.notfound" = "ルートフォルダを読み込めませんでした。\n\n%@。";
 "error.filefolder.permission.notfound" = "ファイルまたはフォルダの権限が見つかりません。\n\n%@。";
 "error.filefolder.content.failedtodownload" = "ファイルをダウンロードできませんでした。\n\n%@。";
@@ -134,7 +134,7 @@
 "error.upload.addtags.failed" = "タグをファイルに追加できませんでした。\n\n%@。";
 "error.tags.retrieve.failed" = "タグは現在読み込めません。\n\n%@。";
 "error.login.failed" = "ログインできませんでした。ユーザー名とパスワードが正しいことを確認してください。";
-"error.comments.retrieve.failed" = "コメントは現在読み込めません。\n\n%@。";
+"error.comments.retrieve.failed" = "コメントは現在読み込めません。\n\n%@";
 "error.add.comment.failed" = "コメントは現在追加できません。\n\n%@";
 "error.sites.unable.to.favorite" = "%@ は現在お気に入りに登録できません";
 "error.sites.unable.to.unfavorite" = "%@ は現在お気に入りを解除できません";
@@ -151,7 +151,7 @@
 "error.no.internet.access.message" = "インターネットに接続していることを確認してから、もう一度やり直してください。ダウンロード済みのファイルの場合は、インターネットに接続しなくてもアクセスできます。";
 "error.access.permissions.message" = "この操作を行うための権限があることを確認してください";
 "error.host.unreachable.title" = "接続エラー";
-"error.host.unreachable.message" = "設定が間違っているか、お使いの VPN を有効にする必要があります。アカウント設定でホスト名を確認してください。";
+"error.host.unreachable.message" = "設定が間違っているか、お使いの VPN を有効にする必要があります。アカウント設定で接続の詳細を確認してください。";
 "error.retrieving.metadata" = "%@ のプロパティを読み込めませんでした。";
 "error.server.message" = "サーバーでエラーが発生しました。";
 // Workflow
@@ -176,22 +176,22 @@
  */
 // Camera permissions
 "permissions.camera.denied.title" = "[カメラ] 使用不可";
-"permissions.camera.denied.message" = "Alfresco から [カメラ] にアクセスする機能がオフに設定されています。";
+"permissions.camera.denied.message" = "[カメラ] にアクセスする機能がオフに設定されています。";
 "permissions.camera.restricted.title" = "[カメラ] 使用不可";
-"permissions.camera.restricted.message" = "Alfresco で [カメラ] を使用する権限がありません。";
+"permissions.camera.restricted.message" = "このアプリで [カメラ] を使用する権限がありません。";
 // Library permissions
 "permissions.library.denied.title" = "[フォトライブラリ] 使用不可";
-"permissions.library.denied.message" = "Alfresco から [フォトライブラリ] にアクセスする機能がオフに設定されています。";
+"permissions.library.denied.message" = "[フォトライブラリ] にアクセスする機能がオフに設定されています。";
 "permissions.library.restricted.title" = "[フォトライブラリ] 使用不可";
-"permissions.library.restricted.message" = "Alfresco で [フォトライブラリ] を使用する権限がありません。";
+"permissions.library.restricted.message" = "このアプリで [フォトライブラリ] を使用する権限がありません。";
 // Microphone permissions
 "permissions.microphone.denied.title" = "マイク使用不可";
-"permissions.microphone.denied.message" = "Alfresco からマイクにアクセスする機能がオフに設定されています。";
+"permissions.microphone.denied.message" = "マイクにアクセスする機能がオフに設定されています。";
 // Location permissions
 "permissions.location.denied.title" = "位置データ使用不可";
-"permissions.location.denied.message" = "Alfresco から位置データにアクセスする機能がオフに設定されています。";
+"permissions.location.denied.message" = "位置データにアクセスする機能がオフに設定されています。";
 "permissions.location.restricted.title" = "位置データ使用不可";
-"permissions.location.restricted.message" = "Alfresco で位置データを使用する権限がありません。";
+"permissions.location.restricted.message" = "このアプリで位置データを使用する権限がありません。";
 "permissions.location.disabled.title" = "位置データ使用不可";
 "permissions.location.disabled.message" = "デバイスの位置データがオフに設定されています。";
 // Settings button
@@ -234,17 +234,17 @@
 "accounts.empty" = "アカウントはありません";
 "accountdetails.title.newaccount" = "新しいアカウント";
 "accountdetails.title.editingaccount" = "アカウントの編集";
-"accounttype.cloud" = "Alfresco in the Cloud";
-"accounttype.alfrescoServer" = "Alfresco サーバー";
+"accounttype.cloud" = "Content Services in the Cloud";
+"accounttype.alfrescoServer" = "Content Services";
 
-"accounttype.footer.alfrescoServer" = "Alfresco サーバーに接続します";
-"accounttype.footer.alfrescoCloud" = "Alfresco in the Cloud アカウントに接続します";
+"accounttype.footer.alfrescoServer" = "Content Services に接続します";
+"accounttype.footer.alfrescoCloud" = "Content Services in the Cloud アカウントに接続します";
 
 "accountdetails.placeholder.required" = "必須";
 "accountdetails.placeholder.optional" = "省略可";
 "accountdetails.fields.email" = "E メール";
 "accountdetails.placeholder.email" = "example@alfresco.com";
-"accountdetails.fields.hostname" = "ホスト名";
+"accountdetails.fields.hostname" = "接続先";
 "accountdetails.fields.description" = "説明";
 "accountdetails.fields.port" = "ポート";
 "accountdetails.fields.protocol" = "HTTPS";
@@ -280,7 +280,7 @@
 "certificate-download.title" = "Web サーバー";
 "certificate-download.field.url" = "URL";
 "certificate-details.title" = "クライアント証明書";
-"certificate-details.issuer" = "発行者:%@";
+"certificate-details.issuer" = "発行者: %@";
 "certificate-details.delete.title" = "クライアント証明書の削除";
 "certificate-details.delete.message" = "一度このクライアント証明書を削除すると、元に戻せません。作業を続けますか?";
 "certificate-details.importSuccess" = "証明書がインポートされました";
@@ -329,14 +329,14 @@
  */
 "multiselect.button.delete" = "削除";
 "multiselect.button.delete.counter" = "(%u) 個を削除";
-"multiselect.delete.confirmation.message.one-item" = "Alfresco から 1 つのファイルを削除しますか?";
-"multiselect.delete.confirmation.message.n-items" = "Alfresco から %d 個のファイルを削除しますか?";
+"multiselect.delete.confirmation.message.one-item" = "1 個のファイルを削除しますか?";
+"multiselect.delete.confirmation.message.n-items" = "%d 個のファイルを削除しますか?";
 "multiselect.delete.confirmation.message.one-download" = "[ローカルファイル] から 1 つのファイルを削除しますか?";
 "multiselect.delete.confirmation.message.n-downloads" = "[ローカルファイル] から %d 個のファイルを削除しますか?";
 "multiselect.delete.completed.title" = "削除の完了時にエラーが発生しました";
-"multiselect.delete.completed.message" = "%@ 個のファイルが Alfresco から削除されました。";
-"multiselect.delete.partial.message" = "%@ 個のファイルが Alfresco から削除されました。一部のファイルを削除できませんでした。";
-"multiselect.delete.failure.message" = "どのファイルも Alfresco から削除できませんでした。";
+"multiselect.delete.completed.message" = "%@ 個のファイルが削除されました。";
+"multiselect.delete.partial.message" = "%@ 個のファイルが削除されました。一部のファイルを削除できませんでした。";
+"multiselect.delete.failure.message" = "どのファイルも削除できませんでした。";
 
 /**
  * Node Picker
@@ -368,9 +368,9 @@
  * About View Controller
  */
 "about.title" = "バージョン情報";
-"about.content" = "Alfrescoは、業務に重要なコンテンツを管理したり、共同作業を行えるオープンプラットフォームです。Alfresco MobileはAlfresco Software, Inc.によって開発されたソフトウェアで、Alfresco Content Services Cloud、Alfresco Content Services、およびAlfresco Communityエディション（バージョン3.4.8以降）に接続することで、社内のコンテンツに外出先から安全にアクセスできるようにします。このモバイルアプリケーションでは、Alfrescoのログイン資格情報を使ってAlfrescoのリポジトリに（HTTPまたはHTTPS経由で）接続し、ユーザーの権限に基づいてアクセスを制御します。";
-"about.version.number" = "バージョン:%@ (%@)";
-"about.build.date.time" = "ビルド日時:%s %s";
+"about.content" = "Alfresco Content Services は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Content Services モバイルアプリ は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco Content Services in the Cloud と、Alfresco Content Services、Alfresco Community Edition (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。このモバイルアプリでは、Alfresco Content Services のログイン資格情報を使って (HTTP または HTTPS 経由で) 社内のリポジトリに接続し、ユーザーの権限に基づいてアクセスを管理します。";
+"about.version.number" = "バージョン: %@ (%@)";
+"about.build.date.time" = "ビルド日時: %s %s";
 
 /**
  * Activities View Controller
@@ -390,7 +390,7 @@
 "upload.audio.title" = "オーディオのアップロード";
 "upload.photo.namecell.title" = "名前";
 "upload.photo.namecell.textfield.placeholder.text" = "ファイル名";
-"upload.photo.tagcell.textlabel.placeholder.text" = "タグなし";
+"upload.photo.tagcell.textlabel.placeholder.text" = "タグがありません";
 "upload.photo.photocell.title" = "写真";
 "upload.photo.qualitycell.title" = "品質";
 "upload.photo.tagscell.title" = "タグ";
@@ -403,10 +403,10 @@
 "upload.audio.cell.button.play" = "再生";
 "upload.audio.cell.button.stop" = "停止";
 "upload.audio.setting.disabled.title" = "権限";
-"upload.audio.setting.disabled.message" = "Alfresco からマイクにアクセスする権限がありません。\n\nこの設定をデバイスの [設定] -> [プライバシー] -> [マイク] で変更してください。";
+"upload.audio.setting.disabled.message" = "このアプリには、マイクにアクセスする権限がありません。\n\nこの設定をデバイスの 「設定」 -> 「プライバシー」 -> 「マイク」で変更してください。";
 // confirmation
 "upload.confirm.dismissal.title" = "保存されていないコンテンツ";
-"upload.confirm.dismissal.message" = "このコンテンツをアップロードしますか?ここでアップロードしないと、コンテンツが失われます。";
+"upload.confirm.dismissal.message" = "このコンテンツをアップロードしますか? ここでアップロードしないと、コンテンツが失われます。";
 "upload.confirm.dismissal.cancel" = "アップロードしない";
 "upload.success-as.message" = "ファイルが %@ としてアップロードされました";
 
@@ -484,7 +484,7 @@
  * Help
  */
 "help.title" = "ヘルプ";
-"help.no.internet.message" = "現在オフラインのため、Alfresco Mobile のヘルプにアクセスできません。\n\nオンラインに戻ったときに、やり直してください。";
+"help.no.internet.message" = "現在オフラインのため、ヘルプにアクセスできません。\n\nオンラインに戻ったときに、操作をやり直してください。";
 
 /**
  * Metadata View Controller
@@ -547,11 +547,11 @@
  */
 "version.history.title" = "バージョン履歴";
 "version.history.empty" = "バージョン履歴はありません";
-"version.history.version.cell.text" = "バージョン:%@";
-"version.history.last.modified.cell.text" = "最終変更日時:%@";
-"version.history.last.modified.by.cell.text" = "最終変更者:%@";
-"version.history.comment.cell.text" = "コメント:%@";
-"version.history.current.version.cell.text" = "現在のバージョン:%@";
+"version.history.version.cell.text" = "バージョン: %@";
+"version.history.last.modified.cell.text" = "最終変更日時: %@";
+"version.history.last.modified.by.cell.text" = "最終変更者: %@";
+"version.history.comment.cell.text" = "コメント: %@";
+"version.history.current.version.cell.text" = "現在のバージョン: %@";
 "version.history.download.latest.text" = "最新バージョンのダウンロード";
 
 /**
@@ -568,7 +568,7 @@
 "document.edit.button.discard" = "変更の取り消し";
 "document.edit.button.save" = "保存";
 "document.edit.failed.title" = "ファイルの保存";
-"document.edit.savefailed.message" = "ファイルを Alfresco に保存できませんでした。ファイルを [ローカルファイル] に保存しますか?";
+"document.edit.savefailed.message" = "ファイルを保存できませんでした。ファイルを [ローカルファイル] に保存しますか?";
 "document.edit.dismiss.confirmation.message" = "変更を保存しないと、今まで行った作業は保存されません。";
 "document.edit.discard" = "取り消し";
 "document.edit.continue.editing" = "編集を続ける";
@@ -673,30 +673,30 @@
  */
 "settings.title" = "設定";
 "settings.general.title" = "一般";
-"settings.sync.on.cellular" = "同期にモバイルデータ通信を使用";
+"settings.sync.on.cellular" = "同期にモバイルデータ通信を使用する";
 "settings.sync.on.cellular.description" = "Wi-Fi 経由でのみコンテンツを同期する場合は、このスイッチをオフにしてください。";
 "settings.send.diagnostics" = "診断データの送信";
-"settings.send.diagnostics.description" = "弊社は、Alfresco Mobile の改善に役立てるために技術的な診断データを匿名で収集しています。データの提供を希望されない場合は、スイッチをオフにしてください。";
+"settings.send.diagnostics.description" = "弊社は、このアプリの改善に役立てるために技術的な診断データを匿名で収集しています。データの提供を希望されない場合は、チェックマークを外してください。";
 "settings.security.title" = "セキュリティ";
 "settings.security.file.protection" = "ファイルの保護";
 "settings.security.file.protection.description" = "デバイスがロックされているときに、デバイスに保存されているファイルを暗号化します。";
 "settings.security.passcode.lock" = "パスコードロック";
-"settings.security.passcode.lock.description" = "パスコードの入力を %d 回間違えると、お使いの Alfresco アカウントの情報、同期されているファイル、ローカルファイルが消去されます。";
+"settings.security.passcode.lock.description" = "パスコードの入力を %d 回間違えると、お使いのアカウントの情報、同期されているファイル、ローカルファイルが消去されます。";
 "settings.security.passcode.lock.title" = "パスコード";
 "settings.security.passcode.touch.id" = "Touch ID";
-"settings.security.passcode.touch.id.description" = "Alfresco アプリのロックをあなたの指紋で解除できます。";
+"settings.security.passcode.touch.id.description" = "Alfresco Content Services アプリのロックをあなたの指紋で解除できます。";
 "settings.security.passcode.change" = "パスコードの変更";
 "settings.security.passcode.turn.on" = "パスコードをオンにする";
 "settings.security.passcode.turn.off" = "パスコードをオフにする";
 "settings.security.passcode.set.title" = "パスコードの設定";
 "settings.security.passcode.enter.title" = "パスコードの入力";
-"settings.security.passcode.enter" = "Alfresco 用のパスコードを入力してください";
-"settings.security.passcode.re-enter" = "Alfresco 用のパスコードを再入力してください";
+"settings.security.passcode.enter" = "パスコードを入力してください";
+"settings.security.passcode.re-enter" = "パスコードを再入力してください";
 "settings.security.passcode.missmatch" = "パスコードが一致しません。もう一度入力してください。";
-"settings.security.passcode.enter.new" = "Alfresco 用の新しいパスコードを入力してください";
-"settings.security.passcode.enter.old" = "Alfresco 用の古いパスコードを入力してください";
+"settings.security.passcode.enter.new" = "新しいパスコードを入力してください";
+"settings.security.passcode.enter.old" = "古いパスコードを入力してください";
 "settings.security.passcode.re-enter.new" = "新しいパスコードを再入力してください";
-"settings.security.passcode.attempts.1" = "あと 1 回しか入力できません。また入力を間違えると、Alfresco Mobile が再起動され、お使いのアカウントの情報、同期されているファイル、ローカルファイルが消去されます。";
+"settings.security.passcode.attempts.1" = "あと 1 回しか入力できません。また入力を間違えると、Alfresco Content Services が再起動され、お使いのアカウントの情報、同期されているファイル、ローカルファイルが消去されます。";
 "settings.security.passcode.attempts.several" = "残り入力回数: %d";
 "settings.reset.title" = "データの消去";
 "settings.reset.accounts" = "アカウントの消去";
@@ -704,9 +704,9 @@
 "settings.reset.accounts.confirmation.message" = "すべてのアカウントを削除しますか?\n\n一度削除すると元に戻せません。";
 "settings.reset.entire.app" = "アカウント、キャッシュ、ダウンロード済みファイルの消去";
 "settings.reset.entire.app.confirmation.title" = "アカウント、キャッシュ、ダウンロード済みファイルを消去しますか?";
-"settings.reset.entire.app.confirmation.message" = "すべてのアカウント、キャッシュ、ダウンロード済みファイルを削除しますか?\n\n一度削除すると元に戻せません。";
+"settings.reset.entire.app.confirmation.message" = "すべてのアカウント、キャッシュデータ、ダウンロード済みファイルを削除しますか?\n\n一度削除すると元に戻せません。";
 "settings.reset.confirmation.title" = "データの消去";
-"settings.reset.confirmation.message" = "消去を完了するために Alfresco を再起動してください。\n\n再起動するには、デバイスのホームボタンを 2 回押して、実行中のアプリを表示します。[Alfresco] を画面の上の方にスワイプして消去します。これでまた Alfresco が使えるようになります。";
+"settings.reset.confirmation.message" = "消去を完了するためにこのアプリを再起動してください。\n\n再起動するには、デバイスのホームボタンを 2 回押して、実行中のアプリを表示します。[Alfresco] を画面の上の方にスワイプして消去します。これでまた Alfresco が使えるようになります。";
 "settings.reset.description" = "アカウントを消去すると、アプリからすべてのアカウントが削除されます。アカウント、キャッシュ、ダウンロード済みファイルを消去すると、アプリがリセットされ、新しくインストールできる状態になります。";
 "settings.full.text.search" = "全文検索";
 "settings.full.text.search.description" = "ファイルだけでなく、そのコンテンツも一緒に検索する場合は、全文検索のスイッチをオンにします。";
@@ -761,7 +761,7 @@
 "action.disablesync.message" = "同期機能がオフになり、同期されているコンテンツがすべて削除されます。";
 "action.disablesync.confirm" = "同期をオフにする";
 "action.pendingoperations.title" = "未完了の同期";
-"action.pendingoperations.message" = "Alfresco との同期がまだ完了していないファイルがあります。ここで同期をオフにすると、これらの同期は完了しません。";
+"action.pendingoperations.message" = "同期がまだ完了していないファイルがあります。ここで同期をオフにすると、これらの同期は完了しません。";
 "action.pendingoperations.cancel" = "同期を続行する";
 "action.pendingoperations.confirm" = "同期をオフにする";
 
@@ -772,7 +772,7 @@
 "saveback.hud.message" = "保存しています...";
 "saveback.saved.successfully.message" = "ファイル \"%@\" が保存されました。";
 "saveback.completed.title" = "元の場所へ保存されました";
-"saveback.completed.message" = "%@ が Alfresco の元の場所に保存されました。";
+"saveback.completed.message" = "%@ が元の場所に保存されました";
 "saveback.failed.title" = "元の場所に保存できませんでした";
 "saveback.failed.message" = "%@ が [ローカルファイル] に保存されました";
 // Location Picker
@@ -810,7 +810,7 @@
 "fileprotection.unavailable.message" = "ファイルの保護機能は使用できなくなりました";
 "fileprotection.protecting.message" = "ローカルファイルを保護しています...";
 "fileprotection.unprotecting.message" = "ローカルファイルの保護を解除しています...";
-"alfresco-one-features.title" = "Alfresco One の機能";
+"alfresco-one-features.title" = "Alfresco Content Services の機能";
 "alfresco-one-features.message" = "ファイルの保護機能とパスコードは使用できなくなりました";
 
 /**
@@ -829,7 +829,7 @@
  */
 // Profiles
 "profile.default.title" = "デフォルト";
-"profile.default.summary" = "Alfresco Mobile のデフォルト設定";
+"profile.default.summary" = "Content Services のデフォルト設定";
 // Views
 "view-activities-default" = "アクティビティ";
 "view-repository-default" = "リポジトリ";
@@ -892,8 +892,8 @@
  */
 "connectiondiagnostic.event.reachability" = "ネットワークの接続をチェックしています";
 "connectiondiagnostic.event.serverversion" = "サーバーの接続をチェックしています";
-"connectiondiagnostic.event.repositoriesavailable" = "Alfresco で認証しています";
-"connectiondiagnostic.event.connectrepository" = "Alfresco に接続しています";
+"connectiondiagnostic.event.repositoriesavailable" = "認証しています...";
+"connectiondiagnostic.event.connectrepository" = "接続しています...";
 "connectiondiagnostic.event.retrieverootfolder" = "リポジトリの接続をチェックしています";
 "connectiondiagnostic.button.retrywithdiagnostic" = "診断を再試行";
 "connectiondiagnostic.title" = "接続の診断";

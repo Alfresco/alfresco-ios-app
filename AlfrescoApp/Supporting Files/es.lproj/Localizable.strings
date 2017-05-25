@@ -106,7 +106,7 @@
  * Sync Obstacles
  */
 "sync-errors.title" = "Errores de sincronización";
-"sync-errors.deleted-on-server-with-local-changes.header" = "Los siguientes ficheros se han eliminado de Alfresco, pero se han guardado copias en \"Ficheros locales\"";
+"sync-errors.deleted-on-server-with-local-changes.header" = "Los siguientes ficheros se han eliminado de Alfresco Content Services, pero se han guardado copias en \"Ficheros locales\"";
 "sync-errors.pending-sync-on-server-with-local-changes.header" = "Los siguientes ficheros se encuentran a la espera de sincronización y presentan modificaciones locales. Seleccione cómo continuar para cada fichero.\n\nLos ficheros se guardarán en \"Ficheros locales\"";
 "sync-errors.button.sync" = "Sincronizar"; // string length should not be extended
 "sync-errors.button.save" = "Guardar"; // string length should not be extended
@@ -115,27 +115,27 @@
  * Errors
  */
 "error.generic.title" = "Hemos encontrado un problema";
-"error.generic.noaccess.message" = "Puede no tener acceso a todas las vistas en este perfil. Compruébelo con su equipo de TI o elija un perfil diferente.";
-"error.filefolder.rootfolder.notfound" = "No se ha podido recuperar la carpeta raíz.\n\n%@.";
+"error.generic.noaccess.message" = "Puede no tener acceso a todas las vistas en este perfil. Compruebe con su equipo de TI o elija un perfil diferente.";
+"error.filefolder.rootfolder.notfound" = "No se ha podido cargar la carpeta raíz.\n\n%@.";
 "error.filefolder.permission.notfound" = "No se ha encontrado ningún permiso para el fichero/carpeta.\n\n%@.";
 "error.filefolder.content.failedtodownload" = "No se ha podido descargar el fichero.\n\n%@.";
 "error.filefolder.search.searchfailed" = "Búsqueda fallida.\n\n%@.";
 "error.filefolder.createfolder.invalidname" = "No se ha podido crear la carpeta. Vuelva a intentarlo usando números, letras y caracteres diferentes.";
 "error.filefolder.createfolder.createfolder" = "No se ha podido crear la carpeta.\n\n%@.";
 "error.filefolder.content.failedtoretrieve" = "No se ha podido cargar el fichero/carpeta.\n\n%@.";
-"error.filefolder.unable.to.delete" = "No se ha podido eliminar el fichero/carpeta.\n\n%@.";
+"error.filefolder.unable.to.delete" = "No se ha podido eliminar el fichero/carpeta.\n\n%@";
 "error.sites.documentlibrary.failed" = "No se ha podido acceder a la biblioteca de documentos.\n\n%@.";
-"error.filefolder.favorites.failed" = "No se ha podido acceder a Favoritos.\n\n%@";
+"error.filefolder.favorites.failed" = "No se ha podido acceder Favoritos.\n\n%@";
 "error.sites.retrieval.failed" = "No se han podido cargar los sitios.\n\n%@.";
-"error.sites.folder.failed" = "No se han podido cargar la carpeta de sitios.\n\n%@.";
-"error.sites.search.failed" = "No se ha podido buscar en sitios.\n\n%@.";
+"error.sites.folder.failed" = "No se ha podido cargar la carpeta de los sitios.\n\n%@.";
+"error.sites.search.failed" = "No se ha podido buscar en los sitios.\n\n%@.";
 "error.sites.site.notfound" = "Sitio no encontrado.";
 "error.upload.failed" = "No se ha podido cargar el fichero en este momento.\n\n%@.";
 "error.upload.addtags.failed" = "No se han podido añadir las etiquetas al fichero.\n\n%@.";
-"error.tags.retrieve.failed" = "No se han podido cargar la etiquetas en este momento.\n\n%@.";
+"error.tags.retrieve.failed" = "No se han podido cargar las etiquetas en este momento.\n\n%@.";
 "error.login.failed" = "No se ha podido iniciar la sesión, compruebe que el nombre de usuario y la contraseña son correctos.";
-"error.comments.retrieve.failed" = "No se han podido cargar los comentarios en este momento.\n\n%@.";
-"error.add.comment.failed" = "No se ha podido añadir el comentario en este momento.\n\n%@.";
+"error.comments.retrieve.failed" = "No se han podido cargar los comentarios en este momento.\n\n%@";
+"error.add.comment.failed" = "No se ha podido añadir el comentario en este momento.\n\n%@";
 "error.sites.unable.to.favorite" = "No se ha podido marcar %@ como favorito en este momento";
 "error.sites.unable.to.unfavorite" = "No se ha podido desmarcar %@ como favorito en este momento";
 "error.sites.unable.to.join" = "No se ha podido unir %@ en este momento";
@@ -151,7 +151,7 @@
 "error.no.internet.access.message" = "Compruebe que está conectado a Internet e inténtelo de nuevo. Podrá continuar accediendo a los ficheros que ha descargado sin disponer de conexión.";
 "error.access.permissions.message" = "Compruebe que cuenta con los permisos necesarios para hacerlo";
 "error.host.unreachable.title" = "Error de conexión";
-"error.host.unreachable.message" = "Sus ajustes parecen erróneos o podría necesitar activar su VPN. Compruebe su nombre de host en los ajustes de cuenta.";
+"error.host.unreachable.message" = "Sus ajustes parecen erróneos o podría necesitar activar su VPN. Compruebe los datos de su conexión en los ajustes de cuenta.";
 "error.retrieving.metadata" = "No se han podido cargar las propiedades para %@.";
 "error.server.message" = "Se ha producido un error en el servidor.";
 // Workflow
@@ -161,7 +161,7 @@
 "error.new.version.unable.to.checkout.title" = "No se ha podido extraer";
 "error.new.version.unable.to.checkout.message" = "No se ha podido extraer %@.\n\n%@";
 "error.new.version.unable.to.checkin.title" = "No se ha introducir";
-"error.new.version.unable.to.checkin.message" = "No se ha introducir %@.\n\n%@";
+"error.new.version.unable.to.checkin.message" = "No se ha podido introducir %@.\n\n%@";
 // Email
 "error.no.email.accounts.title" = "No hay cuentas de correo electrónico";
 "error.no.email.accounts.message" = "Debe tener al menos una cuenta de correo electrónico configurada en su dispositivo para enviar este fichero.";
@@ -176,22 +176,22 @@
  */
 // Camera permissions
 "permissions.camera.denied.title" = "Cámara desactivada";
-"permissions.camera.denied.message" = "Ha desactivado anteriormente el acceso de Alfresco a la cámara.";
+"permissions.camera.denied.message" = "Ha desactivado anteriormente el acceso a la cámara.";
 "permissions.camera.restricted.title" = "Cámara desactivada";
-"permissions.camera.restricted.message" = "No tiene permiso para dejar a Alfresco usar su cámara.";
+"permissions.camera.restricted.message" = "No tiene permiso para dejar a esta aplicación usar su cámara.";
 // Library permissions
 "permissions.library.denied.title" = "Biblioteca de fotos desactivada";
-"permissions.library.denied.message" = "Ha desactivado anteriormente el acceso de Alfresco a la Biblioteca de fotos.";
+"permissions.library.denied.message" = "Ha desactivado anteriormente el acceso a la Biblioteca de fotos.";
 "permissions.library.restricted.title" = "Biblioteca de fotos desactivada";
-"permissions.library.restricted.message" = "No tiene permiso para dejar a Alfresco usar su Biblioteca de fotos.";
+"permissions.library.restricted.message" = "No tiene permiso para dejar a esta aplicación usar su Biblioteca de fotos.";
 // Microphone permissions
 "permissions.microphone.denied.title" = "Micrófono desactivado";
-"permissions.microphone.denied.message" = "Ha desactivado anteriormente el acceso de Alfresco al micrófono.";
+"permissions.microphone.denied.message" = "Ha desactivado anteriormente el acceso al micrófono.";
 // Location permissions
 "permissions.location.denied.title" = "Datos de ubicación desactivados";
-"permissions.location.denied.message" = "Ha desactivado anteriormente el acceso de Alfresco a los datos de ubicación.";
+"permissions.location.denied.message" = "Ha desactivado anteriormente el acceso a los datos de ubicación.";
 "permissions.location.restricted.title" = "Datos de ubicación desactivados";
-"permissions.location.restricted.message" = "No tiene permiso para dejar a Alfresco usar sus datos de ubicación.";
+"permissions.location.restricted.message" = "No tiene permiso para dejar a esta aplicación usar sus datos de ubicación.";
 "permissions.location.disabled.title" = "Datos de ubicación desactivados";
 "permissions.location.disabled.message" = "Los datos de ubicación están desactivados en su dispositivo.";
 // Settings button
@@ -234,17 +234,17 @@
 "accounts.empty" = "Ninguna cuenta";
 "accountdetails.title.newaccount" = "Nueva cuenta";
 "accountdetails.title.editingaccount" = "Editar cuenta";
-"accounttype.cloud" = "Alfresco in the Cloud";
-"accounttype.alfrescoServer" = "Servidor de Alfresco";
+"accounttype.cloud" = "Content Services in the Cloud";
+"accounttype.alfrescoServer" = "Content Services";
 
-"accounttype.footer.alfrescoServer" = "Conectarse al servidor de Alfresco";
-"accounttype.footer.alfrescoCloud" = "Conéctese a su cuenta Alfresco in the Cloud";
+"accounttype.footer.alfrescoServer" = "Conectar a Content Services";
+"accounttype.footer.alfrescoCloud" = "Conéctese a su cuenta Content Services in the Cloud";
 
 "accountdetails.placeholder.required" = "Obligatorio";
 "accountdetails.placeholder.optional" = "Opcional";
 "accountdetails.fields.email" = "Correo electrónico";
 "accountdetails.placeholder.email" = "ejemplo@alfresco.com";
-"accountdetails.fields.hostname" = "Nombre de host";
+"accountdetails.fields.hostname" = "Conectar a";
 "accountdetails.fields.description" = "Descripción";
 "accountdetails.fields.port" = "Puerto";
 "accountdetails.fields.protocol" = "HTTPS";
@@ -329,14 +329,14 @@
  */
 "multiselect.button.delete" = "Eliminar";
 "multiselect.button.delete.counter" = "Eliminar (%u)";
-"multiselect.delete.confirmation.message.one-item" = "¿Desea eliminar 1 fichero de Alfresco?";
-"multiselect.delete.confirmation.message.n-items" = "¿Desea eliminar %d ficheros de Alfresco?";
+"multiselect.delete.confirmation.message.one-item" = "¿Desea eliminar 1 fichero?";
+"multiselect.delete.confirmation.message.n-items" = "¿Desea eliminar %d ficheros?";
 "multiselect.delete.confirmation.message.one-download" = "¿Desea eliminar 1 fichero de los ficheros locales?";
 "multiselect.delete.confirmation.message.n-downloads" = "¿Desea eliminar %d ficheros de los ficheros locales?";
 "multiselect.delete.completed.title" = "Eliminación completa con errores";
-"multiselect.delete.completed.message" = "%@ ficheros eliminados de Alfresco.";
-"multiselect.delete.partial.message" = "%@ ficheros eliminados de Alfresco. No se han podido eliminar algunos ficheros";
-"multiselect.delete.failure.message" = "No se ha podido eliminar de Alfresco ninguno de los ficheros.";
+"multiselect.delete.completed.message" = "%@ ficheros eliminados.";
+"multiselect.delete.partial.message" = "%@ ficheros eliminados. No se han podido eliminar algunos ficheros";
+"multiselect.delete.failure.message" = "No se ha podido eliminar ninguno de los ficheros.";
 
 /**
  * Node Picker
@@ -368,7 +368,7 @@
  * About View Controller
  */
 "about.title" = "Acerca de";
-"about.content" = "Alfresco es la plataforma de código abierto para la colaboración y gestión de contenido crítico para la empresa. Alfresco Mobile ha sido diseñado y desarrollado por Alfresco Software Inc. y se conecta a Alfresco Content Services Cloud, Alfresco Content Services y Alfresco Community Edition (versiones 3.4.8 y superiores) para ofrecer acceso seguro a los ficheros corporativos desde cualquier lugar. Esta aplicación móvil se conecta al repositorios de Alfresco utilizando las credenciales de inicio de sesión de Alfresco (a través de HTTP o HTTPS) y gestiona el acceso en función de sus permisos.";
+"about.content" = "Alfresco Content Services es la plataforma abierta para la gestión de contenido empresarial crítico y la colaboración.\n\nLa aplicación móvil Alfresco Content Services ha sido diseñada y desarrollada por Alfresco Software, Inc. y se conecta a los servidores de Alfresco Content Services in the Cloud, Alfresco Content Services y Alfresco Community Edition (3.4.8 y posteriores) para ofrecerle acceso seguro a los ficheros corporativos cuando no está en la oficina. Esta aplicación móvil se conecta empleando sus credenciales de inicio de sesión de Alfresco Content Services (sobre HTTP o HTTPS) y gestiona el acceso en base a sus permisos.";
 "about.version.number" = "Versión: %@ (%@)";
 "about.build.date.time" = "Fecha de creación: %s %s";
 
@@ -403,7 +403,7 @@
 "upload.audio.cell.button.play" = "Reproducir";
 "upload.audio.cell.button.stop" = "Detener";
 "upload.audio.setting.disabled.title" = "Permisos";
-"upload.audio.setting.disabled.message" = "Alfresco no tiene permiso para usar el micrófono\n\nPuede cambiar esto en su dispositivo en Ajustes > Privacidad > Micrófono.";
+"upload.audio.setting.disabled.message" = "Esta aplicación no tiene permiso para usar el micrófono.\n\nPuede cambiar esto en su dispositivo en Configuración > Privacidad > Micrófono.";
 // confirmation
 "upload.confirm.dismissal.title" = "Contenido sin guardar";
 "upload.confirm.dismissal.message" = "¿Desea cargar este contenido? Si no lo carga ahora, perderá su contenido.";
@@ -484,7 +484,7 @@
  * Help
  */
 "help.title" = "Ayuda";
-"help.no.internet.message" = "No puede acceder a la ayuda de Alfresco Mobile porque está sin conexión.\n\nVuelva a intentarlo cuando esté conectado.";
+"help.no.internet.message" = "No puede acceder a la ayuda porque está sin conexión.\n\nVuelva a intentarlo cuando esté conectado.";
 
 /**
  * Metadata View Controller
@@ -549,7 +549,7 @@
 "version.history.empty" = "Ningún historial de versiones";
 "version.history.version.cell.text" = "Versión: %@";
 "version.history.last.modified.cell.text" = "Última modificación: %@";
-"version.history.last.modified.by.cell.text" = "Última modificación realizada por: %@";
+"version.history.last.modified.by.cell.text" = "Última modificación por parte de: %@";
 "version.history.comment.cell.text" = "Comentario: %@";
 "version.history.current.version.cell.text" = "Versión actual: %@";
 "version.history.download.latest.text" = "Descargar la última versión";
@@ -568,7 +568,7 @@
 "document.edit.button.discard" = "Descartar cambios";
 "document.edit.button.save" = "Guardar";
 "document.edit.failed.title" = "Guardar fichero";
-"document.edit.savefailed.message" = "No se ha podido guardar el fichero en Alfresco. ¿Desea guardar el fichero en sus ficheros locales?";
+"document.edit.savefailed.message" = "No se ha podido guardar el fichero. ¿Desea guardar el fichero en sus ficheros locales?";
 "document.edit.dismiss.confirmation.message" = "Si no guarda este los cambios, no se guardará el trabajo.";
 "document.edit.discard" = "Descartar";
 "document.edit.continue.editing" = "Continuar editando";
@@ -676,27 +676,27 @@
 "settings.sync.on.cellular" = "Usar datos para sincronización";
 "settings.sync.on.cellular.description" = "Desconecte la sincronización para sincronizar el contenido sólo cuando disponga de una conexión Wi-Fi.";
 "settings.send.diagnostics" = "Enviar diagnósticos";
-"settings.send.diagnostics.description" = "Para ayudarnos a mejorar Alfresco Mobile, recogemos datos de diagnóstico técnicos de forma anónima. Puede desactivar esta opción si lo prefiere.";
+"settings.send.diagnostics.description" = "Para ayudarnos a mejorar esta aplicación, recogemos datos de diagnóstico técnicos de forma anónima. Anule la selección si lo prefiere.";
 "settings.security.title" = "Seguridad";
 "settings.security.file.protection" = "Protección de ficheros";
 "settings.security.file.protection.description" = "Los ficheros cifrados se almacenan en este dispositivo al bloquearlo.";
 "settings.security.passcode.lock" = "Bloqueo con código";
 "settings.security.passcode.lock.description" = "Los datos de su cuenta, ficheros sincronizados y ficheros locales se borrarán después de %d intentos fallidos al introducir el código.";
-"settings.security.passcode.lock.title" = "Clave";
+"settings.security.passcode.lock.title" = "Código";
 "settings.security.passcode.touch.id" = "Touch ID";
-"settings.security.passcode.touch.id.description" = "Permita que su huella digital desbloquee la aplicación Alfresco.";
+"settings.security.passcode.touch.id.description" = "Permita que su huella digital desbloquee la aplicación Alfresco Content Services.";
 "settings.security.passcode.change" = "Cambiar código";
 "settings.security.passcode.turn.on" = "Activar código";
 "settings.security.passcode.turn.off" = "Desactivar código";
 "settings.security.passcode.set.title" = "Establecer código";
 "settings.security.passcode.enter.title" = "Introducir código";
-"settings.security.passcode.enter" = "Introduzca su código de Alfresco";
-"settings.security.passcode.re-enter" = "Vuelva a introducir su código de Alfresco";
+"settings.security.passcode.enter" = "Introduzca su código";
+"settings.security.passcode.re-enter" = "Vuelva a introducir su código";
 "settings.security.passcode.missmatch" = "Los códigos no coinciden. Vuelva a intentarlo.";
-"settings.security.passcode.enter.new" = "Introduzca su nuevo código de Alfresco";
-"settings.security.passcode.enter.old" = "Introduzca su antiguo código de Alfresco";
+"settings.security.passcode.enter.new" = "Introduzca su nuevo código";
+"settings.security.passcode.enter.old" = "Vuelva a introducir su nuevo código";
 "settings.security.passcode.re-enter.new" = "Vuelva a introducir su nuevo código";
-"settings.security.passcode.attempts.1" = "Queda 1 intento. Si este intento es fallido, Alfresco Mobile se reiniciará y los datos de su cuenta, ficheros sincronizados y ficheros locales se borrarán.";
+"settings.security.passcode.attempts.1" = "Queda 1 intento. Si este intento es fallido, Alfresco Content Services se reiniciará y los datos de su cuenta, ficheros sincronizados y ficheros locales se borrarán.";
 "settings.security.passcode.attempts.several" = "Quedan %d intentos";
 "settings.reset.title" = "Borrar datos";
 "settings.reset.accounts" = "Borrar cuentas";
@@ -706,7 +706,7 @@
 "settings.reset.entire.app.confirmation.title" = "¿Borrar cuentas, caché y descargas?";
 "settings.reset.entire.app.confirmation.message" = "¿Está seguro de que desea eliminar todas las cuentas, datos en caché y descargas?\n\nNo podrá deshacer esta acción.";
 "settings.reset.confirmation.title" = "Borrar datos";
-"settings.reset.confirmation.message" = "Reinicie Alfresco para finalizar.\n\nPara reiniciar, pulse el botón Inicio de su dispositivo dos veces para ver las aplicaciones que se están ejecutando. Deslice Alfresco desde la parte superior de la pantalla para eliminarlo. Ahora puede volver a usar Alfresco.";
+"settings.reset.confirmation.message" = "Reinicie esta aplicación para finalizar.\n\nPara reiniciar, pulse el botón Inicio de su dispositivo dos veces para ver las aplicaciones que se están ejecutando. Deslice Alfresco desde la parte superior de la pantalla para eliminarlo. Ahora puede volver a usar Alfresco.";
 "settings.reset.description" = "Al borrar las cuentas se eliminarán todas las cuentas de la aplicación. Al borrar las cuentas, la caché y las descargas se restablecerá la aplicación en una instalación nueva.";
 "settings.full.text.search" = "Buscar texto completo";
 "settings.full.text.search.description" = "Active la búsqueda de texto completo para buscar ficheros Y su contenido.";
@@ -727,7 +727,7 @@
 "action.like" = "Me gusta";
 "action.unlike" = "Ya no me gusta";
 "action.favourite" = "Favorito";
-"action.unfavourite" = "No favorito";
+"action.unfavourite" = "Quitar";
 "action.comment" = "Comentario";
 "action.download" = "Descargar";
 "action.print" = "Imprimir";
@@ -761,7 +761,7 @@
 "action.disablesync.message" = "Esto desactivará la funcionalidad de la sincronización y eliminará todo contenido sincronizado.";
 "action.disablesync.confirm" = "Desactivar sincronización";
 "action.pendingoperations.title" = "Sincronizaciones incompletas";
-"action.pendingoperations.message" = "Algunos ficheros están todavía sincronizándose con Alfresco. Si desactiva la sincronización ahora, estos no se completarán.";
+"action.pendingoperations.message" = "Algunos ficheros están todavía sincronizándose. Si desactiva la sincronización ahora, estos no se completarán.";
 "action.pendingoperations.cancel" = "Continuar sincronizando";
 "action.pendingoperations.confirm" = "Desactivar sincronización";
 
@@ -772,7 +772,7 @@
 "saveback.hud.message" = "Guardando...";
 "saveback.saved.successfully.message" = "Fichero %@ guardado correctamente.";
 "saveback.completed.title" = "Volver a guardar completado";
-"saveback.completed.message" = "%@ se ha vuelto a guardar correctamente en Alfresco";
+"saveback.completed.message" = "%@ se ha vuelto a guardar correctamente";
 "saveback.failed.title" = "Error al volver a guardar";
 "saveback.failed.message" = "%@ guardado en ficheros locales";
 // Location Picker
@@ -810,7 +810,7 @@
 "fileprotection.unavailable.message" = "La protección de ficheros ya no está disponible";
 "fileprotection.protecting.message" = "Protegiendo ficheros locales...";
 "fileprotection.unprotecting.message" = "Desprotegiendo ficheros locales...";
-"alfresco-one-features.title" = "Funciones de Alfresco One";
+"alfresco-one-features.title" = "Características de Alfresco Content Services";
 "alfresco-one-features.message" = "La protección de ficheros y la seguridad con código ya no están disponibles";
 
 /**
@@ -829,7 +829,7 @@
  */
 // Profiles
 "profile.default.title" = "Predeterminado";
-"profile.default.summary" = "Valores predeterminados de Alfresco Mobile";
+"profile.default.summary" = "Valores predeterminados de Content Services";
 // Views
 "view-activities-default" = "Actividades";
 "view-repository-default" = "Repositorio";
@@ -892,8 +892,8 @@
  */
 "connectiondiagnostic.event.reachability" = "Comprobando la conexión de red";
 "connectiondiagnostic.event.serverversion" = "Comprobando la conexión del servidor";
-"connectiondiagnostic.event.repositoriesavailable" = "Autenticando con Alfresco";
-"connectiondiagnostic.event.connectrepository" = "Conectando a Alfresco";
+"connectiondiagnostic.event.repositoriesavailable" = "Autenticando...";
+"connectiondiagnostic.event.connectrepository" = "Conectando...";
 "connectiondiagnostic.event.retrieverootfolder" = "Comprobando la conexión del repositorio";
 "connectiondiagnostic.button.retrywithdiagnostic" = "Reintentar con diagnóstico";
 "connectiondiagnostic.title" = "Diagnóstico de la conexión";
