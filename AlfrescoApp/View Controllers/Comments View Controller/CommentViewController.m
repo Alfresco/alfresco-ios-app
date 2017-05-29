@@ -67,6 +67,8 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 {
     [super viewDidLoad];
     
+    [self setAccessibilityIdentifiers];
+    
     self.title = NSLocalizedString(@"comments.title", @"Comments");
     self.tableView.emptyMessage = NSLocalizedString(@"comments.empty", @"No Comments");
     
@@ -114,6 +116,14 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 }
 
 #pragma mark - Private Functions
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kCommentVCViewIdentifier;
+    self.postCommentButton.accessibilityIdentifier = kCommentVCPostButtonIdentifier;
+    self.tableView.accessibilityIdentifier = kCommentVCTableViewIdentifier;
+    self.addCommentTextView.accessibilityIdentifier = kCommentVCTextviewIdentifier;
+}
 
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
 {

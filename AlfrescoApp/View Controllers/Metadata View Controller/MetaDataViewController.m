@@ -52,6 +52,7 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
 {
     [super viewDidLoad];
     
+    [self setAccessibilityIdentifiers];
     self.allowsPullToRefresh = NO;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.title = self.node.name;
@@ -109,6 +110,11 @@ static NSString * kCMISVersionLabel = @"cmis:versionLabel";
             [weakSelf.tableView reloadData];
         }
     }];
+}
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kMetadataVCViewIdentifier;
 }
 
 #pragma mark - Table view data source

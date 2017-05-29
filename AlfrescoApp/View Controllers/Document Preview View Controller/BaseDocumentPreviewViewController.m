@@ -47,6 +47,12 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [self setAccessibilityIdentifiers];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -100,6 +106,12 @@
 - (void) shouldFocusComments:(BOOL)shouldFocusComments
 {
     AlfrescoLogError(@"You need to implement %@", _cmd);
+}
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kBaseDocumentPreviewVCViewIdentifier;
+    self.pagingSegmentControl.accessibilityIdentifier = kBaseDocumentPreviewVCSegmentedControlIdentifier;
 }
 
 #pragma mark - ActionCollectionViewDelegate Functions

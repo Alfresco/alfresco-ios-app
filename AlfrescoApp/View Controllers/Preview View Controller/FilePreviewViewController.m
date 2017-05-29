@@ -114,6 +114,7 @@ static CGFloat sDownloadProgressHeight;
 {
     [super viewDidLoad];
     
+    [self setAccessibilityIdentifiers];
     sDownloadProgressHeight = self.heightForDownloadContainer.constant;
     
     [self refreshViewController];
@@ -418,6 +419,11 @@ static CGFloat sDownloadProgressHeight;
 - (void)sessionRefreshed:(NSNotification *)notification
 {
     self.session = notification.object;
+}
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kFilePreviewVCViewIdentifier;
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks

@@ -79,6 +79,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 {
     [super viewDidLoad];
     
+    [self setAccessibilityIdentifiers];
     self.automaticallyAdjustsScrollViewInsets = NO;
     
     [self actionViewHeightFromPreferredLanguage];
@@ -106,6 +107,12 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 }
 
 #pragma mark - Private Functions
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kBaseDocumentPreviewVCViewIdentifier;
+    self.segmentControl.accessibilityIdentifier = kBaseDocumentPreviewVCSegmentedControlIdentifier;
+}
 
 - (void)showHUD
 {
