@@ -51,6 +51,7 @@ NSString * const kActionCollectionIdentifierUnsync = @"ActionCollectionIdentifie
 @property (nonatomic, strong, readwrite) UIImage *itemImageHighlightedImage;
 @property (nonatomic, strong, readwrite) UIColor *itemTitleHighlightedColor;
 @property (nonatomic, strong, readwrite) NSString *accessibilityIdentifier;
+@property (nonatomic, strong) NSDictionary *accessibilityIdentifiersDictionary;
 @end
 
 @implementation ActionCollectionItem
@@ -161,8 +162,11 @@ NSString * const kActionCollectionIdentifierUnsync = @"ActionCollectionIdentifie
         self.itemTitle = itemTitle;
         self.itemImageHighlightedImage = [self highlightedImageFromImage:itemImage];
         self.itemTitleHighlightedColor = [UIColor documentActionsHighlightColor];
-        self.accessibilityIdentifier = [self setAccessibilityIdentifiersForItemIdentifier:itemIdentifier];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleUpdateNotification:) name:kActionCollectionItemUpdateNotification object:nil];
+        
+        self.accessibilityIdentifiersDictionary = @{kActionCollectionIdentifierEmail:kActionCollectionItemEmailButton, kActionCollectionIdentifierEmailAsLink:kActionCollectionItemEmailAsLinkButton,kActionCollectionIdentifierOpenIn:kActionCollectionItemOpenInButton, kActionCollectionIdentifierLike:kActionCollectionItemLikeButton,kActionCollectionIdentifierUnlike:kActionCollectionItemUnlikeButton, kActionCollectionIdentifierFavourite:kActionCollectionItemFavouriteButton, kActionCollectionIdentifierUnfavourite:kActionCollectionItemUnfavouriteButton, kActionCollectionIdentifierComment:kActionCollectionItemCommentButton, kActionCollectionIdentifierEdit:kActionCollectionItemEditButton, kActionCollectionIdentifierDownload:kActionCollectionItemDownloadButton, kActionCollectionIdentifierPrint:kActionCollectionItemPrintButton, kActionCollectionIdentifierDelete:kActionCollectionItemDeleteButton, kActionCollectionIdentifierRename:kActionCollectionItemRenameButton, kActionCollectionIdentifierUploadDocument:kActionCollectionItemUploadButton, kActionCollectionIdentifierSendForReview:kActionCollectionItemSendForReviewButton, kActionCollectionIdentifierCreateSubfolder:kActionCollectionItemSubFolderButton, kActionCollectionIdentifierUploadNewVersion:kActionCollectionItemUploadNewVersionButton, kActionCollectionIdentifierSync:kActionCollectionItemSyncButton, kActionCollectionIdentifierUnsync:kActionCollectionItemUnsyncButton};
+        
+        self.accessibilityIdentifier = self.accessibilityIdentifiersDictionary[itemIdentifier];
     }
     return self;
 }
@@ -173,90 +177,6 @@ NSString * const kActionCollectionIdentifierUnsync = @"ActionCollectionIdentifie
 }
 
 #pragma mark - Private Methods
-
-- (NSString *)setAccessibilityIdentifiersForItemIdentifier:(NSString *)itemIdentifier
-{
-    NSString *returnIdentifier = nil;
-    
-    if([itemIdentifier isEqualToString:kActionCollectionIdentifierEmail])
-    {
-        returnIdentifier = kActionCollectionItemEmailButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierEmailAsLink])
-    {
-        returnIdentifier = kActionCollectionItemEmailAsLinkButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierOpenIn])
-    {
-        returnIdentifier = kActionCollectionItemOpenInButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierLike])
-    {
-        returnIdentifier = kActionCollectionItemLikeButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierUnlike])
-    {
-        returnIdentifier = kActionCollectionItemUnlikeButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierFavourite])
-    {
-        returnIdentifier = kActionCollectionItemFavouriteButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierUnfavourite])
-    {
-        returnIdentifier = kActionCollectionItemUnfavouriteButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierComment])
-    {
-        returnIdentifier = kActionCollectionItemCommentButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierEdit])
-    {
-        returnIdentifier = kActionCollectionItemEditButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierDownload])
-    {
-        returnIdentifier = kActionCollectionItemDownloadButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierPrint])
-    {
-        returnIdentifier = kActionCollectionItemPrintButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierDelete])
-    {
-        returnIdentifier = kActionCollectionItemDeleteButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierRename])
-    {
-        returnIdentifier = kActionCollectionItemRenameButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierUploadDocument])
-    {
-        returnIdentifier = kActionCollectionItemUploadButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierSendForReview])
-    {
-        returnIdentifier = kActionCollectionItemSendForReviewButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierCreateSubfolder])
-    {
-        returnIdentifier = kActionCollectionItemSubFolderButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierUploadNewVersion])
-    {
-        returnIdentifier = kActionCollectionItemUploadNewVersionButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierSync])
-    {
-        returnIdentifier = kActionCollectionItemSyncButton;
-    }
-    else if ([itemIdentifier isEqualToString:kActionCollectionIdentifierUnsync])
-    {
-        returnIdentifier = kActionCollectionItemUnsyncButton;
-    }
-    
-    return returnIdentifier;
-}
 
 - (void)handleUpdateNotification:(NSNotification *)notification
 {
@@ -278,6 +198,7 @@ NSString * const kActionCollectionIdentifierUnsync = @"ActionCollectionIdentifie
     self.itemImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     self.itemTitle = localisedTitle;
     self.itemImageHighlightedImage = [self highlightedImageFromImage:self.itemImage];
+    self.accessibilityIdentifier = self.accessibilityIdentifiersDictionary[identifer];
 }
 
 - (UIImage *)highlightedImageFromImage:(UIImage *)image
