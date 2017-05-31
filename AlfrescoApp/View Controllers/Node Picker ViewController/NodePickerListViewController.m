@@ -65,6 +65,8 @@ static NSInteger const kDefaultNumberOfRows = 1;
                                              selector:@selector(deselectAllSelectedNodes:)
                                                  name:kAlfrescoPickerDeselectAllNotification
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -99,6 +101,11 @@ static NSInteger const kDefaultNumberOfRows = 1;
 {
     [self.items removeAllObjects];
     [self.tableView reloadData];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 #pragma mark - Table view data source

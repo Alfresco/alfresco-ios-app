@@ -49,6 +49,10 @@
                                                  selector:@selector(sessionReceived:)
                                                      name:kAlfrescoSessionReceivedNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(sessionReceived:)
+                                                     name:kAlfrescoSessionRefreshedNotification
+                                                   object:nil];
     }
     return self;
 }

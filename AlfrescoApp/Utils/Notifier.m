@@ -47,6 +47,12 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccessDeniedNotification object:alfrescoError userInfo:nil];
             }
             break;
+             
+            case kAlfrescoErrorCodeAccessTokenExpired:
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoTokenExpiredNotification object:alfrescoError userInfo:nil];
+            }
+                break;
                 
             default:
                 break;

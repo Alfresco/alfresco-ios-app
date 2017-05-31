@@ -60,6 +60,7 @@
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoAccessDeniedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tokenExpired:) name:kAlfrescoTokenExpiredNotification object:nil];
     }
     return self;
 }
@@ -91,6 +92,10 @@
 
             [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
+                if(successful)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification object:session];
+                }
                 if (error && error.code != kAlfrescoErrorCodeNoNetworkConnection && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
                 {
                     [self displayLoginViewControllerWithAccount:account username:account.username];
@@ -102,6 +107,10 @@
         {
             [self authenticateCloudAccount:account networkId:networkId navigationController:nil completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                 [self hideHUD];
+                if(successful)
+                {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification object:session];
+                }
                 if (loginCompletionBlock)
                 {
                     loginCompletionBlock(successful, session, error);
@@ -462,6 +471,14 @@
                 self.completionBlockCalledFromLoginViewController = NO;
             }
         }];
+    }
+}
+
+- (void)tokenExpired:(NSNotification *)notification
+{
+    if([AccountManager sharedManager].selectedAccount)
+    {
+        [[LoginManager sharedManager] attemptLoginToAccount:[AccountManager sharedManager].selectedAccount networkId:[AccountManager sharedManager].selectedAccount.selectedNetworkId completionBlock:nil];
     }
 }
 

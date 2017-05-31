@@ -46,6 +46,10 @@
                                                  selector:@selector(connectivityChanged:)
                                                      name:kAlfrescoConnectivityChangedNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(sessionReceived:)
+                                                     name:kAlfrescoSessionRefreshedNotification
+                                                   object:nil];
     }
     return self;
 }

@@ -48,6 +48,8 @@ static NSInteger const kSearchResultsIndex = 0;
     {
         _session = session;
         _peoplePicker = peoplePicker;
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     }
     return self;
 }
@@ -122,6 +124,7 @@ static NSInteger const kSearchResultsIndex = 0;
 {
     _tableView.delegate = nil;
     _searchBar.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table view data source
@@ -257,6 +260,12 @@ static NSInteger const kSearchResultsIndex = 0;
         [selectedPeople addObject:selectedPerson];
     }
     [self.tableView reloadData];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+    self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
 }
 
 #pragma mark - Search Bar Delegates

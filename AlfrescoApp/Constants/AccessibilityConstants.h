@@ -46,3 +46,39 @@ extern NSString * const kNewAccountVCClientCetificateCellIdentifier;
 extern NSString * const kAccountVCViewIdentifier;
 extern NSString * const kAccountVCAddAccountButtonIdentifier;
 extern NSString * const KAccountVCTableViewIdentifier;
+
+extern NSString * const kBaseDocumentPreviewVCViewIdentifier;
+extern NSString * const kBaseDocumentPreviewVCSegmentedControlIdentifier;
+
+extern NSString * const kFilePreviewVCViewIdentifier;
+
+extern NSString * const kMetadataVCViewIdentifier;
+
+extern NSString * const kVersionHistoryVCViewIdentifier;
+
+extern NSString * const kMapVCViewIdentifier;
+
+extern NSString * const kCommentVCViewIdentifier;
+extern NSString * const kCommentVCPostButtonIdentifier;
+extern NSString * const kCommentVCTableViewIdentifier;
+extern NSString * const kCommentVCTextviewIdentifier;
+
+extern NSString * const kActionCollectionItemEmailButton;
+extern NSString * const kActionCollectionItemEmailAsLinkButton;
+extern NSString * const kActionCollectionItemOpenInButton;
+extern NSString * const kActionCollectionItemLikeButton;
+extern NSString * const kActionCollectionItemUnlikeButton;
+extern NSString * const kActionCollectionItemFavouriteButton;
+extern NSString * const kActionCollectionItemUnfavouriteButton;
+extern NSString * const kActionCollectionItemCommentButton;
+extern NSString * const kActionCollectionItemEditButton;
+extern NSString * const kActionCollectionItemDownloadButton;
+extern NSString * const kActionCollectionItemPrintButton;
+extern NSString * const kActionCollectionItemDeleteButton;
+extern NSString * const kActionCollectionItemRenameButton;
+extern NSString * const kActionCollectionItemUploadButton;
+extern NSString * const kActionCollectionItemSendForReviewButton;
+extern NSString * const kActionCollectionItemSubFolderButton;
+extern NSString * const kActionCollectionItemUploadNewVersionButton;
+extern NSString * const kActionCollectionItemSyncButton;
+extern NSString * const kActionCollectionItemUnsyncButton;

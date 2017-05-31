@@ -65,6 +65,8 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     self.navigationItem.rightBarButtonItem = saveBarButton;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+    
     [self loadData];
 }
 
@@ -75,7 +77,17 @@ static NSString * const kProfileCellIdentifier = @"ProfileCellIdentifier";
     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountEditActiveProfile];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Private Methods
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+}
 
 - (void)save
 {

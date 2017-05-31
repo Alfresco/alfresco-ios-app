@@ -46,6 +46,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     {
         _session = session;
         _nodePicker = nodePicker;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     }
     return self;
 }
@@ -70,6 +71,16 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     
     [self.nodePicker hideMultiSelectToolBar];
     self.navigationItem.hidesBackButton = YES;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 - (void)configureScopeView

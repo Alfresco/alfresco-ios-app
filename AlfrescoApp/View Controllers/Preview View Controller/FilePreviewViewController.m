@@ -78,6 +78,7 @@ static CGFloat sDownloadProgressHeight;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadProgress:) name:kDocumentPreviewManagerProgressNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileLocallyUpdated:) name:kAlfrescoSaveBackLocalComplete object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     }
     return self;
 }
@@ -113,6 +114,7 @@ static CGFloat sDownloadProgressHeight;
 {
     [super viewDidLoad];
     
+    [self setAccessibilityIdentifiers];
     sDownloadProgressHeight = self.heightForDownloadContainer.constant;
     
     [self refreshViewController];
@@ -412,6 +414,16 @@ static CGFloat sDownloadProgressHeight;
         [self destroyPreviewerAnimated:NO];
         [self createPreviewerForFilePath:filePathToDisplay animated:YES];
     }
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+}
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kFilePreviewVCViewIdentifier;
 }
 
 #pragma mark - DocumentPreviewManager Notification Callbacks

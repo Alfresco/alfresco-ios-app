@@ -54,7 +54,6 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
         self.permissions = permissions;
         self.delegate = delegate;
         [self createAlfrescoServicesWithSession:session];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
     }
     return self;
 }
@@ -67,6 +66,8 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setAccessibilityIdentifiers];
     
     self.title = NSLocalizedString(@"comments.title", @"Comments");
     self.tableView.emptyMessage = NSLocalizedString(@"comments.empty", @"No Comments");
@@ -115,6 +116,14 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 }
 
 #pragma mark - Private Functions
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kCommentVCViewIdentifier;
+    self.postCommentButton.accessibilityIdentifier = kCommentVCPostButtonIdentifier;
+    self.tableView.accessibilityIdentifier = kCommentVCTableViewIdentifier;
+    self.addCommentTextView.accessibilityIdentifier = kCommentVCTextviewIdentifier;
+}
 
 - (void)createAlfrescoServicesWithSession:(id<AlfrescoSession>)session
 {
