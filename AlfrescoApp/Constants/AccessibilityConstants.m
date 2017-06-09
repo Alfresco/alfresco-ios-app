@@ -101,3 +101,21 @@ NSString * const kUploadFormVCUploadButtonIdentifier = @"uploadForm_upload_butto
 NSString * const kUploadFormVCFilenameTextFieldIdentifier = @"uploadForm_filename_textfield";
 NSString * const kUploadFormVCRecordButtonIdentifier = @"uploadForm_record_button";
 NSString * const kUploadFormVCPlayButtonIdentifier = @"uploadForm_play_button";
+
+NSString * const kSitesCellFavoriteActionButtonIdentifier = @"sitesCell_favoriteAction_button";
+NSString * const kSitesCellMembershipActionButtonIdentifier = @"sitesCell_membershipAction_button";
+NSString * const kSitesCellMembersButtonIdentifiers = @"sitesCell_members_button";
+NSString * const kSitesCellDisclosureButtonIdentifier = @"sitesCell_disclosure_button";
+
+NSString * const kSitesVCViewIdentifier = @"sites_view";
+NSString * const kSitesVCSegmentedControlIdentifier = @"sites_segmentedControl";
+
+NSString * const kSitesTableListVCFavoriteSitesViewIdentifier = @"favoriteSites_view";
+NSString * const kSitesTableListVCMySitesViewIdentifier = @"mySites_view";
+NSString * const kSitesTableListVCAllSitesViewIdentifier = @"allSites_view";
+
+NSString * const kSearchVCSiteViewIdentifier = @"siteSearch_view";
+NSString * const kSearchVCLandingViewIdentifier = @"landingSearch_view";
+NSString * const kSearchVCFileViewIdentifier = @"fileSearch_view";
+NSString * const kSearchVCUserViewIdentifier = @"userSearch_view";
+NSString * const kSearchVCFolderViewIdentifier = @"folderSearch_view";

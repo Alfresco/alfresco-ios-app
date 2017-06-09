@@ -101,3 +101,21 @@ extern NSString * const kUploadFormVCUploadButtonIdentifier;
 extern NSString * const kUploadFormVCFilenameTextFieldIdentifier;
 extern NSString * const kUploadFormVCRecordButtonIdentifier;
 extern NSString * const kUploadFormVCPlayButtonIdentifier;
+
+extern NSString * const kSitesCellFavoriteActionButtonIdentifier;
+extern NSString * const kSitesCellMembershipActionButtonIdentifier;
+extern NSString * const kSitesCellMembersButtonIdentifiers;
+extern NSString * const kSitesCellDisclosureButtonIdentifier;
+
+extern NSString * const kSitesVCViewIdentifier;
+extern NSString * const kSitesVCSegmentedControlIdentifier;
+
+extern NSString * const kSitesTableListVCFavoriteSitesViewIdentifier;
+extern NSString * const kSitesTableListVCMySitesViewIdentifier;
+extern NSString * const kSitesTableListVCAllSitesViewIdentifier;
+
+extern NSString * const kSearchVCSiteViewIdentifier;
+extern NSString * const kSearchVCLandingViewIdentifier;
+extern NSString * const kSearchVCFileViewIdentifier;
+extern NSString * const kSearchVCUserViewIdentifier;
+extern NSString * const kSearchVCFolderViewIdentifier;
