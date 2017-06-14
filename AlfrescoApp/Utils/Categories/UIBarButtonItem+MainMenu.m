@@ -22,8 +22,8 @@
 
 + (UIBarButtonItem *)setupMainMenuButtonOnViewController:(UIViewController *)controller withHandler:(SEL)handler
 {
-    UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:controller action:handler];
-    hamburgerButtom.accessibilityIdentifier = kMainMenuBarButtonItemIdentifier;
+    UIBarButtonItem *hamburgerButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:controller action:handler];
+    hamburgerButton.accessibilityIdentifier = kMainMenuBarButtonItemIdentifier;
     if(![controller isKindOfClass:[UINavigationController class]])
     {
         if (controller.navigationController.viewControllers.firstObject == controller)
@@ -31,7 +31,7 @@
             controller.navigationItem.leftBarButtonItem = hamburgerButtom;
         }
     }
-    return hamburgerButtom;
+    return hamburgerButton;
 }
 
 @end
