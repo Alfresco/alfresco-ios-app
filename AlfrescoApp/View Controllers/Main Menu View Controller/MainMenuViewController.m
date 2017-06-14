@@ -103,6 +103,7 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     {
         self.tableView.backgroundColor = self.backgroundColour;
     }
+    [self setAccessibilityIdentifiers];
 }
 
 #pragma mark - Custom Getters and Setters
@@ -114,6 +115,12 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 }
 
 #pragma mark - Private Methods
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kMainMenuVCViewIdentifier;
+    self.tableView.accessibilityIdentifier = kMainMenuVCTableViewIdentifier;
+}
 
 - (MainMenuGroup *)groupForGroupType:(MainMenuGroupType)groupType
 {
@@ -393,6 +400,13 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     [currentGroup clearGroup];
 }
 
+- (void) cleanSelection
+{
+    NSIndexPath *currentlySelected = self.tableView.indexPathForSelectedRow;
+    [self.tableView deselectRowAtIndexPath:currentlySelected animated:NO];
+    [self tableView:self.tableView didDeselectRowAtIndexPath:currentlySelected];
+}
+
 #pragma mark - UITableViewDataSourceDelegate Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -433,6 +447,11 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     else
     {
         cell.itemImageView.layer.cornerRadius = 0;
+    }
+    
+    if(item.accessibilityIdentifier)
+    {
+        cell.accessibilityIdentifier = item.accessibilityIdentifier;
     }
     
     return cell;
@@ -514,14 +533,6 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     }
     
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-}
-
-#pragma mark - Public methods
-- (void) cleanSelection
-{
-    NSIndexPath *currentlySelected = self.tableView.indexPathForSelectedRow;
-    [self.tableView deselectRowAtIndexPath:currentlySelected animated:NO];
-    [self tableView:self.tableView didDeselectRowAtIndexPath:currentlySelected];
 }
 
 @end

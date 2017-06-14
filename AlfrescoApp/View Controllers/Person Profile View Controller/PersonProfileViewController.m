@@ -26,6 +26,7 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <CoreTelephony/CTCarrier.h>
 #import "ThumbnailImageView.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 static CGFloat const kFadeSpeed = 0.3f;
 
@@ -129,11 +130,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
     
     if (!IS_IPAD && !self.presentingViewController)
     {
-        UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-        if (self.navigationController.viewControllers.firstObject == self)
-        {
-            self.navigationItem.leftBarButtonItem = hamburgerButtom;
-        }
+        [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandRootRevealController)];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];

@@ -22,6 +22,7 @@
 #import "SearchViewController.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 
@@ -195,11 +196,7 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     
     if (!IS_IPAD && !self.presentingViewController)
     {
-        UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-        if (self.navigationController.viewControllers.firstObject == self)
-        {
-            self.navigationItem.leftBarButtonItem = hamburgerButtom;
-        }
+        [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandRootRevealController)];
     }
 }
 

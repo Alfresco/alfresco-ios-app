@@ -119,3 +119,22 @@ extern NSString * const kSearchVCLandingViewIdentifier;
 extern NSString * const kSearchVCFileViewIdentifier;
 extern NSString * const kSearchVCUserViewIdentifier;
 extern NSString * const kSearchVCFolderViewIdentifier;
+
+extern NSString * const kMainMenuVCViewIdentifier;
+extern NSString * const kMainMenuVCTableViewIdentifier;
+
+extern NSString * const kMainMenuBarButtonItemIdentifier;
+
+extern NSString * const kMenuItemAccountsCellIdentifier;
+extern NSString * const kMenuItemSettingsCellIdentifier;
+extern NSString * const kMenuItemLocalFilesCellIdentifier;
+extern NSString * const kMenuItemHelpCellIdentifier;
+extern NSString * const kMenuItemActivitiesCellIdentifier;
+extern NSString * const kMenuItemRepositoryCellIdentifier;
+extern NSString * const kMenuItemSitesCellIdentifier;
+extern NSString * const kMenuItemFavoritesCellIdentifier;
+extern NSString * const kMenuItemSyncedContentCellIdentifier;
+extern NSString * const kMenuItemSearchCellIdentifier;
+extern NSString * const kMenuItemMyFilesCellIdentifier;
+extern NSString * const kMenuItemSharedFilesCellIdentifier;
+extern NSString * const kMenuItemTasksCellIdentifier;
