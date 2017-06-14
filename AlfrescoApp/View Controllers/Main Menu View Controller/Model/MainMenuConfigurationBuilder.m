@@ -82,7 +82,8 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                                                             title:NSLocalizedString(@"accounts.title", @"Accounts")
                                                             image:[[UIImage imageNamed:@"mainmenu-alfresco.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                       description:nil
-                                                  displayType:MainMenuDisplayTypeMaster
+                                                      displayType:MainMenuDisplayTypeMaster
+                                          accessibilityIdentifier:kMenuItemAccountsCellIdentifier
                                                  associatedObject:accountsNavigationController];
     
     // Create the accounts section
@@ -169,6 +170,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                                                             image:[[UIImage imageNamed:@"mainmenu-settings.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                       description:nil
                                                       displayType:MainMenuDisplayTypeModal
+                                          accessibilityIdentifier:kMenuItemSettingsCellIdentifier
                                                  associatedObject:settingNavigationController];
     
     // Help Menu Item
@@ -184,6 +186,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                                                         image:[[UIImage imageNamed:@"mainmenu-help.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                   description:nil
                                                   displayType:MainMenuDisplayTypeModal
+                                      accessibilityIdentifier:kMenuItemHelpCellIdentifier
                                              associatedObject:helpNavigationController];
     
     // Create the section
@@ -247,6 +250,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
                                                                             image:[[UIImage imageNamed:bundledIconName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]
                                                                       description:nil
                                                                       displayType:[self displayTypeForAlfrescoViewConfig:subItem]
+                                                          accessibilityIdentifier:[self accessibilityIdentifierForAlfrescoViewConfig:subItem]
                                                                  associatedObject:associatedObject];
                     [section addMainMenuItem:item];
                 }
@@ -570,6 +574,66 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     }
     
     return bundledIconName;
+}
+
+- (NSString *)accessibilityIdentifierForAlfrescoViewConfig:(AlfrescoViewConfig *)viewConfig
+{
+    NSString *identifier;
+    if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeActivities])
+    {
+        // Activities
+        identifier = kMenuItemActivitiesCellIdentifier;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeRepository])
+    {
+        // File Folder
+        NSArray *parameterKeys = viewConfig.parameters.allKeys;
+        if ([parameterKeys containsObject:kAlfrescoConfigViewParameterFolderTypeKey])
+        {
+            NSString *folderTypeId = viewConfig.parameters[kAlfrescoConfigViewParameterFolderTypeKey];
+            
+            if ([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeMyFiles])
+            {
+                identifier = kMenuItemMyFilesCellIdentifier;
+            }
+            else if ([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeShared])
+            {
+                identifier = kMenuItemSharedFilesCellIdentifier;
+            }
+        }
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSiteBrowser])
+    {
+        // Sites
+        identifier = kMenuItemSitesCellIdentifier;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeTasks])
+    {
+        // Tasks
+        identifier = kMenuItemTasksCellIdentifier;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeFavourites])
+    {
+        // Favorites
+        identifier = kMenuItemFavoritesCellIdentifier;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSync])
+    {
+        // Sync
+        identifier = kMenuItemSyncedContentCellIdentifier;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeLocal])
+    {
+        // Local
+        identifier = kMenuItemLocalFilesCellIdentifier;
+    }
+    else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSearch])
+    {
+        // Search
+        identifier = kMenuItemSearchCellIdentifier;
+    }
+    
+    return identifier;
 }
 
 @end

@@ -42,8 +42,9 @@ typedef NS_ENUM (NSUInteger, MainMenuImageMask)
 @property (nonatomic, assign) MainMenuDisplayType displayType;
 @property (nonatomic, assign) MainMenuImageMask imageMask;
 @property (nonatomic, strong) id associatedObject;
+@property (nonatomic, strong) NSString *accessibilityIdentifier;
 
-+ (instancetype)itemWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType associatedObject:(id)associatedObject;
-- (instancetype)initWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType associatedObject:(id)associatedObject;
++ (instancetype)itemWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType accessibilityIdentifier:(NSString *)accessibilityIdentifier associatedObject:(id)associatedObject;
+- (instancetype)initWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType accessibilityIdentifier:(NSString *)accessibilityIdentifier associatedObject:(id)associatedObject;
 
 @end

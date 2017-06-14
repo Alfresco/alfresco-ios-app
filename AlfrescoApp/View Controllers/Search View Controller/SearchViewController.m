@@ -28,6 +28,7 @@
 #import "PreferenceManager.h"
 #import "UISearchBar+Paste.h"
 #import "SearchResultsTableViewDataSource.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
 static CGFloat const kCellHeightSearchScope = 64.0f;
@@ -73,11 +74,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     
     if (!IS_IPAD && !self.presentingViewController)
     {
-        UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-        if (self.navigationController.viewControllers.firstObject == self)
-        {
-            self.navigationItem.leftBarButtonItem = hamburgerButtom;
-        }
+        [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandRootRevealController)];
     }
     
     [self setAccessibilityIdentifiers];

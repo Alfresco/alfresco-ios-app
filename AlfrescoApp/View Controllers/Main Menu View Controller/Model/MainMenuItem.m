@@ -24,12 +24,12 @@
 
 @implementation MainMenuItem
 
-+ (instancetype)itemWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType associatedObject:(id)associatedObject;
++ (instancetype)itemWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType accessibilityIdentifier:(NSString *)accessibilityIdentifier associatedObject:(id)associatedObject;
 {
-    return [[MainMenuItem alloc] initWithIdentifier:identifier title:title image:image description:description displayType:displayType associatedObject:associatedObject];
+    return [[MainMenuItem alloc] initWithIdentifier:identifier title:title image:image description:description displayType:displayType accessibilityIdentifier:accessibilityIdentifier associatedObject:associatedObject];
 }
 
-- (instancetype)initWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType associatedObject:(id)associatedObject
+- (instancetype)initWithIdentifier:(NSString *)identifier title:(NSString *)title image:(UIImage *)image description:(NSString *)description displayType:(MainMenuDisplayType)displayType accessibilityIdentifier:(NSString *)accessibilityIdentifier associatedObject:(id)associatedObject
 {
     self = [self init];
     if (self)
@@ -42,6 +42,7 @@
         self.imageMask = MainMenuImageMaskNone;
         self.associatedObject = associatedObject;
         self.hidden = NO;
+        self.accessibilityIdentifier = accessibilityIdentifier;
     }
     return self;
 }

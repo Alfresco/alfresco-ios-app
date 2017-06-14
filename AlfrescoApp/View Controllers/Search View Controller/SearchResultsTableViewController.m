@@ -26,6 +26,7 @@
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
 #import "SearchResultsTableViewDataSource.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -396,11 +397,7 @@ static CGFloat const kCellHeight = 73.0f;
     {
         if (!IS_IPAD)
         {
-            UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-            if (self.navigationController.viewControllers.firstObject == self)
-            {
-                self.navigationItem.leftBarButtonItem = hamburgerButtom;
-            }
+            [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandRootRevealController)];
         }
         
         if ([self.tableView numberOfRowsInSection:0])

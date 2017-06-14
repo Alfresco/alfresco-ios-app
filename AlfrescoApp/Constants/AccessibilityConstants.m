@@ -119,3 +119,22 @@ NSString * const kSearchVCLandingViewIdentifier = @"landingSearch_view";
 NSString * const kSearchVCFileViewIdentifier = @"fileSearch_view";
 NSString * const kSearchVCUserViewIdentifier = @"userSearch_view";
 NSString * const kSearchVCFolderViewIdentifier = @"folderSearch_view";
+
+NSString * const kMainMenuVCViewIdentifier = @"mainMenu_view";
+NSString * const kMainMenuVCTableViewIdentifier = @"mainMenu_tableView";
+
+NSString * const kMainMenuBarButtonItemIdentifier = @"menu_button";
+
+NSString * const kMenuItemAccountsCellIdentifier = @"menuItem_accounts_cell";
+NSString * const kMenuItemSettingsCellIdentifier = @"menuItem_settings_cell";
+NSString * const kMenuItemLocalFilesCellIdentifier = @"menuItem_localFiles_cell";
+NSString * const kMenuItemHelpCellIdentifier = @"menuItem_help_cell";
+NSString * const kMenuItemActivitiesCellIdentifier = @"menuItem_activities_cell";
+NSString * const kMenuItemRepositoryCellIdentifier = @"menuItem_repository_cell";
+NSString * const kMenuItemSitesCellIdentifier = @"menuItem_sites_cell";
+NSString * const kMenuItemFavoritesCellIdentifier = @"menuItem_favorites_cell";
+NSString * const kMenuItemSyncedContentCellIdentifier = @"menuItem_syncedContent_cell";
+NSString * const kMenuItemSearchCellIdentifier = @"menuItem_search_cell";
+NSString * const kMenuItemMyFilesCellIdentifier = @"menuItem_myFiles_cell";
+NSString * const kMenuItemSharedFilesCellIdentifier = @"menuItem_sharedFiles_cell";
+NSString * const kMenuItemTasksCellIdentifier = @"menuItem_tasks_cell";
