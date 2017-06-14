@@ -189,6 +189,8 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
         [self.allSitesVC didMoveToParentViewController:self];
     }
     
+    [self setAccessibilityIdentifiers];
+    
     [self loadSitesForSelectedSegment:self.segmentedControl];
     
     if (!IS_IPAD && !self.presentingViewController)
@@ -214,6 +216,12 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 }
 
 #pragma mark - Private methods
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kSitesVCViewIdentifier;
+    self.segmentedControl.accessibilityIdentifier = kSitesVCSegmentedControlIdentifier;
+}
 
 - (SiteListTypeSelection)selectionTypeForFilter:(SitesListViewFilter)filter
 {

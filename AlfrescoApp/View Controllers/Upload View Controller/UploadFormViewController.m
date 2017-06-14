@@ -48,7 +48,6 @@ static NSString * const kAudioFileName = @"audio.m4a";
 @property (nonatomic, weak) UILabel *tagsLabel;
 @property (nonatomic, strong) NSArray *tagsToApplyToDocument;
 @property (nonatomic, weak) UITextField *activeTextField;
-@property (nonatomic, weak) UIBarButtonItem *uploadButton;
 @property (nonatomic, assign) UploadFormType uploadFormType;
 @property (nonatomic, strong) AVAudioRecorder *audioRecorder;
 @property (nonatomic, strong) AVAudioPlayer *audioPlayer;
@@ -56,6 +55,9 @@ static NSString * const kAudioFileName = @"audio.m4a";
 @property (nonatomic, strong) UIButton *playButton;
 @property (nonatomic, strong) NSDictionary *metadata;
 @property (nonatomic, strong) AlfrescoContentFile *contentFile;
+
+@property (nonatomic, strong) UIBarButtonItem *uploadButton;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
 
 @end
 
@@ -311,28 +313,29 @@ static NSString * const kAudioFileName = @"audio.m4a";
 	
     self.title = [self titleForUploadForm];
     
-    UIBarButtonItem *uploadButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Upload", @"Upload")
+    self.uploadButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Upload", @"Upload")
                                                                      style:UIBarButtonItemStyleDone
                                                                     target:self
                                                                     action:@selector(uploadDocument:)];
     
-    uploadButton.enabled = (self.documentURL.lastPathComponent.length > 0) ? YES : NO;
-    [self.navigationItem setRightBarButtonItem:uploadButton];
-    self.uploadButton = uploadButton;
+    self.uploadButton.enabled = (self.documentURL.lastPathComponent.length > 0) ? YES : NO;
+    [self.navigationItem setRightBarButtonItem:self.uploadButton];
     
     if (!self.contentFile)
     {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button")
+        self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", @"Cancel Button")
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
                                                                         action:@selector(closeUploadForm:)];
-        [self.navigationItem setLeftBarButtonItem:cancelButton];
+        [self.navigationItem setLeftBarButtonItem:self.cancelButton];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(textFieldDidChange:)
                                                  name:UITextFieldTextDidChangeNotification
                                                object:self.nameTextField];
+    
+    [self setAccessibilityIdentifiers];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -385,6 +388,19 @@ static NSString * const kAudioFileName = @"audio.m4a";
 }
 
 #pragma mark - Private Functions
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kUploadFormVCViewIdentifier;
+    if(self.cancelButton)
+    {
+        self.cancelButton.accessibilityIdentifier = kUploadFormVCCancelButtonIdentifier;
+    }
+    self.uploadButton.accessibilityIdentifier = kUploadFormVCUploadButtonIdentifier;
+    self.nameTextField.accessibilityIdentifier = kUploadFormVCFilenameTextFieldIdentifier;
+    self.recordButton.accessibilityIdentifier = kUploadFormVCRecordButtonIdentifier;
+    self.playButton.accessibilityIdentifier = kUploadFormVCPlayButtonIdentifier;
+}
 
 - (NSString *)titleForUploadForm
 {

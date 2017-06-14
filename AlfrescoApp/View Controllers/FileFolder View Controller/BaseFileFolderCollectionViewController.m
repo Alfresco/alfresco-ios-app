@@ -408,13 +408,17 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                                                                                action:@selector(performEditBarButtonItemAction:)];
     }
     
+    self.editButtonItem.accessibilityIdentifier = kBaseCollectionVCDotsBarButtonIdentifier;
+    
     [rightBarButtonItems addObject:self.editBarButtonItem];
     
     if (!self.isEditing && (self.dataSource.parentFolderPermissions.canAddChildren || self.dataSource.parentFolderPermissions.canEdit))
     {
-        [rightBarButtonItems addObject:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                     target:self
-                                                                                     action:@selector(displayActionSheet:event:)]];
+        UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                   target:self
+                                                                                   action:@selector(displayActionSheet:event:)];
+        addButton.accessibilityIdentifier = kBaseCollectionVCAddButtonIdentifier;
+        [rightBarButtonItems addObject:addButton];
     }
     [self.navigationItem setRightBarButtonItems:rightBarButtonItems animated:animated];
 }

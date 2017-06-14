@@ -63,22 +63,59 @@ extern NSString * const kCommentVCPostButtonIdentifier;
 extern NSString * const kCommentVCTableViewIdentifier;
 extern NSString * const kCommentVCTextviewIdentifier;
 
-extern NSString * const kActionCollectionItemEmailButton;
-extern NSString * const kActionCollectionItemEmailAsLinkButton;
-extern NSString * const kActionCollectionItemOpenInButton;
-extern NSString * const kActionCollectionItemLikeButton;
-extern NSString * const kActionCollectionItemUnlikeButton;
-extern NSString * const kActionCollectionItemFavouriteButton;
-extern NSString * const kActionCollectionItemUnfavouriteButton;
-extern NSString * const kActionCollectionItemCommentButton;
-extern NSString * const kActionCollectionItemEditButton;
-extern NSString * const kActionCollectionItemDownloadButton;
-extern NSString * const kActionCollectionItemPrintButton;
-extern NSString * const kActionCollectionItemDeleteButton;
-extern NSString * const kActionCollectionItemRenameButton;
-extern NSString * const kActionCollectionItemUploadButton;
-extern NSString * const kActionCollectionItemSendForReviewButton;
-extern NSString * const kActionCollectionItemSubFolderButton;
-extern NSString * const kActionCollectionItemUploadNewVersionButton;
-extern NSString * const kActionCollectionItemSyncButton;
-extern NSString * const kActionCollectionItemUnsyncButton;
+extern NSString * const kActionCollectionItemEmailButtonIdentifier;
+extern NSString * const kActionCollectionItemEmailAsLinkButtonIdentifier;
+extern NSString * const kActionCollectionItemOpenInButtonIdentifier;
+extern NSString * const kActionCollectionItemLikeButtonIdentifier;
+extern NSString * const kActionCollectionItemUnlikeButtonIdentifier;
+extern NSString * const kActionCollectionItemFavouriteButtonIdentifier;
+extern NSString * const kActionCollectionItemUnfavouriteButtonIdentifier;
+extern NSString * const kActionCollectionItemCommentButtonIdentifier;
+extern NSString * const kActionCollectionItemEditButtonIdentifier;
+extern NSString * const kActionCollectionItemDownloadButtonIdentifier;
+extern NSString * const kActionCollectionItemPrintButtonIdentifier;
+extern NSString * const kActionCollectionItemDeleteButtonIdentifier;
+extern NSString * const kActionCollectionItemRenameButtonIdentifier;
+extern NSString * const kActionCollectionItemUploadButtonIdentifier;
+extern NSString * const kActionCollectionItemSendForReviewButtonIdentifier;
+extern NSString * const kActionCollectionItemSubFolderButtonIdentifier;
+extern NSString * const kActionCollectionItemUploadNewVersionButtonIdentifier;
+extern NSString * const kActionCollectionItemSyncButtonIdentifier;
+extern NSString * const kActionCollectionItemUnsyncButtonIdentifier;
+
+extern NSString * const kBaseCollectionVCDotsBarButtonIdentifier;
+extern NSString * const kBaseCollectionVCMultiSelectDoneButtonIdentifier;
+extern NSString * const kBaseCollectionVCMultiSelectDeleteButtonIdentifier;
+extern NSString * const kBaseCollectionVCAddButtonIdentifier;
+
+extern NSString * const kCollectionViewCellDeleteButtonIdentifier;
+
+extern NSString * const kTextFileVCViewIdentifier;
+extern NSString * const kTextFileVCCancelButtonIdentifier;
+extern NSString * const kTextFileVCNextButtonIdentifier;
+extern NSString * const kTextFileVCContentTextViewIdentifier;
+
+extern NSString * const kUploadFormVCViewIdentifier;
+extern NSString * const kUploadFormVCCancelButtonIdentifier;
+extern NSString * const kUploadFormVCUploadButtonIdentifier;
+extern NSString * const kUploadFormVCFilenameTextFieldIdentifier;
+extern NSString * const kUploadFormVCRecordButtonIdentifier;
+extern NSString * const kUploadFormVCPlayButtonIdentifier;
+
+extern NSString * const kSitesCellFavoriteActionButtonIdentifier;
+extern NSString * const kSitesCellMembershipActionButtonIdentifier;
+extern NSString * const kSitesCellMembersButtonIdentifiers;
+extern NSString * const kSitesCellDisclosureButtonIdentifier;
+
+extern NSString * const kSitesVCViewIdentifier;
+extern NSString * const kSitesVCSegmentedControlIdentifier;
+
+extern NSString * const kSitesTableListVCFavoriteSitesViewIdentifier;
+extern NSString * const kSitesTableListVCMySitesViewIdentifier;
+extern NSString * const kSitesTableListVCAllSitesViewIdentifier;
+
+extern NSString * const kSearchVCSiteViewIdentifier;
+extern NSString * const kSearchVCLandingViewIdentifier;
+extern NSString * const kSearchVCFileViewIdentifier;
+extern NSString * const kSearchVCUserViewIdentifier;
+extern NSString * const kSearchVCFolderViewIdentifier;

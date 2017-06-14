@@ -63,22 +63,59 @@ NSString * const kCommentVCPostButtonIdentifier = @"comment_post_button";
 NSString * const kCommentVCTableViewIdentifier = @"comment_tableview";
 NSString * const kCommentVCTextviewIdentifier = @"comment_textview";
 
-NSString * const kActionCollectionItemEmailButton = @"actionItem_email_button";
-NSString * const kActionCollectionItemEmailAsLinkButton = @"actionItem_emailAsLink_button";
-NSString * const kActionCollectionItemOpenInButton = @"actionItem_openIn_button";
-NSString * const kActionCollectionItemLikeButton = @"actionItem_like_button";
-NSString * const kActionCollectionItemUnlikeButton = @"actionItem_unlike_button";
-NSString * const kActionCollectionItemFavouriteButton = @"actionItem_favourite_button";
-NSString * const kActionCollectionItemUnfavouriteButton = @"actionItem_unfavourite_button";
-NSString * const kActionCollectionItemCommentButton = @"actionItem_comment_button";
-NSString * const kActionCollectionItemEditButton = @"actionItem_edit_button";
-NSString * const kActionCollectionItemDownloadButton = @"actionItem_download_button";
-NSString * const kActionCollectionItemPrintButton = @"actionItem_print_button";
-NSString * const kActionCollectionItemDeleteButton = @"actionItem_delete_button";
-NSString * const kActionCollectionItemRenameButton = @"actionItem_rename_button";
-NSString * const kActionCollectionItemUploadButton = @"actionItem_upload_button";
-NSString * const kActionCollectionItemSendForReviewButton = @"actionItem_sendForReview_button";
-NSString * const kActionCollectionItemSubFolderButton = @"actionItem_subfolder_button";
-NSString * const kActionCollectionItemUploadNewVersionButton = @"actionItem_uploadNewVersion_button";
-NSString * const kActionCollectionItemSyncButton = @"actionItem_sync_button";
-NSString * const kActionCollectionItemUnsyncButton = @"actionItem_unsync_button";
+NSString * const kActionCollectionItemEmailButtonIdentifier = @"actionItem_email_button";
+NSString * const kActionCollectionItemEmailAsLinkButtonIdentifier = @"actionItem_emailAsLink_button";
+NSString * const kActionCollectionItemOpenInButtonIdentifier = @"actionItem_openIn_button";
+NSString * const kActionCollectionItemLikeButtonIdentifier = @"actionItem_like_button";
+NSString * const kActionCollectionItemUnlikeButtonIdentifier = @"actionItem_unlike_button";
+NSString * const kActionCollectionItemFavouriteButtonIdentifier = @"actionItem_favourite_button";
+NSString * const kActionCollectionItemUnfavouriteButtonIdentifier = @"actionItem_unfavourite_button";
+NSString * const kActionCollectionItemCommentButtonIdentifier = @"actionItem_comment_button";
+NSString * const kActionCollectionItemEditButtonIdentifier = @"actionItem_edit_button";
+NSString * const kActionCollectionItemDownloadButtonIdentifier = @"actionItem_download_button";
+NSString * const kActionCollectionItemPrintButtonIdentifier = @"actionItem_print_button";
+NSString * const kActionCollectionItemDeleteButtonIdentifier = @"actionItem_delete_button";
+NSString * const kActionCollectionItemRenameButtonIdentifier = @"actionItem_rename_button";
+NSString * const kActionCollectionItemUploadButtonIdentifier = @"actionItem_upload_button";
+NSString * const kActionCollectionItemSendForReviewButtonIdentifier = @"actionItem_sendForReview_button";
+NSString * const kActionCollectionItemSubFolderButtonIdentifier = @"actionItem_subfolder_button";
+NSString * const kActionCollectionItemUploadNewVersionButtonIdentifier = @"actionItem_uploadNewVersion_button";
+NSString * const kActionCollectionItemSyncButtonIdentifier = @"actionItem_sync_button";
+NSString * const kActionCollectionItemUnsyncButtonIdentifier = @"actionItem_unsync_button";
+
+NSString * const kBaseCollectionVCDotsBarButtonIdentifier = @"collectionView_dots_barButton";
+NSString * const kBaseCollectionVCMultiSelectDoneButtonIdentifier = @"collectionView_multiSelectDone_button";
+NSString * const kBaseCollectionVCMultiSelectDeleteButtonIdentifier = @"collectionView_multiSelectDelete_button";
+NSString * const kBaseCollectionVCAddButtonIdentifier = @"collectionView_add_button";
+
+NSString * const kCollectionViewCellDeleteButtonIdentifier = @"collectionViewCell_delete_button";
+
+NSString * const kTextFileVCViewIdentifier = @"textFile_view";
+NSString * const kTextFileVCCancelButtonIdentifier = @"textFile_cancel_button";
+NSString * const kTextFileVCNextButtonIdentifier = @"textFile_next_button";
+NSString * const kTextFileVCContentTextViewIdentifier = @"textFile_content_textView";
+
+NSString * const kUploadFormVCViewIdentifier = @"uploadForm_view";
+NSString * const kUploadFormVCCancelButtonIdentifier = @"uploadForm_cancel_button";
+NSString * const kUploadFormVCUploadButtonIdentifier = @"uploadForm_upload_button";
+NSString * const kUploadFormVCFilenameTextFieldIdentifier = @"uploadForm_filename_textfield";
+NSString * const kUploadFormVCRecordButtonIdentifier = @"uploadForm_record_button";
+NSString * const kUploadFormVCPlayButtonIdentifier = @"uploadForm_play_button";
+
+NSString * const kSitesCellFavoriteActionButtonIdentifier = @"sitesCell_favoriteAction_button";
+NSString * const kSitesCellMembershipActionButtonIdentifier = @"sitesCell_membershipAction_button";
+NSString * const kSitesCellMembersButtonIdentifiers = @"sitesCell_members_button";
+NSString * const kSitesCellDisclosureButtonIdentifier = @"sitesCell_disclosure_button";
+
+NSString * const kSitesVCViewIdentifier = @"sites_view";
+NSString * const kSitesVCSegmentedControlIdentifier = @"sites_segmentedControl";
+
+NSString * const kSitesTableListVCFavoriteSitesViewIdentifier = @"favoriteSites_view";
+NSString * const kSitesTableListVCMySitesViewIdentifier = @"mySites_view";
+NSString * const kSitesTableListVCAllSitesViewIdentifier = @"allSites_view";
+
+NSString * const kSearchVCSiteViewIdentifier = @"siteSearch_view";
+NSString * const kSearchVCLandingViewIdentifier = @"landingSearch_view";
+NSString * const kSearchVCFileViewIdentifier = @"fileSearch_view";
+NSString * const kSearchVCUserViewIdentifier = @"userSearch_view";
+NSString * const kSearchVCFolderViewIdentifier = @"folderSearch_view";

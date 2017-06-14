@@ -80,6 +80,8 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
         }
     }
     
+    [self setAccessibilityIdentifiers];
+    
     if (self.dataSource.showsSearchBar)
     {
         [self setupSearchController];
@@ -330,6 +332,40 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 }
 
 #pragma mark - Private methods
+
+- (void)setAccessibilityIdentifiers
+{
+    switch (self.dataSourceType) {
+        case SearchViewControllerDataSourceTypeSearchSites:
+        {
+            self.view.accessibilityIdentifier = kSearchVCSiteViewIdentifier;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeLandingPage:
+        {
+            self.view.accessibilityIdentifier = kSearchVCLandingViewIdentifier;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            self.view.accessibilityIdentifier = kSearchVCFileViewIdentifier;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            self.view.accessibilityIdentifier = kSearchVCUserViewIdentifier;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            self.view.accessibilityIdentifier = kSearchVCFolderViewIdentifier;
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
 
 - (void)setupScreenTitle
 {
