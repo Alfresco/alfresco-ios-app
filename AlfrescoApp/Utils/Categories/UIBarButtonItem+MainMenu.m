@@ -28,7 +28,7 @@
     {
         if (controller.navigationController.viewControllers.firstObject == controller)
         {
-            controller.navigationItem.leftBarButtonItem = hamburgerButtom;
+            controller.navigationItem.leftBarButtonItem = hamburgerButton;
         }
     }
     return hamburgerButton;
