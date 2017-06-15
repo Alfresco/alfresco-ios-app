@@ -511,7 +511,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNode *selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
+    AlfrescoNode *selectedNode = self.isOnSearchResults ? [self.searchDataSource alfrescoNodeAtIndex:indexPath.item] : [self.dataSource alfrescoNodeAtIndex:indexPath.item];
     if(selectedNode)
     {
         if (self.isEditing)
