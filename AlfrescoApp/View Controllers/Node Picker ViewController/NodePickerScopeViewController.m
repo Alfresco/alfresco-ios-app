@@ -95,6 +95,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                        image:[UIImage imageNamed:@"mainmenu-repository.png"]
                                                                  description:nil
                                                                  displayType:MainMenuDisplayTypeDetail
+                                                    accessibilityIdentifier:nil
                                                             associatedObject:companyHomeViewController];
     [self.tableViewData addObject:companyHomeItem];
     
@@ -104,6 +105,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                        image:[UIImage imageNamed:@"mainmenu-sites.png"]
                                                                  description:nil
                                                                  displayType:MainMenuDisplayTypeDetail
+                                                        accessibilityIdentifier:nil
                                                             associatedObject:sitesListViewController];
     [self.tableViewData addObject:sitesItem];
     
@@ -113,6 +115,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                  image:[UIImage imageNamed:@"mainmenu-favourites.png"]
                                                            description:nil
                                                            displayType:MainMenuDisplayTypeDetail
+                                                   accessibilityIdentifier:nil
                                                       associatedObject:favoritesViewController];
     [self.tableViewData addObject:favoritesItem];
     
@@ -125,6 +128,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                     image:[UIImage imageNamed:@"mainmenu-sync.png"]
                                                               description:nil
                                                               displayType:MainMenuDisplayTypeDetail
+                                                  accessibilityIdentifier:nil
                                                          associatedObject:syncedContentViewController];
 
         [self.tableViewData addObject:syncItem];
