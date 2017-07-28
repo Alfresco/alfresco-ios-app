@@ -19,6 +19,8 @@
 #import "MainMenuViewController.h"
 #import "MainMenuTableViewCell.h"
 #import "MainMenuHeaderView.h"
+#import "LoginManager.h"
+#import "DownloadsViewController.h"
 
 static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
 static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIdentifier";
@@ -480,6 +482,30 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 {
     MainMenuSection *selectedSection = self.tableViewData[indexPath.section];
     MainMenuItem *selectedItem = selectedSection.visibleSectionItems[indexPath.row];
+    
+    if ([LoginManager sharedManager].sessionExpired)
+    {
+        NSString *itemIdentifier = selectedItem.itemIdentifier;
+        
+        BOOL shouldBlockAccess = YES;
+        
+        if ([itemIdentifier isEqualToString:kAlfrescoMainMenuItemAccountsIdentifier] ||
+            [itemIdentifier isEqualToString:kAlfrescoMainMenuItemSyncIdentifier] ||
+            [itemIdentifier isEqualToString:kAlfrescoMainMenuItemSettingsIdentifier] ||
+            [itemIdentifier isEqualToString:kAlfrescoMainMenuItemHelpIdentifier] ||
+            [itemIdentifier isEqualToString:kSyncViewIdentifier] ||
+            [itemIdentifier isEqualToString:kLocalViewIdentifier])
+        {
+            shouldBlockAccess = NO;
+        }
+        
+        if (shouldBlockAccess)
+        {
+            [[LoginManager sharedManager] showSignInAlertWithSignedInBlock:nil];
+            return;
+        }
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoEnableMainMenuAutoItemSelection object:nil];
     
     [self.delegate mainMenuViewController:self didSelectItem:selectedItem inSectionItem:selectedSection];

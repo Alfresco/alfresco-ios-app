@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -31,12 +31,17 @@
 @property (nonatomic, strong) __block NSString *currentLoginURLString;
 @property (nonatomic, strong) __block AlfrescoRequest *currentLoginRequest;
 @property (nonatomic, strong) AlfrescoOAuthUILoginViewController *loginController;
+@property (nonatomic, strong) AlfrescoSAMLUILoginViewController *samlLoginController;
 @property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession, NSError *error);
 @property (nonatomic, assign) BOOL didCancelLogin;
 @property (nonatomic, assign) BOOL completionBlockCalledFromLoginViewController;
+@property (nonatomic, assign, readwrite) BOOL sessionExpired;
 // Cloud parameters
 @property (nonatomic, strong) NSString *cloudAPIKey;
 @property (nonatomic, strong) NSString *cloudSecretKey;
+
+@property (nonatomic, assign) BOOL loginAttemptInProgress;
+@property (nonatomic, copy) void (^signInAlertCompletionBlock)();
 @end
 
 @implementation LoginManager
@@ -67,8 +72,21 @@
 
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock
 {
-    self.authenticationCompletionBlock = ^(BOOL successful, id<AlfrescoSession> session, NSError *error)
+    if (self.loginAttemptInProgress)
     {
+        return;
+    }
+    
+    self.loginAttemptInProgress = YES;
+    
+    
+    __weak typeof(self)weakSelf = self;
+    self.authenticationCompletionBlock = ^(BOOL successful, id<AlfrescoSession> session, NSError *error){
+        if (successful)
+        {
+            weakSelf.sessionExpired = NO;
+        }
+        
         if (loginCompletionBlock != NULL)
         {
             loginCompletionBlock(successful, session, error);
@@ -82,25 +100,139 @@
         
         if (account.accountType == UserAccountTypeOnPremise)
         {
-            if (account.username.length == 0 || account.password.length == 0)
-            {
+            NSString *urlString = [Utility serverURLStringFromAccount:account];
+            
+            [AlfrescoSAMLAuthHelper checkIfSAMLIsEnabledForServerWithUrlString:urlString completionBlock:^(AlfrescoSAMLData *samlData, NSError *error) {
                 [self hideHUD];
-                [self displayLoginViewControllerWithAccount:account username:account.username];
-                self.authenticationCompletionBlock(NO, nil, nil);
-                return;
-            }
-
-            [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
-                [self hideHUD];
-                if(successful)
+                
+                void (^showSAMLWebViewAndAuthenticate)() = ^void (){
+                    [self showSAMLWebViewForAccount:account navigationController:nil completionBlock:^(AlfrescoSAMLData *samlData, NSError *error)
+                     {
+                         if (samlData)
+                         {
+                             account.samlData.samlTicket = samlData.samlTicket;
+                             [self authenticateWithSAMLOnPremiseAccount:account navigationController:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                                 if (successful)
+                                 {
+                                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification object:alfrescoSession];
+                                 }
+                                 self.authenticationCompletionBlock(successful, alfrescoSession, error);
+                                 self.loginAttemptInProgress = NO;
+                                 [self.samlLoginController dismissViewControllerAnimated:YES completion:nil];
+                             }];
+                         }
+                     }];
+                };
+                
+                if (error || [samlData isSamlEnabled] == NO) // SAML not enabled
                 {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification object:session];
+                    BOOL switchedAuthenticationMethod = NO;
+                    
+                    if (account.samlData)
+                    {
+                        switchedAuthenticationMethod = YES;
+                    }
+                    account.samlData = nil;
+                    
+                    if (switchedAuthenticationMethod)
+                    {
+                        self.sessionExpired = YES;
+                        
+                        self.signInAlertCompletionBlock = ^{
+                            if (account.username.length == 0 || account.password.length == 0)
+                            {
+                                [weakSelf hideHUD];
+                                [weakSelf displayLoginViewControllerWithAccount:account username:account.username];
+                                weakSelf.authenticationCompletionBlock(NO, nil, nil);
+                                weakSelf.loginAttemptInProgress = NO;
+                                return;
+                            }
+                            
+                            [weakSelf authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
+                                [weakSelf hideHUD];
+                                if(successful)
+                                {
+                                    weakSelf.sessionExpired = NO;
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification object:session];
+                                }
+                                if (error && error.code != kAlfrescoErrorCodeNoNetworkConnection && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
+                                {
+                                    [weakSelf displayLoginViewControllerWithAccount:account username:account.username];
+                                }
+                                weakSelf.authenticationCompletionBlock(successful, session, error);
+                                weakSelf.loginAttemptInProgress = NO;
+                            }];
+                        };
+                        
+                        [self showSignInAlertWithSignedInBlock:self.signInAlertCompletionBlock];
+                    }
+                    else
+                    {
+                        if (account.username.length == 0 || account.password.length == 0)
+                        {
+                            [self hideHUD];
+                            [self displayLoginViewControllerWithAccount:account username:account.username];
+                            self.authenticationCompletionBlock(NO, nil, nil);
+                            self.loginAttemptInProgress = NO;
+                            return;
+                        }
+                        
+                        [self authenticateOnPremiseAccount:account password:account.password completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
+                            [self hideHUD];
+                            if(successful)
+                            {
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification object:session];
+                            }
+                            if (error && error.code != kAlfrescoErrorCodeNoNetworkConnection && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
+                            {
+                                [self displayLoginViewControllerWithAccount:account username:account.username];
+                            }
+                            self.authenticationCompletionBlock(successful, session, error);
+                            self.loginAttemptInProgress = NO;
+                        }];
+                    }
                 }
-                if (error && error.code != kAlfrescoErrorCodeNoNetworkConnection && error.code != kAlfrescoErrorCodeNetworkRequestCancelled)
+                else // SAML enabled
                 {
-                    [self displayLoginViewControllerWithAccount:account username:account.username];
+                    if (account.samlData)
+                    {
+                        // The IDP might have been changed. Set the SAMLInfo.
+                        account.samlData.samlInfo = samlData.samlInfo;
+                        
+                        if (account.samlData.samlTicket)
+                        {
+                            [self authenticateWithSAMLOnPremiseAccount:account navigationController:nil completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                                [self hideHUD];
+                                
+                                if (error)
+                                {
+                                    account.samlData.samlTicket = nil;
+                                    showSAMLWebViewAndAuthenticate();
+                                }
+                                else
+                                {
+                                    self.authenticationCompletionBlock(successful, alfrescoSession, nil);
+                                    self.loginAttemptInProgress = NO;
+                                }
+                            }];
+                        }
+                        else
+                        {
+                            showSAMLWebViewAndAuthenticate();
+                        }
+                    }
+                    else
+                    {
+                        account.samlData = samlData;
+                        
+                        self.sessionExpired = YES;
+                        
+                        self.signInAlertCompletionBlock = ^{
+                            showSAMLWebViewAndAuthenticate();
+                        };
+                        [self showSignInAlertWithSignedInBlock:self.signInAlertCompletionBlock];
+                    }
                 }
-                self.authenticationCompletionBlock(successful, session, error);
             }];
         }
         else
@@ -115,6 +247,7 @@
                 {
                     loginCompletionBlock(successful, session, error);
                 }
+                self.loginAttemptInProgress = NO;
             }];
         }
     }
@@ -122,12 +255,121 @@
     {
         // Assuming there is no internet connection and the user tries to switch account.
         self.authenticationCompletionBlock(YES, nil, nil);
+        self.loginAttemptInProgress = NO;
     }
     else
     {
         NSError *unreachableError = [NSError errorWithDomain:kAlfrescoErrorDomainName code:kAlfrescoErrorCodeNoNetworkConnection userInfo:nil];
         self.authenticationCompletionBlock(NO, nil, unreachableError);
+        self.loginAttemptInProgress = NO;
     }
+}
+
+- (void)showSignInAlertWithSignedInBlock:(void (^)())completionBlock
+{
+    if (completionBlock == nil)
+    {
+        completionBlock = self.signInAlertCompletionBlock;
+    }
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"error.host.unreachable.title", @"Connection Error")
+                                                                             message:NSLocalizedString(@"error.session.expired", @"Your session has expired. Sign in to continue.")
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *signInAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"login.sign.in", @"Sign In") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (completionBlock)
+        {
+            completionBlock();
+        }
+    }];
+    
+    [alertController addAction:signInAction];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [alertController dismissViewControllerAnimated:YES completion:nil];
+    }];
+    
+    [alertController addAction:okAction];
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [UniversalDevice displayModalViewController:alertController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
+}
+
+#pragma mark - SAML Authentication Methods
+
+- (void)showSAMLWebViewForAccount:(UserAccount *)account navigationController:(UINavigationController *)navigationController completionBlock:(AlfrescoSAMLAuthCompletionBlock)completionBlock
+{
+    NSString *urlString = [Utility serverURLStringFromAccount:account];
+    
+    AlfrescoSAMLUILoginViewController *lvc = [[AlfrescoSAMLUILoginViewController alloc] initWithBaseURLString:urlString completionBlock:^(AlfrescoSAMLData *alfrescoSamlData, NSError *error) {
+        
+        if (completionBlock)
+        {
+            completionBlock(alfrescoSamlData, error);
+        }
+    }];
+    
+    if (navigationController)
+    {
+        [navigationController pushViewController:lvc animated:YES];
+    }
+    else
+    {
+        navigationController = [[NavigationViewController alloc] initWithRootViewController:lvc];
+        UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                target:self
+                                                                                action:@selector(cancelSamlAuthentication:)];
+        lvc.navigationItem.leftBarButtonItem = cancel;
+        lvc.modalPresentationStyle = UIModalPresentationFormSheet;
+        self.samlLoginController = lvc;
+        
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [UniversalDevice displayModalViewController:navigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
+    }
+
+}
+
+- (void)authenticateWithSAMLOnPremiseAccount:(UserAccount *)account
+                navigationController:(UINavigationController *)navigationController
+                     completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock
+{
+    NSString *urlString = [Utility serverURLStringFromAccount:account];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    if (account.samlData.samlTicket)
+    {
+        [AlfrescoRepositorySession connectWithUrl:url
+                                         SAMLData:account.samlData
+                                  completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                                      if (authenticationCompletionBlock)
+                                      {
+                                          if (session)
+                                          {
+                                              authenticationCompletionBlock(YES, session, nil);
+                                          }
+                                          else
+                                          {
+                                              authenticationCompletionBlock(NO, nil, error);
+                                          }
+                                      }
+                                  }];
+    }
+    else
+    {
+        authenticationCompletionBlock(NO, nil, nil);
+    }
+}
+
+- (void)cancelSamlAuthentication:(id)sender
+{
+    [self.samlLoginController dismissViewControllerAnimated:YES completion:^{
+        self.loginAttemptInProgress = NO;
+        
+        if (self.authenticationCompletionBlock != NULL)
+        {
+            self.authenticationCompletionBlock(NO, nil, nil);
+        }
+    }];
 }
 
 #pragma mark - Cloud authentication Methods
@@ -439,8 +681,13 @@
 - (void)unauthorizedAccessNotificationReceived:(NSNotification *)notification
 {
     // try logging again
-    UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
-    [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
+    NSError *error = (NSError *)notification.object;
+    
+    if (error.code == kAlfrescoErrorCodeUnauthorisedAccess)
+    {
+        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
+    }
 }
 
 - (void)cancelLoginRequest
@@ -491,6 +738,8 @@
         [self hideHUD];
         if (successful)
         {
+            self.sessionExpired = NO;
+            
             account.username = username;
             account.password = password;
             [[AccountManager sharedManager] saveAccountsToKeychain];

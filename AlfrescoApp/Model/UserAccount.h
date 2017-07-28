@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -67,6 +67,9 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 // Configuration
 @property (nonatomic, strong) NSString *selectedProfileIdentifier;
 @property (nonatomic, strong) NSString *selectedProfileName;
+
+// SAML
+@property (nonatomic, strong) AlfrescoSAMLData *samlData;
 
 - (instancetype)initWithAccountType:(UserAccountType)accountType;
 

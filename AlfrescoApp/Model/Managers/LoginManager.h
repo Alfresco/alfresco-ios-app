@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -22,6 +22,8 @@
 
 @interface LoginManager : NSObject <LoginViewControllerDelegate, AlfrescoOAuthLoginDelegate>
 
+@property (nonatomic, assign, readonly) BOOL sessionExpired;
+
 + (LoginManager *)sharedManager;
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock;
 - (void)authenticateOnPremiseAccount:(UserAccount *)account password:(NSString *)password completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
@@ -29,5 +31,10 @@
                        networkId:(NSString *)networkId
              navigationController:(UINavigationController *)navigationController
                  completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock;
+- (void)authenticateWithSAMLOnPremiseAccount:(UserAccount *)account
+                navigationController:(UINavigationController *)navigationController
+                     completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock;
+- (void)showSAMLWebViewForAccount:(UserAccount *)account navigationController:(UINavigationController *)navigationController completionBlock:(AlfrescoSAMLAuthCompletionBlock)completionBlock;
+- (void)showSignInAlertWithSignedInBlock:(void (^)())completionBlock;
 
 @end

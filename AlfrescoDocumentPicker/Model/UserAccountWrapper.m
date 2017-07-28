@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -43,6 +43,7 @@
         self.selectedNetworkIdentifier = userAccount.selectedNetworkId;
         self.networkIdentifiers = userAccount.accountNetworks;
         self.oAuthData = userAccount.oauthData;
+        self.samlData = userAccount.samlData;
         self.isOnPremiseAccount = (userAccount.accountType == UserAccountTypeOnPremise);
         self.userAccount = userAccount;
     }

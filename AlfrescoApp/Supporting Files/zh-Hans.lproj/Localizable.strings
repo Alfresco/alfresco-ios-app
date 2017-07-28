@@ -40,6 +40,7 @@
 "No Users" = "无用户";
 "On" = "打开";
 "Off" = "关闭";
+"OK" = "OK";
 
 /**
  * Relative Dates
@@ -146,6 +147,7 @@
 "error.alfresco.node.notfound" = "未找到文件";
 "error.alfresco.folder.notfound" = "未找到文件夹";
 "error.print.failed.message" = "不支持打印此文件";
+"error.session.expired" = "您的会话已过期。登录以继续。";
 // Internet connection error
 "error.no.internet.access.title" = "无法建立连接";
 "error.no.internet.access.message" = "检查您是否已连接到 Internet 并重试。您仍可以访问下载的文件，无需连接。";
@@ -456,6 +458,11 @@
 "login.password.textfield.placeholder" = "密码";
 "login.hud.label" = "正在连接...";
 "login.hud.cancel.label" = "点按以取消";
+
+/**
+ * Login Manager
+ */
+"login.sign.in" = "登录";
 
 /**
  * Download View Controller
