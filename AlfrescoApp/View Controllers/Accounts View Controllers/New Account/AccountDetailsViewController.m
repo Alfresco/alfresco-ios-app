@@ -154,6 +154,7 @@
             default:
                 self.account = account;
                 self.formBackupAccount = [self.account copy];
+                self.formBackupAccount.samlData = self.account.samlData;
                 break;
         }
         
@@ -180,9 +181,7 @@
     {
         case AccountDataSourceTypeNewAccountServer:
         {
-            AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountCredentials account:self.formBackupAccount configuration:nil session:nil];
-            accountDetailsViewController.delegate = self.delegate;
-            [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+            [self checkIfSamlIsEnabled];
         }
             break;
             
@@ -277,7 +276,7 @@
     }
     else if (cell.tag == kTagAccountDetailsCell)
     {
-        AccountDataSourceType type = AccountDataSourceTypeAccountSettings;
+        AccountDataSourceType type = [self.account.samlData isSamlEnabled] ? AccountDataSourceTypeAccountSettingSAML : AccountDataSourceTypeAccountSettings;
         AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:type account:self.account configuration:self.configuration session:self.session];
         accountDetailsViewController.delegate = self;
         [self.navigationController pushViewController:accountDetailsViewController animated:YES];
@@ -342,6 +341,80 @@
     }
 }
 
+- (void)checkIfSamlIsEnabled
+{
+    [self showHUD];
+    NSString *urlString = [Utility serverURLStringFromAccount:self.formBackupAccount];
+    
+    [AlfrescoSAMLAuthHelper checkIfSAMLIsEnabledForServerWithUrlString:urlString completionBlock:^(AlfrescoSAMLData *samlData, NSError *error) {
+        [self hideHUD];
+        
+        if (error || [samlData isSamlEnabled] == NO)
+        {
+            [self goToEnterCredentialsScreen];
+        }
+        else
+        {
+            self.formBackupAccount.samlData = samlData;
+            [self goToLoginWithSamlScreen];
+        }
+    }];
+}
+
+- (void)goToEnterCredentialsScreen
+{
+    AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountCredentials account:self.formBackupAccount configuration:nil session:nil];
+    accountDetailsViewController.delegate = self.delegate;
+    [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+}
+
+- (void)goToLoginWithSamlScreen
+{
+    void (^receivedSessionBlock)(BOOL, id<AlfrescoSession>, NSError *) = ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error){
+        if (alfrescoSession)
+        {
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                              action:kAnalyticsEventActionCreate
+                                                               label:kAnalyticsEventLabelOnPremiseSAML
+                                                               value:@1];
+            
+            [self updateAccountInfoFromAccount:self.formBackupAccount];
+            self.account.accountDescription = NSLocalizedString(@"accounttype.alfrescoServer", @"Content Services");
+            
+            AccountManager *accountManager = [AccountManager sharedManager];
+            [[RealmSyncManager sharedManager] realmForAccount:self.account.accountIdentifier];
+            
+            if (accountManager.totalNumberOfAddedAccounts == 0)
+            {
+                [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:alfrescoSession];
+            }
+            else if (accountManager.selectedAccount == self.account)
+            {
+                [[RealmManager sharedManager] changeDefaultConfigurationForAccount:self.account completionBlock:^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+                }];
+            }
+            
+            [self dismiss];
+        }
+    };
+    
+    void (^obtainedSamlDataBlock)(AlfrescoSAMLData *, NSError *) = ^void(AlfrescoSAMLData *samlData, NSError *error){
+        if (samlData)
+        {
+            self.formBackupAccount.samlData.samlTicket = samlData.samlTicket;
+            
+            [[LoginManager sharedManager] authenticateWithSAMLOnPremiseAccount:self.formBackupAccount
+                                                          navigationController:self.navigationController
+                                                               completionBlock:receivedSessionBlock];
+        }
+    };
+    
+    [[LoginManager sharedManager] showSAMLWebViewForAccount:self.formBackupAccount
+                                       navigationController:self.navigationController
+                                            completionBlock:obtainedSamlDataBlock];
+}
+
 - (void)addNewAccount
 {
     [self validateAccountOnServerWithCompletionBlock:^(BOOL successful, id<AlfrescoSession> session) {
@@ -384,6 +457,7 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
             }
+
             [self.navigationController popViewControllerAnimated:YES];
         }
     }];
@@ -391,8 +465,7 @@
 
 - (void)validateAccountOnServerWithCompletionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session))completionBlock
 {
-    [self showHUD];
-    [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount password:self.formBackupAccount.password completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+    void (^authenticationCompletionBlock)(BOOL, id<AlfrescoSession>) = ^void(BOOL successful, id<AlfrescoSession>alfrescoSession){
         [self hideHUD];
         if (successful)
         {
@@ -403,7 +476,57 @@
         {
             [self presentLoginForConnectionDiagnostic];
         }
-    }];
+    };
+    
+    [self showHUD];
+    
+    switch (self.dataSourcetype)
+    {
+        case AccountDataSourceTypeNewAccountCredentials:
+        case AccountDataSourceTypeAccountSettings:
+        {
+            [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount
+                                                              password:self.formBackupAccount.password
+                                                       completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                                                           authenticationCompletionBlock(successful, alfrescoSession);
+                                                       }];
+        }
+            break;
+        
+        case AccountDataSourceTypeAccountSettingSAML:
+        {
+            
+            [[LoginManager sharedManager] authenticateWithSAMLOnPremiseAccount:self.formBackupAccount
+                                                          navigationController:self.navigationController
+                                                               completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                                                                   if (successful)
+                                                                   {
+                                                                       authenticationCompletionBlock(successful, alfrescoSession);
+                                                                   }
+                                                                   else
+                                                                   {
+                                                                       [[LoginManager sharedManager] showSAMLWebViewForAccount:self.formBackupAccount navigationController:self.navigationController completionBlock:^(AlfrescoSAMLData *samlData, NSError *error) {
+                                                                           if (samlData)
+                                                                           {
+                                                                               self.formBackupAccount.samlData.samlTicket = samlData.samlTicket;
+                                                                               [self.navigationController popViewControllerAnimated:YES];
+                                                                               
+                                                                               [[LoginManager sharedManager] authenticateWithSAMLOnPremiseAccount:self.formBackupAccount navigationController:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                                                                                   authenticationCompletionBlock(successful, alfrescoSession);
+                                                                               }];
+                                                                           }
+                                                                           else
+                                                                           {
+                                                                               authenticationCompletionBlock(NO, nil);
+                                                                           }
+                                                                       }];
+                                                                   }
+                                                       }];
+        }
+            
+        default:
+            break;
+    }
 }
 
 - (void)presentLoginForConnectionDiagnostic
@@ -448,6 +571,7 @@
     self.account.serviceDocument = temporaryAccount.serviceDocument;
     self.account.accountCertificate = temporaryAccount.accountCertificate;
     self.account.paidAccount = temporaryAccount.isPaidAccount;
+    self.account.samlData = temporaryAccount.samlData;
     
     if ([self.delegate respondsToSelector:@selector(accountInfoChanged:)])
     {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -511,7 +511,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                 [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
                 [self.tableView reloadData];
                 
-                NSString *label = account.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+                NSString *label = account.accountType == UserAccountTypeOnPremise ? ([account.samlData isSamlEnabled] ? kAnalyticsEventLabelOnPremiseSAML : kAnalyticsEventLabelOnPremise) : kAnalyticsEventLabelCloud;
                 [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
                                                                   action:kAnalyticsEventActionSwitch
                                                                    label:label

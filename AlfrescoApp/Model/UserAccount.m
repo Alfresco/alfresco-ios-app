@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -45,6 +45,8 @@ static NSString * const kAccountIsPaid = @"kAccountIsPaid";
 // Configuration
 static NSString * const kAccountSelectedProfileIdentifierKey = @"kAccountSelectedProfileIdentifierKey";
 static NSString * const kAccountSelectedProfileNameKey = @"kAccountSelectedProfileNameKey";
+// SAML
+static NSString * const kAlfrescoSAMLData = @"kAlfrescoSAMLData";
 
 @interface UserAccount ()
 @property (nonatomic, strong, readwrite) NSString *accountIdentifier;
@@ -101,6 +103,7 @@ static NSString * const kAccountSelectedProfileNameKey = @"kAccountSelectedProfi
     [aCoder encodeInteger:self.isPaidAccount forKey:kAccountIsPaid];
     [aCoder encodeObject:self.selectedProfileIdentifier forKey:kAccountSelectedProfileIdentifierKey];
     [aCoder encodeObject:self.selectedProfileName forKey:kAccountSelectedProfileNameKey];
+    [aCoder encodeObject:self.samlData forKey:kAlfrescoSAMLData];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -132,6 +135,7 @@ static NSString * const kAccountSelectedProfileNameKey = @"kAccountSelectedProfi
         self.paidAccount = [aDecoder decodeIntegerForKey:kAccountIsPaid];
         self.selectedProfileIdentifier = [aDecoder decodeObjectForKey:kAccountSelectedProfileIdentifierKey];
         self.selectedProfileName = [aDecoder decodeObjectForKey:kAccountSelectedProfileNameKey];
+        self.samlData = [aDecoder decodeObjectForKey:kAlfrescoSAMLData];
     }
     return self;
 }
@@ -175,7 +179,8 @@ static NSString * const kAccountSelectedProfileNameKey = @"kAccountSelectedProfi
     [string appendFormat:@"serviceDocument: %@\n", self.serviceDocument];
     [string appendFormat:@"clientCertificate: %@\n", self.accountCertificate.summary];
     [string appendFormat:@"accountDescription: %@\n", self.accountDescription];
-    [string appendFormat:@"address: %p", self];
+    [string appendFormat:@"\n%@", self.samlData];
+    [string appendFormat:@"\naddress: %p", self];
     
     return string;
 }

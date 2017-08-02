@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -358,3 +358,4 @@ NSString * const kSkypeAppStoreiPhoneURL = @"http://itunes.apple.com/app/skype-f
 NSString * const KSkypeAppStoreiPadURL = @"http://itunes.apple.com/app/skype-for-ipad/id442012681?mt=8";
 
 NSString * const kSyncViewIdentifier = @"view-sync-default";
+NSString * const kLocalViewIdentifier = @"view-local-default";

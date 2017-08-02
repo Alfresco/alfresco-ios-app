@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -139,6 +139,23 @@
             }
         }];
     }];
+}
+
+- (NSString *)serverTypeStringForSession:(id<AlfrescoSession>)session
+{
+    NSString *serverTypeString = nil;
+    
+    if ([session isKindOfClass:[AlfrescoRepositorySession class]])
+    {
+        UserAccount *selectedUserAccount = [AccountManager sharedManager].selectedAccount;
+        serverTypeString = [selectedUserAccount.samlData isSamlEnabled] ? kAnalyticsEventLabelOnPremiseSAML : kAnalyticsEventLabelOnPremise;
+    }
+    else
+    {
+        serverTypeString = kAnalyticsEventLabelCloud;
+    }
+    
+    return serverTypeString;
 }
 
 #pragma mark - Tracking Methods
@@ -285,7 +302,7 @@
 
 - (void)addServerInfoMetricsInTracker:(id<GAITracker>)tracker session:(id<AlfrescoSession>)session
 {
-    NSString *serverTypeString = [session isKindOfClass:[AlfrescoRepositorySession class]] ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    NSString *serverTypeString = [self serverTypeStringForSession:session];
     
     [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricSessionCreated] value:@"1"];
     [tracker set:[GAIFields customDimensionForIndex:AnalyticsDimensionServerType] value:serverTypeString];
