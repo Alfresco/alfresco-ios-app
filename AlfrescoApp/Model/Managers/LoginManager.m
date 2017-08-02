@@ -138,6 +138,11 @@
                     {
                         self.sessionExpired = YES;
                         
+                        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                                          action:kAnalyticsEventActionChangeAuthentication
+                                                                           label:kAnalyticsEventLabelBasic
+                                                                           value:nil];
+                        
                         self.signInAlertCompletionBlock = ^{
                             if (account.username.length == 0 || account.password.length == 0)
                             {
@@ -226,6 +231,11 @@
                         account.samlData = samlData;
                         
                         self.sessionExpired = YES;
+                        
+                        [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                                          action:kAnalyticsEventActionChangeAuthentication
+                                                                           label:kAnalyticsEventLabelSAML
+                                                                           value:nil];
                         
                         self.signInAlertCompletionBlock = ^{
                             showSAMLWebViewAndAuthenticate();
@@ -326,7 +336,8 @@
         AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         [UniversalDevice displayModalViewController:navigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
     }
-
+    
+    [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountSAML];
 }
 
 - (void)authenticateWithSAMLOnPremiseAccount:(UserAccount *)account
@@ -471,6 +482,9 @@
             AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
             [UniversalDevice displayModalViewController:oauthNavigationController onController:appDelegate.window.rootViewController withCompletionBlock:nil];
         }
+        
+        [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewAccountOAuth];
+        
         return oauthLoginController;
     };
     

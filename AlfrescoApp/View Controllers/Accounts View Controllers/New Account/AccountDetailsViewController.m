@@ -375,7 +375,7 @@
         {
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
                                                               action:kAnalyticsEventActionCreate
-                                                               label:kAnalyticsEventLabelOnPremise
+                                                               label:kAnalyticsEventLabelOnPremiseSAML
                                                                value:@1];
             
             [self updateAccountInfoFromAccount:self.formBackupAccount];

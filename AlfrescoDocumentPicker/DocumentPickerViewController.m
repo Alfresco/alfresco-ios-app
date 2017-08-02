@@ -397,6 +397,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     }];
                     
                     [self.embeddedNavigationController pushViewController:loginController animated:YES];
+                    
+                    [DocumentPickerViewController trackScreenWithName:kAnalyticsViewAccountSAML];
                 }
             }];
         }
@@ -413,7 +415,10 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     loginBlock (oauthData, nil);
                 }
             }];
+            
             [self.embeddedNavigationController pushViewController:loginController animated:YES];
+            
+            [DocumentPickerViewController trackScreenWithName:kAnalyticsViewAccountOAuth];
         }
     }
 }
@@ -885,6 +890,13 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
     NSDictionary *dictionary = [builder build];
     [tracker send:dictionary];
+}
+
++ (void)trackScreenWithName:(NSString *)screenName
+{
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:screenName];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 // This method is a clone of Utility class's method mimeTypeForFileExtension:
