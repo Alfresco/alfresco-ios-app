@@ -20,7 +20,7 @@
 
 #import "RLMSyncUtil.h"
 
-@class RLMSyncSession, RLMSyncConfiguration;
+@class RLMSyncSession;
 
 /// An enum representing different levels of sync-related logging that can be configured.
 typedef NS_ENUM(NSUInteger, RLMSyncLogLevel) {
@@ -62,9 +62,16 @@ typedef void(^RLMSyncErrorReportingBlock)(NSError *, RLMSyncSession * _Nullable)
 @interface RLMSyncManager : NSObject
 
 /**
- An optional block which can be used to report sync-related errors to your application. Errors reported through this
- mechanism are always fatal; they represent attempts to open sessions which are invalid (for example, using malformed
- URLs).
+ A block which can optionally be set to report sync-related errors to your application.
+
+ Any error reported through this block will be of the `RLMSyncError` type, and marked
+ with the `RLMSyncErrorDomain` domain.
+
+ Errors reported through this mechanism are fatal, with several exceptions. Please consult
+ `RLMSyncError` for information about the types of errors that can be reported through
+ the block, and for for suggestions on handling recoverable error codes.
+
+ @see `RLMSyncError`
  */
 @property (nullable, nonatomic, copy) RLMSyncErrorReportingBlock errorHandler;
 
@@ -72,24 +79,33 @@ typedef void(^RLMSyncErrorReportingBlock)(NSError *, RLMSyncSession * _Nullable)
  A reverse-DNS string uniquely identifying this application. In most cases this is automatically set by the SDK, and
  does not have to be explicitly configured.
  */
-@property (nonatomic) NSString *appID;
+@property (nonatomic, copy) NSString *appID;
 
 /**
- Whether SSL certificate validation should be disabled. SSL certificate validation is ON by default. Setting this
- property after at least one synced Realm or standalone Session has been opened is a no-op.
- 
+ Whether SSL certificate validation should be disabled.
+
+ Once this value is set (either way), it will be used as the default value for SSL
+ validation when initializing new sync configuration values. A given configuration's
+ SSL validation setting can still be overriden from the global default by setting it
+ explicitly.
+
  @warning NEVER disable certificate validation for clients and servers in production.
  */
-@property (nonatomic) BOOL disableSSLValidation;
+@property (nonatomic) BOOL disableSSLValidation __deprecated_msg("Set `enableSSLValidation` on individual configurations instead.");
 
 /**
- The logging threshold which newly opened synced Realms will use. Defaults to `RLMSyncLogLevelInfo`. Set this before
- any synced Realms are opened. Logging strings are output to ASL.
+ The logging threshold which newly opened synced Realms will use. Defaults to
+ `RLMSyncLogLevelInfo`.
+
+ Logging strings are output to Apple System Logger.
+
+ @warning This property must be set before any synced Realms are opened. Setting it after
+          opening any synced Realm will do nothing.
  */
 @property (nonatomic) RLMSyncLogLevel logLevel;
 
 /// The sole instance of the singleton.
-+ (instancetype)sharedManager;
++ (instancetype)sharedManager NS_REFINED_FOR_SWIFT;
 
 /// :nodoc:
 - (instancetype)init __attribute__((unavailable("RLMSyncManager cannot be created directly")));

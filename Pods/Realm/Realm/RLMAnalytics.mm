@@ -48,7 +48,7 @@
 // - What version of OS X it's running on (in case Xcode aggressively drops
 //   support for older versions again, we need to know what we need to support).
 // - The minimum iOS/OS X version that the application is targeting (again, to
-//   help us decide what versions we need to support). 
+//   help us decide what versions we need to support).
 // - An anonymous MAC address and bundle ID to aggregate the other information on.
 // - What version of Swift is being used (if applicable).
 
@@ -104,7 +104,7 @@ static auto RLMSysCtl(int *mib, u_int mibSize, size_t *bufferSize) {
 // Get the version of OS X we're running on (even in the simulator this gives
 // the OS X version and not the simulated iOS version)
 static NSString *RLMOSVersion() {
-    std::array<int, 2> mib = {CTL_KERN, KERN_OSRELEASE};
+    std::array<int, 2> mib = {{CTL_KERN, KERN_OSRELEASE}};
     size_t bufferSize;
     auto buffer = RLMSysCtl(&mib[0], mib.size(), &bufferSize);
     if (!buffer) {
@@ -140,7 +140,7 @@ static NSString *RLMMACAddress() {
         return nil;
     }
 
-    std::array<int, 6> mib = {CTL_NET, PF_ROUTE, 0, AF_LINK, NET_RT_IFLIST, en0};
+    std::array<int, 6> mib = {{CTL_NET, PF_ROUTE, 0, AF_LINK, NET_RT_IFLIST, en0}};
     size_t bufferSize;
     auto buffer = RLMSysCtl(&mib[0], mib.size(), &bufferSize);
     if (!buffer) {

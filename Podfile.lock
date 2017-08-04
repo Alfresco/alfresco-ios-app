@@ -24,16 +24,16 @@ PODS:
     - NJKWebViewProgress/ProgressView (= 0.2.3)
   - NJKWebViewProgress/Core (0.2.3)
   - NJKWebViewProgress/ProgressView (0.2.3)
-  - Realm (2.0.2):
-    - Realm/Headers (= 2.0.2)
-  - Realm/Headers (2.0.2)
+  - Realm (2.9.1):
+    - Realm/Headers (= 2.9.1)
+  - Realm/Headers (2.9.1)
 
 DEPENDENCIES:
   - Google/Analytics (from `http://alfresco.github.io/alfresco-ios-app/Google.podspec.json`)
   - HockeySDK (~> 3.8)
   - MBProgressHUD (~> 1.0)
   - NJKWebViewProgress (~> 0.2)
-  - Realm (~> 2.0.2)
+  - Realm (~> 2.9.1)
 
 EXTERNAL SOURCES:
   Google:
@@ -49,8 +49,8 @@ SPEC CHECKSUMS:
   HockeySDK: 464a9eb01c42718515629d8d1d406983e5f855dc
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
-  Realm: 0f5a194af0b7e6158b83db41b4ee1a00be7ddf1a
+  Realm: f91fb43bd474c4f731a116ebf7392c75dd015920
 
-PODFILE CHECKSUM: c0ef36485ef75e29f4276117019f19f8ed108e94
+PODFILE CHECKSUM: 6a82cac8a96c56f952f9e38082a7f01310268eb4
 
 COCOAPODS: 1.2.0

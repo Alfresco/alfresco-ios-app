@@ -21,37 +21,48 @@
 #import "RLMSyncConfiguration.h"
 #import "RLMSyncUtil_Private.h"
 
-#include "sync_config.hpp"
-#include "sync_metadata.hpp"
+#import "sync/sync_config.hpp"
+#import "sync/sync_user.hpp"
+#import "sync/impl/sync_metadata.hpp"
 
-@class RLMSyncConfiguration;
+@class RLMSyncConfiguration, RLMSyncSessionRefreshHandle;
+
+using namespace realm;
 
 typedef void(^RLMFetchedRealmCompletionBlock)(NSError * _Nullable, RLMRealm * _Nullable, BOOL * _Nonnull);
 
 NS_ASSUME_NONNULL_BEGIN
 
+class CocoaSyncUserContext : public SyncUserContext {
+public:
+    void register_refresh_handle(const std::string& path, RLMSyncSessionRefreshHandle *handle);
+    void unregister_refresh_handle(const std::string& path);
+    void invalidate_all_handles();
+
+private:
+    /**
+     A map of paths to 'refresh handles'.
+
+     A refresh handle is an object that encapsulates the concept of periodically
+     refreshing the Realm's access token before it expires. Tokens are indexed by their
+     paths (e.g. `/~/path/to/realm`).
+     */
+    std::unordered_map<std::string, RLMSyncSessionRefreshHandle *> m_refresh_handles;
+
+    std::mutex m_mutex;
+};
+
 @interface RLMSyncUser ()
 
-@property (nullable, nonatomic) RLMServerToken refreshToken;
-
-/// Create a user based on a `SyncUserMetadata` object. This method does NOT register the user to the sync manager's
-/// user store.
-- (instancetype)initWithMetadata:(realm::SyncUserMetadata)metadata;
-
-/**
- Register a Realm to a user.
- 
- @param fileURL     The location of the file on disk where the local copy of the Realm will be saved.
- @param completion  An optional completion block.
- */
-- (nullable RLMSyncSession *)_registerSessionForBindingWithFileURL:(NSURL *)fileURL
-                                                        syncConfig:(RLMSyncConfiguration *)syncConfig
-                                                 standaloneSession:(BOOL)isStandalone
-                                                      onCompletion:(nullable RLMSyncBasicErrorReportingBlock)completion;
-
-- (void)setState:(RLMSyncUserState)state;
-- (void)_deregisterSessionWithRealmURL:(NSURL *)realmURL;
-
-NS_ASSUME_NONNULL_END
+- (instancetype)initWithSyncUser:(std::shared_ptr<SyncUser>)user;
+- (std::shared_ptr<SyncUser>)_syncUser;
+- (nullable NSString *)_refreshToken;
++ (void)_setUpBindingContextFactory;
 
 @end
+
+using PermissionChangeCallback = std::function<void(std::exception_ptr)>;
+
+PermissionChangeCallback RLMWrapPermissionStatusCallback(RLMPermissionStatusBlock callback);
+
+NS_ASSUME_NONNULL_END

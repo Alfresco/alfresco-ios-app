@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
 // A reference to an object's row that doesn't keep the object accessor alive.
 // Used by some Swift property types, such as LinkingObjects, to avoid retain cycles
 // with their containing object.
-@interface RLMWeakObjectHandle : NSObject
+@interface RLMWeakObjectHandle : NSObject<NSCopying>
 
 - (instancetype)initWithObject:(RLMObjectBase *)object;
 
@@ -75,6 +75,22 @@ FOUNDATION_EXTERN id _Nullable RLMValidatedValueForProperty(id object, NSString 
 // Compare two RLObjectBases
 FOUNDATION_EXTERN BOOL RLMObjectBaseAreEqual(RLMObjectBase * _Nullable o1, RLMObjectBase * _Nullable o2);
 
+typedef void (^RLMObjectNotificationCallback)(NSArray<NSString *> *_Nullable propertyNames,
+                                              NSArray *_Nullable oldValues,
+                                              NSArray *_Nullable newValues,
+                                              NSError *_Nullable error);
+FOUNDATION_EXTERN RLMNotificationToken *RLMObjectAddNotificationBlock(RLMObjectBase *obj, RLMObjectNotificationCallback block);
+
+// Returns whether the class is a descendent of RLMObjectBase
+FOUNDATION_EXTERN BOOL RLMIsObjectOrSubclass(Class klass);
+
+// Returns whether the class is an indirect descendant of RLMObjectBase
+FOUNDATION_EXTERN BOOL RLMIsObjectSubclass(Class klass);
+
+// For unit testing purposes, allow an Objective-C class named FakeObject to also be used
+// as the base class of managed objects. This allows for testing invalid schemas.
+FOUNDATION_EXTERN void RLMSetTreatFakeObjectAsRLMObject(BOOL flag);
+
 // Get ObjectUil class for objc or swift
 FOUNDATION_EXTERN Class RLMObjectUtilClass(BOOL isSwift);
 
@@ -88,7 +104,7 @@ FOUNDATION_EXTERN const NSUInteger RLMDescriptionMaxDepth;
 + (nullable NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> *)linkingObjectsPropertiesForClass:(Class)cls;
 
 + (nullable NSArray<NSString *> *)getGenericListPropertyNames:(id)obj;
-+ (nullable NSDictionary<NSString *, NSString *> *)getLinkingObjectsProperties:(id)object;
++ (nullable NSDictionary<NSString *, NSDictionary<NSString *, NSString *> *> *)getLinkingObjectsProperties:(id)object;
 
 + (nullable NSDictionary<NSString *, NSNumber *> *)getOptionalProperties:(id)obj;
 + (nullable NSArray<NSString *> *)requiredPropertiesForClass:(Class)cls;
