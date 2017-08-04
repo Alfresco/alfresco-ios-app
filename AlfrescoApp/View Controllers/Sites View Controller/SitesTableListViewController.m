@@ -318,6 +318,7 @@
         {
             case SiteListTypeSelectionMySites:
             {
+                self.view.accessibilityIdentifier = kSitesTableListVCMySitesViewIdentifier;
                 [self.siteService retrieveSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                     if (error)
                     {
@@ -331,6 +332,7 @@
                 
             case SiteListTypeSelectionFavouriteSites:
             {
+                self.view.accessibilityIdentifier = kSitesTableListVCFavoriteSitesViewIdentifier;
                 [self.siteService retrieveFavoriteSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                     if (error)
                     {
@@ -344,6 +346,7 @@
                 
             case SiteListTypeSelectionAllSites:
             {
+                self.view.accessibilityIdentifier = kSitesTableListVCAllSitesViewIdentifier;
                 [self.siteService retrieveAllSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
                     if (error)
                     {

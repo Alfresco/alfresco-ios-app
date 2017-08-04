@@ -45,6 +45,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self setAccessibilityIdentifiers];
 
     MKMapView *mapView = [[MKMapView alloc] initWithFrame:self.view.bounds];
     mapView.userTrackingMode = MKUserTrackingModeNone;
@@ -67,6 +69,11 @@
     self.noMapLabel = noMapLabel;
     
     [self updateMapView];
+}
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kMapVCViewIdentifier;
 }
 
 - (void)updateMapView

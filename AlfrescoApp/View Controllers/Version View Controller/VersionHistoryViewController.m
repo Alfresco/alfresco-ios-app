@@ -65,6 +65,8 @@
 {
     [super viewDidLoad];
     
+    [self setAccessibilityIdentifiers];
+    
     self.allowsPullToRefresh = NO;
     
     self.title = NSLocalizedString(@"version.history.title", @"Version History");
@@ -88,6 +90,11 @@
 }
 
 #pragma mark - Private Functions
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kVersionHistoryVCViewIdentifier;
+}
 
 - (void)loadVersionsForDocument:(AlfrescoDocument *)document listingContext:(AlfrescoListingContext *)listingContext completionBlock:(void (^)(AlfrescoPagingResult *pagingResult, NSError *error))completionBlock
 {

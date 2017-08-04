@@ -125,6 +125,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                                              selector:@selector(textFieldDidChange:)
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -148,6 +149,12 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
 }
 
 #pragma mark - Private Methods
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+    self.workflowService = [[AlfrescoWorkflowService alloc] initWithSession:self.session];
+}
 
 - (void)createTableViewGroups
 {

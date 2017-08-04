@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -150,6 +150,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     // Register the delegate for session updates
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionRefreshedNotification object:nil];
     
     if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] == NO)
     {
@@ -356,7 +357,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 {
     self.session = notification.object;
     
-    NSString *labelString = [self.session isKindOfClass:[AlfrescoRepositorySession class]] ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    NSString *labelString = [[AnalyticsManager sharedManager] serverTypeStringForSession:self.session];
     
     [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
                                                       action:kAnalyticsEventActionInfo

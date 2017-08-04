@@ -70,6 +70,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadCancelled:) name:kDocumentPreviewManagerDocumentDownloadCancelledNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     }
     return self;
 }
@@ -756,6 +757,11 @@
 }
 
 #pragma mark - Private Functions
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+}
 
 - (void)addCompletionBlock:(DocumentPreviewManagerFileSavedBlock)completionBlock
 {

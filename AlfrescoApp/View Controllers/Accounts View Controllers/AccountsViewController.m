@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -20,15 +20,14 @@
 #import "AccountManager.h"
 #import "AccountTypeSelectionViewController.h"
 #import "NavigationViewController.h"
-#import "AccountInfoViewController.h"
 #import "LoginManager.h"
-#import "AccountInfoViewController.h"
 #import "UniversalDevice.h"
 #import "PinViewController.h"
 #import "PreferenceManager.h"
 #import "TouchIDManager.h"
 #import "RealmSyncManager.h"
 #import "SecurityManager.h"
+#import "AccountDetailsViewController.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -322,10 +321,8 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         else
         {
             // Only offer the AccountInfoViewController the session if it's the currently selected one
-            viewController = [[AccountInfoViewController alloc] initWithAccount:account
-                                                            accountActivityType:AccountActivityTypeEditAccount
-                                                                  configuration:self.configuration
-                                                                        session:account.isSelectedAccount ? self.session : nil];
+            AccountDataSourceType dataSourceType = account.accountType == UserAccountTypeCloud ? AccountDataSourceTypeCloudAccountSettings : AccountDataSourceTypeAccountDetails;
+            viewController = [[AccountDetailsViewController alloc] initWithDataSourceType:dataSourceType account:account configuration:self.configuration session:account.isSelectedAccount ? self.session : nil];
         }
         
         if (viewController)
@@ -514,7 +511,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                 [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
                 [self.tableView reloadData];
                 
-                NSString *label = account.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+                NSString *label = account.accountType == UserAccountTypeOnPremise ? ([account.samlData isSamlEnabled] ? kAnalyticsEventLabelOnPremiseSAML : kAnalyticsEventLabelOnPremise) : kAnalyticsEventLabelCloud;
                 [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
                                                                   action:kAnalyticsEventActionSwitch
                                                                    label:label

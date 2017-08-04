@@ -55,30 +55,9 @@
             self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
         }
         
-        switch (self.dataSourceType)
-        {
-            case SearchViewControllerDataSourceTypeSearchFiles:
-            case SearchViewControllerDataSourceTypeSearchFolders:
-            {
-                self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
-            }
-                break;
-                
-            case SearchViewControllerDataSourceTypeSearchUsers:
-            {
-                self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
-            }
-                break;
-                
-            case SearchViewControllerDataSourceTypeSearchSites:
-            {
-                self.siteService = [[AlfrescoSiteService alloc] initWithSession:self.session];
-            }
-                break;
-                
-            default:
-                break;
-        }
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+        
+        [self initializeServices];
         
         [self reloadDataSource];
     }
@@ -99,6 +78,11 @@
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)retrieveNextItems:(AlfrescoListingContext *)moreListingContext
@@ -241,6 +225,40 @@
         displayErrorMessage([NSString stringWithFormat:errorMessageFormat, [ErrorDescriptions descriptionForError:error]]);
         [Notifier notifyWithAlfrescoError:error];
     }
+}
+
+- (void)initializeServices
+{
+    switch (self.dataSourceType)
+    {
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            self.searchService = [[AlfrescoSearchService alloc] initWithSession:self.session];
+        }
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            self.personService = [[AlfrescoPersonService alloc] initWithSession:self.session];
+        }
+            break;
+            
+        case SearchViewControllerDataSourceTypeSearchSites:
+        {
+            self.siteService = [[AlfrescoSiteService alloc] initWithSession:self.session];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+    [self initializeServices];
 }
 
 #pragma mark - TableViewDataSource methods

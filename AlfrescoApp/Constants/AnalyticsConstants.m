@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -22,12 +22,15 @@
 
 // Account
 NSString * const kAnalyticsViewAccountCreateTypePicker      = @"Account - Create - Type Picker";
+NSString * const kAnalyticsViewAccountCreateServer          = @"Account - Create - Server";
 NSString * const kAnalyticsViewAccountCreateCredentials     = @"Account - Create - Credentials";
 NSString * const kAnalyticsViewAccountCreateDiagnostics     = @"Account - Create - Diagnostics";
 NSString * const kAnalyticsViewAccountEdit                  = @"Account - Edit";
 NSString * const kAnalyticsViewAccountEditActiveProfile     = @"Account - Edit - Active Profile";
 NSString * const kAnalyticsViewAccountEditEditMainMenu      = @"Account - Edit - Edit Main Menu";
 NSString * const kAnalyticsViewAccountEditAccountDetails    = @"Account - Edit - Account Details";
+NSString * const kAnalyticsViewAccountOAuth                 = @"Account - OAuth";
+NSString * const kAnalyticsViewAccountSAML                  = @"Account - SAML";
 
 // Menu
 NSString * const kAnalyticsViewMenuActivities     = @"Menu - Activities";
@@ -110,68 +113,72 @@ NSString * const kAnalyticsEventCategorySettings            = @"Settings";
 NSString * const kAnalyticsEventCategoryDocumentProvider    = @"Document Provider";
 
 // Actions
-NSString * const kAnalyticsEventActionCreate             = @"Create";
-NSString * const kAnalyticsEventActionDelete             = @"Delete";
-NSString * const kAnalyticsEventActionUpdateMenu         = @"Update Menu";
-NSString * const kAnalyticsEventActionInfo               = @"Info";
-NSString * const kAnalyticsEventActionSwitch             = @"Switch";
-NSString * const kAnalyticsEventActionQuickAction        = @"Quick Action";
-NSString * const kAnalyticsEventActionFullScreenView     = @"Full Screen View";
-NSString * const kAnalyticsEventActionUpdate             = @"Update";
-NSString * const kAnalyticsEventActionDownload           = @"Download";
-NSString * const kAnalyticsEventActionOpen               = @"Open";
-NSString * const kAnalyticsEventActionSync               = @"Sync";
-NSString * const kAnalyticsEventActionUnSync             = @"UnSync";
-NSString * const kAnalyticsEventActionEmail              = @"Email";
-NSString * const kAnalyticsEventActionEmailLink          = @"Email Link";
-NSString * const kAnalyticsEventActionSendForReview      = @"Send for Review";
-NSString * const kAnalyticsEventActionComment            = @"Comment";
-NSString * const kAnalyticsEventActionFavorite           = @"Favorite";
-NSString * const kAnalyticsEventActionUnfavorite         = @"UnFavorite";
-NSString * const kAnalyticsEventActionLike               = @"Like";
-NSString * const kAnalyticsEventActionUnlike             = @"UnLike";
-NSString * const kAnalyticsEventActionPrint              = @"Print";
-NSString * const kAnalyticsEventActionCall               = @"Call";
-NSString * const kAnalyticsEventActionSkype              = @"Skype";
-NSString * const kAnalyticsEventActionShowInMaps         = @"Show in Maps";
-NSString * const kAnalyticsEventActionMembership         = @"Membership";
-NSString * const kAnalyticsEventActionReassign           = @"Reassign";
-NSString * const kAnalyticsEventActionComplete           = @"Complete";
-NSString * const kAnalyticsEventActionRunSimple          = @"Run Simple";
-NSString * const kAnalyticsEventActionRun                = @"Run";
-NSString * const kAnalyticsEventActionHistory            = @"History";
-NSString * const kAnalyticsEventActionAnalytics          = @"Analytics";
-NSString * const kAnalyticsEventActionClearData          = @"Clear Data";
+NSString * const kAnalyticsEventActionCreate                = @"Create";
+NSString * const kAnalyticsEventActionDelete                = @"Delete";
+NSString * const kAnalyticsEventActionUpdateMenu            = @"Update Menu";
+NSString * const kAnalyticsEventActionChangeAuthentication  = @"Change Authentication";
+NSString * const kAnalyticsEventActionInfo                  = @"Info";
+NSString * const kAnalyticsEventActionSwitch                = @"Switch";
+NSString * const kAnalyticsEventActionQuickAction           = @"Quick Action";
+NSString * const kAnalyticsEventActionFullScreenView        = @"Full Screen View";
+NSString * const kAnalyticsEventActionUpdate                = @"Update";
+NSString * const kAnalyticsEventActionDownload              = @"Download";
+NSString * const kAnalyticsEventActionOpen                  = @"Open";
+NSString * const kAnalyticsEventActionSync                  = @"Sync";
+NSString * const kAnalyticsEventActionUnSync                = @"UnSync";
+NSString * const kAnalyticsEventActionEmail                 = @"Email";
+NSString * const kAnalyticsEventActionEmailLink             = @"Email Link";
+NSString * const kAnalyticsEventActionSendForReview         = @"Send for Review";
+NSString * const kAnalyticsEventActionComment               = @"Comment";
+NSString * const kAnalyticsEventActionFavorite              = @"Favorite";
+NSString * const kAnalyticsEventActionUnfavorite            = @"UnFavorite";
+NSString * const kAnalyticsEventActionLike                  = @"Like";
+NSString * const kAnalyticsEventActionUnlike                = @"UnLike";
+NSString * const kAnalyticsEventActionPrint                 = @"Print";
+NSString * const kAnalyticsEventActionCall                  = @"Call";
+NSString * const kAnalyticsEventActionSkype                 = @"Skype";
+NSString * const kAnalyticsEventActionShowInMaps            = @"Show in Maps";
+NSString * const kAnalyticsEventActionMembership            = @"Membership";
+NSString * const kAnalyticsEventActionReassign              = @"Reassign";
+NSString * const kAnalyticsEventActionComplete              = @"Complete";
+NSString * const kAnalyticsEventActionRunSimple             = @"Run Simple";
+NSString * const kAnalyticsEventActionRun                   = @"Run";
+NSString * const kAnalyticsEventActionHistory               = @"History";
+NSString * const kAnalyticsEventActionAnalytics             = @"Analytics";
+NSString * const kAnalyticsEventActionClearData             = @"Clear Data";
 
 // Labels
-NSString * const kAnalyticsEventLabelOnPremise                      = @"OnPremise";
-NSString * const kAnalyticsEventLabelCloud                          = @"Cloud";
-NSString * const kAnalyticsEventLabelNetwork                        = @"Network";
-NSString * const kAnalyticsEventLabelProfile                        = @"Profile";
-NSString * const kAnalyticsEventLabelDocumentMimetype               = @"Document Mimetype";
-NSString * const kAnalyticsEventLabelFolder                         = @"Folder";
-NSString * const kAnalyticsEventLabelTakePhotoOrVideo               = @"Take Photo or Video";
-NSString * const kAnalyticsEventLabelRecordAudio                    = @"Record Audio";
-NSString * const kAnalyticsEventLabelPhone                          = @"Phone";
-NSString * const kAnalyticsEventLabelMobile                         = @"Mobile";
-NSString * const kAnalyticsEventLabelEnterprise                     = @"Enterprise";
-NSString * const kAnalyticsEventLabelSMS                            = @"SMS";
-NSString * const kAnalyticsEventLabelChat                           = @"Chat";
-NSString * const kAnalyticsEventLabelCall                           = @"Call";
-NSString * const kAnalyticsEventLabelVideoCall                      = @"VideoCall";
-NSString * const kAnalyticsEventLabelUser                           = @"User";
-NSString * const kAnalyticsEventLabelCompany                        = @"Company";
-NSString * const kAnalyticsEventLabelJoin                           = @"Join";
-NSString * const kAnalyticsEventLabelLeave                          = @"Leave";
-NSString * const kAnalyticsEventLabelCancel                         = @"Cancel";
-NSString * const kAnalyticsEventLabelEnable                         = @"Enable";
-NSString * const kAnalyticsEventLabelDisable                        = @"Disable";
-NSString * const kAnalyticsEventLabelFiles                          = @"Files";
-NSString * const kAnalyticsEventLabelFolders                        = @"Folders";
-NSString * const kAnalyticsEventLabelSites                          = @"Sites";
-NSString * const kAnalyticsEventLabelPeople                         = @"People";
-NSString * const kAnalyticsEventLabelSyncedFolders                  = @"Synced Folders";
-NSString * const kAnalyticsEventLabelSyncedFiles                    = @"Synced Files";
-NSString * const kAnalyticsEventLabelDisableConfig                  = @"Disable Config";
-NSString * const kAnalyticsEventLabelPartial                        = @"Partial";
-NSString * const kAnalyticsEventLabelFull                           = @"Full";
+NSString * const kAnalyticsEventLabelOnPremise          = @"OnPremise";
+NSString * const kAnalyticsEventLabelOnPremiseSAML      = @"OnPremise SAML";
+NSString * const kAnalyticsEventLabelBasic              = @"Basic";
+NSString * const kAnalyticsEventLabelSAML               = @"SAML";
+NSString * const kAnalyticsEventLabelCloud              = @"Cloud";
+NSString * const kAnalyticsEventLabelNetwork            = @"Network";
+NSString * const kAnalyticsEventLabelProfile            = @"Profile";
+NSString * const kAnalyticsEventLabelDocumentMimetype   = @"Document Mimetype";
+NSString * const kAnalyticsEventLabelFolder             = @"Folder";
+NSString * const kAnalyticsEventLabelTakePhotoOrVideo   = @"Take Photo or Video";
+NSString * const kAnalyticsEventLabelRecordAudio        = @"Record Audio";
+NSString * const kAnalyticsEventLabelPhone              = @"Phone";
+NSString * const kAnalyticsEventLabelMobile             = @"Mobile";
+NSString * const kAnalyticsEventLabelEnterprise         = @"Enterprise";
+NSString * const kAnalyticsEventLabelSMS                = @"SMS";
+NSString * const kAnalyticsEventLabelChat               = @"Chat";
+NSString * const kAnalyticsEventLabelCall               = @"Call";
+NSString * const kAnalyticsEventLabelVideoCall          = @"VideoCall";
+NSString * const kAnalyticsEventLabelUser               = @"User";
+NSString * const kAnalyticsEventLabelCompany            = @"Company";
+NSString * const kAnalyticsEventLabelJoin               = @"Join";
+NSString * const kAnalyticsEventLabelLeave              = @"Leave";
+NSString * const kAnalyticsEventLabelCancel             = @"Cancel";
+NSString * const kAnalyticsEventLabelEnable             = @"Enable";
+NSString * const kAnalyticsEventLabelDisable            = @"Disable";
+NSString * const kAnalyticsEventLabelFiles              = @"Files";
+NSString * const kAnalyticsEventLabelFolders            = @"Folders";
+NSString * const kAnalyticsEventLabelSites              = @"Sites";
+NSString * const kAnalyticsEventLabelPeople             = @"People";
+NSString * const kAnalyticsEventLabelSyncedFolders      = @"Synced Folders";
+NSString * const kAnalyticsEventLabelSyncedFiles        = @"Synced Files";
+NSString * const kAnalyticsEventLabelDisableConfig      = @"Disable Config";
+NSString * const kAnalyticsEventLabelPartial            = @"Partial";
+NSString * const kAnalyticsEventLabelFull               = @"Full";

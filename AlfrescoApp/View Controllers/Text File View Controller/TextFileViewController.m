@@ -35,6 +35,8 @@ static NSString * const kTextFileMimeType = @"text/plain";
 @property (nonatomic, weak) id<UploadFormViewControllerDelegate> uploadFormViewControllerDelegate;
 @property (nonatomic, weak) UITextView *textView;
 @property (nonatomic, strong) NSString *temporaryFilePath;
+@property (nonatomic, strong) UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) UIBarButtonItem *nextButton;
 
 @end
 
@@ -99,11 +101,11 @@ static NSString * const kTextFileMimeType = @"text/plain";
     NSString *rightBarButtonTitle = self.editingDocument ? NSLocalizedString(@"document.edit.button.save", @"Save") : NSLocalizedString(@"Next", @"Next");
     NSString *leftBarButtonTitle = self.editingDocument ? NSLocalizedString(@"document.edit.button.discard", @"Discard") : NSLocalizedString(@"Cancel", @"Cancel");
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:leftBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed:)];
-    self.navigationItem.leftBarButtonItem = cancelButton;
+    self.cancelButton = [[UIBarButtonItem alloc] initWithTitle:leftBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(cancelButtonPressed:)];
+    self.navigationItem.leftBarButtonItem = self.cancelButton;
     
-    UIBarButtonItem *nextButton = [[UIBarButtonItem alloc] initWithTitle:rightBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
-    self.navigationItem.rightBarButtonItem = nextButton;
+    self.nextButton = [[UIBarButtonItem alloc] initWithTitle:rightBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(nextButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = self.nextButton;
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
     if (self.documentContentPath)
@@ -117,6 +119,8 @@ static NSString * const kTextFileMimeType = @"text/plain";
     }
     
     [self createTemporaryFile];
+    
+    [self setAccessibilityIdentifiers];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -132,10 +136,25 @@ static NSString * const kTextFileMimeType = @"text/plain";
 
 #pragma mark - Private Functions
 
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kTextFileVCViewIdentifier;
+    self.cancelButton.accessibilityIdentifier = kTextFileVCCancelButtonIdentifier;
+    self.nextButton.accessibilityIdentifier = kTextFileVCNextButtonIdentifier;
+    self.textView.accessibilityIdentifier = kTextFileVCContentTextViewIdentifier;
+}
+
 - (void)registerForNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+    self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
 }
 
 - (void)createTemporaryFile

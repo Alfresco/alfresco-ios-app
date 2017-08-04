@@ -46,6 +46,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     {
         _session = session;
         _nodePicker = nodePicker;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     }
     return self;
 }
@@ -72,6 +73,16 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
     self.navigationItem.hidesBackButton = YES;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+}
+
 - (void)configureScopeView
 {
     // App configuration code has been removed as it is not required as part of the document node picking workflow
@@ -84,6 +95,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                        image:[UIImage imageNamed:@"mainmenu-repository.png"]
                                                                  description:nil
                                                                  displayType:MainMenuDisplayTypeDetail
+                                                    accessibilityIdentifier:nil
                                                             associatedObject:companyHomeViewController];
     [self.tableViewData addObject:companyHomeItem];
     
@@ -93,6 +105,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                        image:[UIImage imageNamed:@"mainmenu-sites.png"]
                                                                  description:nil
                                                                  displayType:MainMenuDisplayTypeDetail
+                                                        accessibilityIdentifier:nil
                                                             associatedObject:sitesListViewController];
     [self.tableViewData addObject:sitesItem];
     
@@ -102,6 +115,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                  image:[UIImage imageNamed:@"mainmenu-favourites.png"]
                                                            description:nil
                                                            displayType:MainMenuDisplayTypeDetail
+                                                   accessibilityIdentifier:nil
                                                       associatedObject:favoritesViewController];
     [self.tableViewData addObject:favoritesItem];
     
@@ -114,6 +128,7 @@ NSString * const kNodePickerScopeCellIdentifier = @"NodePickerScopeCellIdentifie
                                                                     image:[UIImage imageNamed:@"mainmenu-sync.png"]
                                                               description:nil
                                                               displayType:MainMenuDisplayTypeDetail
+                                                  accessibilityIdentifier:nil
                                                          associatedObject:syncedContentViewController];
 
         [self.tableViewData addObject:syncItem];

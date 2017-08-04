@@ -88,7 +88,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
         self.attachments = [NSMutableArray array];
         self.tasks = [NSMutableArray array];
         [self createServicesWithSession:session];
-        [self registerForNotifications];
     }
     return self;
 }
@@ -153,11 +152,6 @@ typedef NS_ENUM(NSUInteger, TableSections)
             [weakSelf.tableView reloadSections:[NSIndexSet indexSetWithIndex:TableSectionTasks] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     }];
-}
-
-- (void)registerForNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionReceived:) name:kAlfrescoSessionReceivedNotification object:nil];
 }
 
 - (void)sessionReceived:(NSNotification *)notification

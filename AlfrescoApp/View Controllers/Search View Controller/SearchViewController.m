@@ -28,6 +28,7 @@
 #import "PreferenceManager.h"
 #import "UISearchBar+Paste.h"
 #import "SearchResultsTableViewDataSource.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 static CGFloat const kHeaderHeight = 40.0f;
 static CGFloat const kCellHeightSearchScope = 64.0f;
@@ -66,19 +67,17 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     self.dataSource = [[SearchViewControllerDataSource alloc] initWithDataSourceType:self.dataSourceType account:[AccountManager sharedManager].selectedAccount];
     
     [self setupScreenTitle];
     
     if (!IS_IPAD && !self.presentingViewController)
     {
-        UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-        if (self.navigationController.viewControllers.firstObject == self)
-        {
-            self.navigationItem.leftBarButtonItem = hamburgerButtom;
-        }
+        [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandRootRevealController)];
     }
+    
+    [self setAccessibilityIdentifiers];
     
     if (self.dataSource.showsSearchBar)
     {
@@ -89,6 +88,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 - (void)dealloc
 {
     [_searchController.view removeFromSuperview];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -330,6 +330,40 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
 
 #pragma mark - Private methods
 
+- (void)setAccessibilityIdentifiers
+{
+    switch (self.dataSourceType) {
+        case SearchViewControllerDataSourceTypeSearchSites:
+        {
+            self.view.accessibilityIdentifier = kSearchVCSiteViewIdentifier;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeLandingPage:
+        {
+            self.view.accessibilityIdentifier = kSearchVCLandingViewIdentifier;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFiles:
+        {
+            self.view.accessibilityIdentifier = kSearchVCFileViewIdentifier;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchUsers:
+        {
+            self.view.accessibilityIdentifier = kSearchVCUserViewIdentifier;
+            break;
+        }
+        case SearchViewControllerDataSourceTypeSearchFolders:
+        {
+            self.view.accessibilityIdentifier = kSearchVCFolderViewIdentifier;
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
 - (void)setupScreenTitle
 {
     NSString *title = nil;
@@ -441,6 +475,11 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
     {
         self.navigationController.navigationBar.translucent = YES;
     }
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 #pragma mark - UISearchBarDelegate and UISearchResultsUpdating methods

@@ -40,6 +40,7 @@
 "No Users" = "ユーザーなし";
 "On" = "オン";
 "Off" = "オフ";
+"OK" = "OK";
 
 /**
  * Relative Dates
@@ -146,6 +147,7 @@
 "error.alfresco.node.notfound" = "ファイルが見つかりません";
 "error.alfresco.folder.notfound" = "フォルダが見つかりません";
 "error.print.failed.message" = "このファイルの印刷はサポートされていません";
+"error.session.expired" = "セッションの期限が切れています。サインインしてください。";
 // Internet connection error
 "error.no.internet.access.title" = "接続できませんでした";
 "error.no.internet.access.message" = "インターネットに接続していることを確認してから、もう一度やり直してください。ダウンロード済みのファイルの場合は、インターネットに接続しなくてもアクセスできます。";
@@ -456,6 +458,11 @@
 "login.password.textfield.placeholder" = "パスワード";
 "login.hud.label" = "接続しています...";
 "login.hud.cancel.label" = "タップしてキャンセル";
+
+/**
+ * Login Manager
+ */
+"login.sign.in" = "サインイン";
 
 /**
  * Download View Controller

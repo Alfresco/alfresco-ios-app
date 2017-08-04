@@ -47,8 +47,14 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     {
         _session = session;
         _navigationController = navigationController;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)startWithNodes:(NSMutableArray *)nodes type:(NodePickerType)type mode:(NodePickerMode)mode
@@ -313,6 +319,11 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     NSString *nodeType = (self.type == NodePickerTypeDocuments) ? @"document" : @"folder";
     
     return [NSString stringWithFormat:@"SELECT * FROM cmis:%@ WHERE %@", nodeType, pattern];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 @end

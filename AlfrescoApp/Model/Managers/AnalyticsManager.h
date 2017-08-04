@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -28,6 +28,7 @@ typedef NS_ENUM(NSUInteger, AnalyticsType)
 - (void)startAnalytics;
 - (void)stopAnalytics;
 - (void)checkAnalyticsFeature;
+- (NSString *)serverTypeStringForSession:(id<AlfrescoSession>)session;
 
 // Tracking methods
 - (void)trackScreenWithName:(NSString *)screenName;

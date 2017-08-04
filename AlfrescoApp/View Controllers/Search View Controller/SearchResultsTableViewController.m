@@ -26,6 +26,7 @@
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
 #import "SearchResultsTableViewDataSource.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -72,6 +73,8 @@ static CGFloat const kCellHeight = 73.0f;
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+    
     self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
     switch (self.dataType)
     {
@@ -114,6 +117,11 @@ static CGFloat const kCellHeight = 73.0f;
     [self updateEmptyView];
     [self autoPushFirstResultIfNeeded];
     [self trackScreenName];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -325,6 +333,12 @@ static CGFloat const kCellHeight = 73.0f;
 
 #pragma mark - Private methods
 
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+}
+
 - (void)updateEmptyView
 {
     if (!self.alfEmptyLabel)
@@ -383,11 +397,7 @@ static CGFloat const kCellHeight = 73.0f;
     {
         if (!IS_IPAD)
         {
-            UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-            if (self.navigationController.viewControllers.firstObject == self)
-            {
-                self.navigationItem.leftBarButtonItem = hamburgerButtom;
-            }
+            [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandRootRevealController)];
         }
         
         if ([self.tableView numberOfRowsInSection:0])

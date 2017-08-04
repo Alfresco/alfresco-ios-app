@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -77,7 +77,9 @@ NSString * const kHTTPMethodGET = @"GET";
 
 // Notifications
 NSString * const kAlfrescoSessionReceivedNotification = @"AlfrescoSessionReceivedNotification";
-NSString * const kAlfrescoSiteRequestsCompletedNotification = @"AlfrescoSiteRequestsCompleted";
+NSString * const kAlfrescoSessionRefreshedNotification = @"AlfrescoSessionRefreshedNotification";
+NSString * const kAlfrescoTokenExpiredNotification = @"AlfrescoTokenExpiredNotification";
+NSString * const kAlfrescoSiteRequestsCompletedNotification = @"AlfrescoSiteRequestsCompletedNotification";
 NSString * const kAlfrescoAccessDeniedNotification = @"AlfrescoUnauthorizedAccessNotification";
 NSString * const kAlfrescoApplicationPolicyUpdatedNotification = @"AlfrescoApplicationPolicyUpdatedNotification";
 NSString * const kAlfrescoDocumentDownloadedNotification = @"AlfrescoDocumentDownloadedNotification";
@@ -356,3 +358,4 @@ NSString * const kSkypeAppStoreiPhoneURL = @"http://itunes.apple.com/app/skype-f
 NSString * const KSkypeAppStoreiPadURL = @"http://itunes.apple.com/app/skype-for-ipad/id442012681?mt=8";
 
 NSString * const kSyncViewIdentifier = @"view-sync-default";
+NSString * const kLocalViewIdentifier = @"view-local-default";

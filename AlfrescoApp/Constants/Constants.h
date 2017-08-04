@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -116,6 +116,8 @@ extern NSString * const kAlfrescoAppConfigurationUpdatedNotification;
 
 // Notifications
 extern NSString * const kAlfrescoSessionReceivedNotification;
+extern NSString * const kAlfrescoSessionRefreshedNotification;
+extern NSString * const kAlfrescoTokenExpiredNotification;
 extern NSString * const kAlfrescoSiteRequestsCompletedNotification;
 extern NSString * const kAlfrescoAccessDeniedNotification;
 extern NSString * const kAlfrescoApplicationPolicyUpdatedNotification;
@@ -397,3 +399,4 @@ extern NSString * const kSkypeAppStoreiPhoneURL;
 extern NSString * const KSkypeAppStoreiPadURL;
 
 extern NSString * const kSyncViewIdentifier;
+extern NSString * const kLocalViewIdentifier;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -34,6 +34,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "PinViewController.h"
 #import "TouchIDManager.h"
+#import "Utility.h"
 
 static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
@@ -331,10 +332,75 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     }
     else
     {
+        void (^loginBlock)(AlfrescoOAuthData *, AlfrescoSAMLData *) = ^void(AlfrescoOAuthData *oauthData, AlfrescoSAMLData *samlData){
+            AKLoginService *loginService = [[AKLoginService alloc] init];
+            [loginService loginToAccount:account networkIdentifier:account.selectedNetworkIdentifier completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
+                if (successful)
+                {
+                    NSError *accountSavingError = nil;
+                    NSArray *accountList = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&accountSavingError];
+                    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountIdentifier == %@", account.identifier];
+                    NSArray *accountArray = [accountList filteredArrayUsingPredicate:predicate];
+                    UserAccount *keychainAccount = accountArray.firstObject;
+                    
+                    if (oauthData)
+                    {
+                        keychainAccount.oauthData = oauthData;
+                    }
+                    
+                    if (samlData)
+                    {
+                        keychainAccount.samlData = samlData;
+                    }
+                    
+                    [KeychainUtils updateSavedAccount:keychainAccount forListIdentifier:kAccountsListIdentifier error:&accountSavingError];
+                    if (accountSavingError)
+                    {
+                        AlfrescoLogError(@"Error accessing shared keychain. Error: %@", accountSavingError.localizedDescription);
+                    }
+                    [self displayScopeViewControllerFromController:accountListViewController forAccount:account session:session completionBlock:^{
+                        // Remove the login controller from the nav stack
+                        NSMutableArray *navigationStack = self.embeddedNavigationController.viewControllers.mutableCopy;
+                        [navigationStack removeObjectAtIndex:(navigationStack.count-2)];
+                        self.embeddedNavigationController.viewControllers = navigationStack;
+                    }];
+                }
+                else
+                {
+                    [self displayErrorAlertWithMessage:loginError.localizedDescription error:loginError];
+                }
+            }];
+        };
+        
         if (account.isOnPremiseAccount)
         {
-            AKLoginViewController *loginViewController = [[AKLoginViewController alloc] initWithUserAccount:account delegate:self];
-            [self.embeddedNavigationController pushViewController:loginViewController animated:YES];
+            NSString *urlString = [Utilities serverURLStringFromAccount:account];
+            [AlfrescoSAMLAuthHelper checkIfSAMLIsEnabledForServerWithUrlString:urlString completionBlock:^(AlfrescoSAMLData *samlData, NSError *error) {
+                
+                if (error || [samlData isSamlEnabled] == NO)
+                {
+                    AKLoginViewController *loginViewController = [[AKLoginViewController alloc] initWithUserAccount:account delegate:self];
+                    [self.embeddedNavigationController pushViewController:loginViewController animated:YES];
+                }
+                else
+                {
+                    AlfrescoSAMLUILoginViewController *loginController = [[AlfrescoSAMLUILoginViewController alloc] initWithBaseURLString:urlString completionBlock:^(AlfrescoSAMLData *samlData, NSError *error) {
+                        if (error)
+                        {
+                            [self displayErrorAlertWithMessage:error.localizedDescription error:error];
+                        }
+                        else
+                        {
+                            account.samlData.samlTicket = samlData.samlTicket;
+                            loginBlock(nil, samlData);
+                        }
+                    }];
+                    
+                    [self.embeddedNavigationController pushViewController:loginController animated:YES];
+                    
+                    [DocumentPickerViewController trackScreenWithName:kAnalyticsViewAccountSAML];
+                }
+            }];
         }
         else
         {
@@ -346,37 +412,13 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 else
                 {
                     account.oAuthData = oauthData;
-                    
-                    AKLoginService *loginService = [[AKLoginService alloc] init];
-                    [loginService loginToAccount:account networkIdentifier:account.selectedNetworkIdentifier completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
-                        if (successful)
-                        {
-                            NSError *accountSavingError = nil;
-                            NSArray *accountList = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&accountSavingError];
-                            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountIdentifier == %@", account.identifier];
-                            NSArray *accountArray = [accountList filteredArrayUsingPredicate:predicate];
-                            UserAccount *keychainAccount = accountArray.firstObject;
-                            keychainAccount.oauthData = oauthData;
-                            [KeychainUtils updateSavedAccount:keychainAccount forListIdentifier:kAccountsListIdentifier error:&accountSavingError];
-                            if (accountSavingError)
-                            {
-                                AlfrescoLogError(@"Error accessing shared keychain. Error: %@", accountSavingError.localizedDescription);
-                            }
-                            [self displayScopeViewControllerFromController:accountListViewController forAccount:account session:session completionBlock:^{
-                                // Remove the login controller from the nav stack
-                                NSMutableArray *navigationStack = self.embeddedNavigationController.viewControllers.mutableCopy;
-                                [navigationStack removeObjectAtIndex:(navigationStack.count-2)];
-                                self.embeddedNavigationController.viewControllers = navigationStack;
-                            }];
-                        }
-                        else
-                        {
-                            [self displayErrorAlertWithMessage:loginError.localizedDescription error:loginError];
-                        }
-                    }];
+                    loginBlock (oauthData, nil);
                 }
             }];
+            
             [self.embeddedNavigationController pushViewController:loginController animated:YES];
+            
+            [DocumentPickerViewController trackScreenWithName:kAnalyticsViewAccountOAuth];
         }
     }
 }
@@ -848,6 +890,13 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
     NSDictionary *dictionary = [builder build];
     [tracker send:dictionary];
+}
+
++ (void)trackScreenWithName:(NSString *)screenName
+{
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    [tracker set:kGAIScreenName value:screenName];
+    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
 }
 
 // This method is a clone of Utility class's method mimeTypeForFileExtension:

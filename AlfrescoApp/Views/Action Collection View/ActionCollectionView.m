@@ -137,6 +137,7 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
     cell.imageView.tintColor = [UIColor documentActionsTintColor];
     cell.titleLabel.text = itemSelected.itemTitle;
     cell.titleLabel.highlightedTextColor = itemSelected.itemTitleHighlightedColor;
+    cell.accessibilityIdentifier = itemSelected.accessibilityIdentifier;
     
     // Workaround what seems to be a bug in iOS that doesn't scale down the font size when required
     cell.titleLabel.numberOfLines = ([itemSelected.itemTitle rangeOfCharacterFromSet:[NSCharacterSet whitespaceCharacterSet]].location == NSNotFound) ? 1 : 2;

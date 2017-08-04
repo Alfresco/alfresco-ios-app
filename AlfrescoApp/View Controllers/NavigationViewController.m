@@ -17,6 +17,7 @@
  ******************************************************************************/
  
 #import "NavigationViewController.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 @interface NavigationViewController ()
 
@@ -43,7 +44,7 @@
     
     self.navigationBar.translucent = NO;
     
-    self.expandButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandOrCollapseDetailView:)];
+    self.expandButton = [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandOrCollapseDetailView:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated

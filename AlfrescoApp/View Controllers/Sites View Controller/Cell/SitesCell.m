@@ -35,6 +35,14 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
     [self.contentView addSubview:self.siteOptionsContainerView];
 }
 
+- (void)setAccessibilityIdentifiers
+{
+    self.favoriteButton.accessibilityIdentifier = kSitesCellFavoriteActionButtonIdentifier;
+    self.joinButton.accessibilityIdentifier = kSitesCellMembershipActionButtonIdentifier;
+    self.membersButton.accessibilityIdentifier = kSitesCellMembersButtonIdentifiers;
+    self.expandButton.accessibilityIdentifier = kSitesCellDisclosureButtonIdentifier;
+}
+
 #pragma mark - Public Functions
 
 - (void)updateCellStateWithSite:(AlfrescoSite *)site
@@ -89,6 +97,8 @@ const CGFloat SitesCellExpandedHeight = 134.0f;
     
     [self.membersButton setImage:membersButtonImage forState:UIControlStateNormal];
     self.membersLabel.text = membersLabelText;
+    
+    [self setAccessibilityIdentifiers];
 }
 
 #pragma mark - IBActions Functions

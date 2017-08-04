@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -22,12 +22,15 @@
 
 // Account
 extern NSString * const kAnalyticsViewAccountCreateTypePicker;
+extern NSString * const kAnalyticsViewAccountCreateServer;
 extern NSString * const kAnalyticsViewAccountCreateCredentials;
 extern NSString * const kAnalyticsViewAccountCreateDiagnostics;
 extern NSString * const kAnalyticsViewAccountEdit;
 extern NSString * const kAnalyticsViewAccountEditActiveProfile;
 extern NSString * const kAnalyticsViewAccountEditEditMainMenu;
 extern NSString * const kAnalyticsViewAccountEditAccountDetails;
+extern NSString * const kAnalyticsViewAccountOAuth;
+extern NSString * const kAnalyticsViewAccountSAML;
 
 // Menu
 extern NSString * const kAnalyticsViewMenuActivities;
@@ -113,6 +116,7 @@ extern NSString * const kAnalyticsEventCategoryDocumentProvider;
 extern NSString * const kAnalyticsEventActionCreate;
 extern NSString * const kAnalyticsEventActionDelete;
 extern NSString * const kAnalyticsEventActionUpdateMenu;
+extern NSString * const kAnalyticsEventActionChangeAuthentication;
 extern NSString * const kAnalyticsEventActionInfo;
 extern NSString * const kAnalyticsEventActionSwitch;
 extern NSString * const kAnalyticsEventActionQuickAction;
@@ -145,6 +149,9 @@ extern NSString * const kAnalyticsEventActionClearData;
 
 // Labels
 extern NSString * const kAnalyticsEventLabelOnPremise;
+extern NSString * const kAnalyticsEventLabelOnPremiseSAML;
+extern NSString * const kAnalyticsEventLabelBasic;
+extern NSString * const kAnalyticsEventLabelSAML;
 extern NSString * const kAnalyticsEventLabelCloud;
 extern NSString * const kAnalyticsEventLabelNetwork;
 extern NSString * const kAnalyticsEventLabelProfile;

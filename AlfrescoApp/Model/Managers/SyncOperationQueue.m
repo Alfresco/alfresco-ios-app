@@ -65,6 +65,8 @@
     self.topLevelNodesInSyncProcessing = [NSMutableDictionary new];
     self.nodesInProcessingForDeletion = [NSMutableDictionary new];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
         RLMResults *allDocuments = [[RealmManager sharedManager] allDocumentsInRealm:realm];
@@ -761,6 +763,11 @@
         [self notifyProgressDelegateAboutNumberOfNodesInProgress];
         [self notifyProgressDelegateAboutCurrentProgress];
     }
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    [self updateSession:notification.object];
 }
 
 @end

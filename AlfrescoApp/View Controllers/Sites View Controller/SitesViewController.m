@@ -22,6 +22,7 @@
 #import "SearchViewController.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 
@@ -152,6 +153,8 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+    
     self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self listingContext:self.defaultListingContext];
     self.favoritesVC.view.frame = self.favoritesContainerView.bounds;
     [self.favoritesContainerView addSubview:self.favoritesVC.view];
@@ -187,15 +190,13 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
         [self.allSitesVC didMoveToParentViewController:self];
     }
     
+    [self setAccessibilityIdentifiers];
+    
     [self loadSitesForSelectedSegment:self.segmentedControl];
     
     if (!IS_IPAD && !self.presentingViewController)
     {
-        UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-        if (self.navigationController.viewControllers.firstObject == self)
-        {
-            self.navigationItem.leftBarButtonItem = hamburgerButtom;
-        }
+        [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandRootRevealController)];
     }
 }
 
@@ -206,7 +207,18 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuSites];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Private methods
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kSitesVCViewIdentifier;
+    self.segmentedControl.accessibilityIdentifier = kSitesVCSegmentedControlIdentifier;
+}
 
 - (SiteListTypeSelection)selectionTypeForFilter:(SitesListViewFilter)filter
 {
@@ -283,6 +295,11 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 - (void)expandRootRevealController
 {
     [(RootRevealViewController *)[UniversalDevice revealViewController] expandViewController];
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 @end

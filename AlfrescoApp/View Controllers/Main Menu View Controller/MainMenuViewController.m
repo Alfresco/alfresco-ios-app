@@ -19,6 +19,8 @@
 #import "MainMenuViewController.h"
 #import "MainMenuTableViewCell.h"
 #import "MainMenuHeaderView.h"
+#import "LoginManager.h"
+#import "DownloadsViewController.h"
 
 static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
 static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIdentifier";
@@ -103,6 +105,7 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     {
         self.tableView.backgroundColor = self.backgroundColour;
     }
+    [self setAccessibilityIdentifiers];
 }
 
 #pragma mark - Custom Getters and Setters
@@ -114,6 +117,12 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 }
 
 #pragma mark - Private Methods
+
+- (void)setAccessibilityIdentifiers
+{
+    self.view.accessibilityIdentifier = kMainMenuVCViewIdentifier;
+    self.tableView.accessibilityIdentifier = kMainMenuVCTableViewIdentifier;
+}
 
 - (MainMenuGroup *)groupForGroupType:(MainMenuGroupType)groupType
 {
@@ -393,6 +402,13 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     [currentGroup clearGroup];
 }
 
+- (void) cleanSelection
+{
+    NSIndexPath *currentlySelected = self.tableView.indexPathForSelectedRow;
+    [self.tableView deselectRowAtIndexPath:currentlySelected animated:NO];
+    [self tableView:self.tableView didDeselectRowAtIndexPath:currentlySelected];
+}
+
 #pragma mark - UITableViewDataSourceDelegate Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -435,6 +451,11 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
         cell.itemImageView.layer.cornerRadius = 0;
     }
     
+    if(item.accessibilityIdentifier)
+    {
+        cell.accessibilityIdentifier = item.accessibilityIdentifier;
+    }
+    
     return cell;
 }
 
@@ -461,6 +482,30 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 {
     MainMenuSection *selectedSection = self.tableViewData[indexPath.section];
     MainMenuItem *selectedItem = selectedSection.visibleSectionItems[indexPath.row];
+    
+    if ([LoginManager sharedManager].sessionExpired)
+    {
+        NSString *itemIdentifier = selectedItem.itemIdentifier;
+        
+        BOOL shouldBlockAccess = YES;
+        
+        if ([itemIdentifier isEqualToString:kAlfrescoMainMenuItemAccountsIdentifier] ||
+            [itemIdentifier isEqualToString:kAlfrescoMainMenuItemSyncIdentifier] ||
+            [itemIdentifier isEqualToString:kAlfrescoMainMenuItemSettingsIdentifier] ||
+            [itemIdentifier isEqualToString:kAlfrescoMainMenuItemHelpIdentifier] ||
+            [itemIdentifier isEqualToString:kSyncViewIdentifier] ||
+            [itemIdentifier isEqualToString:kLocalViewIdentifier])
+        {
+            shouldBlockAccess = NO;
+        }
+        
+        if (shouldBlockAccess)
+        {
+            [[LoginManager sharedManager] showSignInAlertWithSignedInBlock:nil];
+            return;
+        }
+    }
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoEnableMainMenuAutoItemSelection object:nil];
     
     [self.delegate mainMenuViewController:self didSelectItem:selectedItem inSectionItem:selectedSection];
@@ -514,14 +559,6 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     }
     
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-}
-
-#pragma mark - Public methods
-- (void) cleanSelection
-{
-    NSIndexPath *currentlySelected = self.tableView.indexPathForSelectedRow;
-    [self.tableView deselectRowAtIndexPath:currentlySelected animated:NO];
-    [self tableView:self.tableView didDeselectRowAtIndexPath:currentlySelected];
 }
 
 @end

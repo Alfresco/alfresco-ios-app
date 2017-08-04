@@ -20,6 +20,7 @@
 #import "ConnectivityManager.h"
 #import "UniversalDevice.h"
 #import "RootRevealViewController.h"
+#import "UIBarButtonItem+MainMenu.h"
 
 @interface ParentCollectionViewController ()
 
@@ -59,6 +60,10 @@
                                              selector:@selector(connectivityChanged:)
                                                  name:kAlfrescoConnectivityChangedNotification
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(sessionReceived:)
+                                                 name:kAlfrescoSessionRefreshedNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -74,11 +79,7 @@
     
     if (!IS_IPAD && !self.presentingViewController)
     {
-        UIBarButtonItem *hamburgerButtom = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"hamburger.png"] style:UIBarButtonItemStylePlain target:self action:@selector(expandRootRevealController)];
-        if (self.navigationController.viewControllers.firstObject == self)
-        {
-            self.navigationItem.leftBarButtonItem = hamburgerButtom;
-        }
+        [UIBarButtonItem setupMainMenuButtonOnViewController:self withHandler:@selector(expandRootRevealController)];
     }
     
     // Pull to Refresh

@@ -48,6 +48,7 @@ extern NSString * const kActionCollectionIdentifierUnsync;
 @property (nonatomic, strong, readonly) NSString *itemTitle;
 @property (nonatomic, strong, readonly) UIImage *itemImageHighlightedImage;
 @property (nonatomic, strong, readonly) UIColor *itemTitleHighlightedColor;
+@property (nonatomic, strong, readonly) NSString *accessibilityIdentifier;
 
 + (ActionCollectionItem *)emailItem;
 + (ActionCollectionItem *)emailAsLinkItem;

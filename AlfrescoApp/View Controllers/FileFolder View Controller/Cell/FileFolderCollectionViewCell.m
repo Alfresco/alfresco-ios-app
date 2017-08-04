@@ -102,6 +102,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     [self.deleteButton setTitle:NSLocalizedString(@"action.delete", @"Delete") forState:UIControlStateNormal];
     self.deleteButton.titleLabel.numberOfLines = 1;
     self.deleteButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    self.deleteButton.accessibilityIdentifier = kCollectionViewCellDeleteButtonIdentifier;
 }
 
 - (void)setBounds:(CGRect)bounds

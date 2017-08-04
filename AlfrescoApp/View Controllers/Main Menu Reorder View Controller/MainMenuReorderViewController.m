@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -135,7 +135,8 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
 
 - (void)trackUpdateMenuEvent
 {
-    NSString *label = [AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeOnPremise ? kAnalyticsEventLabelOnPremise : kAnalyticsEventLabelCloud;
+    UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+    NSString *label = selectedAccount.accountType == UserAccountTypeOnPremise ? ([selectedAccount.samlData isSamlEnabled] ? kAnalyticsEventLabelOnPremiseSAML : kAnalyticsEventLabelOnPremise) : kAnalyticsEventLabelCloud;
     
     [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
                                                       action:kAnalyticsEventActionUpdateMenu

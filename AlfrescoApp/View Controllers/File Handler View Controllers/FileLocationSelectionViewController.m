@@ -70,9 +70,21 @@ static NSString * const kCellIdentifier = @"FileLocationSelectionViewControllerC
     self.accountList = [[AccountManager sharedManager] allAccounts];
     self.accountListIndexPaths = [NSMutableArray array];
     self.numberOfAccountRows = [self numberOfAccountSectionRows];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Private Functions
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
+}
 
 - (void)dismiss:(id)sender
 {

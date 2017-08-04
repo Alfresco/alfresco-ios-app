@@ -90,6 +90,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(nodeAdded:) name:kAlfrescoNodeAddedOnServerNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentUpdatedOnServer:) name:kAlfrescoSaveBackRemoteComplete object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editingDocumentCompleted:) name:kAlfrescoDocumentEditedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
 }
 
 #pragma mark - Reload methods
@@ -668,6 +669,11 @@
         [self.dataSourceCollection replaceObjectAtIndex:indexPath.row withObject:editedDocument];
         [self.delegate reloadItemsAtIndexPaths:@[indexPath] reselectItems:NO];
     }
+}
+
+- (void)sessionRefreshed:(NSNotification *)notification
+{
+    self.session = notification.object;
 }
 
 @end
