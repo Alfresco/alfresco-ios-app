@@ -1,4 +1,4 @@
-platform :ios, '9.3'
+platform :ios, '10.3'
 
 target 'AlfrescoApp' do
     pod 'MBProgressHUD', '~> 1.0'
