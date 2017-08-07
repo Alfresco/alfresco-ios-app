@@ -1081,11 +1081,11 @@
     
     if(node)
     {
-        token = [[[RealmSyncNodeInfo objectsInRealm:[[RealmManager sharedManager] realmForCurrentThread] where:@"syncNodeInfoId == %@", [node syncIdentifier]] sortedResultsUsingProperty:@"title" ascending:YES] addNotificationBlock:block];
+        token = [[[RealmSyncNodeInfo objectsInRealm:[[RealmManager sharedManager] realmForCurrentThread] where:@"syncNodeInfoId == %@", [node syncIdentifier]] sortedResultsUsingKeyPath:@"title" ascending:YES] addNotificationBlock:block];
     }
     else
     {
-        token = [[[RealmSyncNodeInfo objectsInRealm:[[RealmManager sharedManager] realmForCurrentThread] where:@"isTopLevelSyncNode = %@", @YES] sortedResultsUsingProperty:@"title" ascending:YES] addNotificationBlock:block];
+        token = [[[RealmSyncNodeInfo objectsInRealm:[[RealmManager sharedManager] realmForCurrentThread] where:@"isTopLevelSyncNode = %@", @YES] sortedResultsUsingKeyPath:@"title" ascending:YES] addNotificationBlock:block];
     }
     
     return token;
