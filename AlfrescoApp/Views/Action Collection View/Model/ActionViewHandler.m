@@ -320,7 +320,6 @@
                 {
                     printController.printingItem = fileURL;
                 }
-                printController.showsPageRange = YES;
                 
                 UIPrintInteractionCompletionHandler printCompletionHandler = ^(UIPrintInteractionController *printController, BOOL completed, NSError *printError) {
                     if (!completed && printError)

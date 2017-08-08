@@ -531,7 +531,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             {
                 void (^handleSkypeRequestWithSkypeCommunicationType)(NSString *, NSString *) = ^(NSString *contactType, NSString *analyticsLabelString) {
                     NSString *skypeString = [NSString stringWithFormat:@"%@%@?%@", kSkypeURLScheme, selectedContactInformation.contactInformation, contactType];
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:skypeString]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:skypeString] options:@{} completionHandler:nil];
                     
                     [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
                                                                       action:kAnalyticsEventActionSkype
@@ -567,7 +567,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
                     
                     NSString *skypeURLString = (IS_IPAD) ? KSkypeAppStoreiPadURL : kSkypeAppStoreiPhoneURL;
                     
-                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:skypeURLString]];
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:skypeURLString] options:@{} completionHandler:nil];
                 }];
                 
                 UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:nil];
@@ -585,7 +585,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         case ContactInformationTypePhone:
         {
             NSString *phoneNumber = [kPhoneURLScheme stringByAppendingString:selectedContactInformation.contactInformation];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber] options:@{} completionHandler:nil];
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
                                                               action:kAnalyticsEventActionCall
@@ -597,7 +597,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
         case ContactInformationTypeMobile:
         {
             NSString *mobileNumber = [kPhoneURLScheme stringByAppendingString:selectedContactInformation.contactInformation];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:mobileNumber]];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:mobileNumber] options:@{} completionHandler:nil];
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
                                                               action:kAnalyticsEventActionCall
@@ -613,7 +613,7 @@ typedef NS_ENUM(NSUInteger, ContactInformationType)
             NSString *query = [NSString stringWithFormat:@"%@?%@=%@", kMapsURLScheme, kMapsURLSchemeQueryParameter, address];
             NSURL *mapsQueryURL = [NSURL URLWithString:query];
             
-            [[UIApplication sharedApplication] openURL:mapsQueryURL];
+            [[UIApplication sharedApplication] openURL:mapsQueryURL options:@{} completionHandler:nil];
             
             [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryUser
                                                               action:kAnalyticsEventActionShowInMaps

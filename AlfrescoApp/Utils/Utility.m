@@ -847,7 +847,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     UIAlertAction *changeSettingsAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"permissions.settings.button", @"Change Settings")
                                                                  style:UIAlertActionStyleDefault
                                                                handler:^(UIAlertAction * _Nonnull action) {
-                                                                   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+                                                                   [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString] options:@{} completionHandler:nil];
                                                                }];
     [alertController addAction:changeSettingsAction];
     [[UniversalDevice topPresentedViewController] presentViewController:alertController animated:YES completion:nil];
