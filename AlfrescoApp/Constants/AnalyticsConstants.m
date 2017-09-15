@@ -86,7 +86,7 @@ NSString * const kAnalyticsViewTextEditorEditor       = @"Text Editor - Editor";
 
 // Settings
 NSString * const kAnalyticsViewSettingsDetails        = @"Settings - Details";
-//NSString * const kAnalyticsViewSettingsPasscode       = @"Settings - Passcode"; // 2.3
+NSString * const kAnalyticsViewSettingsPasscode       = @"Settings - Passcode";
 
 // User
 NSString * const kAnalyticsViewUserListing    = @"User - Listing";
