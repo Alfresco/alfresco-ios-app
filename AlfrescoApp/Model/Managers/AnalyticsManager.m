@@ -280,7 +280,9 @@
     BOOL fileProtection = [[PreferenceManager sharedManager] shouldProtectFiles];
     [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricDataProtection] value:fileProtection ? @"1" : @"0"];
     
-    // Passcode - v2.3
+    // Passcode
+    BOOL passcode = [[PreferenceManager sharedManager] shouldUsePasscodeLock];
+    [tracker set:[GAIFields customMetricForIndex:AnalyticsMetricPasscode] value:passcode ? @"1" : @"0"];
 }
 
 - (void)addProfilesInfoInTracker:(id<GAITracker>)tracker profilesArray:(NSArray *)profilesArray

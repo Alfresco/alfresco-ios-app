@@ -86,7 +86,7 @@ extern NSString * const kAnalyticsViewTextEditorEditor;
 
 // Settings
 extern NSString * const kAnalyticsViewSettingsDetails;
-//extern NSString * const kAnalyticsViewSettingsPasscode;   // 2.3
+extern NSString * const kAnalyticsViewSettingsPasscode;
 
 // User
 extern NSString * const kAnalyticsViewUserListing;
