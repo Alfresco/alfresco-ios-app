@@ -31,8 +31,6 @@
 #import "FilteredTaskViewController.h"
 #import "TaskViewFilter.h"
 
-static NSString * const kAccountsListIdentifier = @"AccountListNew";
-
 static NSString * const kHandlerPrefix = @"alfresco://";
 
 static NSString * const kLinkTypeDocument = @"document";

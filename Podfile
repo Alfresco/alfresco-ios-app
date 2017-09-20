@@ -16,3 +16,4 @@ end
 target 'AlfrescoDocumentPickerFileProvider' do
     pod 'Realm', '~>2.9.1'
 end
+

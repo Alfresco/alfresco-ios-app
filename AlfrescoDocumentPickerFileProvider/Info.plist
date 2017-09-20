@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>AlfrescoDocumentPickerFileProvider</string>
+	<string>Alfresco Content Services</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -35,6 +35,8 @@
 		<string>com.apple.fileprovider-nonui</string>
 		<key>NSExtensionPrincipalClass</key>
 		<string>FileProvider</string>
+		<key>NSExtensionFileProviderSupportsEnumeration</key>
+		<true/>
 	</dict>
 </dict>
 </plist>
