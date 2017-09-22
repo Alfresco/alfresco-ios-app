@@ -108,7 +108,6 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForAccount:(NSString *)accountIdentifier
 {
     RLMResults<FileProviderAccountInfo *> *results = nil;
-    NSLog(@"==== file provider ==== account identifier %@", accountIdentifier);
     if(accountIdentifier)
     {
         RLMRealm *realm = [self realm];
@@ -118,6 +117,25 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
     
     return results;
+}
+
+- (RLMResults<FileProviderAccountInfo *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier
+{
+    RLMResults<FileProviderAccountInfo *> *result = nil;
+    if(itemIdentifier)
+    {
+        RLMRealm *realm = [self realm];
+        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier = %@", itemIdentifier];
+        RLMResults<FileProviderAccountInfo *> *parentList = [FileProviderAccountInfo objectsInRealm:realm withPredicate:parentPred];
+        if(parentList.count > 0)
+        {
+            FileProviderAccountInfo *parent = parentList.firstObject;
+            NSPredicate *resultsPred = [NSPredicate predicateWithFormat:@"parentFolder = %@", parent];
+            result = [FileProviderAccountInfo objectsInRealm:realm withPredicate:resultsPred];
+        }
+    }
+    
+    return result;
 }
 
 @end

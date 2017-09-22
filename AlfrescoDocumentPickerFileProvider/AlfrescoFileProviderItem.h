@@ -25,5 +25,6 @@
 - (instancetype)initWithUserAccount:(UserAccount *)account;
 - (instancetype)initWithAccountInfo:(FileProviderAccountInfo *)accountInfo;
 - (instancetype)initWithAlfrescoNode:(AlfrescoNode *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
+- (instancetype)initWithSite:(AlfrescoSite *)site parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 
 @end

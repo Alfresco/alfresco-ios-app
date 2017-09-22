@@ -21,7 +21,7 @@
 
 @implementation AlfrescoFileProviderItemIdentifier
 
-+ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedFolderIdenfitier:(__autoreleasing NSFileProviderItemIdentifier)enumeratedIdentifier
++ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdenfitier:(__autoreleasing NSFileProviderItemIdentifier)enumeratedIdentifier
 {
     NSArray *splitContent = [enumeratedIdentifier componentsSeparatedByString:@"."];
     if(splitContent.count > 1)
@@ -48,11 +48,11 @@
     return identifier;
 }
 
-+ (NSFileProviderItemIdentifier)itemIdentifierForFolderRef:(NSString *)folderRef andAccountIdentifier:(NSString *)accountIdentifier
++ (NSFileProviderItemIdentifier)itemIdentifierForIdentifier:(NSString *)identifier typePath:(NSString *)typePath andAccountIdentifier:(NSString *)accountIdentifier
 {
     NSString *accountItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:accountIdentifier];
-    NSString *folderItemIdentifier = [NSString stringWithFormat:@"%@.%@.%@", accountItemIdentifier, kFileProviderFolderPathString, folderRef];
-    return folderItemIdentifier;
+    NSString *itemIdentifier = [NSString stringWithFormat:@"%@.%@.%@", accountItemIdentifier, typePath, identifier];
+    return itemIdentifier;
 }
 
 + (AlfrescoFileProviderItemIdentifierType)itemIdentifierTypeForIdentifier:(NSString *)identifier
@@ -80,6 +80,18 @@
         {
             return AlfrescoFileProviderItemIdentifierTypeFavorites;
         }
+        else if ([components[2] isEqualToString:kFileProviderSitesFolderIdentifierSuffix])
+        {
+            return AlfrescoFileProviderItemIdentifierTypeSites;
+        }
+        else if ([components[2] isEqualToString:kFileProviderMySitesFolderIdentifierSuffix])
+        {
+            return AlfrescoFileProviderItemIdentifierTypeMySites;
+        }
+        else if ([components[2] isEqualToString:kFileProviderFavoriteSitesFolderIdentifierSuffix])
+        {
+            return AlfrescoFileProviderItemIdentifierTypeFavoriteSites;
+        }
     }
     else if(components.count > 3)
     {
@@ -100,10 +112,10 @@
     return AlfrescoFileProviderItemIdentifierTypeAccount;
 }
 
-+ (NSString *)folderRefFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
++ (NSString *)identifierFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
 {
     NSArray *components = [itemIdentifier componentsSeparatedByString:@"."];
-    if(components.count == 4 && [components[2] isEqualToString:kFileProviderFolderPathString])
+    if(components.count == 4 && ([components[2] isEqualToString:kFileProviderFolderPathString] || [components[2] isEqualToString:kFileProviderSitePathString]))
     {
         return components[3];
     }

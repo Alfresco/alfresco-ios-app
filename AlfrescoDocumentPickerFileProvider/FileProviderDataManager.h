@@ -28,5 +28,6 @@
 - (void)saveMenuItem:(NSString *)menuItemIdentifierSuffix displayName:(NSString *)displayName forAccount:(UserAccount *)account;
 - (void)cleanMenuItemsForAccount:(UserAccount *)account;
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForAccount:(NSString *)accountIdentifier;
+- (RLMResults<FileProviderAccountInfo *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier;
 
 @end

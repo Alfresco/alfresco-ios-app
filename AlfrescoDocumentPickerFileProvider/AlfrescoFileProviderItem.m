@@ -26,6 +26,7 @@
 
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) AlfrescoNode *node;
+@property (nonatomic, strong) AlfrescoSite *site;
 @property (nonatomic, strong) NSString *privateParentItemIdentifier;
 @property (nonatomic, strong) NSString *privateItemIdentifier;
 @property (nonatomic, strong) NSString *privateFilename;
@@ -74,10 +75,27 @@
     }
     
     self.privateParentItemIdentifier = parentItemIdentifier;
-    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedFolderIdenfitier:parentItemIdentifier];
-    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForFolderRef:[self nodeRefWithoutVersionID:node.identifier] andAccountIdentifier:accountIdentifier];
+    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdenfitier:parentItemIdentifier];
+    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:[self nodeRefWithoutVersionID:node.identifier] typePath:kFileProviderFolderPathString andAccountIdentifier:accountIdentifier];
     self.privateFilename = node.name;
     self.node = node;
+    
+    return self;
+}
+
+- (instancetype)initWithSite:(AlfrescoSite *)site parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier
+{
+    self = [super init];
+    if(!self)
+    {
+        return nil;
+    }
+    
+    self.privateParentItemIdentifier = parentItemIdentifier;
+    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdenfitier:parentItemIdentifier];
+    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:site.shortName typePath:kFileProviderSitePathString andAccountIdentifier:accountIdentifier];
+    self.privateFilename = site.title;
+    self.site = site;
     
     return self;
 }

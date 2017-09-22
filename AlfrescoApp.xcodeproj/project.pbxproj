@@ -232,8 +232,7 @@
 		2B0660051C8989C5009CB8BC /* SyncThirdPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B0660041C8989C5009CB8BC /* SyncThirdPanel.xib */; };
 		2B09B0461B86121200448A52 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09B0441B86121200448A52 /* SearchViewController.m */; };
 		2B09B0471B86121200448A52 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B09B0451B86121200448A52 /* SearchViewController.xib */; };
-		2B09DC751F4F1DC600F6A6DC /* AlfrescoRootContainerEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09DC741F4F1DC600F6A6DC /* AlfrescoRootContainerEnumerator.m */; };
-		2B09DC7C1F4F1DDF00F6A6DC /* AlfrescoFolderEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09DC7B1F4F1DDF00F6A6DC /* AlfrescoFolderEnumerator.m */; };
+		2B09DC7C1F4F1DDF00F6A6DC /* AlfrescoEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09DC7B1F4F1DDF00F6A6DC /* AlfrescoEnumerator.m */; };
 		2B114E601B1F39D4005A05AA /* cell-button-checked-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */; };
 		2B114E611B1F39D4005A05AA /* cell-button-checked-filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */; };
 		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
@@ -302,7 +301,6 @@
 		2BC7CA801B219042009BB2A9 /* cell-button-info.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7E1B219042009BB2A9 /* cell-button-info.png */; };
 		2BC7CA811B219042009BB2A9 /* cell-button-info@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC7CA7F1B219042009BB2A9 /* cell-button-info@2x.png */; };
 		2BDC6FA51D660731003F9324 /* AlfrescoNode+Networking.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BDC6FA41D660731003F9324 /* AlfrescoNode+Networking.m */; };
-		2BE0A34A1F5DCA3700AD9883 /* AlfrescoAccountEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BE0A3491F5DCA3700AD9883 /* AlfrescoAccountEnumerator.m */; };
 		2BE0A34B1F5E9D9F00AD9883 /* FileProviderConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA1AB761F558C010011BE07 /* FileProviderConstants.m */; };
 		2BF0C7FB1F6A74C4001268FA /* FileProviderAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF0C7FA1F6A74C4001268FA /* FileProviderAccountManager.m */; };
 		2BF5AECC1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5AECB1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.m */; };
@@ -1233,10 +1231,8 @@
 		2B09B0431B86121200448A52 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		2B09B0441B86121200448A52 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		2B09B0451B86121200448A52 /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
-		2B09DC731F4F1DC600F6A6DC /* AlfrescoRootContainerEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlfrescoRootContainerEnumerator.h; sourceTree = "<group>"; };
-		2B09DC741F4F1DC600F6A6DC /* AlfrescoRootContainerEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlfrescoRootContainerEnumerator.m; sourceTree = "<group>"; };
-		2B09DC7A1F4F1DDF00F6A6DC /* AlfrescoFolderEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlfrescoFolderEnumerator.h; sourceTree = "<group>"; };
-		2B09DC7B1F4F1DDF00F6A6DC /* AlfrescoFolderEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlfrescoFolderEnumerator.m; sourceTree = "<group>"; };
+		2B09DC7A1F4F1DDF00F6A6DC /* AlfrescoEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlfrescoEnumerator.h; sourceTree = "<group>"; };
+		2B09DC7B1F4F1DDF00F6A6DC /* AlfrescoEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlfrescoEnumerator.m; sourceTree = "<group>"; };
 		2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled.png"; sourceTree = "<group>"; };
 		2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled@2x.png"; sourceTree = "<group>"; };
 		2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked.png"; sourceTree = "<group>"; };
@@ -1330,8 +1326,6 @@
 		2BC7CA821B219C55009BB2A9 /* CollectionViewProtocols.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CollectionViewProtocols.h; sourceTree = "<group>"; };
 		2BDC6FA31D660731003F9324 /* AlfrescoNode+Networking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoNode+Networking.h"; sourceTree = "<group>"; };
 		2BDC6FA41D660731003F9324 /* AlfrescoNode+Networking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoNode+Networking.m"; sourceTree = "<group>"; };
-		2BE0A3481F5DCA3700AD9883 /* AlfrescoAccountEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlfrescoAccountEnumerator.h; sourceTree = "<group>"; };
-		2BE0A3491F5DCA3700AD9883 /* AlfrescoAccountEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AlfrescoAccountEnumerator.m; sourceTree = "<group>"; };
 		2BF0C7F91F6A74C4001268FA /* FileProviderAccountManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileProviderAccountManager.h; sourceTree = "<group>"; };
 		2BF0C7FA1F6A74C4001268FA /* FileProviderAccountManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FileProviderAccountManager.m; sourceTree = "<group>"; };
 		2BF5AECA1B32F6F500FD3BA4 /* SearchCollectionSectionHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCollectionSectionHeader.h; sourceTree = "<group>"; };
@@ -2787,12 +2781,8 @@
 				734CC3FC1A700809005D148E /* Supporting Files */,
 				2BA8B6FC1F4DAF3F00BFF4D9 /* AlfrescoFileProviderItem.h */,
 				2BA8B6FD1F4DAF3F00BFF4D9 /* AlfrescoFileProviderItem.m */,
-				2B09DC731F4F1DC600F6A6DC /* AlfrescoRootContainerEnumerator.h */,
-				2B09DC741F4F1DC600F6A6DC /* AlfrescoRootContainerEnumerator.m */,
-				2B09DC7A1F4F1DDF00F6A6DC /* AlfrescoFolderEnumerator.h */,
-				2B09DC7B1F4F1DDF00F6A6DC /* AlfrescoFolderEnumerator.m */,
-				2BE0A3481F5DCA3700AD9883 /* AlfrescoAccountEnumerator.h */,
-				2BE0A3491F5DCA3700AD9883 /* AlfrescoAccountEnumerator.m */,
+				2B09DC7A1F4F1DDF00F6A6DC /* AlfrescoEnumerator.h */,
+				2B09DC7B1F4F1DDF00F6A6DC /* AlfrescoEnumerator.m */,
 				2BA1AB751F558C010011BE07 /* FileProviderConstants.h */,
 				2BA1AB761F558C010011BE07 /* FileProviderConstants.m */,
 				2BB912F91F584A8C00AA7E56 /* FileProviderDataManager.h */,
@@ -5113,14 +5103,12 @@
 				2BF0C7FB1F6A74C4001268FA /* FileProviderAccountManager.m in Sources */,
 				73697B961A979895009F10BA /* PersistentQueueStore.m in Sources */,
 				73697B9D1A9B738F009F10BA /* KeychainUtils.m in Sources */,
-				2BE0A34A1F5DCA3700AD9883 /* AlfrescoAccountEnumerator.m in Sources */,
 				2B1BC7A11F6044BE003B8790 /* AlfrescoFileProviderItemIdentifier.m in Sources */,
 				734B87841AA741260093E702 /* NSFileManager+Extension.m in Sources */,
 				2BB912FC1F584A8C00AA7E56 /* FileProviderDataManager.m in Sources */,
-				2B09DC7C1F4F1DDF00F6A6DC /* AlfrescoFolderEnumerator.m in Sources */,
+				2B09DC7C1F4F1DDF00F6A6DC /* AlfrescoEnumerator.m in Sources */,
 				734B87651A9F7A0F0093E702 /* Utilities.m in Sources */,
 				2BB913041F58671200AA7E56 /* FileProviderAccountInfo.m in Sources */,
-				2B09DC751F4F1DC600F6A6DC /* AlfrescoRootContainerEnumerator.m in Sources */,
 				73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */,
 				73CD5B101A729544000A5523 /* SharedConstants.m in Sources */,
 				2BA1AB771F558C010011BE07 /* FileProviderConstants.m in Sources */,

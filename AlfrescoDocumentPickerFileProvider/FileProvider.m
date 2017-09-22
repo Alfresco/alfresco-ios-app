@@ -27,10 +27,9 @@
 
 #import "FileProviderConstants.h"
 #import "AlfrescoFileProviderItem.h"
-#import "AlfrescoRootContainerEnumerator.h"
-#import "AlfrescoAccountEnumerator.h"
-#import "AlfrescoFolderEnumerator.h"
 #import "AlfrescoFileProviderItemIdentifier.h"
+
+#import "AlfrescoEnumerator.h"
 
 #import "FileProviderAccountManager.h"
 
@@ -352,31 +351,13 @@
 - (nullable id<NSFileProviderEnumerator>)enumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier error:(NSError **)error
 {
     id<NSFileProviderEnumerator> enumerator = nil;
-    AlfrescoFileProviderItemIdentifierType identifierType = [AlfrescoFileProviderItemIdentifier itemIdentifierTypeForIdentifier:containerItemIdentifier];
-    if ([containerItemIdentifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
-    {
-        enumerator = [AlfrescoRootContainerEnumerator new];
-    }
-    else if ([containerItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
+    if ([containerItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
     {
         // TODO: instantiate an enumerator for the working set
     }
     else
     {
-        switch (identifierType)
-        {
-            case AlfrescoFileProviderItemIdentifierTypeAccount:
-                enumerator = [[AlfrescoAccountEnumerator alloc] initWithEnumeratedItemIdentifier:containerItemIdentifier];
-                break;
-            case AlfrescoFileProviderItemIdentifierTypeMyFiles:
-            case AlfrescoFileProviderItemIdentifierTypeSharedFiles:
-            case AlfrescoFileProviderItemIdentifierTypeFolder:
-            case AlfrescoFileProviderItemIdentifierTypeFavorites:
-                enumerator = [[AlfrescoFolderEnumerator alloc] initWithEnumeratedItemIdentifier:containerItemIdentifier];
-                break;
-            default:
-                break;
-        }
+        enumerator = [[AlfrescoEnumerator alloc] initWithEnumeratedItemIdentifier:containerItemIdentifier];
     }
     
     return enumerator;

@@ -21,11 +21,11 @@
 
 @interface AlfrescoFileProviderItemIdentifier : NSObject
 
-+ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedFolderIdenfitier:(NSFileProviderItemIdentifier)enumeratedIdentifier;
++ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdenfitier:(NSFileProviderItemIdentifier)enumeratedIdentifier;
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccount:(UserAccount *)account;
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier;
-+ (NSFileProviderItemIdentifier)itemIdentifierForFolderRef:(NSString *)folderRef andAccountIdentifier:(NSString *)accountIdentifier;
++ (NSFileProviderItemIdentifier)itemIdentifierForIdentifier:(NSString *)identifier typePath:(NSString *)typePath andAccountIdentifier:(NSString *)accountIdentifier;
 + (AlfrescoFileProviderItemIdentifierType)itemIdentifierTypeForIdentifier:(NSString *)identifier;
-+ (NSString *)folderRefFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
++ (NSString *)identifierFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
 
 @end

@@ -18,7 +18,7 @@
 
 #import <FileProvider/FileProvider.h>
 
-@interface AlfrescoFolderEnumerator : NSObject <NSFileProviderEnumerator>
+@interface AlfrescoEnumerator : NSObject <NSFileProviderEnumerator>
 
 - (instancetype)initWithEnumeratedItemIdentifier:(NSFileProviderItemIdentifier)enumeratedItemIdentifier;
 
