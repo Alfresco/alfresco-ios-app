@@ -74,7 +74,7 @@
     }
     else
     {
-        NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdenfitier:self.enumeratedItemIdentifier];
+        NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
         [self.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
             if(loginError)
             {
@@ -309,7 +309,7 @@
 - (void)enumerateItemsInAccount
 {
     NSMutableArray *enumeratedFolders = [NSMutableArray new];
-    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdenfitier:self.enumeratedItemIdentifier];
+    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
     RLMResults<FileProviderAccountInfo *> *menuItems = [[FileProviderDataManager sharedManager] menuItemsForAccount:accountIdentifier];
     for(FileProviderAccountInfo *menuItem in menuItems)
     {

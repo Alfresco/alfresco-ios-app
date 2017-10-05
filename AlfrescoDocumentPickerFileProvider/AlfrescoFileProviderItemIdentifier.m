@@ -21,7 +21,7 @@
 
 @implementation AlfrescoFileProviderItemIdentifier
 
-+ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdenfitier:(__autoreleasing NSFileProviderItemIdentifier)enumeratedIdentifier
++ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdentifier:(__autoreleasing NSFileProviderItemIdentifier)enumeratedIdentifier
 {
     NSArray *splitContent = [enumeratedIdentifier componentsSeparatedByString:@"."];
     if(splitContent.count > 1)

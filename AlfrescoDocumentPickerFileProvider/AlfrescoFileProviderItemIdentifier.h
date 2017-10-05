@@ -21,7 +21,7 @@
 
 @interface AlfrescoFileProviderItemIdentifier : NSObject
 
-+ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdenfitier:(NSFileProviderItemIdentifier)enumeratedIdentifier;
++ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdentifier:(NSFileProviderItemIdentifier)enumeratedIdentifier;
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccount:(UserAccount *)account;
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier;
 + (NSFileProviderItemIdentifier)itemIdentifierForIdentifier:(NSString *)identifier typePath:(NSString *)typePath andAccountIdentifier:(NSString *)accountIdentifier;

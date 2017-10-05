@@ -75,8 +75,9 @@
     }
     
     self.privateParentItemIdentifier = parentItemIdentifier;
-    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdenfitier:parentItemIdentifier];
-    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:[self nodeRefWithoutVersionID:node.identifier] typePath:kFileProviderFolderPathString andAccountIdentifier:accountIdentifier];
+    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
+    NSString *typePath = node.isFolder ? kFileProviderFolderPathString : kFileProviderDocumentPathString;
+    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:[self nodeRefWithoutVersionID:node.identifier] typePath:typePath andAccountIdentifier:accountIdentifier];
     self.privateFilename = node.name;
     self.node = node;
     
@@ -92,7 +93,7 @@
     }
     
     self.privateParentItemIdentifier = parentItemIdentifier;
-    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdenfitier:parentItemIdentifier];
+    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
     self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:site.shortName typePath:kFileProviderSitePathString andAccountIdentifier:accountIdentifier];
     self.privateFilename = site.title;
     self.site = site;
@@ -147,6 +148,11 @@
     }
     
     return cleanNodeRef;
+}
+
+- (BOOL)isDownloaded
+{
+    return NO;
 }
 
 @end

@@ -40,12 +40,11 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
     NSString *fileProviderFolder = [[AlfrescoFileManager sharedManager] fileProviderFolderPath];
     config.fileURL = [NSURL URLWithString:[[fileProviderFolder stringByAppendingPathComponent:kFileProviderAccountInfo] stringByAppendingPathExtension:@"realm"]];
-    NSLog(@"==== config file url is %@", config.fileURL);
     NSError *error = nil;
     RLMRealm *realm = [RLMRealm realmWithConfiguration:config error:&error];
     if(error)
     {
-        NSLog(@"==== error is %@", error);
+        AlfrescoLogError(@"Error Creating Realm: %@", error.localizedDescription);
     }
     
     return realm;
