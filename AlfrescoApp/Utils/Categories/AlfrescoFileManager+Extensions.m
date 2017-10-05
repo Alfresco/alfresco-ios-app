@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -43,6 +43,7 @@ static NSString * const kThumbnailImagePreviewFolder = @"ImgPreviewThumbnails";
 static NSString * const kDownloadsFolder = @"Downloads";
 static NSString * const kDownloadsInfoFolder = @"info";
 static NSString * const kDownloadsContentFolder = @"content";
+static NSString * const kFileProviderFolder = @"FileProvider";
 
 // configuration
 static NSString * const kConfigurationFolder = @"Configuration";
@@ -124,6 +125,14 @@ static NSString * const kConfigurationFolder = @"Configuration";
             AlfrescoLogError(@"Unable to remove iteam at path: %@", absolutePath);
         }
     }
+}
+
+- (NSString *)fileProviderFolderPath
+{
+    NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+    NSString *fileProviderFolderPath = [sharedAppGroupFolderURL.path stringByAppendingPathComponent:kFileProviderFolder];
+    [self createFolderAtPathIfItDoesNotExist:fileProviderFolderPath];
+    return fileProviderFolderPath;
 }
 
 #pragma mark - Private Functions

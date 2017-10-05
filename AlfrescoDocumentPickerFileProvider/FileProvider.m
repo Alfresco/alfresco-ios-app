@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -21,17 +21,21 @@
 #import "PersistentQueueStore.h"
 #import "FileMetadata.h"
 #import "SharedConstants.h"
-#import "KeychainUtils.h"
-#import "UserAccountWrapper.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "NSFileManager+Extension.h"
 #import "Utilities.h"
 
-static NSString * const kAccountsListIdentifier = @"AccountListNew";
+#import "FileProviderConstants.h"
+#import "AlfrescoFileProviderItem.h"
+#import "AlfrescoFileProviderItemIdentifier.h"
+
+#import "AlfrescoEnumerator.h"
+
+#import "FileProviderAccountManager.h"
 
 @interface FileProvider ()
 @property (nonatomic, strong) PersistentQueueStore *queueStore;
-@property (nonatomic, strong) NSMutableDictionary *accountIdentifierToSessionMappings;
+@property (nonatomic, strong) FileProviderAccountManager *accountManager;
 @end
 
 @implementation FileProvider
@@ -46,6 +50,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             NSError *error = nil;
             [[NSFileManager defaultManager] createDirectoryAtURL:newURL withIntermediateDirectories:YES attributes:nil error:&error];
         }];
+        
+        self.accountManager = [FileProviderAccountManager new];
     }
     return self;
 }
@@ -66,15 +72,6 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         _queueStore = [[PersistentQueueStore alloc] initWithGroupContainerIdentifier:kSharedAppGroupIdentifier];
     }
     return _queueStore;
-}
-
-- (NSMutableDictionary *)accountIdentifierToSessionMappings
-{
-    if (!_accountIdentifierToSessionMappings)
-    {
-        _accountIdentifierToSessionMappings = [NSMutableDictionary dictionary];
-    }
-    return _accountIdentifierToSessionMappings;
 }
 
 #pragma mark - Private Methods
@@ -107,39 +104,6 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     return returnMetadata;
 }
 
-- (UserAccountWrapper *)userAccountForMetadataItem:(FileMetadata *)metadata
-{
-    NSError *keychainError = nil;
-    NSArray *accounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&keychainError];
-    
-    if (keychainError)
-    {
-        AlfrescoLogError(@"Error retreiving accounts. Error: %@", keychainError.localizedDescription);
-    }
-    
-    // Get the account for the file
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"accountIdentifier == %@", metadata.accountIdentifier];
-    NSArray *accountArray = [accounts filteredArrayUsingPredicate:predicate];
-    UserAccount *keychainAccount = accountArray.firstObject;
-    UserAccountWrapper *account = [[UserAccountWrapper alloc] initWithUserAccount:keychainAccount];
-    account.selectedNetworkIdentifier = metadata.networkIdentifier;
-    
-    return account;
-}
-
-- (void)loginToAccount:(id<AKUserAccount>)account completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session, NSError *loginError))completionBlock
-{
-    AKLoginService *loginService = [[AKLoginService alloc] init];
-    [loginService loginToAccount:account networkIdentifier:account.selectedNetworkIdentifier completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
-        if (successful)
-        {
-            self.accountIdentifierToSessionMappings[account.identifier] = session;
-        }
-        
-        completionBlock(successful, session, loginError);
-    }];
-}
-
 - (void)uploadDocument:(AlfrescoDocument *)document sourceURL:(NSURL *)fileURL session:(id<AlfrescoSession>)session completionBlock:(void (^)(AlfrescoDocument *document, NSError *updateError))completionBlock
 {
     AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:fileURL];
@@ -159,7 +123,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     }];
 }
 
-#pragma mark - File Provider Methods
+#pragma mark - File Provider - Managing Shared Files
 
 - (void)providePlaceholderAtURL:(NSURL *)url completionHandler:(void (^)(NSError *error))completionHandler
 {
@@ -197,9 +161,8 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         
         if (metadata.saveLocation == FileMetadataSaveLocationRepository)
         {
-            UserAccountWrapper *account = [self userAccountForMetadataItem:metadata];
-            [self loginToAccount:account completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
-                if (successful)
+            [self.accountManager getSessionForAccountIdentifier:metadata.accountIdentifier networkIdentifier:metadata.networkIdentifier withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+                if (session)
                 {
                     NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:url append:NO];
                     
@@ -259,8 +222,6 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         {
             if (metadata.saveLocation == FileMetadataSaveLocationRepository)
             {
-                UserAccountWrapper *account = [self userAccountForMetadataItem:metadata];
-                
                 // Coordinate the reading of the file for uploading
                 [self.fileCoordinator coordinateReadingItemAtURL:metadata.fileURL options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newURL) {
                     // define an upload block
@@ -288,35 +249,27 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     };
                     
                     // Session exists, use that, else do a login and then upload.
-                    id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[account.identifier];
-                    if (!cachedSession)
-                    {
-                        [self loginToAccount:account completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
-                            if (successful)
-                            {
-                                uploadBlock(session);
-                            }
-                            else
-                            {
-                                AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
-                            }
-                        }];
-                        
-                        /*
-                         * Keep this object around long enough for the network operations to complete.
-                         * Running as a background thread, seperate from the UI, so should not cause
-                         * Any issues when blocking the thread.
-                         */
-                        do
+                    [self.accountManager getSessionForAccountIdentifier:metadata.accountIdentifier networkIdentifier:metadata.networkIdentifier withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+                        if(loginError)
                         {
-                            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                            AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
                         }
-                        while (networkOperationCallbackComplete == NO);
-                    }
-                    else
+                        else
+                        {
+                            uploadBlock(session);
+                        }
+                    }];
+                    
+                    /*
+                     * Keep this object around long enough for the network operations to complete.
+                     * Running as a background thread, seperate from the UI, so should not cause
+                     * Any issues when blocking the thread.
+                     */
+                    do
                     {
-                        uploadBlock(cachedSession);
+                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                     }
+                    while (networkOperationCallbackComplete == NO);
                 }];
                 
             }
@@ -351,6 +304,63 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         [[NSFileManager defaultManager] removeItemAtURL:newURL error:NULL];
     }];
     [self providePlaceholderAtURL:url completionHandler:^(NSError *error) {}];
+}
+
+#pragma mark - iOS 11 support
+
+- (nullable NSFileProviderItem)itemForIdentifier:(NSFileProviderItemIdentifier)identifier error:(NSError * _Nullable *)error
+{
+    // resolve the given identifier to a record in the model
+    
+    // TODO: implement the actual lookup
+    NSFileProviderItem item = nil;
+    
+    return item;
+}
+
+- (nullable NSURL *)URLForItemWithPersistentIdentifier:(NSFileProviderItemIdentifier)identifier
+{
+    NSFileProviderItem item = [self itemForIdentifier:identifier error:NULL];
+    if (!item) {
+        return nil;
+    }
+    
+    // in this implementation, all paths are structured as <base storage directory>/<item identifier>/<item file name>
+    NSFileProviderManager *manager = [NSFileProviderManager defaultManager];
+    NSURL *perItemDirectory = [manager.documentStorageURL URLByAppendingPathComponent:identifier isDirectory:YES];
+    
+    return [perItemDirectory URLByAppendingPathComponent:item.filename isDirectory:NO];
+    
+    return nil;
+}
+
+- (nullable NSFileProviderItemIdentifier)persistentIdentifierForItemAtURL:(NSURL *)url
+{
+    // resolve the given URL to a persistent identifier using a database
+    NSArray <NSString *> *pathComponents = [url pathComponents];
+    
+    // exploit the fact that the path structure has been defined as
+    // <base storage directory>/<item identifier>/<item file name> above
+    NSParameterAssert(pathComponents.count > 2);
+    
+    return pathComponents[pathComponents.count - 2];
+}
+
+#pragma mark - Enumeration
+
+- (nullable id<NSFileProviderEnumerator>)enumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier error:(NSError **)error
+{
+    id<NSFileProviderEnumerator> enumerator = nil;
+    if ([containerItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
+    {
+        // TODO: instantiate an enumerator for the working set
+    }
+    else
+    {
+        enumerator = [[AlfrescoEnumerator alloc] initWithEnumeratedItemIdentifier:containerItemIdentifier];
+    }
+    
+    return enumerator;
 }
 
 @end

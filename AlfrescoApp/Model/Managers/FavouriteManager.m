@@ -17,7 +17,6 @@
  ******************************************************************************/
  
 #import "FavouriteManager.h"
-#import "SyncManager.h"
 
 @interface FavouriteManager ()
 
