@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -23,5 +23,8 @@
 - (void)initiateMigrationProcess;
 - (BOOL)isCoreDataMigrationNeeded;
 - (BOOL)shouldShowSyncInfoPanel;
+
+- (void)initiateContentMigrationProcess;
+- (BOOL)isContentMigrationNeeded;
 
 @end

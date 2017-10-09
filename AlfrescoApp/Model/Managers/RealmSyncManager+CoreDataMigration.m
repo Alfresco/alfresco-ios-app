@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -31,6 +31,106 @@
 #import "RealmSyncError.h"
 
 @implementation RealmSyncManager (CoreDataMigration)
+
+- (BOOL)isContentMigrationNeeded
+{
+    NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+    NSString *documentsDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+    BOOL isMigrationNeededResult = ![defaults objectForKey:kHasSyncedContentMigrationOccurred];
+    
+    return isMigrationNeededResult;
+}
+
+- (void)initiateContentMigrationProcess
+{
+    void (^saveContentMigrationOccured)() = ^()
+    {
+        NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+        [defaults setObject:@YES forKey:kHasSyncedContentMigrationOccurred];
+        [defaults synchronize];
+    };
+    
+    if ([[AccountManager sharedManager] allAccounts].count)
+    {
+        __block BOOL migrationOfRealmFilesSucceded;
+        __block BOOL migrationOfSyncFolderSucceded;
+        
+        [self migrateRealmFilesWithCompletionBlock:^(BOOL succeeded, NSError *error) {
+            migrationOfRealmFilesSucceded = succeeded;
+        }];
+        
+        [self migrateSyncFolderWithCompletionBlock:^(BOOL succeeded, NSError *error) {
+            migrationOfSyncFolderSucceded = succeeded;
+        }];
+        
+        if (migrationOfRealmFilesSucceded && migrationOfSyncFolderSucceded)
+        {
+            saveContentMigrationOccured();
+        }
+    }
+    else
+    {
+        saveContentMigrationOccured();
+    }
+}
+
+- (void)migrateRealmFilesWithCompletionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
+{
+    NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+    NSString *documentsDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSURL *url = [NSURL URLWithString:documentsDirectoryPath];
+    NSError *error = nil;
+    NSArray *array = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:url includingPropertiesForKeys:@[NSURLNameKey] options:0 error:&error];
+    
+    if (error)
+    {
+        AlfrescoLogError(@"Error fetching documents folder content. Error: %@", error.localizedDescription);
+    }
+
+    __block BOOL moveErrorOccured;
+    
+    [array enumerateObjectsUsingBlock:^(NSURL *url, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *lastPathComponent = url.lastPathComponent;
+        
+        if ([lastPathComponent containsString:@"realm"])
+        {
+            NSString *destinationPath = [sharedAppGroupFolderURL.path stringByAppendingPathComponent:lastPathComponent];
+            NSError *moveError;
+            [[AlfrescoFileManager sharedManager] moveItemAtPath:url.path toPath:destinationPath error:&moveError];
+            
+            if (moveError)
+            {
+                AlfrescoLogError(@"Error moving a realm file. Error: %@", moveError.localizedDescription);
+                moveErrorOccured = YES;
+            }
+        }
+    }];
+    
+    completionBlock(moveErrorOccured, nil);
+}
+
+- (void)migrateSyncFolderWithCompletionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
+{
+    NSString *documentsDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSString *oldSyncPath = [documentsDirectoryPath stringByAppendingPathComponent:kSyncFolder];
+    NSString *newSyncPath = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier].path stringByAppendingPathComponent:kSyncFolder];
+    
+    NSError *moveError = nil;
+    [[AlfrescoFileManager sharedManager] moveItemAtPath:oldSyncPath toPath:newSyncPath error:&moveError];
+    
+    if (moveError)
+    {
+        AlfrescoLogError(@"Error moving Sync folder. Error: %@", moveError);
+    }
+    
+    if (completionBlock)
+    {
+        completionBlock(moveError ? NO : YES, moveError);
+    }
+}
+
 
 - (BOOL)isCoreDataMigrationNeeded
 {
