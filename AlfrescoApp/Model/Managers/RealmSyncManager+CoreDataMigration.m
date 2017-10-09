@@ -78,7 +78,7 @@
     NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
     NSString *documentsDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSURL *url = [NSURL URLWithString:documentsDirectoryPath];
-    NSError *error = nil;
+    __block NSError *error = nil;
     NSArray *array = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:url includingPropertiesForKeys:@[NSURLNameKey] options:0 error:&error];
     
     if (error)
@@ -94,18 +94,17 @@
         if ([lastPathComponent containsString:@"realm"])
         {
             NSString *destinationPath = [sharedAppGroupFolderURL.path stringByAppendingPathComponent:lastPathComponent];
-            NSError *moveError;
-            [[AlfrescoFileManager sharedManager] moveItemAtPath:url.path toPath:destinationPath error:&moveError];
+            [[AlfrescoFileManager sharedManager] moveItemAtPath:url.path toPath:destinationPath error:&error];
             
-            if (moveError)
+            if (error)
             {
-                AlfrescoLogError(@"Error moving a realm file. Error: %@", moveError.localizedDescription);
+                AlfrescoLogError(@"Error moving a realm file. Error: %@", error.localizedDescription);
                 moveErrorOccured = YES;
             }
         }
     }];
     
-    completionBlock(moveErrorOccured, nil);
+    completionBlock(moveErrorOccured, error);
 }
 
 - (void)migrateSyncFolderWithCompletionBlock:(AlfrescoBOOLCompletionBlock)completionBlock
