@@ -354,6 +354,8 @@
                                   completionBlock:^(id<AlfrescoSession> session, NSError *error) {
                                       if (authenticationCompletionBlock)
                                       {
+                                          account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
+                                          
                                           if (session)
                                           {
                                               authenticationCompletionBlock(YES, session, nil);
