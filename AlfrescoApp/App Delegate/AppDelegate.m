@@ -137,6 +137,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     {
         [[RealmSyncManager sharedManager] initiateMigrationProcess];
     }
+    
+    if ([[RealmSyncManager sharedManager] isContentMigrationNeeded])
+    {
+        [[RealmSyncManager sharedManager] initiateContentMigrationProcess];
+    }
 
     // Setup the app and build it's UI
     self.window.rootViewController = [self buildMainAppUIWithSession:nil displayingMainMenu:isFirstLaunch];

@@ -60,7 +60,19 @@ static NSString * const kConfigurationFolder = @"Configuration";
 
 - (NSString *)syncFolderPath
 {
-    NSString *syncFolderPathString = [[self documentsDirectory] stringByAppendingPathComponent:kSyncFolder];
+    NSString *syncFolderPathString = nil;
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+    BOOL syncedContentMigrationOccurred = [defaults objectForKey:kHasSyncedContentMigrationOccurred];
+    
+    if (syncedContentMigrationOccurred)
+    {
+        syncFolderPathString = [[[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier].path stringByAppendingPathComponent:kSyncFolder];
+    }
+    else
+    {
+        syncFolderPathString = [[self documentsDirectory] stringByAppendingPathComponent:kSyncFolder];
+    }
+    
     [self createFolderAtPathIfItDoesNotExist:syncFolderPathString];
     
     return syncFolderPathString;
