@@ -34,9 +34,6 @@
 
 - (BOOL)isContentMigrationNeeded
 {
-    NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
-    NSString *documentsDirectoryPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
     BOOL isMigrationNeededResult = ![defaults objectForKey:kHasSyncedContentMigrationOccurred];
     
