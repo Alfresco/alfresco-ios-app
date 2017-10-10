@@ -310,11 +310,16 @@
 
 - (nullable NSFileProviderItem)itemForIdentifier:(NSFileProviderItemIdentifier)identifier error:(NSError * _Nullable *)error
 {
-    // resolve the given identifier to a record in the model
+    AlfrescoFileProviderItem *item = nil;
     
-    // TODO: implement the actual lookup
-    NSFileProviderItem item = nil;
-    
+    if(![identifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
+    {
+        FileProviderAccountInfo *realmItem = [[FileProviderDataManager sharedManager] itemForIdentifier:identifier];
+        if(realmItem)
+        {
+            item = [[AlfrescoFileProviderItem alloc] initWithAccountInfo:realmItem];
+        }
+    }
     return item;
 }
 

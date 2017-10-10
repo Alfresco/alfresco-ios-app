@@ -279,6 +279,8 @@
 		2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */; };
 		2B93CBCC1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */; };
 		2B93CBCF1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */; };
+		2B9BCEEE1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9BCEED1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m */; };
+		2B9BCEEF1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9BCEED1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m */; };
 		2B9C608E1C9714F400898161 /* ic_sync_focus.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B9C608A1C9714F400898161 /* ic_sync_focus.png */; };
 		2B9C608F1C9714F400898161 /* ic_sync_focus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B9C608B1C9714F400898161 /* ic_sync_focus@2x.png */; };
 		2B9C60901C9714F400898161 /* ic_sync_screenshot_cropped.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B9C608C1C9714F400898161 /* ic_sync_screenshot_cropped.png */; };
@@ -1296,6 +1298,8 @@
 		2B93CBC91ABACCE0003BAD2E /* ConnectionDiagnosticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionDiagnosticViewController.h; sourceTree = "<group>"; };
 		2B93CBCA1ABACCE0003BAD2E /* ConnectionDiagnosticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ConnectionDiagnosticViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2B93CBCE1ABACE2E003BAD2E /* ConnectionDiagnosticStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ConnectionDiagnosticStoryboard.storyboard; sourceTree = "<group>"; };
+		2B9BCEEC1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoNode+Utilities.h"; sourceTree = "<group>"; };
+		2B9BCEED1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoNode+Utilities.m"; sourceTree = "<group>"; };
 		2B9C608A1C9714F400898161 /* ic_sync_focus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_sync_focus.png; sourceTree = "<group>"; };
 		2B9C608B1C9714F400898161 /* ic_sync_focus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_sync_focus@2x.png"; sourceTree = "<group>"; };
 		2B9C608C1C9714F400898161 /* ic_sync_screenshot_cropped.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_sync_screenshot_cropped.png; sourceTree = "<group>"; };
@@ -3939,6 +3943,8 @@
 				235CA9781E60888800447FC5 /* UISearchBar+Paste.m */,
 				2B9D5ACF1EF0356A00BB7713 /* UIBarButtonItem+MainMenu.h */,
 				2B9D5AD01EF0356A00BB7713 /* UIBarButtonItem+MainMenu.m */,
+				2B9BCEEC1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.h */,
+				2B9BCEED1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5116,6 +5122,7 @@
 				73697B921A979879009F10BA /* FileMetadata.m in Sources */,
 				2BC469CB1F6983BB00ABA980 /* CustomFolderService.m in Sources */,
 				73697BA21A9B74A3009F10BA /* UserAccount.m in Sources */,
+				2B9BCEEF1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m in Sources */,
 				734CC4011A700809005D148E /* FileProvider.m in Sources */,
 				734B877F1AA734000093E702 /* AlfrescoFileManager+Extensions.m in Sources */,
 			);
@@ -5396,6 +5403,7 @@
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				2BFB080F1B14B7BB00ED8DFF /* BaseLayoutAttributes.m in Sources */,
 				2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */,
+				2B9BCEEE1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m in Sources */,
 				1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				2308BF901DD1DC55009C3D8B /* ConfigurationFilesUtils.m in Sources */,

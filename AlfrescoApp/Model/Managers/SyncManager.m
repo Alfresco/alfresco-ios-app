@@ -31,6 +31,7 @@
 #import "AccountSyncProgress.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "UniversalDevice.h"
+#import "AlfrescoNode+Utilities.h"
 
 @interface SyncManager ()
 @property (nonatomic, strong) id<AlfrescoSession> alfrescoSession;
@@ -232,7 +233,7 @@
 
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
 {
-    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
+    NSString *syncNodeId = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:nodeId];
     SyncNodeStatus *nodeStatus = [self.syncHelper syncNodeStatusObjectForNodeWithId:syncNodeId inSyncNodesStatus:self.syncNodesStatus];
     return nodeStatus;
 }
@@ -245,7 +246,7 @@
 
 - (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId
 {
-    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
+    NSString *syncNodeId = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:nodeId];
     SyncNodeInfo *nodeInfo = [self.syncCoreDataHelper nodeInfoForObjectWithNodeId:syncNodeId inAccountWithId:self.selectedAccountIdentifier inManagedObjectContext:nil];
     
     AlfrescoNode *node = nil;
@@ -1263,7 +1264,7 @@
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier inAccountWithId:(NSString *)accountId
 {
-    NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
+    NSString *syncDocumentIdentifier = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:documentIdentifier];
     SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:syncDocumentIdentifier];
     
     NSMutableDictionary *syncOperationForAccount = self.syncOperations[accountId];

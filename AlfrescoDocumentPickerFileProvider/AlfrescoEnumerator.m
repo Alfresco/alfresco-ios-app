@@ -184,6 +184,7 @@
         NSMutableArray *enumeratedResults = [NSMutableArray new];
         for(AlfrescoSite *site in pagingResult.objects)
         {
+            [[FileProviderDataManager sharedManager] saveSite:site parentIdentifier:self.enumeratedItemIdentifier];
             AlfrescoFileProviderItem *item = [[AlfrescoFileProviderItem alloc] initWithSite:site parentItemIdentifier:self.enumeratedItemIdentifier];
             [enumeratedResults addObject:item];
         }
@@ -200,6 +201,7 @@
         NSMutableArray *fileProviderItems = [NSMutableArray new];
         for (AlfrescoNode *node in pagingResult.objects)
         {
+            [[FileProviderDataManager sharedManager] saveNode:node parentIdentifier:self.enumeratedItemIdentifier];
             AlfrescoFileProviderItem *item = [[AlfrescoFileProviderItem alloc] initWithAlfrescoNode:node parentItemIdentifier:self.enumeratedItemIdentifier];
             [fileProviderItems addObject:item];
         }

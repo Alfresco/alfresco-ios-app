@@ -86,7 +86,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (NSString *)displayNameForProcessDefinition:(NSString *)task;
 + (UIImage *)cropImageIntoSquare:(UIImage *)originalImage;
 + (void)createBorderedButton:(UIButton *)button label:(NSString *)label color:(UIColor *)color;
-+ (NSString *)nodeRefWithoutVersionID:(NSString *)originalIdentifier;
 + (NSArray *)localisationsThatRequireTwoRowsInActionView;
 + (NSString *)helpURLLocaleIdentifierForAppLocale;
 + (NSString *)helpURLLocaleIdentifierForLocale:(NSString *)locale;
