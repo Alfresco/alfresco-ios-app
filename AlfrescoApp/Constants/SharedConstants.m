@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -42,3 +42,5 @@ NSString * const kSettingsSecurityUsePasscodeLockIdentifier = @"SettingsSecurity
 NSString * const kAlfrescoMobileGroup = @"group.com.alfresco.mobile";
 NSString * const kShouldResetEntireAppKey = @"ShouldResetEntireApp";
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
+
+NSString * const kHasSyncedContentMigrationOccurred = @"hasSyncedContentMigrationOccurred";

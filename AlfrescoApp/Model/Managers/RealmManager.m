@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -21,6 +21,7 @@
 #import "UserAccount.h"
 #import "AlfrescoNode+Sync.h"
 #import "AccountManager.h"
+#import "RealmSyncManager+CoreDataMigration.h"
 
 @interface RealmManager()
 @property (nonatomic, strong) RLMRealm *mainThreadRealm;
@@ -150,9 +151,21 @@
 - (RLMRealmConfiguration *)configForName:(NSString *)name
 {
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+
+    NSString *configFilePath = nil;
+    BOOL isContentMigrationNeeded = [[RealmSyncManager sharedManager] isContentMigrationNeeded];
     
-    // Use the default directory, but replace the filename with the accountId
-    NSString *configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+    if (isContentMigrationNeeded)
+    {
+        // Use the default directory, but replace the filename with the accountId
+        configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+    }
+    else
+    {
+        NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+        configFilePath = [[sharedAppGroupFolderURL.path stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+    }
+    
     config.fileURL = [NSURL URLWithString:configFilePath];
     
     return config;
