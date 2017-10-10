@@ -25,12 +25,12 @@
 #import "NSFileManager+Extension.h"
 #import "Utilities.h"
 
-#import "FileProviderConstants.h"
 #import "AlfrescoFileProviderItem.h"
 #import "AlfrescoFileProviderItemIdentifier.h"
 
 #import "AlfrescoEnumerator.h"
 
+#import "FileProviderDataManager.h"
 #import "FileProviderAccountManager.h"
 
 @interface FileProvider ()
@@ -326,7 +326,8 @@
 - (nullable NSURL *)URLForItemWithPersistentIdentifier:(NSFileProviderItemIdentifier)identifier
 {
     NSFileProviderItem item = [self itemForIdentifier:identifier error:NULL];
-    if (!item) {
+    if (!item)
+    {
         return nil;
     }
     
