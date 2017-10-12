@@ -100,6 +100,7 @@
 		2329C48F1CE48C38001AAB62 /* alfrescoColourLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A41844C9F8002C82C1 /* alfrescoColourLogo.png */; };
 		2329C4941CE48C3B001AAB62 /* alfrescoColourLogo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 731901A51844C9F8002C82C1 /* alfrescoColourLogo@2x.png */; };
 		232D38A81D7D937100B2F2E8 /* PermissionChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 232D38A71D7D937100B2F2E8 /* PermissionChecker.m */; };
+		233546741F8FB95700855123 /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2335466F1F8FB95700855123 /* ExportOptions.plist */; };
 		2350160B1EB86D2B00BE1042 /* AccountServerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2350160A1EB86D2B00BE1042 /* AccountServerDataSource.m */; };
 		2350160E1EB8AEE000BE1042 /* AccountCredentialsDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2350160D1EB8AEE000BE1042 /* AccountCredentialsDataSource.m */; };
 		235AC4361EBB34D30079C061 /* AccountSettingsSAMLDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 235AC4351EBB34D30079C061 /* AccountSettingsSAMLDataSource.m */; };
@@ -1031,6 +1032,7 @@
 		231C3E5D1EB0EBA500940F6E /* AccountDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountDataSource.m; path = "New Account/AccountDataSource.m"; sourceTree = "<group>"; };
 		232D38A61D7D937100B2F2E8 /* PermissionChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PermissionChecker.h; sourceTree = "<group>"; };
 		232D38A71D7D937100B2F2E8 /* PermissionChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PermissionChecker.m; sourceTree = "<group>"; };
+		2335466F1F8FB95700855123 /* ExportOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ExportOptions.plist; sourceTree = SOURCE_ROOT; };
 		235016081EB8693A00BE1042 /* AccountDataSource+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "AccountDataSource+Internal.h"; path = "New Account/AccountDataSource+Internal.h"; sourceTree = "<group>"; };
 		235016091EB86D2B00BE1042 /* AccountServerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AccountServerDataSource.h; path = "New Account/AccountServerDataSource.h"; sourceTree = "<group>"; };
 		2350160A1EB86D2B00BE1042 /* AccountServerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AccountServerDataSource.m; path = "New Account/AccountServerDataSource.m"; sourceTree = "<group>"; };
@@ -2936,6 +2938,7 @@
 		7373B4FF17A66E9400869949 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2335466F1F8FB95700855123 /* ExportOptions.plist */,
 				2B2472001C11C7DC00153247 /* noAccountsConfiguration.json */,
 				73B579961B15FBF1009D30B6 /* configuration.json */,
 				27C2EBF71907044A003B09B9 /* Activities.strings */,
@@ -4786,6 +4789,7 @@
 				27E84E8218AD53510024B658 /* mainmenu-myfiles.png in Resources */,
 				73FF558518ACE2370009CA56 /* large_powerpoint.png in Resources */,
 				2B9C608E1C9714F400898161 /* ic_sync_focus.png in Resources */,
+				233546741F8FB95700855123 /* ExportOptions.plist in Resources */,
 				731901A71844C9F8002C82C1 /* alfrescoColourLogo@2x.png in Resources */,
 				738BE9591A962AA7006264E5 /* SmallThumbnailImageMapping.plist in Resources */,
 				23A8292A1D48D63900A44281 /* NodePickerSyncedContentViewController.xib in Resources */,

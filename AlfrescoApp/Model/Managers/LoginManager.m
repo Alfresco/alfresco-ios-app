@@ -79,6 +79,10 @@
     
     self.loginAttemptInProgress = YES;
     
+    if (account == nil)
+    {
+        return;
+    }
     
     __weak typeof(self)weakSelf = self;
     self.authenticationCompletionBlock = ^(BOOL successful, id<AlfrescoSession> session, NSError *error){
