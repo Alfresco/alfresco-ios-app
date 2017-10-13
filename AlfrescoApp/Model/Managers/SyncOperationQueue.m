@@ -26,6 +26,7 @@
 #import "RealmManager.h"
 #import "AlfrescoNode+Networking.h"
 #import "RealmSyncManager.h"
+#import "AlfrescoNode+Utilities.h"
 
 @interface SyncOperationQueue()
 
@@ -471,7 +472,7 @@
 
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier completionBlock:(void (^)(void))completionBlock
 {
-    NSString *syncDocumentIdentifier = [Utility nodeRefWithoutVersionID:documentIdentifier];
+    NSString *syncDocumentIdentifier = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:documentIdentifier];
     SyncOperation *syncOperation = self.syncOperations[syncDocumentIdentifier];
     
     [self cancelOperation:syncOperation forNodeSyncIdentifier:syncDocumentIdentifier];

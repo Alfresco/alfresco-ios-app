@@ -25,9 +25,14 @@
 
 + (instancetype)sharedManager;
 - (RLMRealm *)realm;
+
 - (void)saveMenuItem:(NSString *)menuItemIdentifierSuffix displayName:(NSString *)displayName forAccount:(UserAccount *)account;
 - (void)cleanMenuItemsForAccount:(UserAccount *)account;
+- (void)saveNode:(AlfrescoNode *)node parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
+- (void)saveSite:(AlfrescoSite *)site parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
+
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForAccount:(NSString *)accountIdentifier;
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier;
+- (FileProviderAccountInfo *)itemForIdentifier:(NSFileProviderItemIdentifier)identifier;
 
 @end

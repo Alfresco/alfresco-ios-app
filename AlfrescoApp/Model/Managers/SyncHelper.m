@@ -21,6 +21,7 @@
 #import "SyncAccount.h"
 #import "CoreDataSyncHelper.h"
 #import "SyncNodeStatus.h"
+#import "AlfrescoNode+Utilities.h"
 
 @interface SyncHelper ()
 @property (nonatomic, strong) AlfrescoFileManager *fileManager;
@@ -210,7 +211,7 @@
     NSString *syncIdentifier = [(AlfrescoProperty *)[node.properties objectForKey:kAlfrescoNodeVersionSeriesIdKey] value];
     if (!syncIdentifier)
     {
-        syncIdentifier = [Utility nodeRefWithoutVersionID:node.identifier];
+        syncIdentifier = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:node.identifier];
     }
     return syncIdentifier;
 }
@@ -361,7 +362,7 @@
 
 - (AlfrescoDocument *)syncDocumentFromDocumentIdentifier:(NSString *)documentRef
 {
-    NSString *syncDocumentRef = [Utility nodeRefWithoutVersionID:documentRef];
+    NSString *syncDocumentRef = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:documentRef];
     return [self.syncCoreDataHelper retrieveSyncedAlfrescoDocumentForIdentifier:syncDocumentRef managedObjectContext:nil];
 }
 

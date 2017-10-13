@@ -21,6 +21,7 @@
 #import "FileProviderAccountInfo.h"
 #import "AlfrescoFileProviderItemIdentifier.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "AlfrescoNode+Utilities.h"
 
 @interface AlfrescoFileProviderItem()
 
@@ -59,7 +60,7 @@
         return nil;
     }
     
-    self.privateParentItemIdentifier = accountInfo.parentFolder.identifier? : accountInfo.accountIdentifier;
+    self.privateParentItemIdentifier = accountInfo.parentFolder.identifier;
     self.privateItemIdentifier = accountInfo.identifier;
     self.privateFilename = accountInfo.name;
     
@@ -77,7 +78,7 @@
     self.privateParentItemIdentifier = parentItemIdentifier;
     NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
     NSString *typePath = node.isFolder ? kFileProviderFolderPathString : kFileProviderDocumentPathString;
-    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:[self nodeRefWithoutVersionID:node.identifier] typePath:typePath andAccountIdentifier:accountIdentifier];
+    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:[node nodeRefWithoutVersionID] typePath:typePath andAccountIdentifier:accountIdentifier];
     self.privateFilename = node.name;
     self.node = node;
     
@@ -131,23 +132,6 @@
 - (NSFileProviderItemIdentifier)parentItemIdentifier
 {
     return self.privateParentItemIdentifier;
-}
-
-- (NSString *)nodeRefWithoutVersionID:(NSString *)originalIdentifier
-{
-    NSString *cleanNodeRef = nil;
-    
-    NSArray *strings = [originalIdentifier componentsSeparatedByString:@";"];
-    if (strings.count > 0)
-    {
-        cleanNodeRef = strings[0];
-    }
-    else
-    {
-        cleanNodeRef = originalIdentifier;
-    }
-    
-    return cleanNodeRef;
 }
 
 - (BOOL)isDownloaded

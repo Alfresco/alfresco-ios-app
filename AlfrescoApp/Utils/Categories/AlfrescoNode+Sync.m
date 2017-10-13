@@ -22,6 +22,7 @@
 #import "AccountManager.h"
 #import "RealmSyncManager+Internal.h"
 #import "AlfrescoNode+Networking.h"
+#import "AlfrescoNode+Utilities.h"
 
 @implementation AlfrescoNode (Sync)
 
@@ -30,7 +31,7 @@
     NSString *syncIdentifier = [(AlfrescoProperty *)[self.properties objectForKey:kAlfrescoNodeVersionSeriesIdKey] value];
     if (!syncIdentifier)
     {
-        syncIdentifier = [Utility nodeRefWithoutVersionID:self.identifier];
+        syncIdentifier = [self nodeRefWithoutVersionID];
     }
     return syncIdentifier;
 }
@@ -241,7 +242,7 @@
 
 + (AlfrescoNode *)alfrescoNodeForIdentifier:(NSString *)nodeId inRealm:(RLMRealm *)realm
 {
-    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
+    NSString *syncNodeId = [self nodeRefWithoutVersionIDFromIdentifier:nodeId];
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForId:syncNodeId inRealm:realm];
     
     return nodeInfo.alfrescoNode;

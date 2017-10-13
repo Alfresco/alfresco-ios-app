@@ -20,6 +20,7 @@
 #import "AlfrescoFileManager+Extensions.h"
 #import "UserAccount.h"
 #import "AlfrescoFileProviderItemIdentifier.h"
+#import "AlfrescoNode+Utilities.h"
 
 static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
 
@@ -54,24 +55,25 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
 {
     if(account)
     {
+        [self saveAccount:account];
         RLMRealm *realm = [self realm];
         FileProviderAccountInfo *fpAccountInfo = [FileProviderAccountInfo new];
-        fpAccountInfo.accountIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccount:account];
         fpAccountInfo.name = displayName;
         fpAccountInfo.identifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:menuItemIdentifierSuffix andAccount:account];
         
+        NSString *accountDBIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccount:account];
+        FileProviderAccountInfo *accountMetadata = [FileProviderAccountInfo objectInRealm:realm forPrimaryKey:accountDBIdentifier];
+        fpAccountInfo.parentFolder = accountMetadata;
         
         FileProviderAccountInfo *fpMySitesInfo, *fpFavoriteSitesInfo;
         if([menuItemIdentifierSuffix isEqualToString:kFileProviderSitesFolderIdentifierSuffix])
         {
             fpMySitesInfo = [FileProviderAccountInfo new];
-            fpMySitesInfo.accountIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccount:account];
             fpMySitesInfo.name = NSLocalizedString(@"sites.segmentControl.mysites", @"My Sites");
             fpMySitesInfo.identifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:kFileProviderMySitesFolderIdentifierSuffix andAccount:account];
             fpMySitesInfo.parentFolder = fpAccountInfo;
             
             fpFavoriteSitesInfo = [FileProviderAccountInfo new];
-            fpFavoriteSitesInfo.accountIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccount:account];
             fpFavoriteSitesInfo.name = NSLocalizedString(@"sites.segmentControl.favoritesites", @"Favorite Sites");
             fpFavoriteSitesInfo.identifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:kFileProviderFavoriteSitesFolderIdentifierSuffix andAccount:account];
             fpFavoriteSitesInfo.parentFolder = fpAccountInfo;
@@ -88,12 +90,26 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
 }
 
+- (void)saveAccount:(UserAccount *)account
+{
+    if(account)
+    {
+        RLMRealm *realm = [self realm];
+        FileProviderAccountInfo *fpAccountInfo = [FileProviderAccountInfo new];
+        fpAccountInfo.name = account.accountDescription;
+        fpAccountInfo.identifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccount:account];
+        [realm transactionWithBlock:^{
+            [realm addOrUpdateObject:fpAccountInfo];
+        }];
+    }
+}
+
 - (void)cleanMenuItemsForAccount:(UserAccount *)account
 {
     if(account)
     {
         RLMRealm *realm = [self realm];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"accountIdentifier = %@", account.accountIdentifier];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier CONTAINS %@", account.accountIdentifier];
         RLMResults<FileProviderAccountInfo *> *accountMenuItems = [FileProviderAccountInfo objectsInRealm:realm withPredicate:pred];
         if(accountMenuItems.count > 0)
         {
@@ -104,15 +120,62 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
 }
 
+- (void)saveNode:(AlfrescoNode *)node parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier
+{
+    if(node && parentIdentifier)
+    {
+        RLMRealm *realm = [self realm];
+        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier = %@", parentIdentifier];
+        RLMResults<FileProviderAccountInfo *> *parentList = [FileProviderAccountInfo objectsInRealm:realm withPredicate:parentPred];
+        if(parentList.count > 0)
+        {
+            FileProviderAccountInfo *parent = parentList.firstObject;
+            FileProviderAccountInfo *item = [FileProviderAccountInfo new];
+            NSString *typePath = node.isFolder ? kFileProviderFolderPathString : kFileProviderDocumentPathString;
+            NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentIdentifier];
+            item.identifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:[node nodeRefWithoutVersionID] typePath:typePath andAccountIdentifier:accountIdentifier];
+            item.parentFolder = parent;
+            item.creationDate = node.createdAt;
+            item.name = node.name;
+            
+            [realm transactionWithBlock:^{
+                [realm addOrUpdateObject:item];
+            }];
+        }
+    }
+}
+
+- (void)saveSite:(AlfrescoSite *)site parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier
+{
+    if(site && parentIdentifier)
+    {
+        RLMRealm *realm = [self realm];
+        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier = %@", parentIdentifier];
+        RLMResults<FileProviderAccountInfo *> *parentList = [FileProviderAccountInfo objectsInRealm:realm withPredicate:parentPred];
+        if(parentList.count > 0)
+        {
+            FileProviderAccountInfo *parent = parentList.firstObject;
+            FileProviderAccountInfo *item = [FileProviderAccountInfo new];
+            NSString *typePath = kFileProviderSitePathString;
+            NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentIdentifier];
+            item.identifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:site.shortName typePath:typePath andAccountIdentifier:accountIdentifier];
+            item.parentFolder = parent;
+            item.name = site.title;
+            
+            [realm transactionWithBlock:^{
+                [realm addOrUpdateObject:item];
+            }];
+        }
+    }
+}
+
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForAccount:(NSString *)accountIdentifier
 {
     RLMResults<FileProviderAccountInfo *> *results = nil;
     if(accountIdentifier)
     {
-        RLMRealm *realm = [self realm];
         NSString *identifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:accountIdentifier];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"accountIdentifier = %@", identifier];
-        results = [FileProviderAccountInfo objectsInRealm:realm withPredicate:pred];
+        results = [self menuItemsForParentIdentifier:identifier];
     }
     
     return results;
@@ -135,6 +198,23 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
     
     return result;
+}
+
+- (FileProviderAccountInfo *)itemForIdentifier:(NSFileProviderItemIdentifier)identifier
+{
+    FileProviderAccountInfo *item = nil;
+    if(identifier)
+    {
+        RLMRealm *realm = [self realm];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", identifier];
+        RLMResults<FileProviderAccountInfo *> *list = [FileProviderAccountInfo objectsInRealm:realm withPredicate:pred];
+        if(list.count > 0)
+        {
+            item = list.firstObject;
+        }
+    }
+    
+    return item;
 }
 
 @end

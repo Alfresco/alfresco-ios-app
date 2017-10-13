@@ -25,12 +25,12 @@
 #import "NSFileManager+Extension.h"
 #import "Utilities.h"
 
-#import "FileProviderConstants.h"
 #import "AlfrescoFileProviderItem.h"
 #import "AlfrescoFileProviderItemIdentifier.h"
 
 #import "AlfrescoEnumerator.h"
 
+#import "FileProviderDataManager.h"
 #import "FileProviderAccountManager.h"
 
 @interface FileProvider ()
@@ -310,18 +310,24 @@
 
 - (nullable NSFileProviderItem)itemForIdentifier:(NSFileProviderItemIdentifier)identifier error:(NSError * _Nullable *)error
 {
-    // resolve the given identifier to a record in the model
+    AlfrescoFileProviderItem *item = nil;
     
-    // TODO: implement the actual lookup
-    NSFileProviderItem item = nil;
-    
+    if(![identifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
+    {
+        FileProviderAccountInfo *realmItem = [[FileProviderDataManager sharedManager] itemForIdentifier:identifier];
+        if(realmItem)
+        {
+            item = [[AlfrescoFileProviderItem alloc] initWithAccountInfo:realmItem];
+        }
+    }
     return item;
 }
 
 - (nullable NSURL *)URLForItemWithPersistentIdentifier:(NSFileProviderItemIdentifier)identifier
 {
     NSFileProviderItem item = [self itemForIdentifier:identifier error:NULL];
-    if (!item) {
+    if (!item)
+    {
         return nil;
     }
     

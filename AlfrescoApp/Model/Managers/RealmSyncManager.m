@@ -25,6 +25,7 @@
 #import "PreferenceManager.h"
 #import "RealmSyncManager+Internal.h"
 #import "AlfrescoNode+Networking.h"
+#import "AlfrescoNode+Utilities.h"
 #import "UserAccount+FileHandling.h"
 #import "MainMenuItemsVisibilityUtils.h"
 #import "UniversalDevice.h"
@@ -887,7 +888,7 @@
 
 - (SyncNodeStatus *)syncStatusForNodeWithId:(NSString *)nodeId
 {
-    NSString *syncNodeId = [Utility nodeRefWithoutVersionID:nodeId];
+    NSString *syncNodeId = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:nodeId];
     SyncOperationQueue *syncOpQanager = [self currentOperationQueue];
     SyncNodeStatus *nodeStatus = [syncOpQanager syncNodeStatusObjectForNodeWithId:syncNodeId];
     return nodeStatus;

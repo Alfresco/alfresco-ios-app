@@ -16,14 +16,30 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Realm/Realm.h>
+#import "AlfrescoNode+Utilities.h"
 
-@interface FileProviderAccountInfo : RLMObject
+@implementation AlfrescoNode (Utilities)
 
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *identifier;
-@property (nonatomic) FileProviderAccountInfo *parentFolder;
-@property (nonatomic) BOOL isShared;
-@property (nonatomic, strong) NSDate *creationDate;
+- (NSString *)nodeRefWithoutVersionID
+{
+    return [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:self.identifier];
+}
+
++ (NSString *)nodeRefWithoutVersionIDFromIdentifier:(NSString *)identifier
+{
+    NSString *cleanNodeRef = nil;
+    
+    NSArray *strings = [identifier componentsSeparatedByString:@";"];
+    if (strings.count > 0)
+    {
+        cleanNodeRef = strings[0];
+    }
+    else
+    {
+        cleanNodeRef = identifier;
+    }
+    
+    return cleanNodeRef;
+}
 
 @end
