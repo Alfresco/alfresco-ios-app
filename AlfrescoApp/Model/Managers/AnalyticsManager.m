@@ -377,6 +377,10 @@
             if (self.googleAnalyticsHasStarted == NO)
             {
                 [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
+                
+#if ADHOC
+                [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+#endif
                 self.googleAnalyticsHasStarted = YES;
             }
             

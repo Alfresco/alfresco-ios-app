@@ -79,6 +79,10 @@
     
     self.loginAttemptInProgress = YES;
     
+    if (account == nil)
+    {
+        return;
+    }
     
     __weak typeof(self)weakSelf = self;
     self.authenticationCompletionBlock = ^(BOOL successful, id<AlfrescoSession> session, NSError *error){
@@ -354,6 +358,8 @@
                                   completionBlock:^(id<AlfrescoSession> session, NSError *error) {
                                       if (authenticationCompletionBlock)
                                       {
+                                          account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
+                                          
                                           if (session)
                                           {
                                               authenticationCompletionBlock(YES, session, nil);
