@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, AlfrescoFileProviderItemIdentifierType)
     AlfrescoFileProviderItemIdentifierTypeAccount,
     AlfrescoFileProviderItemIdentifierTypeFolder,
     AlfrescoFileProviderItemIdentifierTypeDocument,
+    AlfrescoFileProviderItemIdentifierTypeSyncNode,
     AlfrescoFileProviderItemIdentifierTypeSite,
     AlfrescoFileProviderItemIdentifierTypeMyFiles,
     AlfrescoFileProviderItemIdentifierTypeSharedFiles,
@@ -48,5 +49,6 @@ extern NSString * const kFileProviderFavoriteSitesFolderIdentifierSuffix;
 extern NSString * const kFileProviderFolderPathString;
 extern NSString * const kFileProviderSitePathString;
 extern NSString * const kFileProviderDocumentPathString;
+extern NSString * const kFileProviderSyncPathString;
 
 extern int const kFileProviderMaxItemsPerListingRetrieve;

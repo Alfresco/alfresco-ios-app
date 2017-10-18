@@ -238,6 +238,8 @@
 		2B114E611B1F39D4005A05AA /* cell-button-checked-filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */; };
 		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
 		2B114E631B1F39D4005A05AA /* cell-button-unchecked@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5F1B1F39D4005A05AA /* cell-button-unchecked@2x.png */; };
+		2B1591181F95F4840047D8BA /* RealmSyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B410F551C7B5DBE00A3F52F /* RealmSyncNodeInfo.m */; };
+		2B15911D1F95F4EE0047D8BA /* RealmSyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B410F531C7B5DBE00A3F52F /* RealmSyncError.m */; };
 		2B1726FD1CFDABBE00DAD78A /* FavoritesCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1726FC1CFDABBE00DAD78A /* FavoritesCollectionViewDataSource.m */; };
 		2B1751DD1B3807AF00E440DD /* LoadingCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1751DC1B3807AF00E440DD /* LoadingCollectionViewCell.m */; };
 		2B1A050A1BB2D27C00EE4AAE /* SiteMembersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1A05091BB2D27C00EE4AAE /* SiteMembersViewController.m */; };
@@ -5123,11 +5125,13 @@
 				73CD5B101A729544000A5523 /* SharedConstants.m in Sources */,
 				2BA1AB771F558C010011BE07 /* FileProviderConstants.m in Sources */,
 				2BA8B6FE1F4DAF3F00BFF4D9 /* AlfrescoFileProviderItem.m in Sources */,
+				2B15911D1F95F4EE0047D8BA /* RealmSyncError.m in Sources */,
 				73697B921A979879009F10BA /* FileMetadata.m in Sources */,
 				2BC469CB1F6983BB00ABA980 /* CustomFolderService.m in Sources */,
 				73697BA21A9B74A3009F10BA /* UserAccount.m in Sources */,
 				2B9BCEEF1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m in Sources */,
 				734CC4011A700809005D148E /* FileProvider.m in Sources */,
+				2B1591181F95F4840047D8BA /* RealmSyncNodeInfo.m in Sources */,
 				734B877F1AA734000093E702 /* AlfrescoFileManager+Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

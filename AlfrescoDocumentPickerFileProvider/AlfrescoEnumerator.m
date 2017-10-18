@@ -130,6 +130,18 @@
                     case AlfrescoFileProviderItemIdentifierTypeFavoriteSites:
                     {
                         [self enumerateItemsInFavoriteSitesWithSession:session];
+                        break;
+                    }
+                    case AlfrescoFileProviderItemIdentifierTypeSynced:
+                    {
+                        [self enumerateItemsInSyncedFolder];
+                        break;
+                    }
+                    case AlfrescoFileProviderItemIdentifierTypeSyncNode:
+                    {
+                        NSString *nodeId = [AlfrescoFileProviderItemIdentifier identifierFromItemIdentifier:self.enumeratedItemIdentifier];
+                        [self enumerateItemsInSyncedFolderWithIdentifier:nodeId];
+                        break;
                     }
                     default:
                         break;
@@ -334,6 +346,27 @@
     }
     
     [self.observer didEnumerateItems:enumeratedAccounts];
+    [self.observer finishEnumeratingUpToPage:nil];
+}
+
+- (void)enumerateItemsInSyncedFolder
+{
+    [self enumerateItemsInSyncedFolderWithIdentifier:nil];
+}
+
+- (void)enumerateItemsInSyncedFolderWithIdentifier:(NSString *)nodeId
+{
+    NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
+    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
+    
+    RLMResults<RealmSyncNodeInfo *> *syncedItems = [[FileProviderDataManager sharedManager] syncItemsInNodeWithId:nodeId forAccountIdentifier:accountIdentifier];
+    for(RealmSyncNodeInfo *node in syncedItems)
+    {
+        AlfrescoFileProviderItem *fpItem = [[AlfrescoFileProviderItem alloc] initWithSyncedNode:node parentItemIdentifier:self.enumeratedItemIdentifier];
+        [enumeratedSyncedItems addObject:fpItem];
+    }
+    
+    [self.observer didEnumerateItems:enumeratedSyncedItems];
     [self.observer finishEnumeratingUpToPage:nil];
 }
 

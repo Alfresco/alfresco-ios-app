@@ -51,6 +51,23 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return realm;
 }
 
+- (RLMRealm *)realmForSyncWithAccountIdentifier:(NSString *)accountIdentifier
+{
+    RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
+    
+    NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+    NSString *configFilePath = [[sharedAppGroupFolderURL.path stringByAppendingPathComponent:accountIdentifier] stringByAppendingPathExtension:@"realm"];
+    config.fileURL = [NSURL URLWithString:configFilePath];
+    NSError *error = nil;
+    RLMRealm *realm = [RLMRealm realmWithConfiguration:config error:&error];
+    if(error)
+    {
+        AlfrescoLogError(@"Error Creating Realm: %@", error.localizedDescription);
+    }
+    
+    return realm;
+}
+
 - (void)saveMenuItem:(NSString *)menuItemIdentifierSuffix displayName:(NSString *)displayName forAccount:(UserAccount *)account
 {
     if(account)
@@ -215,6 +232,39 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
     
     return item;
+}
+
+- (RLMResults<RealmSyncNodeInfo *> *)syncItemsInNodeWithId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier
+{
+    RLMRealm *realm = [self realmForSyncWithAccountIdentifier:accountIdentifier];
+    RLMResults<RealmSyncNodeInfo *> *results;
+    if(identifier)
+    {
+        RLMResults *parentSyncNodes = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId == %@", identifier];
+        if(parentSyncNodes.count > 0)
+        {
+            RealmSyncNodeInfo *node = parentSyncNodes.firstObject;
+            results = node.nodes;
+        }
+    }
+    else
+    {
+        results = [RealmSyncNodeInfo objectsInRealm:realm where:@"isTopLevelSyncNode = %@", @YES];
+    }
+    return results;
+}
+
+- (NSFileProviderItemIdentifier)parentItemIdentifierOfSyncedNode:(RealmSyncNodeInfo *)syncedNode fromAccountIdentifier:(NSString *)accountIdentifier
+{
+    NSFileProviderItemIdentifier identifier;
+    if(syncedNode && accountIdentifier)
+    {
+        RealmSyncNodeInfo *parentNode = syncedNode.parentNode;
+        NSString *syncNodePathString = [NSString stringWithFormat:@"%@/%@", kFileProviderSyncPathString, kFileProviderFolderPathString];
+        identifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:parentNode.syncNodeInfoId typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
+    }
+    
+    return identifier;
 }
 
 @end
