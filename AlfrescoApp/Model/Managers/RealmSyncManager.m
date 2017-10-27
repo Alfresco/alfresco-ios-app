@@ -644,11 +644,11 @@
             __block SyncProgressType syncProgressType = [syncOpQ syncProgressTypeForNode:node];
             if(syncProgressType == SyncProgressTypeInProcessing)
             {
+                self.nodeChildrenRequestsCount++;
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
                     if(self.nodeChildrenRequestsCount == 0)
                     {
                         RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
-                        [self saveChildrenNodesForParent:node inRealm:realm];
                         NSArray *documents = [[RealmManager sharedManager] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
                         [self checkNode:documents forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
                             if (shouldProceed)
@@ -718,32 +718,33 @@
     
     if ([nodesInfoForSelectedAccount objectForKey:[node syncIdentifier]] == nil)
     {
-        self.nodeChildrenRequestsCount++;
         [self.documentFolderService retrieveChildrenInFolder:(AlfrescoFolder *)node completionBlock:^(NSArray *array, NSError *error) {
-            
-            self.nodeChildrenRequestsCount--;
             if (array)
             {
                 // nodes for each folder are held in with keys folder identifiers
                 nodesInfoForSelectedAccount[[node syncIdentifier]] = array;
+                RLMRealm *realm = [RLMRealm defaultRealm];
                 for (AlfrescoNode *subNode in array)
                 {
+                    RealmSyncNodeInfo *subNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:subNode ifNotExistsCreateNew:YES inRealm:realm];
+                    RealmSyncNodeInfo *folderNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
+                    [realm beginWriteTransaction];
+                    subNodeInfo.parentNode = folderNodeInfo;
+                    [realm commitWriteTransaction];
                     SyncNodeStatus *syncNodeStatus = [self.currentOperationQueue syncNodeStatusObjectForNodeWithId:[node syncIdentifier]];
                     syncNodeStatus.status = SyncStatusLoading;
                     
                     if(subNode.isFolder)
                     {
-                        if([self.currentOperationQueue syncProgressTypeForNode:node] == SyncProgressTypeInProcessing)
-                        {
-                            // recursive call to retrieve nodes hierarchies
-                            [self retrieveNodeHierarchyForNode:subNode withCompletionBlock:^(BOOL completed) {
-                                
-                                if (completionBlock != NULL)
-                                {
-                                    completionBlock(YES);
-                                }
-                            }];
-                        }
+                        self.nodeChildrenRequestsCount++;
+                        // recursive call to retrieve nodes hierarchies
+                        [self retrieveNodeHierarchyForNode:subNode withCompletionBlock:^(BOOL completed) {
+                            
+                            if (completionBlock != NULL)
+                            {
+                                completionBlock(YES);
+                            }
+                        }];
                     }
                 }
             }
@@ -751,6 +752,7 @@
             {
                 [self removeTopLevelNodeFlagFomNodeWithIdentifier:[node syncIdentifier]];
             }
+            self.nodeChildrenRequestsCount--;
             
             if (completionBlock != NULL)
             {
@@ -998,40 +1000,7 @@
     RealmSyncNodeInfo *nodeInfo = [[RealmManager sharedManager] syncNodeInfoForId:nodeStatus.nodeId inRealm:realm];
     RealmSyncNodeInfo *parentNodeInfo = nodeInfo.parentNode;
     SyncOperationQueue *syncOpQ = self.syncQueues[selectedAccount.accountIdentifier];
-    // update total size for parent folder
-    if ([propertyChanged isEqualToString:kSyncTotalSize])
-    {
-        if (parentNodeInfo)
-        {
-            AlfrescoNode *parentNode = [NSKeyedUnarchiver unarchiveObjectWithData:parentNodeInfo.node];
-            SyncNodeStatus *parentNodeStatus = [self syncStatusForNodeWithId:[parentNode syncIdentifier]];
-            
-            NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
-            unsigned long long changeSize = [[change valueForKey:NSKeyValueChangeOldKey] unsignedLongLongValue];
-            
-            if (nodeStatus.totalSize >= changeSize)
-            {
-                parentNodeStatus.totalSize += nodeStatus.totalSize - changeSize;
-            }
-        }
-        else
-        {
-            // if parent folder is nil - update total size for account
-            SyncNodeStatus *accountSyncStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:selectedAccount.accountIdentifier];
-            if (nodeStatus != accountSyncStatus)
-            {
-                NSDictionary *change = [info objectForKey:kSyncStatusChangeKey];
-                unsigned long long changeSize = [[change valueForKey:NSKeyValueChangeOldKey] unsignedLongLongValue];
-                
-                if (nodeStatus.totalSize >= changeSize)
-                {
-                    accountSyncStatus.totalSize += nodeStatus.totalSize - changeSize;
-                }
-            }
-        }
-    }
-    // update sync status for folder depending on its child nodes statuses
-    else if ([propertyChanged isEqualToString:kSyncStatus])
+    if ([propertyChanged isEqualToString:kSyncStatus])
     {
         if (parentNodeInfo)
         {
@@ -1066,6 +1035,14 @@
                 }
             }
             parentNodeStatus.status = syncStatus;
+            //compute the size based on child nodes
+            unsigned long long totalParentSize = 0;
+            for (RealmSyncNodeInfo *subNodeInfo in subNodes)
+            {
+                SyncNodeStatus *subNodeStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:subNodeInfo.syncNodeInfoId];
+                totalParentSize += subNodeStatus.totalSize;
+            }
+            parentNodeStatus.totalSize = totalParentSize;
         }
         else if((nodeInfo.isTopLevelSyncNode) && (nodeInfo.isFolder) && (nodeStatus.status == SyncStatusSuccessful))
         {
