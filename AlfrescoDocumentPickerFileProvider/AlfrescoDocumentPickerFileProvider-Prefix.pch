@@ -20,3 +20,4 @@
 #import <AlfrescoSDK-iOS/AlfrescoSDK.h>
 #import <AlfrescoKit/AlfrescoKit.h>
 #import "FileProviderConstants.h"
+#import "SharedConstants.h"

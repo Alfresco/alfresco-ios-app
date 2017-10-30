@@ -92,6 +92,10 @@
         {
             return AlfrescoFileProviderItemIdentifierTypeFavoriteSites;
         }
+        else if ([components[2] isEqualToString:kFileProviderSyncedFolderIdentifierSuffix])
+        {
+            return AlfrescoFileProviderItemIdentifierTypeSynced;
+        }
     }
     else if(components.count > 3)
     {
@@ -107,6 +111,10 @@
         {
             return AlfrescoFileProviderItemIdentifierTypeDocument;
         }
+        else if ([components[2] isEqualToString:kFileProviderSyncPathString])
+        {
+            return AlfrescoFileProviderItemIdentifierTypeSyncNode;
+        }
     }
     
     return AlfrescoFileProviderItemIdentifierTypeAccount;
@@ -118,6 +126,10 @@
     if(components.count == 4 && ([components[2] isEqualToString:kFileProviderFolderPathString] || [components[2] isEqualToString:kFileProviderSitePathString]))
     {
         return components[3];
+    }
+    else if (components.count == 5 && [components[2] isEqualToString:kFileProviderSyncPathString] && [components[3] isEqualToString:kFileProviderFolderPathString])
+    {
+        return components[4];
     }
     return nil;
 }

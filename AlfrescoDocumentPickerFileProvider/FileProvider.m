@@ -314,10 +314,16 @@
     
     if(![identifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
     {
-        FileProviderAccountInfo *realmItem = [[FileProviderDataManager sharedManager] itemForIdentifier:identifier];
-        if(realmItem)
+        
+        id realmItem = [[FileProviderDataManager sharedManager] itemForIdentifier:identifier];
+        if([realmItem isKindOfClass:[FileProviderAccountInfo class]])
         {
             item = [[AlfrescoFileProviderItem alloc] initWithAccountInfo:realmItem];
+        }
+        else if([realmItem isKindOfClass:[RealmSyncNodeInfo class]])
+        {
+            NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+            item = [[AlfrescoFileProviderItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[FileProviderDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
         }
     }
     return item;

@@ -19,6 +19,8 @@
 #import <Foundation/Foundation.h>
 #import <Realm/Realm.h>
 #import "FileProviderAccountInfo.h"
+#import "RealmSyncNodeInfo.h"
+#import "RealmSyncError.h"
 @class UserAccount;
 
 @interface FileProviderDataManager : NSObject
@@ -34,5 +36,8 @@
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForAccount:(NSString *)accountIdentifier;
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier;
 - (FileProviderAccountInfo *)itemForIdentifier:(NSFileProviderItemIdentifier)identifier;
+
+- (RLMResults<RealmSyncNodeInfo *> *)syncItemsInNodeWithId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
+- (NSFileProviderItemIdentifier)parentItemIdentifierOfSyncedNode:(RealmSyncNodeInfo *)syncedNode fromAccountIdentifier:(NSString *)accountIdentifier;
 
 @end

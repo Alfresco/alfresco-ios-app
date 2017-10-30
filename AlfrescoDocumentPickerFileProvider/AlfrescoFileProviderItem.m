@@ -22,15 +22,18 @@
 #import "AlfrescoFileProviderItemIdentifier.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "AlfrescoNode+Utilities.h"
+#import "RealmSyncNodeInfo.h"
 
 @interface AlfrescoFileProviderItem()
 
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) AlfrescoNode *node;
 @property (nonatomic, strong) AlfrescoSite *site;
-@property (nonatomic, strong) NSString *privateParentItemIdentifier;
-@property (nonatomic, strong) NSString *privateItemIdentifier;
-@property (nonatomic, strong) NSString *privateFilename;
+
+@property (nonatomic, copy, readwrite) NSString *parentItemIdentifier;
+@property (nonatomic, copy, readwrite) NSString *itemIdentifier;
+@property (nonatomic, copy, readwrite) NSString *filename;
+@property (nonatomic, readwrite) BOOL isDownloaded;
 
 @end
 
@@ -45,9 +48,9 @@
     }
     
     self.account = account;
-    self.privateParentItemIdentifier = NSFileProviderRootContainerItemIdentifier;
-    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccount:account];
-    self.privateFilename = self.account.accountDescription;
+    self.parentItemIdentifier = NSFileProviderRootContainerItemIdentifier;
+    self.itemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccount:account];
+    self.filename = self.account.accountDescription;
     
     return self;
 }
@@ -60,9 +63,9 @@
         return nil;
     }
     
-    self.privateParentItemIdentifier = accountInfo.parentFolder.identifier;
-    self.privateItemIdentifier = accountInfo.identifier;
-    self.privateFilename = accountInfo.name;
+    self.parentItemIdentifier = accountInfo.parentFolder.identifier;
+    self.itemIdentifier = accountInfo.identifier;
+    self.filename = accountInfo.name;
     
     return self;
 }
@@ -75,11 +78,11 @@
         return nil;
     }
     
-    self.privateParentItemIdentifier = parentItemIdentifier;
+    self.parentItemIdentifier = parentItemIdentifier;
     NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
     NSString *typePath = node.isFolder ? kFileProviderFolderPathString : kFileProviderDocumentPathString;
-    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:[node nodeRefWithoutVersionID] typePath:typePath andAccountIdentifier:accountIdentifier];
-    self.privateFilename = node.name;
+    self.itemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:[node nodeRefWithoutVersionID] typePath:typePath andAccountIdentifier:accountIdentifier];
+    self.filename = node.name;
     self.node = node;
     
     return self;
@@ -93,29 +96,40 @@
         return nil;
     }
     
-    self.privateParentItemIdentifier = parentItemIdentifier;
+    self.parentItemIdentifier = parentItemIdentifier;
     NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
-    self.privateItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:site.shortName typePath:kFileProviderSitePathString andAccountIdentifier:accountIdentifier];
-    self.privateFilename = site.title;
+    self.itemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:site.shortName typePath:kFileProviderSitePathString andAccountIdentifier:accountIdentifier];
+    self.filename = site.title;
     self.site = site;
     
     return self;
 }
 
-#pragma mark - NSFileProviderItemProtocol
-- (NSFileProviderItemIdentifier)itemIdentifier
+- (instancetype)initWithSyncedNode:(RealmSyncNodeInfo *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier
 {
-    return self.privateItemIdentifier;
+    self = [super init];
+    if(!self)
+    {
+        return nil;
+    }
+    
+    self.parentItemIdentifier = parentItemIdentifier;
+    self.node = node.alfrescoNode;
+    self.filename = node.title;
+
+    NSString *nodeTypePath = node.isFolder? kFileProviderFolderPathString : kFileProviderDocumentPathString;
+    self.isDownloaded = YES;
+    NSString *syncNodePathString = [NSString stringWithFormat:@"%@.%@", kFileProviderSyncPathString, nodeTypePath];
+    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
+    self.itemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForIdentifier:node.syncNodeInfoId typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
+    
+    return self;
 }
 
+#pragma mark - NSFileProviderItemProtocol
 - (NSFileProviderItemCapabilities)capabilities
 {
     return NSFileProviderItemCapabilitiesAllowsAll;
-}
-
-- (NSString *)filename
-{
-    return self.privateFilename;
 }
 
 - (NSString *)typeIdentifier
@@ -127,16 +141,6 @@
         return UTI;
     }
     return @"public.folder";
-}
-
-- (NSFileProviderItemIdentifier)parentItemIdentifier
-{
-    return self.privateParentItemIdentifier;
-}
-
-- (BOOL)isDownloaded
-{
-    return NO;
 }
 
 @end

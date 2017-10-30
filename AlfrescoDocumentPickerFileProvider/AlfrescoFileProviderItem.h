@@ -19,12 +19,19 @@
 #import <FileProvider/FileProvider.h>
 @class UserAccount;
 @class FileProviderAccountInfo;
+@class RealmSyncNodeInfo;
 
 @interface AlfrescoFileProviderItem : NSObject <NSFileProviderItem>
+
+@property (nonatomic, readonly, copy) NSString *parentItemIdentifier;
+@property (nonatomic, readonly, copy) NSString *itemIdentifier;
+@property (nonatomic, readonly, copy) NSString *filename;
+@property (nonatomic, readonly) BOOL isDownloaded;
 
 - (instancetype)initWithUserAccount:(UserAccount *)account;
 - (instancetype)initWithAccountInfo:(FileProviderAccountInfo *)accountInfo;
 - (instancetype)initWithAlfrescoNode:(AlfrescoNode *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 - (instancetype)initWithSite:(AlfrescoSite *)site parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
+- (instancetype)initWithSyncedNode:(RealmSyncNodeInfo *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 
 @end
