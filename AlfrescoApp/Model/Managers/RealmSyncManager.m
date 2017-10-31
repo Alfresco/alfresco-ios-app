@@ -1323,7 +1323,7 @@
     {
         SyncNodeStatus *nodeStatus = [[RealmSyncManager sharedManager] syncStatusForNodeWithId:node.syncNodeInfoId];
         nodeStatus.status = SyncStatusWaiting;
-        
+        [self.currentOperationQueue resetSyncProgressInformationForNode:node.alfrescoNode];
         [self.currentOperationQueue setNodeForSyncingAsTopLevel:node.alfrescoNode];
     }
 }
@@ -1365,6 +1365,7 @@
     {
         if(node.isFolder)
         {
+            self.nodeChildrenRequestsCount++;
             [self retrieveNodeHierarchyForNode:node.alfrescoNode withCompletionBlock:^(BOOL completed) {
                 if(self.nodeChildrenRequestsCount == 0)
                 {
