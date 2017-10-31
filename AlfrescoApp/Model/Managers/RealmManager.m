@@ -87,7 +87,7 @@
     syncNodeInfo.title = node.name;
     syncNodeInfo.isFolder = node.isFolder;
     [realm beginWriteTransaction];
-    [realm addObject:syncNodeInfo];
+    [realm addOrUpdateObject:syncNodeInfo];
     [realm commitWriteTransaction];
     return syncNodeInfo;
 }
