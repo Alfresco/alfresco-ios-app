@@ -314,16 +314,23 @@
     
     if(![identifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
     {
-        
-        id realmItem = [[FileProviderDataManager sharedManager] itemForIdentifier:identifier];
-        if([realmItem isKindOfClass:[FileProviderAccountInfo class]])
+        AlfrescoFileProviderItemIdentifierType identifierType = [AlfrescoFileProviderItemIdentifier itemIdentifierTypeForIdentifier:identifier];
+        if(identifierType == AlfrescoFileProviderItemIdentifierTypeDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNode)
         {
-            item = [[AlfrescoFileProviderItem alloc] initWithAccountInfo:realmItem];
-        }
-        else if([realmItem isKindOfClass:[RealmSyncNodeInfo class]])
-        {
-            NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
-            item = [[AlfrescoFileProviderItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[FileProviderDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
+            id realmItem = [[FileProviderDataManager sharedManager] itemForIdentifier:identifier];
+            if([realmItem isKindOfClass:[FileProviderAccountInfo class]])
+            {
+                item = [[AlfrescoFileProviderItem alloc] initWithAccountInfo:realmItem];
+            }
+            else if([realmItem isKindOfClass:[RealmSyncNodeInfo class]])
+            {
+                RealmSyncNodeInfo *realmSyncItem = (RealmSyncNodeInfo *)realmItem;
+                if(!realmSyncItem.isFolder)
+                {
+                    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+                    item = [[AlfrescoFileProviderItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[FileProviderDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
+                }
+            }
         }
     }
     return item;
@@ -331,19 +338,31 @@
 
 - (nullable NSURL *)URLForItemWithPersistentIdentifier:(NSFileProviderItemIdentifier)identifier
 {
-    NSFileProviderItem item = [self itemForIdentifier:identifier error:NULL];
-    if (!item)
+    NSURL *fileURL = nil;
+    
+    AlfrescoFileProviderItem *item = [self itemForIdentifier:identifier error:NULL];
+    if(item)
     {
-        return nil;
+        AlfrescoFileProviderItemIdentifierType identifierType = [AlfrescoFileProviderItemIdentifier itemIdentifierTypeForIdentifier:identifier];
+        if(identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNode)
+        {
+            RealmSyncNodeInfo *nodeInfo = (RealmSyncNodeInfo *)[[FileProviderDataManager sharedManager] itemForIdentifier:identifier];
+            NSFileProviderManager *manager = [NSFileProviderManager defaultManager];
+            NSString *itemPath = [[manager.documentStorageURL.absoluteString stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Sync"];
+            itemPath = [itemPath stringByAppendingPathComponent:[AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier]];
+            itemPath = [itemPath stringByAppendingPathComponent:nodeInfo.syncContentPath];
+            fileURL = [NSURL URLWithString:itemPath];
+        }
+        else if (identifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
+        {
+            // in this implementation, all paths are structured as <base storage directory>/<item identifier>/<item file name>
+            NSFileProviderManager *manager = [NSFileProviderManager defaultManager];
+            NSURL *perItemDirectory = [manager.documentStorageURL URLByAppendingPathComponent:identifier isDirectory:YES];
+            fileURL = [perItemDirectory URLByAppendingPathComponent:item.filename isDirectory:NO];
+        }
     }
     
-    // in this implementation, all paths are structured as <base storage directory>/<item identifier>/<item file name>
-    NSFileProviderManager *manager = [NSFileProviderManager defaultManager];
-    NSURL *perItemDirectory = [manager.documentStorageURL URLByAppendingPathComponent:identifier isDirectory:YES];
-    
-    return [perItemDirectory URLByAppendingPathComponent:item.filename isDirectory:NO];
-    
-    return nil;
+    return fileURL;
 }
 
 - (nullable NSFileProviderItemIdentifier)persistentIdentifierForItemAtURL:(NSURL *)url

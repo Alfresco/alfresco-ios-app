@@ -217,17 +217,32 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return result;
 }
 
-- (FileProviderAccountInfo *)itemForIdentifier:(NSFileProviderItemIdentifier)identifier
+- (id)itemForIdentifier:(NSFileProviderItemIdentifier)identifier
 {
-    FileProviderAccountInfo *item = nil;
+    id item;
     if(identifier)
     {
-        RLMRealm *realm = [self realm];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", identifier];
-        RLMResults<FileProviderAccountInfo *> *list = [FileProviderAccountInfo objectsInRealm:realm withPredicate:pred];
-        if(list.count > 0)
+        AlfrescoFileProviderItemIdentifierType typeIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierTypeForIdentifier:identifier];
+        if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncNode)
         {
-            item = list.firstObject;
+            NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+            RLMRealm *realm = [self realmForSyncWithAccountIdentifier:accountIdentifier];
+            NSString *itemSyncIdentifier = [AlfrescoFileProviderItemIdentifier identifierFromItemIdentifier:identifier];
+            RLMResults<RealmSyncNodeInfo*> *items = [RealmSyncNodeInfo objectsInRealm:realm where:@"syncNodeInfoId == %@", itemSyncIdentifier];
+            if(items.count > 0)
+            {
+                item = items.firstObject;
+            }
+        }
+        else
+        {
+            RLMRealm *realm = [self realm];
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", identifier];
+            RLMResults<FileProviderAccountInfo *> *list = [FileProviderAccountInfo objectsInRealm:realm withPredicate:pred];
+            if(list.count > 0)
+            {
+                item = list.firstObject;
+            }
         }
     }
     
