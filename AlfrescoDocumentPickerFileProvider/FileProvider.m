@@ -148,7 +148,10 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     [versionService checkoutDocument:document completionBlock:^(AlfrescoDocument *checkoutDocument, NSError *checkoutError) {
         if (checkoutError)
         {
-            completionBlock(checkoutDocument, checkoutError);
+            if(checkoutError.code != kAlfrescoErrorCodeVersion)
+            {
+                completionBlock(checkoutDocument, checkoutError);
+            }
         }
         else
         {
@@ -157,6 +160,19 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
             } progressBlock:nil];
         }
     }];
+}
+
+- (void)saveDocumentAtURL:(NSURL *)readingURL toURL:(NSURL *)writingURL overwritingExistingFile:(BOOL)shouldOverwrite
+{
+    NSError *copyError = nil;
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    
+    [fileManager copyItemAtURL:readingURL toURL:writingURL overwritingExistingFile:shouldOverwrite error:&copyError];
+    
+    if (copyError)
+    {
+        AlfrescoLogError(@"Unable to copy file at path: %@, to location: %@. Error: %@", readingURL, writingURL, copyError.localizedDescription);
+    }
 }
 
 #pragma mark - File Provider Methods
@@ -262,15 +278,21 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 UserAccountWrapper *account = [self userAccountForMetadataItem:metadata];
                 
                 // Coordinate the reading of the file for uploading
-                [self.fileCoordinator coordinateReadingItemAtURL:metadata.fileURL options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newURL) {
+                [self.fileCoordinator coordinateReadingItemAtURL:metadata.fileURL options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newReadingURL) {
                     // define an upload block
                     __block BOOL networkOperationCallbackComplete = NO;
                     void (^uploadBlock)(id<AlfrescoSession>session) = ^(id<AlfrescoSession>session) {
                         AlfrescoDocument *updateDocument = (AlfrescoDocument *)metadata.repositoryNode;
-                        [self uploadDocument:updateDocument sourceURL:newURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
+                        [self uploadDocument:updateDocument sourceURL:newReadingURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
                             if (updateError)
                             {
                                 AlfrescoLogError(@"Error Updating Document: %@. Error: %@", updateDocument.name, updateError.localizedDescription);
+                                NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
+                                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
+                                NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+                                [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
+                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                                }];
                             }
                             else
                             {
@@ -299,6 +321,12 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                             else
                             {
                                 AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
+                                NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
+                                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
+                                NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+                                [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
+                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                                }];
                             }
                         }];
                         
@@ -326,15 +354,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                 NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
                 NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
                 [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                    NSError *copyError = nil;
-                    NSFileManager *fileManager = [[NSFileManager alloc] init];
-                    
-                    [fileManager copyItemAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES error:&copyError];
-                    
-                    if (copyError)
-                    {
-                        AlfrescoLogError(@"Unable to copy file at path: %@, to location: %@. Error: %@", newReadingURL, newWritingURL, copyError.localizedDescription);
-                    }
+                    [self saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
                 }];
             }
         }
