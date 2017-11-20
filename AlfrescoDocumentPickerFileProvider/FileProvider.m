@@ -166,13 +166,33 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 {
     NSError *copyError = nil;
     NSFileManager *fileManager = [[NSFileManager alloc] init];
-    
+    if(!shouldOverwrite && [fileManager fileExistsAtPath:[writingURL path]])
+    {
+        NSString *filename = [self fileNameAppendedWithDate:writingURL.lastPathComponent];
+        writingURL = [[writingURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:filename];
+    }
     [fileManager copyItemAtURL:readingURL toURL:writingURL overwritingExistingFile:shouldOverwrite error:&copyError];
     
     if (copyError)
     {
         AlfrescoLogError(@"Unable to copy file at path: %@, to location: %@. Error: %@", readingURL, writingURL, copyError.localizedDescription);
     }
+}
+
+- (NSString *)fileNameAppendedWithDate:(NSString *)name
+{
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd-HH-mm-ss"];
+    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *fileExtension = name.pathExtension;
+    NSString *fileName = [NSString stringWithFormat:@"%@_%@", name.stringByDeletingPathExtension, dateString];
+    
+    if (fileExtension.length > 0)
+    {
+        fileName = [fileName stringByAppendingPathExtension:fileExtension];
+    }
+    
+    return fileName;
 }
 
 #pragma mark - File Provider Methods
@@ -291,7 +311,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                                 NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
                                 NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
                                 [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:NO];
                                 }];
                             }
                             else
@@ -325,7 +345,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                                 NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
                                 NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
                                 [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:NO];
                                 }];
                             }
                         }];

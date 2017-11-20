@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, UploadFormType)
 
 @optional
 - (void)didFinishUploadingNode:(AlfrescoNode *)node fromLocation:(NSURL *)locationURL;
-- (void)didFailUploadingNode:(NSError *)error;
+- (void)didFailUploadingDocumentWithName:(NSString *)name withError:(NSError *)error;
 - (void)didCancelUpload;
 
 @end
