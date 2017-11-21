@@ -98,30 +98,33 @@
     self.badConfigMessageDisplayed = NO;
     
     UserAccount *activeAccount = [AccountManager sharedManager].selectedAccount;
-    id<AlfrescoSession> session = notification.object;
-    
-    AccountConfiguration *activeAccountConfiguration = self.configurations[activeAccount.accountIdentifier];
-    
-    [self.configurations enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, AccountConfiguration * _Nonnull configuration, BOOL * _Nonnull stop) {
-        if (![key isEqualToString:kNoAccountsConfigurationKey] && ![activeAccount.accountIdentifier isEqualToString:key])
+    if(activeAccount)
+    {
+        id<AlfrescoSession> session = notification.object;
+        
+        AccountConfiguration *activeAccountConfiguration = self.configurations[activeAccount.accountIdentifier];
+        
+        [self.configurations enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, AccountConfiguration * _Nonnull configuration, BOOL * _Nonnull stop) {
+            if (![key isEqualToString:kNoAccountsConfigurationKey] && ![activeAccount.accountIdentifier isEqualToString:key])
+            {
+                configuration.session = nil;
+                configuration.configService.session = nil;
+            }
+        }];
+        
+        if (activeAccountConfiguration == nil)
         {
-            configuration.session = nil;
-            configuration.configService.session = nil;
+            activeAccountConfiguration = [[AccountConfiguration alloc] initWithAccount:activeAccount session:session];
+            self.configurations[activeAccount.accountIdentifier] = activeAccountConfiguration;
         }
-    }];
-    
-    if (activeAccountConfiguration == nil)
-    {
-        activeAccountConfiguration = [[AccountConfiguration alloc] initWithAccount:activeAccount session:session];
-        self.configurations[activeAccount.accountIdentifier] = activeAccountConfiguration;
+        else
+        {
+            activeAccountConfiguration.session = session;
+        }
+        
+        self.activeAccountConfiguration = activeAccountConfiguration;
+        [self.activeAccountConfiguration install];
     }
-    else
-    {
-        activeAccountConfiguration.session = session;
-    }
-    
-    self.activeAccountConfiguration = activeAccountConfiguration;
-    [self.activeAccountConfiguration install];
 }
 
 - (void)accountRemoved:(NSNotification *)notification
