@@ -311,7 +311,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                                 NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
                                 NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
                                 [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:NO];
+                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
                                 }];
                             }
                             else
@@ -345,7 +345,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                                 NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
                                 NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
                                 [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:NO];
+                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
                                 }];
                             }
                         }];
