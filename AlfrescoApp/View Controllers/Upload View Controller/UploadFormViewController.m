@@ -142,6 +142,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizesSubviews = YES;
+    tableView.estimatedRowHeight = 0;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin
     | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [view addSubview:tableView];
