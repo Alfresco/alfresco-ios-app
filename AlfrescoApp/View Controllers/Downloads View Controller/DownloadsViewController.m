@@ -118,6 +118,16 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     }
 }
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (self.tableView.isEditing)
+    {
+        [self setEditing:NO animated:NO];
+    }
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
