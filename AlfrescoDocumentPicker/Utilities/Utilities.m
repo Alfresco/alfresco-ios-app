@@ -41,6 +41,23 @@ static NSString * const kWorkspaceNodePrefix = @"workspace://SpacesStore/";
     return filename;
 }
 
++ (NSString *)filenameWithoutVersionFromFilename:(NSString *)filenameWithVersion nodeIdentifier:(NSString *)nodeIdentifier
+{
+    NSRange versionStartRange = [nodeIdentifier rangeOfString:@";"];
+    
+    if(nodeIdentifier.length > versionStartRange.location)
+    {
+        NSString *versionNumber = [nodeIdentifier substringFromIndex:(versionStartRange.location + 1)];
+        NSString *pathExtension = filenameWithVersion.pathExtension;
+        filenameWithVersion = [filenameWithVersion stringByDeletingPathExtension];
+        NSArray *components = [filenameWithVersion componentsSeparatedByString:[NSString stringWithFormat:@" v%@", versionNumber]];
+        filenameWithVersion = components[0];
+        filenameWithVersion = [filenameWithVersion stringByAppendingPathExtension:pathExtension];
+    }
+    
+    return filenameWithVersion;
+}
+
 + (NSString *)nodeGUIDFromNodeIdentifierWithVersion:(NSString *)nodeIdentifier
 {
     NSString *nodeGUID = [nodeIdentifier stringByReplacingOccurrencesOfString:kWorkspaceNodePrefix withString:@""];

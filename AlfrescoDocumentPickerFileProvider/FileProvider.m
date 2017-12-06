@@ -308,7 +308,9 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                             {
                                 AlfrescoLogError(@"Error Updating Document: %@. Error: %@", updateDocument.name, updateError.localizedDescription);
                                 NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
-                                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
+                                NSString *filename = url.lastPathComponent;
+                                filename = [Utilities filenameWithoutVersionFromFilename:filename nodeIdentifier:repoNode.identifier];
+                                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:filename];
                                 NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
                                 [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
                                     [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
@@ -342,7 +344,9 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                             {
                                 AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
                                 NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
-                                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
+                                NSString *filename = url.lastPathComponent;
+                                filename = [Utilities filenameWithoutVersionFromFilename:filename nodeIdentifier:repoNode.identifier];
+                                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:filename];
                                 NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
                                 [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
                                     [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
