@@ -25,7 +25,6 @@ static CGFloat const kThumbnailWidthInListLayout = 40.0f;
 static CGFloat const kThumbnailSideSpace = 10.0f;
 static CGFloat const kEditImageTopSpaceInListLayout = 17.0f;
 static CGFloat const kEditImageTopSpaceInGridLayout = 0.0f;
-static CGFloat const kCollectionViewHeaderHight = 40.0f;
 static CGFloat const kFolderNameTopSpace = 20.0f;
 
 @interface BaseCollectionViewFlowLayout ()
