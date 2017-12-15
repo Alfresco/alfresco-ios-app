@@ -119,6 +119,12 @@
       "idiom" : "ipad",
       "filename" : "Alfresco_Content_Services_iPad-Pro-App-iOS-9-83.5pt@2x.png",
       "scale" : "2x"
+    },
+    {
+      "size" : "1024x1024",
+      "idiom" : "ios-marketing",
+      "filename" : "Alfresco_Content_Services_iTunesArtwork@2x.png",
+      "scale" : "1x"
     }
   ],
   "info" : {
