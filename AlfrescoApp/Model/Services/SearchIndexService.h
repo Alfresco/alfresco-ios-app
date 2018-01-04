@@ -20,6 +20,6 @@
 
 @interface SearchIndexService : NSObject
 
-- (void)parseSearchResults:(NSArray *)searchResults;
+- (void)parseSearchResults:(NSArray *)searchResults session:(id<AlfrescoSession>)session;
 
 @end

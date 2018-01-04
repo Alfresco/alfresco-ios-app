@@ -17,17 +17,64 @@
  ******************************************************************************/
 
 #import "SearchIndexService.h"
+#import "CustomFolderService.h"
+
+static NSString * const kJSONMimeType = @"application/json";
+static NSString * const kSearchResultsIndexFileName = @"MobileSearchResultsIndex.json";
 
 @interface SearchIndexService ()
 
 @property (strong, nonatomic) NSMutableDictionary *searchIndexDict;
+@property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
 
 @implementation SearchIndexService
 
-- (void)parseSearchResults:(NSArray *)searchResults {
-    
+- (void)parseSearchResults:(NSArray *)searchResults session:(id<AlfrescoSession>)session
+{
+    self.session = session;
+}
+
+- (void)saveSearchIndexInMyFiles
+{
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.searchIndexDict options:NSJSONWritingPrettyPrinted error:&error];
+    AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithData:jsonData mimeType:kJSONMimeType];
+    CustomFolderService *customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
+    [customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+        if(folder)
+        {
+            AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+            [documentService retrieveChildrenInFolder:folder completionBlock:^(NSArray *array, NSError *error) {
+                if(array.count)
+                {
+                    AlfrescoDocument *searchIndexDoc = nil;
+                    for(AlfrescoNode *node in array)
+                    {
+                        if(([node.name isEqualToString:kSearchResultsIndexFileName]) && node.isDocument)
+                        {
+                            searchIndexDoc = (AlfrescoDocument *)node;
+                        }
+                    }
+                    
+                    if(searchIndexDoc)
+                    {
+                        // should update the index file
+                    }
+                    else
+                    {
+                        [documentService createDocumentWithName:kSearchResultsIndexFileName inParentFolder:folder contentFile:contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                            if(error)
+                            {
+                                AlfrescoLogError(@"Failed to upload search results index with error: %@", error);
+                            }
+                        } progressBlock:nil];
+                    }
+                }
+            }];
+        }
+    }];
 }
 
 @end
