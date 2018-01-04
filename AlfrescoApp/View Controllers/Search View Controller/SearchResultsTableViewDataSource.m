@@ -24,6 +24,7 @@
 #import "ThumbnailManager.h"
 #import "PersonCell.h"
 #import "AvatarManager.h"
+#import "SearchIndexService.h"
 
 @interface SearchResultsTableViewDataSource ()
 
@@ -32,6 +33,7 @@
 @property (nonatomic, strong) AlfrescoSearchService *searchService;
 @property (nonatomic, strong) AlfrescoPersonService *personService;
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
+@property (nonatomic, strong) SearchIndexService *searchIndexService;
 
 @end
 
@@ -100,6 +102,13 @@
             
             self.moreItemsAvailable = pagingResult.hasMoreItems;
             [weakSelf.delegate dataSourceUpdated];
+            
+            // Generate search index set based on the fetched results
+            if (!weakSelf.searchIndexService) {
+                weakSelf.searchIndexService = [SearchIndexService new];
+            }
+            [weakSelf.searchIndexService parseSearchResults:self.searchResultsArray
+                                           session:self.session];
         }
         else
         {
