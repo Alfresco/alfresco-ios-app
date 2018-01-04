@@ -77,6 +77,7 @@
 		08E1EA4018DB2E2700F9052F /* CreateTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08E1EA3F18DB2E2700F9052F /* CreateTaskViewController.xib */; };
 		08E89C9417E7488C006936DF /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 08E89C9317E7488C006936DF /* SyncManager.m */; };
 		08E89CA317E7593B006936DF /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08E89CA117E7593B006936DF /* InfoPlist.strings */; };
+		1375B6161FFE60E200060FF9 /* SearchIndexService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1375B6151FFE60E200060FF9 /* SearchIndexService.m */; };
 		1D2A52AC1CC7687000991186 /* RepositoryCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */; };
 		1DE9507A1CAC0887009299C8 /* RealmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE950791CAC0887009299C8 /* RealmManager.m */; };
 		1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9507C1CAE6D09009299C8 /* SyncConstants.m */; };
@@ -1008,6 +1009,8 @@
 		08E89CB017E75BA6006936DF /* SyncTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncTest.m; sourceTree = "<group>"; };
 		08E89CB217E76012006936DF /* AlfrescoBaseTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfrescoBaseTest.h; sourceTree = "<group>"; };
 		08E89CB317E76012006936DF /* AlfrescoBaseTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfrescoBaseTest.m; sourceTree = "<group>"; };
+		1375B6141FFE60E200060FF9 /* SearchIndexService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchIndexService.h; sourceTree = "<group>"; };
+		1375B6151FFE60E200060FF9 /* SearchIndexService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchIndexService.m; sourceTree = "<group>"; };
 		1D2A52AA1CC7687000991186 /* RepositoryCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.h; path = RepositoryCollectionViewDataSource.h; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
 		1D2A52AB1CC7687000991186 /* RepositoryCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.objc; path = RepositoryCollectionViewDataSource.m; sourceTree = "<group>"; tabWidth = 4; usesTabs = 0; wrapsLines = 1; };
 		1D2A52B11CC76DA000991186 /* RepositoryCollectionViewDataSource+Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RepositoryCollectionViewDataSource+Internal.h"; sourceTree = "<group>"; };
@@ -2411,6 +2414,8 @@
 			children = (
 				278658A11BB60280003B77AA /* CustomFolderService.h */,
 				278658A21BB60280003B77AA /* CustomFolderService.m */,
+				1375B6141FFE60E200060FF9 /* SearchIndexService.h */,
+				1375B6151FFE60E200060FF9 /* SearchIndexService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -5325,6 +5330,7 @@
 				27DA1B651915362300885F0F /* BaseInboundURLHandler.m in Sources */,
 				080A81181855FE3A00B79306 /* ClientCertificateViewController.m in Sources */,
 				73632ADD1802C679007172EE /* ActionCollectionItem.m in Sources */,
+				1375B6161FFE60E200060FF9 /* SearchIndexService.m in Sources */,
 				7390B3691B03681E00E7191F /* AlfrescoFeatureConfig.m in Sources */,
 				73B95B0417A68DF20099FB84 /* TagPickerViewController.m in Sources */,
 				73B95B0517A68DF20099FB84 /* UploadFormViewController.m in Sources */,
