@@ -160,6 +160,9 @@
 
 - (void)clearDataSource
 {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self.searchIndexService saveSearchIndexInMyFiles];
+    });
     [self.searchResultsArray removeAllObjects];
     [self.delegate dataSourceUpdated];
 }

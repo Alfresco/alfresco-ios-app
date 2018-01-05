@@ -46,17 +46,18 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
 {
     self.session = session;
     
-    NSMutableArray *entriesArr = [NSMutableArray array];
-    for (AlfrescoDocument *document in searchResults)
+    if(searchResults.count)
     {
-        NSDictionary *searchIndexEntry = [self searchIndexEntryFromDocument:document];
-        [entriesArr addObject:@{kSearchIndexEntryPropertyEntry : searchIndexEntry}];
+        NSMutableArray *entriesArr = [NSMutableArray array];
+        for (AlfrescoDocument *document in searchResults)
+        {
+            NSDictionary *searchIndexEntry = [self searchIndexEntryFromDocument:document];
+            [entriesArr addObject:@{kSearchIndexEntryPropertyEntry : searchIndexEntry}];
+        }
+        
+        NSDictionary *entriesDict = @{kSearchIndexEntryPropertyEntries : entriesArr};
+        self.searchIndexDict = @{kSearchIndexEntryPropertyList : entriesDict};
     }
-    
-    NSDictionary *entriesDict = @{kSearchIndexEntryPropertyEntries : entriesArr};
-    self.searchIndexDict = @{kSearchIndexEntryPropertyList : entriesDict};
-    
-    [self saveSearchIndexInMyFiles];
 }
 
 
@@ -113,18 +114,23 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
     }
 }
 
-- (void)saveSearchIndexInMyFiles
+- (AlfrescoContentFile *)contentFileFromSearchResultsIndexDict
 {
     NSError *error = nil;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.searchIndexDict options:NSJSONWritingPrettyPrinted error:&error];
     AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithData:jsonData mimeType:kJSONMimeType];
+    return contentFile;
+}
+
+- (void)saveSearchIndexInMyFiles
+{
     CustomFolderService *customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
     [customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
         if(folder)
         {
             AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
             [documentService retrieveChildrenInFolder:folder completionBlock:^(NSArray *array, NSError *error) {
-                if(array.count)
+                if(!error)
                 {
                     AlfrescoDocument *searchIndexDoc = nil;
                     for(AlfrescoNode *node in array)
@@ -138,10 +144,22 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
                     if(searchIndexDoc)
                     {
                         // should update the index file
+                        [documentService retrieveContentOfDocument:searchIndexDoc completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
+                            if(!error)
+                            {
+                                [self appendSearchIndexDataEntriesFromURL:contentFile.fileUrl];
+                                [documentService updateContentOfDocument:searchIndexDoc contentFile:[self contentFileFromSearchResultsIndexDict] completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                                    if(error)
+                                    {
+                                        AlfrescoLogError(@"Failed to upload search results index with error: %@", error);
+                                    }
+                                } progressBlock:nil];
+                            }
+                        } progressBlock:nil];
                     }
                     else
                     {
-                        [documentService createDocumentWithName:kSearchResultsIndexFileName inParentFolder:folder contentFile:contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                        [documentService createDocumentWithName:kSearchResultsIndexFileName inParentFolder:folder contentFile:[self contentFileFromSearchResultsIndexDict] properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
                             if(error)
                             {
                                 AlfrescoLogError(@"Failed to upload search results index with error: %@", error);

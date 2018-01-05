@@ -21,5 +21,6 @@
 @interface SearchIndexService : NSObject
 
 - (void)parseSearchResults:(NSArray *)searchResults session:(id<AlfrescoSession>)session;
+- (void)saveSearchIndexInMyFiles;
 
 @end
