@@ -22,9 +22,20 @@
 static NSString * const kJSONMimeType = @"application/json";
 static NSString * const kSearchResultsIndexFileName = @"MobileSearchResultsIndex.json";
 
+static NSString * const kSearchIndexEntryPropertyList = @"list";
+static NSString * const kSearchIndexEntryPropertyEntries = @"entries";
+static NSString * const kSearchIndexEntryPropertyEntry = @"entry";
+static NSString * const kSearchIndexEntryPropertyName = @"name";
+static NSString * const kSearchIndexEntryPropertyID = @"id";
+static NSString * const kSearchIndexEntryPropertyNodeType = @"nodeType";
+static NSString * const kSearchIndexEntryPropertyIsFile = @"isFile";
+static NSString * const kSearchIndexEntryPropertyParentID = @"parentId";
+static NSString * const kSearchIndexEntryPropertyTrue = @"true";
+static NSString * const kSearchIndexEntryPropertyFalse = @"false";
+
 @interface SearchIndexService ()
 
-@property (strong, nonatomic) NSMutableDictionary *searchIndexDict;
+@property (strong, nonatomic) NSDictionary *searchIndexDict;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 
 @end
@@ -34,6 +45,72 @@ static NSString * const kSearchResultsIndexFileName = @"MobileSearchResultsIndex
 - (void)parseSearchResults:(NSArray *)searchResults session:(id<AlfrescoSession>)session
 {
     self.session = session;
+    
+    NSMutableArray *entriesArr = [NSMutableArray array];
+    for (AlfrescoDocument *document in searchResults)
+    {
+        NSDictionary *searchIndexEntry = [self searchIndexEntryFromDocument:document];
+        [entriesArr addObject:@{kSearchIndexEntryPropertyEntry : searchIndexEntry}];
+    }
+    
+    NSDictionary *entriesDict = @{kSearchIndexEntryPropertyEntries : entriesArr};
+    self.searchIndexDict = @{kSearchIndexEntryPropertyList : entriesDict};
+    
+    [self saveSearchIndexInMyFiles];
+}
+
+
+#pragma mark -
+#pragma mark Private interface
+
+- (NSDictionary *)searchIndexEntryFromDocument:(AlfrescoDocument *)document
+{
+    NSMutableDictionary *searchIndexEntryDict = [NSMutableDictionary dictionary];
+    searchIndexEntryDict[kSearchIndexEntryPropertyName] = document.name;
+    searchIndexEntryDict[kSearchIndexEntryPropertyID] = [self normalizedNodeIdentifierForIdentifierString:document.identifier];
+    searchIndexEntryDict[kSearchIndexEntryPropertyNodeType] = document.type;
+    searchIndexEntryDict[kSearchIndexEntryPropertyIsFile] = document.isDocument ? kSearchIndexEntryPropertyTrue : kSearchIndexEntryPropertyFalse;
+    
+    return searchIndexEntryDict;
+}
+
+- (NSString *)normalizedNodeIdentifierForIdentifierString:(NSString *)identifierString
+{
+    NSUInteger indexOfVersionSeparator = [identifierString rangeOfString:@";"].location;
+    return [identifierString substringToIndex:indexOfVersionSeparator];
+}
+
+- (void)appendSearchIndexDataEntriesFromURL:(NSURL *)fileURL
+{
+    if (fileURL)
+    {
+        NSString *jsonString = [[NSString alloc] initWithContentsOfURL:fileURL
+                                                              encoding:NSUTF8StringEncoding
+                                                                 error:nil];
+        
+        NSDictionary *existingSearchIndexDict = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                options:NSJSONReadingMutableContainers
+                                                                                  error:nil];
+        NSMutableArray *existingEntriesArr = existingSearchIndexDict[kSearchIndexEntryPropertyList][kSearchIndexEntryPropertyEntries];
+        NSSet *existingEntriesSet = [NSSet setWithArray:existingEntriesArr];
+        
+        NSArray *additionalEntriesArr = self.searchIndexDict[kSearchIndexEntryPropertyList][kSearchIndexEntryPropertyEntries];
+        
+        NSIndexSet *unionResult = [NSIndexSet indexSet];
+        unionResult = [additionalEntriesArr indexesOfObjectsPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            return ![existingEntriesSet containsObject:obj[kSearchIndexEntryPropertyEntry][kSearchIndexEntryPropertyID]] &&
+                   ![obj[kSearchIndexEntryPropertyEntry][kSearchIndexEntryPropertyName] isEqualToString:kSearchResultsIndexFileName];
+        }];
+        
+        [existingEntriesArr addObjectsFromArray:[additionalEntriesArr objectsAtIndexes:unionResult]];
+        
+        NSDictionary *entriesDict = @{kSearchIndexEntryPropertyEntries : existingEntriesArr};
+        self.searchIndexDict = @{kSearchIndexEntryPropertyList : entriesDict};
+    }
+    else
+    {
+        AlfrescoLogError(@"Search index cannot be found");
+    }
 }
 
 - (void)saveSearchIndexInMyFiles
