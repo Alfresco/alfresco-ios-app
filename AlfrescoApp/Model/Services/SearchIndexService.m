@@ -80,6 +80,39 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
     return [identifierString substringToIndex:indexOfVersionSeparator];
 }
 
+- (void)appendSearchIndexDataEntriesFromURL:(NSURL *)fileURL
+{
+    if (fileURL)
+    {
+        NSString *jsonString = [[NSString alloc] initWithContentsOfURL:fileURL
+                                                              encoding:NSUTF8StringEncoding
+                                                                 error:nil];
+        
+        NSDictionary *existingSearchIndexDict = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                                options:NSJSONReadingMutableContainers
+                                                                                  error:nil];
+        NSMutableArray *existingEntriesArr = existingSearchIndexDict[kSearchIndexEntryPropertyList][kSearchIndexEntryPropertyEntries];
+        NSSet *existingEntriesSet = [NSSet setWithArray:existingEntriesArr];
+        
+        NSArray *additionalEntriesArr = self.searchIndexDict[kSearchIndexEntryPropertyList][kSearchIndexEntryPropertyEntries];
+        
+        NSIndexSet *unionResult = [NSIndexSet indexSet];
+        unionResult = [additionalEntriesArr indexesOfObjectsPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            return ![existingEntriesSet containsObject:obj[kSearchIndexEntryPropertyEntry][kSearchIndexEntryPropertyID]] &&
+                   ![obj[kSearchIndexEntryPropertyEntry][kSearchIndexEntryPropertyName] isEqualToString:kSearchResultsIndexFileName];
+        }];
+        
+        [existingEntriesArr addObjectsFromArray:[additionalEntriesArr objectsAtIndexes:unionResult]];
+        
+        NSDictionary *entriesDict = @{kSearchIndexEntryPropertyEntries : existingEntriesArr};
+        self.searchIndexDict = @{kSearchIndexEntryPropertyList : entriesDict};
+    }
+    else
+    {
+        AlfrescoLogError(@"Search index cannot be found");
+    }
+}
+
 - (void)saveSearchIndexInMyFiles
 {
     NSError *error = nil;
