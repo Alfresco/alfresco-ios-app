@@ -35,8 +35,10 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
 
 @interface SearchIndexService ()
 
-@property (strong, nonatomic) NSDictionary *searchIndexDict;
-@property (nonatomic, strong) id<AlfrescoSession> session;
+@property (nonatomic, strong) NSDictionary                  *searchIndexDict;
+@property (nonatomic, strong) id<AlfrescoSession>           session;
+@property (nonatomic, strong) CustomFolderService           *customFolderService;
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 
 @end
 
@@ -46,18 +48,74 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
 {
     self.session = session;
     
-    if(searchResults.count)
+    NSMutableArray *newEntriesArr = [NSMutableArray array];
+    for (AlfrescoDocument *document in searchResults)
     {
-        NSMutableArray *entriesArr = [NSMutableArray array];
-        for (AlfrescoDocument *document in searchResults)
-        {
-            NSDictionary *searchIndexEntry = [self searchIndexEntryFromDocument:document];
-            [entriesArr addObject:@{kSearchIndexEntryPropertyEntry : searchIndexEntry}];
-        }
-        
-        NSDictionary *entriesDict = @{kSearchIndexEntryPropertyEntries : entriesArr};
-        self.searchIndexDict = @{kSearchIndexEntryPropertyList : entriesDict};
+        NSDictionary *searchIndexEntry = [self searchIndexEntryFromDocument:document];
+        [newEntriesArr addObject:@{kSearchIndexEntryPropertyEntry : searchIndexEntry}];
     }
+    
+    NSMutableArray *existingEntriesArr = self.searchIndexDict[kSearchIndexEntryPropertyList][kSearchIndexEntryPropertyEntries];
+    self.searchIndexDict = [self searchIndexDictionaryByMergingNewEntries:newEntriesArr
+                                                        toExistingEntries:existingEntriesArr];
+}
+
+- (void)saveSearchIndexInMyFiles
+{
+    self.customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
+    
+    __weak typeof(self) weakSelf = self;
+    [self.customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+        if(folder)
+        {
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            strongSelf.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:strongSelf.session];
+            [strongSelf.documentService retrieveChildrenInFolder:folder completionBlock:^(NSArray *array, NSError *error) {
+                if(!error)
+                {
+                    AlfrescoDocument *searchIndexDoc = nil;
+                    for(AlfrescoNode *node in array)
+                    {
+                        if(([node.name isEqualToString:kSearchResultsIndexFileName]) && node.isDocument)
+                        {
+                            searchIndexDoc = (AlfrescoDocument *)node;
+                        }
+                    }
+                    
+                    if(searchIndexDoc)
+                    {
+                        // should update the index file
+                        [weakSelf.documentService retrieveContentOfDocument:searchIndexDoc completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
+                            if(!error)
+                            {
+                                [weakSelf appendSearchIndexDataEntriesFromURL:contentFile.fileUrl];
+                                [weakSelf.documentService updateContentOfDocument:searchIndexDoc contentFile:[self contentFileFromSearchResultsIndexDict] completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                                    if(error)
+                                    {
+                                        AlfrescoLogError(@"Failed to upload search results index with error: %@", error);
+                                    }
+                                } progressBlock:nil];
+                            }
+                        } progressBlock:nil];
+                    }
+                    else
+                    {
+                        [weakSelf.documentService createDocumentWithName:kSearchResultsIndexFileName
+                                                          inParentFolder:folder
+                                                             contentFile:[self contentFileFromSearchResultsIndexDict]
+                                                              properties:nil
+                                                         completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                                                             if(error)
+                                                             {
+                                                                 AlfrescoLogError(@"Failed to upload search results index with error: %@", error);
+                                                             }
+                                                         } progressBlock:nil];
+                    }
+                }
+            }];
+        }
+    }];
 }
 
 
@@ -81,6 +139,23 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
     return [identifierString substringToIndex:indexOfVersionSeparator];
 }
 
+- (NSDictionary *)searchIndexDictionaryByMergingNewEntries:(NSArray *)newSearchIndexEntriesArr
+                                         toExistingEntries:(NSArray *)existingSearchIndexEntriesArr {
+    NSSet *existingEntriesSet = [NSSet setWithArray:existingSearchIndexEntriesArr];
+    
+    NSIndexSet *unionResult = [NSIndexSet indexSet];
+    unionResult = [newSearchIndexEntriesArr indexesOfObjectsPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        return ![existingEntriesSet containsObject:obj[kSearchIndexEntryPropertyEntry][kSearchIndexEntryPropertyID]] &&
+        ![obj[kSearchIndexEntryPropertyEntry][kSearchIndexEntryPropertyName] isEqualToString:kSearchResultsIndexFileName];
+    }];
+    
+    NSMutableArray *existingEntries = [NSMutableArray arrayWithArray:existingSearchIndexEntriesArr];
+    [existingEntries addObjectsFromArray:[newSearchIndexEntriesArr objectsAtIndexes:unionResult]];
+    
+    NSDictionary *entriesDict = @{kSearchIndexEntryPropertyEntries : existingEntries};
+    return @{kSearchIndexEntryPropertyList : entriesDict};
+}
+
 - (void)appendSearchIndexDataEntriesFromURL:(NSURL *)fileURL
 {
     if (fileURL)
@@ -88,25 +163,15 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
         NSString *jsonString = [[NSString alloc] initWithContentsOfURL:fileURL
                                                               encoding:NSUTF8StringEncoding
                                                                  error:nil];
-        
         NSDictionary *existingSearchIndexDict = [NSJSONSerialization JSONObjectWithData:[jsonString dataUsingEncoding:NSUTF8StringEncoding]
                                                                                 options:NSJSONReadingMutableContainers
                                                                                   error:nil];
+        
         NSMutableArray *existingEntriesArr = existingSearchIndexDict[kSearchIndexEntryPropertyList][kSearchIndexEntryPropertyEntries];
-        NSSet *existingEntriesSet = [NSSet setWithArray:existingEntriesArr];
+        NSArray *newEntriesArr = self.searchIndexDict[kSearchIndexEntryPropertyList][kSearchIndexEntryPropertyEntries];
         
-        NSArray *additionalEntriesArr = self.searchIndexDict[kSearchIndexEntryPropertyList][kSearchIndexEntryPropertyEntries];
-        
-        NSIndexSet *unionResult = [NSIndexSet indexSet];
-        unionResult = [additionalEntriesArr indexesOfObjectsPassingTest:^BOOL(NSDictionary *obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            return ![existingEntriesSet containsObject:obj[kSearchIndexEntryPropertyEntry][kSearchIndexEntryPropertyID]] &&
-                   ![obj[kSearchIndexEntryPropertyEntry][kSearchIndexEntryPropertyName] isEqualToString:kSearchResultsIndexFileName];
-        }];
-        
-        [existingEntriesArr addObjectsFromArray:[additionalEntriesArr objectsAtIndexes:unionResult]];
-        
-        NSDictionary *entriesDict = @{kSearchIndexEntryPropertyEntries : existingEntriesArr};
-        self.searchIndexDict = @{kSearchIndexEntryPropertyList : entriesDict};
+        self.searchIndexDict = [self searchIndexDictionaryByMergingNewEntries:newEntriesArr
+                                                            toExistingEntries:existingEntriesArr];
     }
     else
     {
@@ -120,56 +185,6 @@ static NSString * const kSearchIndexEntryPropertyFalse = @"false";
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.searchIndexDict options:NSJSONWritingPrettyPrinted error:&error];
     AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithData:jsonData mimeType:kJSONMimeType];
     return contentFile;
-}
-
-- (void)saveSearchIndexInMyFiles
-{
-    CustomFolderService *customFolderService = [[CustomFolderService alloc] initWithSession:self.session];
-    [customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
-        if(folder)
-        {
-            AlfrescoDocumentFolderService *documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
-            [documentService retrieveChildrenInFolder:folder completionBlock:^(NSArray *array, NSError *error) {
-                if(!error)
-                {
-                    AlfrescoDocument *searchIndexDoc = nil;
-                    for(AlfrescoNode *node in array)
-                    {
-                        if(([node.name isEqualToString:kSearchResultsIndexFileName]) && node.isDocument)
-                        {
-                            searchIndexDoc = (AlfrescoDocument *)node;
-                        }
-                    }
-                    
-                    if(searchIndexDoc)
-                    {
-                        // should update the index file
-                        [documentService retrieveContentOfDocument:searchIndexDoc completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
-                            if(!error)
-                            {
-                                [self appendSearchIndexDataEntriesFromURL:contentFile.fileUrl];
-                                [documentService updateContentOfDocument:searchIndexDoc contentFile:[self contentFileFromSearchResultsIndexDict] completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                                    if(error)
-                                    {
-                                        AlfrescoLogError(@"Failed to upload search results index with error: %@", error);
-                                    }
-                                } progressBlock:nil];
-                            }
-                        } progressBlock:nil];
-                    }
-                    else
-                    {
-                        [documentService createDocumentWithName:kSearchResultsIndexFileName inParentFolder:folder contentFile:[self contentFileFromSearchResultsIndexDict] properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                            if(error)
-                            {
-                                AlfrescoLogError(@"Failed to upload search results index with error: %@", error);
-                            }
-                        } progressBlock:nil];
-                    }
-                }
-            }];
-        }
-    }];
 }
 
 @end
