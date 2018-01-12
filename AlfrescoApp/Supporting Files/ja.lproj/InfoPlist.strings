@@ -28,4 +28,4 @@ NSLocationWhenInUseUsageDescription = "現在地がこのデバイスで撮影�
 NSMicrophoneUsageDescription = "マイクを使用して音声を録音します。音声は後でこのアプリにアップロードできます。";
 NSPhotoLibraryUsageDescription = "[フォトライブラリ] にある写真やビデオをこのアプリにアップロードできます。";
 NSCameraUsageDescription = "写真を撮ってこのアプリにアップロードできます。";
-CFBundleDisplayName = "コンテンツ";
+CFBundleDisplayName = "Content";
