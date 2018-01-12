@@ -28,4 +28,4 @@ NSLocationWhenInUseUsageDescription = "您的位置将用于为此设备拍摄�
 NSMicrophoneUsageDescription = "麦克风将用于录制声音，然后该声音可上传至此应用程序。";
 NSPhotoLibraryUsageDescription = "您可将照片图库中的照片和视频上传至此应用程序。";
 NSCameraUsageDescription = "您可以拍摄照片以上传至应用程序。";
-CFBundleDisplayName = "内容";
+CFBundleDisplayName = "Content";

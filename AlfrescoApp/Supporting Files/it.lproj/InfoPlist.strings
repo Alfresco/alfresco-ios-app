@@ -28,4 +28,4 @@ NSLocationWhenInUseUsageDescription = "La posizione sarà utilizzata per applica
 NSMicrophoneUsageDescription = "Il microfono sarà utilizzato per registrare file audio che potranno poi essere caricati su questa app.";
 NSPhotoLibraryUsageDescription = "È possibile caricare foto e video della propria Libreria foto su questa app.";
 NSCameraUsageDescription = "È possibile scattare foto da caricare su questa app.";
-CFBundleDisplayName = "Contenuto";
+CFBundleDisplayName = "Content";
