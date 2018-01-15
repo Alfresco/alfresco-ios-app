@@ -208,12 +208,16 @@ static CGFloat const kProgressBarHeight = 2.0f;
     if ([[ConnectivityManager sharedManager] hasInternetConnection])
     {
         NSURLRequest *request = [NSURLRequest requestWithURL:self.url];
-        [self.webView loadRequest:request];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.webView loadRequest:request];
+        });
     }
     else if (self.errorURL)
     {
         NSURLRequest *request = [NSURLRequest requestWithURL:self.errorURL];
-        [self.webView loadRequest:request];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.webView loadRequest:request];
+        });
     }
     else
     {
@@ -292,7 +296,10 @@ static CGFloat const kProgressBarHeight = 2.0f;
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    [self hideWebView];
+    if(error.code != -999)
+    {
+        [self hideWebView];
+    }
 }
 
 #pragma mark - NJKWebViewProgressDelegate Methods
