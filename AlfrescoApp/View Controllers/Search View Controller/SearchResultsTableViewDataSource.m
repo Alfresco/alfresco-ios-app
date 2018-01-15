@@ -187,6 +187,7 @@
 - (void)reloadDataSource
 {
     [self.searchResultsArray removeAllObjects];
+    [self.delegate dataSourceUpdated];
     
     [self retrieveNextItems:self.defaultListingContext];
 }
