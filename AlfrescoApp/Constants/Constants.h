@@ -98,6 +98,9 @@ extern CGFloat kUISegmentControlHorizontalPadding;
 extern CGFloat kUISegmentControlVerticalPadding;
 extern CGFloat kUISegmentControllerHeight;
 
+// UICollectionView Header height
+extern CGFloat kCollectionViewHeaderHight;
+
 // NSUserDefault Keys
 extern NSString * const kSearchTypeFiles;
 extern NSString * const kSearchTypeFolders;

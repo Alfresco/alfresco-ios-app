@@ -87,6 +87,8 @@
     {
         [self enablePullToRefresh];
     }
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -120,7 +122,7 @@
     if ((!IS_IPAD) && (self.shouldIncludeSearchBar))
     {
         // hide search bar initially
-        self.collectionView.contentOffset = CGPointMake(0., 40.);
+        self.collectionView.contentOffset = CGPointMake(0., kCollectionViewHeaderHight);
     }
     [self updateEmptyView];
 }

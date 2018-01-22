@@ -350,6 +350,10 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
                     
                     if (samlData)
                     {
+                        if(keychainAccount.samlData && !samlData.samlInfo)
+                        {
+                            samlData.samlInfo = keychainAccount.samlData.samlInfo;
+                        }
                         keychainAccount.samlData = samlData;
                     }
                     

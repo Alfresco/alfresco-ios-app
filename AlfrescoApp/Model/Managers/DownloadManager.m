@@ -387,7 +387,8 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     BOOL copySucceeded = NO;
     
     NSString *name = documentName ? documentName : contentPath.lastPathComponent;
-    NSString *destinationFilename = (overwrite ? name : [self safeFilenameBySuffixing:name error:error]);
+    NSString *safeName = fileNameAppendedWithDate(name);
+    NSString *destinationFilename = (overwrite ? name : safeName);
     if (destinationFilename != nil)
     {
         if ([self copyDocumentFrom:contentPath destinationFilename:destinationFilename overwriteExisting:overwrite error:error])

@@ -370,7 +370,7 @@
  * About View Controller
  */
 "about.title" = "バージョン情報";
-"about.content" = "Alfresco Content Services は、重要なビジネスコンテンツの管理と共同作業が行えるオープンプラットフォームです。\n\nAlfresco Content Services モバイルアプリ は Alfresco Software, Inc. によって設計、開発されたプログラムで、Alfresco Content Services in the Cloud と、Alfresco Content Services、Alfresco Community Edition (3.4.8 以降) に接続することにより、外出先からでも社内のファイルに安全にアクセスすることができます。このモバイルアプリでは、Alfresco Content Services のログイン資格情報を使って (HTTP または HTTPS 経由で) 社内のリポジトリに接続し、ユーザーの権限に基づいてアクセスを管理します。";
+"about.content" = "Alfresco Content Services は、どこからでも簡単にコンテンツにアクセスして共同作業を行える、オープンで柔軟、かつ非常に拡張性の高いエンタープライズコンテンツ管理 (ECM) プログラムです。\n\nAlfresco Content Services のモバイルアプリケーションを使えば、Alfresco で管理しているコンテンツと関連ワークフロープロセスに素早く、安全にアクセスできます。このアプリケーションは Alfresco Content Services、Alfresco Community Edition (4.2以降)、Alfresco Content Services in the Cloud と連携します。\n\nこのモバイルアプリケーションには Alfresco Content Services のログイン資格情報を使って (HTTP または HTTPS 経由で) アクセスし、権限に基づいてアクセスを管理します。";
 "about.version.number" = "バージョン: %@ (%@)";
 "about.build.date.time" = "ビルド日時: %s %s";
 
@@ -460,8 +460,8 @@
 "login.hud.cancel.label" = "タップしてキャンセル";
 
 /**
- * Login Manager
- */
+* Login Manager
+*/
 "login.sign.in" = "サインイン";
 
 /**

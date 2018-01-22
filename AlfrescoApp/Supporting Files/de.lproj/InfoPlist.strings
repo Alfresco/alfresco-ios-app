@@ -28,4 +28,4 @@ NSLocationWhenInUseUsageDescription = "Ihre Position wird verwendet, um mit dies
 NSMicrophoneUsageDescription = "Das Mikrofon wird für Tonaufnahmen verwendet, die dann zu dieser App hochgeladen werden können.";
 NSPhotoLibraryUsageDescription = "Sie können Fotos und Videos aus Ihrer Fotobibliothek zu dieser App hochladen.";
 NSCameraUsageDescription =  "Sie können Fotos machen und zu dieser App hochladen.";
-CFBundleDisplayName = "Inhalt";
+CFBundleDisplayName = "Content";

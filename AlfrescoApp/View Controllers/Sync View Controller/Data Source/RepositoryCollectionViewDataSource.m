@@ -246,6 +246,8 @@
             headerView.searchBar = searchBar;
             [headerView addSubview:searchBar];
             [searchBar sizeToFit];
+            BaseCollectionViewFlowLayout *collectionViewLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
+            searchBar.frame = CGRectMake(searchBar.frame.origin.x, searchBar.frame.origin.y, searchBar.frame.size.width, collectionViewLayout.headerReferenceSize.height);
         }
         
         reusableview = headerView;

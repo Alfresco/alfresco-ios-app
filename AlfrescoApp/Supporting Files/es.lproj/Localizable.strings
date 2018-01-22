@@ -153,7 +153,7 @@
 "error.no.internet.access.message" = "Compruebe que está conectado a Internet e inténtelo de nuevo. Podrá continuar accediendo a los ficheros que ha descargado sin disponer de conexión.";
 "error.access.permissions.message" = "Compruebe que cuenta con los permisos necesarios para hacerlo";
 "error.host.unreachable.title" = "Error de conexión";
-"error.host.unreachable.message" = "Sus ajustes parecen erróneos o podría necesitar activar su VPN. Compruebe los datos de su conexión en los ajustes de cuenta.";
+"error.host.unreachable.message" = "Su configuración parece errónea o podría necesitar activar su VPN. Compruebe los datos de su conexión en la configuración de cuenta.";
 "error.retrieving.metadata" = "No se han podido cargar las propiedades para %@.";
 "error.server.message" = "Se ha producido un error en el servidor.";
 // Workflow
@@ -197,7 +197,7 @@
 "permissions.location.disabled.title" = "Datos de ubicación desactivados";
 "permissions.location.disabled.message" = "Los datos de ubicación están desactivados en su dispositivo.";
 // Settings button
-"permissions.settings.button" = "Cambiar ajustes";
+"permissions.settings.button" = "Cambiar configuración";
 
 /**
  * Custom error descriptions
@@ -256,15 +256,15 @@
 "accountdetails.buttons.client-certificate" = "Certificado de cliente";
 "accountdetails.buttons.configuration" = "Editar menú principal";
 "accountdetails.header.authentication" = "Datos de la cuenta";
-"accountdetails.header.advanced" = "Avanzados";
-"accountdetails.header.setting" = "Ajustes";
+"accountdetails.header.advanced" = "Avanzada";
+"accountdetails.header.setting" = "Configuración";
 "accountdetails.header.main.menu.config" = "Menú principal";
 "accountdetails.footer.main.menu.config.disabled" = "Su equipo de TI ha desactivado esta función.";
 "accountdetails.buttons.profile" = "Editar perfil";
 "accountdetails.header.profile" = "Perfil";
 
 "accountdetails.alert.save.title" = "Guardar cuenta";
-"accountdetails.alert.save.validationerror" = "No se ha podido guardar la cuenta. Compruebe los ajustes de su cuenta con su equipo de TI.";
+"accountdetails.alert.save.validationerror" = "No se ha podido guardar la cuenta. Compruebe la configuración de su cuenta con su equipo de TI.";
 
 "accountdetails.fields.accountSettings" = "Introduzca su nombre de usuario y contraseña para acceder a esta cuenta";
 "accountdetails.fields.confirmPassword" = "Confirme su contraseña para acceder a esta cuenta";
@@ -370,7 +370,7 @@
  * About View Controller
  */
 "about.title" = "Acerca de";
-"about.content" = "Alfresco Content Services es la plataforma abierta para la gestión de contenido empresarial crítico y la colaboración.\n\nLa aplicación móvil Alfresco Content Services ha sido diseñada y desarrollada por Alfresco Software, Inc. y se conecta a los servidores de Alfresco Content Services in the Cloud, Alfresco Content Services y Alfresco Community Edition (3.4.8 y posteriores) para ofrecerle acceso seguro a los ficheros corporativos cuando no está en la oficina. Esta aplicación móvil se conecta empleando sus credenciales de inicio de sesión de Alfresco Content Services (sobre HTTP o HTTPS) y gestiona el acceso en base a sus permisos.";
+"about.content" = "Alfresco Content Services ofrece una gestión de contenido empresarial (ECM) abierta, flexible y altamente escalable que le facilita el acceso al contenido para que pueda colaborar con él desde cualquier lugar. \n\n La aplicación móvil Alfresco Content Services le ofrece un acceso rápido y seguro a su contenido de Alfresco y a los procesos de flujo de trabajo asociados. Funciona con Alfresco Content Services, Alfresco Community Edition (4.2 y posterior) y Alfresco Content Services in the Cloud. \n\n Esta aplicación móvil se conecta con las credenciales de inicio de sesión de Alfresco Content Services (a través de HTTP o HTTPS) y gestiona el acceso en función de sus permisos.";
 "about.version.number" = "Versión: %@ (%@)";
 "about.build.date.time" = "Fecha de creación: %s %s";
 
@@ -405,7 +405,7 @@
 "upload.audio.cell.button.play" = "Reproducir";
 "upload.audio.cell.button.stop" = "Detener";
 "upload.audio.setting.disabled.title" = "Permisos";
-"upload.audio.setting.disabled.message" = "Esta aplicación no tiene permiso para usar el micrófono.\n\nPuede cambiar esto en su dispositivo en Configuración > Privacidad > Micrófono.";
+"upload.audio.setting.disabled.message" = "Esta aplicación no tiene permiso para usar el micrófono.\n\nPuede cambiar esto en su dispositivo en Ajustes > Privacidad > Micrófono.";
 // confirmation
 "upload.confirm.dismissal.title" = "Contenido sin guardar";
 "upload.confirm.dismissal.message" = "¿Desea cargar este contenido? Si no lo carga ahora, perderá su contenido.";
@@ -678,7 +678,7 @@
 /**
  * Settings
  */
-"settings.title" = "Ajustes";
+"settings.title" = "Configuración";
 "settings.general.title" = "General";
 "settings.sync.on.cellular" = "Usar datos para sincronización";
 "settings.sync.on.cellular.description" = "Desconecte la sincronización para sincronizar el contenido sólo cuando disponga de una conexión Wi-Fi.";

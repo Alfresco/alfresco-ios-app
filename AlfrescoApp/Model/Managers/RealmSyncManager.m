@@ -1547,7 +1547,7 @@
         [self checkForObstaclesInRemovingDownloadForNode:node.alfrescoNode inRealm:realm completionBlock:^(BOOL encounteredObstacle) {
             if (encounteredObstacle)
             {
-                SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[node.alfrescoNode syncIdentifier]];
+                SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:node.syncNodeInfoId];
                 nodeStatus.status = SyncStatusFailed;
                 
                 if (node.alfrescoNode.isDocument)
@@ -1555,7 +1555,7 @@
                     NSMutableArray *documentsToBeDeletedLocallyAfterUpload = [self.syncObstacles objectForKey:kDocumentsToBeDeletedLocallyAfterUpload];
                     
                     [documentsToBeDeletedLocallyAfterUpload enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
-                        if ([[document syncIdentifier] isEqualToString:[node.alfrescoNode syncIdentifier]])
+                        if ([[document syncIdentifier] isEqualToString:node.syncNodeInfoId])
                         {
                             [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:^{
                                 decreaseTotalChecksBlock();
@@ -1571,7 +1571,7 @@
                     NSMutableArray *deletedOnServerWithLocalChanges = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
                     
                     [deletedOnServerWithLocalChanges enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
-                        if ([[document syncIdentifier] isEqualToString:[node.alfrescoNode syncIdentifier]])
+                        if ([[document syncIdentifier] isEqualToString:node.syncNodeInfoId])
                         {
                             // Orphan document with new local version => Copy the file into Local Files prior to deletion.
                             [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];

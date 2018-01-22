@@ -52,6 +52,9 @@ CGFloat kUISegmentControlHorizontalPadding = 10.0f;
 CGFloat kUISegmentControlVerticalPadding = 10.0f;
 CGFloat kUISegmentControllerHeight = 40.0f;
 
+// UICollectionView Header height
+CGFloat kCollectionViewHeaderHight = 56.0f;
+
 // NSUserDefaults Keys
 NSString * const kSearchTypeFiles = @"ALFSearchTypeFiles";
 NSString * const kSearchTypeFolders = @"ALFSearchTypeFolders";

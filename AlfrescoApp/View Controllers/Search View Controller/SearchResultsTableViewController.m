@@ -133,81 +133,84 @@ static CGFloat const kCellHeight = 73.0f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNode *currentItem = self.dataSource.searchResultsArray[indexPath.row];
-    
-    switch (self.dataType)
+    if(self.dataSource.searchResultsArray.count)
     {
-        case SearchViewControllerDataSourceTypeSearchFiles:
+        AlfrescoNode *currentItem = self.dataSource.searchResultsArray[indexPath.row];
+        
+        switch (self.dataType)
         {
-            [self.documentService retrievePermissionsOfNode:currentItem completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                if (error)
-                {
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-                else
-                {
-                    NSString *contentPath = [(AlfrescoDocument *)currentItem contentPath];
-                    BOOL isDirectory = NO;
-                    if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:&isDirectory])
-                    {
-                        contentPath = nil;
-                    }
-                    
-                    if([self.presentingViewController isKindOfClass:[SearchViewController class]])
-                    {
-                        SearchViewController *vc = (SearchViewController *)self.presentingViewController;
-                        [vc pushDocument:currentItem contentPath:contentPath permissions:permissions];
-                    }
-                }
-            }];
-            break;
-        }
-        case SearchViewControllerDataSourceTypeSearchFolders:
-        {
-            [self.documentService retrievePermissionsOfNode:currentItem completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                if (permissions)
-                {
-                    if([self.presentingViewController isKindOfClass:[SearchViewController class]])
-                    {
-                        SearchViewController *vc = (SearchViewController *)self.presentingViewController;
-                        [vc pushFolder:(AlfrescoFolder *)currentItem folderPermissions:permissions];
-                    }
-                }
-                else
-                {
-                    // display permission retrieval error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission failed to be retrieved"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-            }];
-            break;
-        }
-        case SearchViewControllerDataSourceTypeSearchUsers:
-        {
-            AlfrescoPerson *currentPerson = (AlfrescoPerson *)currentItem;
-            if(self.shouldPush)
+            case SearchViewControllerDataSourceTypeSearchFiles:
             {
-                PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:currentPerson.identifier session:self.session];
-                [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
+                [self.documentService retrievePermissionsOfNode:currentItem completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    if (error)
+                    {
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                    else
+                    {
+                        NSString *contentPath = [(AlfrescoDocument *)currentItem contentPath];
+                        BOOL isDirectory = NO;
+                        if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:&isDirectory])
+                        {
+                            contentPath = nil;
+                        }
+                        
+                        if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+                        {
+                            SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                            [vc pushDocument:currentItem contentPath:contentPath permissions:permissions];
+                        }
+                    }
+                }];
+                break;
             }
-            else
+            case SearchViewControllerDataSourceTypeSearchFolders:
             {
-                if([self.presentingViewController isKindOfClass:[SearchViewController class]])
-                {
-                    SearchViewController *vc = (SearchViewController *)self.presentingViewController;
-                    [vc pushUser:currentPerson];
-                }
-                else if(self.navigationController)
+                [self.documentService retrievePermissionsOfNode:currentItem completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    if (permissions)
+                    {
+                        if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+                        {
+                            SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                            [vc pushFolder:(AlfrescoFolder *)currentItem folderPermissions:permissions];
+                        }
+                    }
+                    else
+                    {
+                        // display permission retrieval error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission failed to be retrieved"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                }];
+                break;
+            }
+            case SearchViewControllerDataSourceTypeSearchUsers:
+            {
+                AlfrescoPerson *currentPerson = (AlfrescoPerson *)currentItem;
+                if(self.shouldPush)
                 {
                     PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:currentPerson.identifier session:self.session];
                     [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
                 }
+                else
+                {
+                    if([self.presentingViewController isKindOfClass:[SearchViewController class]])
+                    {
+                        SearchViewController *vc = (SearchViewController *)self.presentingViewController;
+                        [vc pushUser:currentPerson];
+                    }
+                    else if(self.navigationController)
+                    {
+                        PersonProfileViewController *personProfileViewController = [[PersonProfileViewController alloc] initWithUsername:currentPerson.identifier session:self.session];
+                        [UniversalDevice pushToDisplayViewController:personProfileViewController usingNavigationController:self.navigationController animated:YES];
+                    }
+                }
             }
-        }
-        default:
-        {
-            break;
+            default:
+            {
+                break;
+            }
         }
     }
 }
