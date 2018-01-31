@@ -127,7 +127,7 @@
     {
         return components[3];
     }
-    else if (components.count == 5 && [components[2] isEqualToString:kFileProviderSyncPathString] && [components[3] isEqualToString:kFileProviderFolderPathString])
+    else if (components.count == 5 && [components[2] isEqualToString:kFileProviderSyncPathString])
     {
         return components[4];
     }

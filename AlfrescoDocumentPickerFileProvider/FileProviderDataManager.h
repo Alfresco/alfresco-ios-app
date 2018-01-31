@@ -35,7 +35,7 @@
 
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForAccount:(NSString *)accountIdentifier;
 - (RLMResults<FileProviderAccountInfo *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier;
-- (FileProviderAccountInfo *)itemForIdentifier:(NSFileProviderItemIdentifier)identifier;
+- (id)itemForIdentifier:(NSFileProviderItemIdentifier)identifier;
 
 - (RLMResults<RealmSyncNodeInfo *> *)syncItemsInNodeWithId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
 - (NSFileProviderItemIdentifier)parentItemIdentifierOfSyncedNode:(RealmSyncNodeInfo *)syncedNode fromAccountIdentifier:(NSString *)accountIdentifier;

@@ -102,8 +102,10 @@ CGFloat hiddenYOrigin;
 
 - (void)show
 {
-    [self createNotice];
-    [[SystemNoticeManager sharedManager] queueSystemNotice:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self createNotice];
+        [[SystemNoticeManager sharedManager] queueSystemNotice:self];
+    });
 }
 
 - (void)canDisplay

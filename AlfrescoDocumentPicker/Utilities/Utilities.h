@@ -22,6 +22,7 @@
 @interface Utilities : NSObject
 
 + (NSString *)filenameWithVersionFromFilename:(NSString *)filename nodeIdentifier:(NSString *)nodeIdentifier;
++ (NSString *)filenameWithoutVersionFromFilename:(NSString *)filenameWithVersion nodeIdentifier:(NSString *)nodeIdentifier;
 + (NSString *)nodeGUIDFromNodeIdentifierWithVersion:(NSString *)nodeIdentifier;
 + (NSString *)serverURLStringFromAccount:(id<AKUserAccount>)account;
 

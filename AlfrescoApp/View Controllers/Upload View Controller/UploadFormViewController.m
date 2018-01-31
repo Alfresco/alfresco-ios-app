@@ -142,6 +142,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.autoresizesSubviews = YES;
+    tableView.estimatedRowHeight = 0;
     tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleTopMargin
     | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     [view addSubview:tableView];
@@ -640,6 +641,27 @@ static NSString * const kAudioFileName = @"audio.m4a";
     return imageData;
 }
 
+- (void)saveToLocalFilesDocumentAtURL:(NSURL *)documentURL withName:(NSString *)documentName
+{
+    NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
+    NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:documentName];
+    NSError *copyError = nil;
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    if([fileManager fileExistsAtPath:fullDestinationPath])
+    {
+        NSString *filename = fileNameAppendedWithDate(documentName);
+        fullDestinationPath = [[fullDestinationPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:filename];
+    }
+    
+    NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+    [fileManager copyItemAtURL:documentURL toURL:destinationURL error:&copyError];
+    
+    if (copyError)
+    {
+        AlfrescoLogError(@"Unable to copy file at path: %@, to location: %@. Error: %@", documentURL, fullDestinationPath, copyError.localizedDescription);
+    }
+}
+
 - (void)uploadDocumentUsingContentFileWithName:(NSString *)name completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock
 {
     // if no file extention is given, append the correct file extension
@@ -714,8 +736,15 @@ static NSString * const kAudioFileName = @"audio.m4a";
             }
             else
             {
-                // display error
-                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.failed", @"Upload failed"), [ErrorDescriptions descriptionForError:error]]);
+                [self saveToLocalFilesDocumentAtURL:self.contentFile.fileUrl withName:name];
+                [weakSelf dismissViewControllerAnimated:YES completion:^{
+                    // display error
+                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.failed", @"Upload failed"), [ErrorDescriptions descriptionForError:error]]);
+                    if([weakSelf.delegate respondsToSelector:@selector(didFailUploadingDocumentWithName:withError:)])
+                    {
+                        [weakSelf.delegate didFailUploadingDocumentWithName:name withError:error];
+                    }
+                }];
             }
         }
         [weakSelf hideHUD];
@@ -825,8 +854,15 @@ static NSString * const kAudioFileName = @"audio.m4a";
                 }
                 else
                 {
-                    // display error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.failed", @"Upload failed"), [ErrorDescriptions descriptionForError:error]]);
+                    [self saveToLocalFilesDocumentAtURL:contentFile.fileUrl withName:documentNameWithPathExtension];
+                    [weakSelf dismissViewControllerAnimated:YES completion:^{
+                        // display error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.upload.failed", @"Upload failed"), [ErrorDescriptions descriptionForError:error]]);
+                        if([weakSelf.delegate respondsToSelector:@selector(didFailUploadingDocumentWithName:withError:)])
+                        {
+                            [weakSelf.delegate didFailUploadingDocumentWithName:documentNameWithPathExtension withError:error];
+                        }
+                    }];
                 }
             }
             [weakSelf hideHUD];

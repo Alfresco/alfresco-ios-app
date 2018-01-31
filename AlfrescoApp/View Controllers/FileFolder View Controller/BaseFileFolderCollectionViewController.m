@@ -1190,4 +1190,9 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"upload.success-as.message", @"Document uplaoded as"), node.name]);
 }
 
+- (void)didFailUploadingDocumentWithName:(NSString *)name withError:(NSError *)error
+{
+    displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"saveback.failed.message", @"Document saved in Local Files"), name]);
+}
+
 @end

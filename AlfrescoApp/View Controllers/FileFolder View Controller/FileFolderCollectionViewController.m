@@ -297,8 +297,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         if(self.shouldIncludeSearchBar)
         {
             // hide search bar initially
-            self.collectionView.contentSize = CGSizeMake(self.collectionView.contentSize.width, self.collectionView.bounds.size.height - self.collectionView.contentInset.bottom - self.collectionView.contentInset.top + 40.0);
-            self.collectionView.contentOffset = CGPointMake(0., 40.);
+            self.collectionView.contentSize = CGSizeMake(self.collectionView.contentSize.width, self.collectionView.bounds.size.height - self.collectionView.contentInset.bottom - self.collectionView.contentInset.top + kCollectionViewHeaderHight);
+            self.collectionView.contentOffset = CGPointMake(0., kCollectionViewHeaderHight);
         }
     }
     
