@@ -16,20 +16,20 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AlfrescoEnumerator.h"
-#import "AlfrescoFileProviderItemIdentifier.h"
-#import "AlfrescoFileProviderItem.h"
+#import "AFPEnumerator.h"
+#import "AFPItemIdentifier.h"
+#import "AFPItem.h"
 #import "CustomFolderService.h"
-#import "FileProviderAccountManager.h"
+#import "AFPAccountManager.h"
 #import "FavouriteManager.h"
-#import "FileProviderDataManager.h"
+#import "AFPDataManager.h"
 #import "KeychainUtils.h"
 
-@interface AlfrescoEnumerator()
+@interface AFPEnumerator()
 
 @property (nonatomic, strong) NSURLRequest *currentRequest;
 @property (nonatomic, strong) id<NSFileProviderEnumerationObserver> observer;
-@property (nonatomic, strong) FileProviderAccountManager *accountManager;
+@property (nonatomic, strong) AFPAccountManager *accountManager;
 
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) CustomFolderService *customFolderService;
@@ -37,14 +37,14 @@
 
 @end
 
-@implementation AlfrescoEnumerator
+@implementation AFPEnumerator
 
 - (instancetype)initWithEnumeratedItemIdentifier:(NSFileProviderItemIdentifier)enumeratedItemIdentifier
 {
     if (self = [super init])
     {
         _enumeratedItemIdentifier = enumeratedItemIdentifier;
-        self.accountManager = [FileProviderAccountManager new];
+        self.accountManager = [AFPAccountManager new];
     }
     return self;
 }
@@ -74,7 +74,7 @@
     }
     else
     {
-        NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
+        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
         [self.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
             if(loginError)
             {
@@ -83,7 +83,7 @@
             else
             {
                 [self createServicesWithSession:session];
-                AlfrescoFileProviderItemIdentifierType identifierType = [AlfrescoFileProviderItemIdentifier itemIdentifierTypeForIdentifier:self.enumeratedItemIdentifier];
+                AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.enumeratedItemIdentifier];
                 switch (identifierType) {
                     case AlfrescoFileProviderItemIdentifierTypeAccount:
                     {
@@ -102,7 +102,7 @@
                     }
                     case AlfrescoFileProviderItemIdentifierTypeFolder:
                     {
-                        NSString *folderRef = [AlfrescoFileProviderItemIdentifier identifierFromItemIdentifier:self.enumeratedItemIdentifier];
+                        NSString *folderRef = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.enumeratedItemIdentifier];
                         [self enumerateItemsInFolderWithFolderRef:folderRef withSession:session];
                         break;
                     }
@@ -123,7 +123,7 @@
                     }
                     case AlfrescoFileProviderItemIdentifierTypeSite:
                     {
-                        NSString *siteShortName = [AlfrescoFileProviderItemIdentifier identifierFromItemIdentifier:self.enumeratedItemIdentifier];
+                        NSString *siteShortName = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.enumeratedItemIdentifier];
                         [self enumerateItemsInSiteWithSiteShortName:siteShortName withSession:session];
                         break;
                     }
@@ -139,7 +139,7 @@
                     }
                     case AlfrescoFileProviderItemIdentifierTypeSyncNode:
                     {
-                        NSString *nodeId = [AlfrescoFileProviderItemIdentifier identifierFromItemIdentifier:self.enumeratedItemIdentifier];
+                        NSString *nodeId = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.enumeratedItemIdentifier];
                         [self enumerateItemsInSyncedFolderWithIdentifier:nodeId];
                         break;
                     }
@@ -196,8 +196,8 @@
         NSMutableArray *enumeratedResults = [NSMutableArray new];
         for(AlfrescoSite *site in pagingResult.objects)
         {
-            [[FileProviderDataManager sharedManager] saveSite:site parentIdentifier:self.enumeratedItemIdentifier];
-            AlfrescoFileProviderItem *item = [[AlfrescoFileProviderItem alloc] initWithSite:site parentItemIdentifier:self.enumeratedItemIdentifier];
+            [[AFPDataManager sharedManager] saveSite:site parentIdentifier:self.enumeratedItemIdentifier];
+            AFPItem *item = [[AFPItem alloc] initWithSite:site parentItemIdentifier:self.enumeratedItemIdentifier];
             [enumeratedResults addObject:item];
         }
         
@@ -213,8 +213,8 @@
         NSMutableArray *fileProviderItems = [NSMutableArray new];
         for (AlfrescoNode *node in pagingResult.objects)
         {
-            [[FileProviderDataManager sharedManager] saveNode:node parentIdentifier:self.enumeratedItemIdentifier];
-            AlfrescoFileProviderItem *item = [[AlfrescoFileProviderItem alloc] initWithAlfrescoNode:node parentItemIdentifier:self.enumeratedItemIdentifier];
+            [[AFPDataManager sharedManager] saveNode:node parentIdentifier:self.enumeratedItemIdentifier];
+            AFPItem *item = [[AFPItem alloc] initWithAlfrescoNode:node parentItemIdentifier:self.enumeratedItemIdentifier];
             [fileProviderItems addObject:item];
         }
         [self.observer didEnumerateItems:fileProviderItems];
@@ -278,10 +278,10 @@
 - (void)enumerateItemsInSites
 {
     NSMutableArray *enumeratedResults = [NSMutableArray new];
-    RLMResults<FileProviderAccountInfo *> *results = [[FileProviderDataManager sharedManager] menuItemsForParentIdentifier:self.enumeratedItemIdentifier];
-    for(FileProviderAccountInfo *result in results)
+    RLMResults<AFPItemMetadata *> *results = [[AFPDataManager sharedManager] menuItemsForParentIdentifier:self.enumeratedItemIdentifier];
+    for(AFPItemMetadata *result in results)
     {
-        AlfrescoFileProviderItem *item = [[AlfrescoFileProviderItem alloc] initWithAccountInfo:result];
+        AFPItem *item = [[AFPItem alloc] initWithAccountInfo:result];
         [enumeratedResults addObject:item];
     }
     
@@ -323,11 +323,11 @@
 - (void)enumerateItemsInAccount
 {
     NSMutableArray *enumeratedFolders = [NSMutableArray new];
-    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
-    RLMResults<FileProviderAccountInfo *> *menuItems = [[FileProviderDataManager sharedManager] menuItemsForAccount:accountIdentifier];
-    for(FileProviderAccountInfo *menuItem in menuItems)
+    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
+    RLMResults<AFPItemMetadata *> *menuItems = [[AFPDataManager sharedManager] menuItemsForAccount:accountIdentifier];
+    for(AFPItemMetadata *menuItem in menuItems)
     {
-        AlfrescoFileProviderItem *item = [[AlfrescoFileProviderItem alloc] initWithAccountInfo:menuItem];
+        AFPItem *item = [[AFPItem alloc] initWithAccountInfo:menuItem];
         [enumeratedFolders addObject:item];
     }
     
@@ -341,7 +341,7 @@
     NSMutableArray *enumeratedAccounts = [NSMutableArray new];
     for(UserAccount *account in accounts)
     {
-        AlfrescoFileProviderItem *fpItem = [[AlfrescoFileProviderItem alloc] initWithUserAccount:account];
+        AFPItem *fpItem = [[AFPItem alloc] initWithUserAccount:account];
         [enumeratedAccounts addObject:fpItem];
     }
     
@@ -357,12 +357,12 @@
 - (void)enumerateItemsInSyncedFolderWithIdentifier:(NSString *)nodeId
 {
     NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
-    NSString *accountIdentifier = [AlfrescoFileProviderItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
+    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.enumeratedItemIdentifier];
     
-    RLMResults<RealmSyncNodeInfo *> *syncedItems = [[FileProviderDataManager sharedManager] syncItemsInNodeWithId:nodeId forAccountIdentifier:accountIdentifier];
+    RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInNodeWithId:nodeId forAccountIdentifier:accountIdentifier];
     for(RealmSyncNodeInfo *node in syncedItems)
     {
-        AlfrescoFileProviderItem *fpItem = [[AlfrescoFileProviderItem alloc] initWithSyncedNode:node parentItemIdentifier:self.enumeratedItemIdentifier];
+        AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.enumeratedItemIdentifier];
         [enumeratedSyncedItems addObject:fpItem];
     }
     

@@ -16,16 +16,23 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Foundation/Foundation.h>
-@class UserAccount;
+#import "AFPItemMetadata.h"
 
-@interface AlfrescoFileProviderItemIdentifier : NSObject
+@implementation AFPItemMetadata
 
-+ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdentifier:(NSFileProviderItemIdentifier)enumeratedIdentifier;
-+ (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccount:(UserAccount *)account;
-+ (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier;
-+ (NSFileProviderItemIdentifier)itemIdentifierForIdentifier:(NSString *)identifier typePath:(NSString *)typePath andAccountIdentifier:(NSString *)accountIdentifier;
-+ (AlfrescoFileProviderItemIdentifierType)itemIdentifierTypeForIdentifier:(NSString *)identifier;
-+ (NSString *)identifierFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
++ (NSDictionary *)defaultPropertyValues
+{
+    return @{@"identifier" : [[NSUUID UUID] UUIDString]};
+}
+
++(NSArray<NSString *> *)requiredProperties
+{
+    return @[@"identifier"];
+}
+
++ (NSString *)primaryKey
+{
+    return @"identifier";
+}
 
 @end

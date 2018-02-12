@@ -16,14 +16,12 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Realm/Realm.h>
+#import <FileProvider/FileProvider.h>
 
-@interface FileProviderAccountInfo : RLMObject
+@interface AFPEnumerator : NSObject <NSFileProviderEnumerator>
 
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *identifier;
-@property (nonatomic) FileProviderAccountInfo *parentFolder;
-@property (nonatomic) BOOL isShared;
-@property (nonatomic, strong) NSDate *creationDate;
+- (instancetype)initWithEnumeratedItemIdentifier:(NSFileProviderItemIdentifier)enumeratedItemIdentifier;
+
+@property (nonatomic, readonly, strong) NSFileProviderItemIdentifier enumeratedItemIdentifier;
 
 @end

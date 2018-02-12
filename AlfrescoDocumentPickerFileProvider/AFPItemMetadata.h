@@ -16,10 +16,14 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Foundation/Foundation.h>
+#import <Realm/Realm.h>
 
-@interface FileProviderAccountManager : NSObject
+@interface AFPItemMetadata : RLMObject
 
-- (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession> session, NSError *loginError))completionBlock;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *identifier;
+@property (nonatomic) AFPItemMetadata *parentFolder;
+@property (nonatomic) BOOL isShared;
+@property (nonatomic, strong) NSDate *creationDate;
 
 @end

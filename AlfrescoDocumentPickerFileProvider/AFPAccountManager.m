@@ -16,18 +16,18 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "FileProviderAccountManager.h"
+#import "AFPAccountManager.h"
 #import "KeychainUtils.h"
 #import "UserAccountWrapper.h"
 #import "FileMetadata.h"
 
-@interface FileProviderAccountManager()
+@interface AFPAccountManager()
 
 @property (nonatomic, strong) NSMutableDictionary *accountIdentifierToSessionMappings;
 
 @end
 
-@implementation FileProviderAccountManager
+@implementation AFPAccountManager
 
 - (NSMutableDictionary *)accountIdentifierToSessionMappings
 {

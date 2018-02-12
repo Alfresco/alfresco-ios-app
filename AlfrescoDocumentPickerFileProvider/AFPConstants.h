@@ -46,9 +46,9 @@ extern NSString * const kFileProviderSitesFolderIdentifierSuffix;
 extern NSString * const kFileProviderMySitesFolderIdentifierSuffix;
 extern NSString * const kFileProviderFavoriteSitesFolderIdentifierSuffix;
 
-extern NSString * const kFileProviderFolderPathString;
-extern NSString * const kFileProviderSitePathString;
-extern NSString * const kFileProviderDocumentPathString;
-extern NSString * const kFileProviderSyncPathString;
+extern NSString * const kFileProviderIdentifierComponentFolder;
+extern NSString * const kFileProviderIdentifierComponentSite;
+extern NSString * const kFileProviderIdentifierComponentDocument;
+extern NSString * const kFileProviderIdentifierComponentSync;
 
 extern int const kFileProviderMaxItemsPerListingRetrieve;

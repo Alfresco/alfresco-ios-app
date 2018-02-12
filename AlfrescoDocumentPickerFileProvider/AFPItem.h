@@ -18,18 +18,18 @@
 
 #import <FileProvider/FileProvider.h>
 @class UserAccount;
-@class FileProviderAccountInfo;
+@class AFPItemMetadata;
 @class RealmSyncNodeInfo;
 
-@interface AlfrescoFileProviderItem : NSObject <NSFileProviderItem>
+@interface AFPItem : NSObject <NSFileProviderItem>
 
 @property (nonatomic, readonly, copy) NSString *parentItemIdentifier;
 @property (nonatomic, readonly, copy) NSString *itemIdentifier;
 @property (nonatomic, readonly, copy) NSString *filename;
-@property (nonatomic, readonly) BOOL isDownloaded;
+@property (nonatomic, readonly, getter=isDownloaded) BOOL downloaded;
 
 - (instancetype)initWithUserAccount:(UserAccount *)account;
-- (instancetype)initWithAccountInfo:(FileProviderAccountInfo *)accountInfo;
+- (instancetype)initWithAccountInfo:(AFPItemMetadata *)accountInfo;
 - (instancetype)initWithAlfrescoNode:(AlfrescoNode *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 - (instancetype)initWithSite:(AlfrescoSite *)site parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 - (instancetype)initWithSyncedNode:(RealmSyncNodeInfo *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;

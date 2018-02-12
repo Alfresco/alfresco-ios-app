@@ -16,12 +16,10 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <FileProvider/FileProvider.h>
+#import <Foundation/Foundation.h>
 
-@interface AlfrescoEnumerator : NSObject <NSFileProviderEnumerator>
+@interface AFPAccountManager : NSObject
 
-- (instancetype)initWithEnumeratedItemIdentifier:(NSFileProviderItemIdentifier)enumeratedItemIdentifier;
-
-@property (nonatomic, readonly, strong) NSFileProviderItemIdentifier enumeratedItemIdentifier;
+- (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession> session, NSError *loginError))completionBlock;
 
 @end

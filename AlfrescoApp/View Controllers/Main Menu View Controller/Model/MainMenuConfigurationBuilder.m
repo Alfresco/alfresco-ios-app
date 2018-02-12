@@ -37,7 +37,7 @@
 #import "SearchResultsTableViewController.h"
 #import "AlfrescoListingContext+Dictionary.h"
 #import "RealmSyncViewController.h"
-#import "FileProviderDataManager.h"
+#import "AFPDataManager.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -342,13 +342,13 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
             {
                 displayName = displayName ?: NSLocalizedString(@"myFiles.title", @"My Files");
                 fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeMyFiles folderDisplayName:displayName listingContext:listingContext session:self.session];
-                [[FileProviderDataManager sharedManager] saveMenuItem:kFileProviderMyFilesFolderIdentifierSuffix displayName:displayName forAccount:[AccountManager sharedManager].selectedAccount];
+                [[AFPDataManager sharedManager] saveMenuItem:kFileProviderMyFilesFolderIdentifierSuffix displayName:displayName forAccount:[AccountManager sharedManager].selectedAccount];
             }
             else if ([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeShared])
             {
                 displayName = displayName ?: NSLocalizedString(@"sharedFiles.title", @"Shared Files");
                 fileFolderCollectionViewController = [[FileFolderCollectionViewController alloc] initWithCustomFolderType:CustomFolderServiceFolderTypeSharedFiles folderDisplayName:displayName listingContext:listingContext session:self.session];
-                [[FileProviderDataManager sharedManager] saveMenuItem:kFileProviderSharedFilesFolderIdentifierSuffix displayName:displayName forAccount:[AccountManager sharedManager].selectedAccount];
+                [[AFPDataManager sharedManager] saveMenuItem:kFileProviderSharedFilesFolderIdentifierSuffix displayName:displayName forAccount:[AccountManager sharedManager].selectedAccount];
             }
         }
         else if ([parameterKeys containsObject:kAlfrescoConfigViewParameterNodeRefKey])
@@ -368,7 +368,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         // Sites
         SitesViewController *sitesListViewController = [[SitesViewController alloc] initWithSession:self.session];
         associatedObject = sitesListViewController;
-        [[FileProviderDataManager sharedManager] saveMenuItem:kFileProviderSitesFolderIdentifierSuffix displayName:@"Sites" forAccount:[AccountManager sharedManager].selectedAccount];
+        [[AFPDataManager sharedManager] saveMenuItem:kFileProviderSitesFolderIdentifierSuffix displayName:@"Sites" forAccount:[AccountManager sharedManager].selectedAccount];
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeTasks])
     {
@@ -399,7 +399,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         
         FileFolderCollectionViewController *favoritesViewController = [[FileFolderCollectionViewController alloc] initForFavoritesWithFilter:filter listingContext:listingContext session:self.session];
         associatedObject = favoritesViewController;
-        [[FileProviderDataManager sharedManager] saveMenuItem:kFileProviderFavoritesFolderIdentifierSuffix displayName:@"Favourites" forAccount:[AccountManager sharedManager].selectedAccount];
+        [[AFPDataManager sharedManager] saveMenuItem:kFileProviderFavoritesFolderIdentifierSuffix displayName:@"Favourites" forAccount:[AccountManager sharedManager].selectedAccount];
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeSync])
     {
@@ -407,7 +407,7 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         RealmSyncViewController *syncViewController = [[RealmSyncViewController alloc] initWithParentNode:nil andSession:self.session];
         SyncNavigationViewController *syncNavigationController = [[SyncNavigationViewController alloc] initWithRootViewController:syncViewController];
         associatedObject = syncNavigationController;
-        [[FileProviderDataManager sharedManager] saveMenuItem:kFileProviderSyncedFolderIdentifierSuffix displayName:@"Sync" forAccount:[AccountManager sharedManager].selectedAccount];
+        [[AFPDataManager sharedManager] saveMenuItem:kFileProviderSyncedFolderIdentifierSuffix displayName:@"Sync" forAccount:[AccountManager sharedManager].selectedAccount];
     }
     else if ([viewConfig.type isEqualToString:kAlfrescoConfigViewTypeLocal])
     {

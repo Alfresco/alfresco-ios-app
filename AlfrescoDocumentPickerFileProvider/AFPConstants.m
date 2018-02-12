@@ -16,7 +16,7 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "FileProviderConstants.h"
+#import "AFPConstants.h"
 
 NSString * const kAccountsListIdentifier = @"AccountListNew";
 
@@ -30,9 +30,9 @@ NSString * const kFileProviderSitesFolderIdentifierSuffix = @"sites";
 NSString * const kFileProviderMySitesFolderIdentifierSuffix = @"mySites";
 NSString * const kFileProviderFavoriteSitesFolderIdentifierSuffix = @"favoriteSites";
 
-NSString * const kFileProviderFolderPathString = @"folder";
-NSString * const kFileProviderSitePathString = @"site";
-NSString * const kFileProviderDocumentPathString = @"document";
-NSString * const kFileProviderSyncPathString = @"sync";
+NSString * const kFileProviderIdentifierComponentFolder = @"folder";
+NSString * const kFileProviderIdentifierComponentSite = @"site";
+NSString * const kFileProviderIdentifierComponentDocument = @"document";
+NSString * const kFileProviderIdentifierComponentSync = @"sync";
 
 int const kFileProviderMaxItemsPerListingRetrieve = 25;
