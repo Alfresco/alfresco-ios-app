@@ -29,9 +29,7 @@
 @property (nonatomic, readonly, getter=isDownloaded) BOOL downloaded;
 
 - (instancetype)initWithUserAccount:(UserAccount *)account;
-- (instancetype)initWithAccountInfo:(AFPItemMetadata *)accountInfo;
-- (instancetype)initWithAlfrescoNode:(AlfrescoNode *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
-- (instancetype)initWithSite:(AlfrescoSite *)site parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
+- (instancetype)initWithItemMetadata:(AFPItemMetadata *)accountInfo;
 - (instancetype)initWithSyncedNode:(RealmSyncNodeInfo *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 
 @end

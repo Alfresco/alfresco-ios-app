@@ -25,5 +25,9 @@
 @property (nonatomic) AFPItemMetadata *parentFolder;
 @property (nonatomic) BOOL isShared;
 @property (nonatomic, strong) NSDate *creationDate;
+@property (nonatomic, strong) NSData *node;
+@property (nonatomic) BOOL downloaded;
+
+@property (readonly) AlfrescoNode *alfrescoNode;
 
 @end

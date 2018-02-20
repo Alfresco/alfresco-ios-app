@@ -28,7 +28,6 @@
 
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) AlfrescoNode *node;
-@property (nonatomic, strong) AlfrescoSite *site;
 
 @property (nonatomic, readwrite, copy) NSString *parentItemIdentifier;
 @property (nonatomic, readwrite, copy) NSString *itemIdentifier;
@@ -55,7 +54,7 @@
     return self;
 }
 
-- (instancetype)initWithAccountInfo:(AFPItemMetadata *)accountInfo
+- (instancetype)initWithItemMetadata:(AFPItemMetadata *)itemMetadata
 {
     self = [super init];
     if(!self)
@@ -63,44 +62,10 @@
         return nil;
     }
     
-    self.parentItemIdentifier = accountInfo.parentFolder.identifier;
-    self.itemIdentifier = accountInfo.identifier;
-    self.filename = accountInfo.name;
-    
-    return self;
-}
-
-- (instancetype)initWithAlfrescoNode:(AlfrescoNode *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier
-{
-    self = [super init];
-    if(!self)
-    {
-        return nil;
-    }
-    
-    self.parentItemIdentifier = parentItemIdentifier;
-    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
-    NSString *typePath = node.isFolder ? kFileProviderIdentifierComponentFolder : kFileProviderIdentifierComponentDocument;
-    self.itemIdentifier = [AFPItemIdentifier itemIdentifierForIdentifier:[node nodeRefWithoutVersionID] typePath:typePath andAccountIdentifier:accountIdentifier];
-    self.filename = node.name;
-    self.node = node;
-    
-    return self;
-}
-
-- (instancetype)initWithSite:(AlfrescoSite *)site parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier
-{
-    self = [super init];
-    if(!self)
-    {
-        return nil;
-    }
-    
-    self.parentItemIdentifier = parentItemIdentifier;
-    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
-    self.itemIdentifier = [AFPItemIdentifier itemIdentifierForIdentifier:site.shortName typePath:kFileProviderIdentifierComponentSite andAccountIdentifier:accountIdentifier];
-    self.filename = site.title;
-    self.site = site;
+    self.parentItemIdentifier = itemMetadata.parentFolder.identifier;
+    self.itemIdentifier = itemMetadata.identifier;
+    self.filename = itemMetadata.name;
+    self.node = itemMetadata.alfrescoNode;
     
     return self;
 }
@@ -143,11 +108,18 @@
 
 - (BOOL)isDownloaded
 {
-    if(_downloaded == YES)
-    {
-        NSLog(@"==== file with name %@ and item identifier %@ is downloaded", self.filename, self.itemIdentifier);
-    }
     return _downloaded;
+}
+
+- (NSNumber *)documentSize
+{
+    NSNumber *size = [NSNumber numberWithLongLong:0];
+    if(self.node.isDocument)
+    {
+        AlfrescoDocument *document = (AlfrescoDocument *)self.node;
+        size = [NSNumber numberWithLongLong:document.contentLength];
+    }
+    return size;
 }
 
 @end

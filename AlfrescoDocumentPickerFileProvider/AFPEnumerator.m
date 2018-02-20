@@ -196,8 +196,8 @@
         NSMutableArray *enumeratedResults = [NSMutableArray new];
         for(AlfrescoSite *site in pagingResult.objects)
         {
-            [[AFPDataManager sharedManager] saveSite:site parentIdentifier:self.enumeratedItemIdentifier];
-            AFPItem *item = [[AFPItem alloc] initWithSite:site parentItemIdentifier:self.enumeratedItemIdentifier];
+            AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveSite:site parentIdentifier:self.enumeratedItemIdentifier];
+            AFPItem *item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
             [enumeratedResults addObject:item];
         }
         
@@ -213,8 +213,8 @@
         NSMutableArray *fileProviderItems = [NSMutableArray new];
         for (AlfrescoNode *node in pagingResult.objects)
         {
-            [[AFPDataManager sharedManager] saveNode:node parentIdentifier:self.enumeratedItemIdentifier];
-            AFPItem *item = [[AFPItem alloc] initWithAlfrescoNode:node parentItemIdentifier:self.enumeratedItemIdentifier];
+            AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveNode:node parentIdentifier:self.enumeratedItemIdentifier];
+            AFPItem *item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
             [fileProviderItems addObject:item];
         }
         [self.observer didEnumerateItems:fileProviderItems];
@@ -281,7 +281,7 @@
     RLMResults<AFPItemMetadata *> *results = [[AFPDataManager sharedManager] menuItemsForParentIdentifier:self.enumeratedItemIdentifier];
     for(AFPItemMetadata *result in results)
     {
-        AFPItem *item = [[AFPItem alloc] initWithAccountInfo:result];
+        AFPItem *item = [[AFPItem alloc] initWithItemMetadata:result];
         [enumeratedResults addObject:item];
     }
     
@@ -327,7 +327,7 @@
     RLMResults<AFPItemMetadata *> *menuItems = [[AFPDataManager sharedManager] menuItemsForAccount:accountIdentifier];
     for(AFPItemMetadata *menuItem in menuItems)
     {
-        AFPItem *item = [[AFPItem alloc] initWithAccountInfo:menuItem];
+        AFPItem *item = [[AFPItem alloc] initWithItemMetadata:menuItem];
         [enumeratedFolders addObject:item];
     }
     

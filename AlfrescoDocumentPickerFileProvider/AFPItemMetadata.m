@@ -35,4 +35,9 @@
     return @"identifier";
 }
 
+- (AlfrescoNode *)alfrescoNode
+{
+    return [NSKeyedUnarchiver unarchiveObjectWithData:self.node];
+}
+
 @end

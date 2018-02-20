@@ -137,7 +137,7 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
 }
 
-- (void)saveNode:(AlfrescoNode *)node parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier
+- (AFPItemMetadata *)saveNode:(AlfrescoNode *)node parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier
 {
     if(node && parentIdentifier)
     {
@@ -148,21 +148,25 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
         {
             AFPItemMetadata *parent = parentList.firstObject;
             AFPItemMetadata *item = [AFPItemMetadata new];
+            
             NSString *typePath = node.isFolder ? kFileProviderIdentifierComponentFolder : kFileProviderIdentifierComponentDocument;
             NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentIdentifier];
             item.identifier = [AFPItemIdentifier itemIdentifierForIdentifier:[node nodeRefWithoutVersionID] typePath:typePath andAccountIdentifier:accountIdentifier];
             item.parentFolder = parent;
             item.creationDate = node.createdAt;
             item.name = node.name;
+            item.node = [NSKeyedArchiver archivedDataWithRootObject:node];
             
             [realm transactionWithBlock:^{
                 [realm addOrUpdateObject:item];
             }];
+            return item;
         }
     }
+    return nil;
 }
 
-- (void)saveSite:(AlfrescoSite *)site parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier
+- (AFPItemMetadata *)saveSite:(AlfrescoSite *)site parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier
 {
     if(site && parentIdentifier)
     {
@@ -181,6 +185,25 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
             
             [realm transactionWithBlock:^{
                 [realm addOrUpdateObject:item];
+            }];
+            return item;
+        }
+    }
+    return nil;
+}
+
+- (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)itemIdentifier downloaded:(BOOL)isDownloaded
+{
+    if(itemIdentifier)
+    {
+        RLMRealm *realm = [self realm];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", itemIdentifier];
+        RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm withPredicate:pred];
+        if(list.count > 0)
+        {
+            AFPItemMetadata *item = list.firstObject;
+            [realm transactionWithBlock:^{
+                item.downloaded = isDownloaded;
             }];
         }
     }
@@ -217,7 +240,7 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return result;
 }
 
-- (id)itemForIdentifier:(NSFileProviderItemIdentifier)identifier
+- (id)dbItemForIdentifier:(NSFileProviderItemIdentifier)identifier
 {
     id item;
     if(identifier)
