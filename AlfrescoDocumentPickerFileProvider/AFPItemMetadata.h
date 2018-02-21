@@ -16,12 +16,18 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <FileProvider/FileProvider.h>
+#import <Realm/Realm.h>
 
-@interface AlfrescoEnumerator : NSObject <NSFileProviderEnumerator>
+@interface AFPItemMetadata : RLMObject
 
-- (instancetype)initWithEnumeratedItemIdentifier:(NSFileProviderItemIdentifier)enumeratedItemIdentifier;
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, strong) NSString *identifier;
+@property (nonatomic) AFPItemMetadata *parentFolder;
+@property (nonatomic) BOOL isShared;
+@property (nonatomic, strong) NSDate *creationDate;
+@property (nonatomic, strong) NSData *node;
+@property (nonatomic) BOOL downloaded;
 
-@property (nonatomic, readonly, strong) NSFileProviderItemIdentifier enumeratedItemIdentifier;
+@property (readonly) AlfrescoNode *alfrescoNode;
 
 @end

@@ -16,10 +16,11 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AlfrescoFileProviderItemIdentifier.h"
+#import "AFPItemIdentifier.h"
 #import "UserAccount.h"
+#import "RealmSyncNodeInfo.h"
 
-@implementation AlfrescoFileProviderItemIdentifier
+@implementation AFPItemIdentifier
 
 + (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdentifier:(__autoreleasing NSFileProviderItemIdentifier)enumeratedIdentifier
 {
@@ -31,7 +32,7 @@
 
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccount:(UserAccount *)account
 {
-    return [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:suffix andAccountIdentifier:account.accountIdentifier];
+    return [AFPItemIdentifier itemIdentifierForSuffix:suffix andAccountIdentifier:account.accountIdentifier];
 }
 
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier
@@ -50,7 +51,7 @@
 
 + (NSFileProviderItemIdentifier)itemIdentifierForIdentifier:(NSString *)identifier typePath:(NSString *)typePath andAccountIdentifier:(NSString *)accountIdentifier
 {
-    NSString *accountItemIdentifier = [AlfrescoFileProviderItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:accountIdentifier];
+    NSString *accountItemIdentifier = [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:accountIdentifier];
     NSString *itemIdentifier = [NSString stringWithFormat:@"%@.%@.%@", accountItemIdentifier, typePath, identifier];
     return itemIdentifier;
 }
@@ -99,19 +100,19 @@
     }
     else if(components.count > 3)
     {
-        if([components[2] isEqualToString:kFileProviderFolderPathString])
+        if([components[2] isEqualToString:kFileProviderIdentifierComponentFolder])
         {
             return AlfrescoFileProviderItemIdentifierTypeFolder;
         }
-        else if([components[2] isEqualToString:kFileProviderSitePathString])
+        else if([components[2] isEqualToString:kFileProviderIdentifierComponentSite])
         {
             return AlfrescoFileProviderItemIdentifierTypeSite;
         }
-        else if ([components[2] isEqualToString:kFileProviderDocumentPathString])
+        else if ([components[2] isEqualToString:kFileProviderIdentifierComponentDocument])
         {
             return AlfrescoFileProviderItemIdentifierTypeDocument;
         }
-        else if ([components[2] isEqualToString:kFileProviderSyncPathString])
+        else if ([components[2] isEqualToString:kFileProviderIdentifierComponentSync])
         {
             return AlfrescoFileProviderItemIdentifierTypeSyncNode;
         }
@@ -120,18 +121,25 @@
     return AlfrescoFileProviderItemIdentifierTypeAccount;
 }
 
-+ (NSString *)identifierFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
++ (NSString *)alfrescoIdentifierFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
 {
     NSArray *components = [itemIdentifier componentsSeparatedByString:@"."];
-    if(components.count == 4 && ([components[2] isEqualToString:kFileProviderFolderPathString] || [components[2] isEqualToString:kFileProviderSitePathString]))
+    if(components.count == 4 && ([components[2] isEqualToString:kFileProviderIdentifierComponentFolder] || [components[2] isEqualToString:kFileProviderIdentifierComponentSite] || [components[2] isEqualToString:kFileProviderIdentifierComponentDocument]))
     {
         return components[3];
     }
-    else if (components.count == 5 && [components[2] isEqualToString:kFileProviderSyncPathString])
+    else if (components.count == 5 && [components[2] isEqualToString:kFileProviderIdentifierComponentSync])
     {
         return components[4];
     }
     return nil;
+}
+
++ (NSFileProviderItemIdentifier)itemIdentifierForSyncNode:(RealmSyncNodeInfo *)syncNode forAccountIdentifier:(NSString *)accountIdentifier
+{
+    NSString *nodeTypePath = syncNode.isFolder? kFileProviderIdentifierComponentFolder : kFileProviderIdentifierComponentDocument;
+    NSString *syncNodePathString = [NSString stringWithFormat:@"%@.%@", kFileProviderIdentifierComponentSync, nodeTypePath];
+    return [AFPItemIdentifier itemIdentifierForIdentifier:syncNode.syncNodeInfoId typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
 }
 
 @end

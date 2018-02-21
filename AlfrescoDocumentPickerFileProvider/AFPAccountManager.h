@@ -17,15 +17,9 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-@class UserAccount;
 
-@interface AlfrescoFileProviderItemIdentifier : NSObject
+@interface AFPAccountManager : NSObject
 
-+ (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdentifier:(NSFileProviderItemIdentifier)enumeratedIdentifier;
-+ (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccount:(UserAccount *)account;
-+ (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier;
-+ (NSFileProviderItemIdentifier)itemIdentifierForIdentifier:(NSString *)identifier typePath:(NSString *)typePath andAccountIdentifier:(NSString *)accountIdentifier;
-+ (AlfrescoFileProviderItemIdentifierType)itemIdentifierTypeForIdentifier:(NSString *)identifier;
-+ (NSString *)identifierFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
+- (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession> session, NSError *loginError))completionBlock;
 
 @end
