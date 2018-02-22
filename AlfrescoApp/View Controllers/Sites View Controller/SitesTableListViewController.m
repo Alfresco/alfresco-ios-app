@@ -176,43 +176,46 @@
 
     AlfrescoSite *selectedSite = [self.tableViewData objectAtIndex:indexPath.row];
     
-    [self showHUD];
-    [self.siteService retrieveDocumentLibraryFolderForSite:selectedSite.shortName completionBlock:^(AlfrescoFolder *folder, NSError *error) {
-        if (folder)
-        {
-            [self.documentService retrievePermissionsOfNode:folder completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                [self hideHUD];
-                if (permissions)
-                {
-                    FileFolderCollectionViewController *browserListViewController = [[FileFolderCollectionViewController alloc] initWithFolder:folder folderPermissions:permissions folderDisplayName:selectedSite.title session:self.session];
-                    
-                    [self.pushHandler.navigationController pushViewController:browserListViewController animated:YES];
-                }
-                else
-                {
-                    // display permission retrieval error
-                    displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission Retrieval"), [ErrorDescriptions descriptionForError:error]]);
-                    [Notifier notifyWithAlfrescoError:error];
-                }
-                [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            }];
-        }
-        else
-        {
-            // show error
-            [self hideHUD];
-            
-            NSString *errorString = [ErrorDescriptions descriptionForError:error];
-            if (!errorString)
+    if(selectedSite)
+    {
+        [self showHUD];
+        [self.siteService retrieveDocumentLibraryFolderForSite:selectedSite.shortName completionBlock:^(AlfrescoFolder *folder, NSError *error) {
+            if (folder)
             {
-                errorString = NSLocalizedString(@"error.access.permissions.message", @"Check you have permission...");
+                [self.documentService retrievePermissionsOfNode:folder completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                    [self hideHUD];
+                    if (permissions)
+                    {
+                        FileFolderCollectionViewController *browserListViewController = [[FileFolderCollectionViewController alloc] initWithFolder:folder folderPermissions:permissions folderDisplayName:selectedSite.title session:self.session];
+                        
+                        [self.pushHandler.navigationController pushViewController:browserListViewController animated:YES];
+                    }
+                    else
+                    {
+                        // display permission retrieval error
+                        displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.permission.notfound", @"Permission Retrieval"), [ErrorDescriptions descriptionForError:error]]);
+                        [Notifier notifyWithAlfrescoError:error];
+                    }
+                    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+                }];
             }
-            
-            displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.documentlibrary.failed", @"Doc Library Retrieval"), errorString]);
-            [Notifier notifyWithAlfrescoError:error];
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        }
-    }];
+            else
+            {
+                // show error
+                [self hideHUD];
+                
+                NSString *errorString = [ErrorDescriptions descriptionForError:error];
+                if (!errorString)
+                {
+                    errorString = NSLocalizedString(@"error.access.permissions.message", @"Check you have permission...");
+                }
+                
+                displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.sites.documentlibrary.failed", @"Doc Library Retrieval"), errorString]);
+                [Notifier notifyWithAlfrescoError:error];
+                [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            }
+        }];
+    }
 }
 
 #pragma mark - Custom Setters
