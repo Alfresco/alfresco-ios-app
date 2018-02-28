@@ -25,9 +25,11 @@
 + (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdentifier:(NSFileProviderItemIdentifier)enumeratedIdentifier;
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccount:(UserAccount *)account;
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier;
++ (NSFileProviderItemIdentifier)itemIdentifierForLocalFilePath:(NSString *)filePath;
 + (NSFileProviderItemIdentifier)itemIdentifierForIdentifier:(NSString *)identifier typePath:(NSString *)typePath andAccountIdentifier:(NSString *)accountIdentifier;
 + (AlfrescoFileProviderItemIdentifierType)itemIdentifierTypeForIdentifier:(NSString *)identifier;
 + (NSString *)alfrescoIdentifierFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
++ (NSString *)filenameFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
 + (NSFileProviderItemIdentifier)itemIdentifierForSyncNode:(RealmSyncNodeInfo *)syncNode forAccountIdentifier:(NSString *)accountIdentifier;
 
 @end

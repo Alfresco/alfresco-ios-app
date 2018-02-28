@@ -37,7 +37,14 @@
 
 - (AlfrescoNode *)alfrescoNode
 {
-    return [NSKeyedUnarchiver unarchiveObjectWithData:self.node];
+    if(self.node)
+    {
+        return [NSKeyedUnarchiver unarchiveObjectWithData:self.node];
+    }
+    else
+    {
+        return nil;
+    }
 }
 
 @end

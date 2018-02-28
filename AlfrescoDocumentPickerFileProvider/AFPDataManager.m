@@ -68,6 +68,17 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return realm;
 }
 
+- (void)saveLocalFilesItem
+{
+    RLMRealm *realm = [self realm];
+    AFPItemMetadata *itemMetadata = [AFPItemMetadata new];
+    itemMetadata.name = NSLocalizedString(@"downloads.title", @"Local Files");
+    itemMetadata.identifier = [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil];
+    [realm transactionWithBlock:^{
+        [realm addOrUpdateObject:itemMetadata];
+    }];
+}
+
 - (void)saveMenuItem:(NSString *)menuItemIdentifierSuffix displayName:(NSString *)displayName forAccount:(UserAccount *)account
 {
     if(account)
@@ -207,6 +218,20 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
             }];
         }
     }
+}
+
+- (AFPItemMetadata *)localFilesItem
+{
+    AFPItemMetadata *localFiles = nil;
+    RLMRealm *realm = [self realm];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier = %@", [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil]];
+    RLMResults<AFPItemMetadata *> *results = [AFPItemMetadata objectsInRealm:realm withPredicate:predicate];
+    if(results && results.count > 0)
+    {
+        localFiles = results.firstObject;
+    }
+    
+    return localFiles;
 }
 
 - (RLMResults<AFPItemMetadata *> *)menuItemsForAccount:(NSString *)accountIdentifier

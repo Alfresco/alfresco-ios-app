@@ -182,7 +182,6 @@
     else
     {
         // iOS 11
-        //File%20Provider%20Storage/accounts.E51A6AC7-F383-4E72-9A31-84F4BC22A242.document.efa30d0b-6379-4796-922a-de95896e5afc/File.docx
         NSArray <NSString *> *pathComponents = [url pathComponents];
         if(pathComponents.count > 2)
         {
@@ -451,6 +450,13 @@
                 }
             }
         }
+        else if (identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
+        {
+            AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+            NSString *filename = [AFPItemIdentifier filenameFromItemIdentifier:identifier];
+            NSString *path = [[fileManager downloadsContentFolderPath] stringByAppendingPathComponent:filename];
+            item = [[AFPItem alloc] initWithLocalFilesPath:path];
+        }
     }
     return item;
 }
@@ -479,6 +485,13 @@
             NSURL *perItemDirectory = [manager.documentStorageURL URLByAppendingPathComponent:identifier isDirectory:YES];
             fileURL = [perItemDirectory URLByAppendingPathComponent:item.filename isDirectory:NO];
         }
+        else if(identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
+        {
+            AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+            NSString *filename = [AFPItemIdentifier filenameFromItemIdentifier:identifier];
+            NSString *path = [[fileManager downloadsContentFolderPath] stringByAppendingPathComponent:filename];
+            fileURL = [NSURL fileURLWithPath:path isDirectory:NO];
+        }
     }
     
     return fileURL;
@@ -487,20 +500,28 @@
 - (nullable NSFileProviderItemIdentifier)persistentIdentifierForItemAtURL:(NSURL *)url
 {
     // resolve the given URL to a persistent identifier using a database
-    NSArray <NSString *> *pathComponents = [url pathComponents];
     NSFileProviderItemIdentifier itemIdentifier;
-    if(pathComponents.count > 3)
+    NSString *folderString = [url.path stringByDeletingLastPathComponent];
+    if([folderString isEqualToString:[[AlfrescoFileManager sharedManager] downloadsContentFolderPath]])
     {
-        if([pathComponents[pathComponents.count - 3] isEqualToString:kSyncFolder])
+        itemIdentifier = [AFPItemIdentifier itemIdentifierForLocalFilePath:url.path];
+    }
+    else
+    {
+        NSArray <NSString *> *pathComponents = [url pathComponents];
+        if(pathComponents.count > 3)
         {
-            // Sync/<account identifier>/<sync content path>
-            itemIdentifier = [[AFPDataManager sharedManager] itemIdentifierOfSyncedNodeWithURL:url];
-        }
-        else
-        {
-            // exploit the fact that the path structure has been defined as
-            // <base storage directory>/<item identifier>/<item file name> above
-            itemIdentifier = pathComponents[pathComponents.count - 2];
+            if([pathComponents[pathComponents.count - 3] isEqualToString:kSyncFolder])
+            {
+                // Sync/<account identifier>/<sync content path>
+                itemIdentifier = [[AFPDataManager sharedManager] itemIdentifierOfSyncedNodeWithURL:url];
+            }
+            else
+            {
+                // exploit the fact that the path structure has been defined as
+                // <base storage directory>/<item identifier>/<item file name> above
+                itemIdentifier = pathComponents[pathComponents.count - 2];
+            }
         }
     }
     

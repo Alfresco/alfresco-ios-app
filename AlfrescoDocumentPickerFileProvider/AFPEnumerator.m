@@ -24,6 +24,7 @@
 #import "FavouriteManager.h"
 #import "AFPDataManager.h"
 #import "KeychainUtils.h"
+#import "AlfrescoFileManager+Extensions.h"
 
 @interface AFPEnumerator()
 
@@ -71,6 +72,10 @@
     if([self.enumeratedItemIdentifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
     {
         [self enumerateItemsInRootContainer];
+    }
+    else if([self.enumeratedItemIdentifier isEqualToString:kFileProviderLocalFilesPrefix])
+    {
+        [self enumerateItemsInLocalFiles];
     }
     else
     {
@@ -345,7 +350,35 @@
         [enumeratedAccounts addObject:fpItem];
     }
     
+    AFPItem *localFilesItem = [[AFPItem alloc] initWithItemMetadata:[[AFPDataManager sharedManager] localFilesItem]];
+    [enumeratedAccounts addObject:localFilesItem];
+    
     [self.observer didEnumerateItems:enumeratedAccounts];
+    [self.observer finishEnumeratingUpToPage:nil];
+}
+
+- (void)enumerateItemsInLocalFiles
+{
+    __block NSMutableArray *documents = [NSMutableArray array];
+    NSError *enumeratorError = nil;
+    
+    AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
+    NSString *downloadContentPath = [fileManager downloadsContentFolderPath];
+    [fileManager enumerateThroughDirectory:downloadContentPath includingSubDirectories:NO withBlock:^(NSString *fullFilePath) {
+        AFPItem *item = [[AFPItem alloc] initWithLocalFilesPath:fullFilePath];
+        [documents addObject:item];
+    } error:&enumeratorError];
+    
+    if (enumeratorError)
+    {
+        AlfrescoLogError(@"Enumeration Error: %@", enumeratorError.localizedDescription);
+    }
+    
+    NSSortDescriptor *sortOrder = [NSSortDescriptor sortDescriptorWithKey:nil ascending:YES comparator:^NSComparisonResult(AFPItem *firstDocument, AFPItem *secondDocument) {
+        return [firstDocument.filename caseInsensitiveCompare:secondDocument.filename];
+    }];
+    
+    [self.observer didEnumerateItems:[documents sortedArrayUsingDescriptors:@[sortOrder]]];
     [self.observer finishEnumeratingUpToPage:nil];
 }
 

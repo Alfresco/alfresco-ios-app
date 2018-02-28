@@ -23,6 +23,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "AlfrescoNode+Utilities.h"
 #import "RealmSyncNodeInfo.h"
+#import "AlfrescoFileManager+Extensions.h"
 
 @interface AFPItem()
 
@@ -54,6 +55,24 @@
     return self;
 }
 
+- (instancetype)initWithLocalFilesPath:(NSString *)path
+{
+    self = [super init];
+    if(!self)
+    {
+        return nil;
+    }
+    
+    self.parentItemIdentifier = [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil];
+    self.itemIdentifier = [AFPItemIdentifier itemIdentifierForLocalFilePath:path];
+    self.filename = [path lastPathComponent];
+    self.downloaded = YES;
+    
+    
+    
+    return self;
+}
+
 - (instancetype)initWithItemMetadata:(AFPItemMetadata *)itemMetadata
 {
     self = [super init];
@@ -62,7 +81,14 @@
         return nil;
     }
     
-    self.parentItemIdentifier = itemMetadata.parentFolder.identifier;
+    if([itemMetadata.identifier isEqualToString:kFileProviderLocalFilesPrefix])
+    {
+        self.parentItemIdentifier = NSFileProviderRootContainerItemIdentifier;
+    }
+    else
+    {
+        self.parentItemIdentifier = itemMetadata.parentFolder.identifier;
+    }
     self.itemIdentifier = itemMetadata.identifier;
     self.filename = itemMetadata.name;
     self.node = itemMetadata.alfrescoNode;
@@ -97,9 +123,13 @@
 
 - (NSString *)typeIdentifier
 {
-    if(self.node.isDocument)
+    if(self.node.isDocument || self.parentItemIdentifier == [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil])
     {
         NSString *filename = self.node.name;
+        if(!filename)
+        {
+            filename = self.filename;
+        }
         NSString *UTI = (NSString *)CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)CFBridgingRetain([filename pathExtension]), NULL));
         return UTI;
     }
@@ -118,6 +148,16 @@
     {
         AlfrescoDocument *document = (AlfrescoDocument *)self.node;
         size = [NSNumber numberWithLongLong:document.contentLength];
+    }
+    else if (self.parentItemIdentifier == [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil])
+    {
+        NSString *path = [[[AlfrescoFileManager sharedManager] downloadsContentFolderPath] stringByAppendingPathComponent:self.filename];
+        NSError *attributesError = nil;
+        NSDictionary *attributes = [[AlfrescoFileManager sharedManager] attributesOfItemAtPath:path error:&attributesError];
+        if(!attributesError)
+        {
+            size = attributes[kAlfrescoFileSize];
+        }
     }
     return size;
 }

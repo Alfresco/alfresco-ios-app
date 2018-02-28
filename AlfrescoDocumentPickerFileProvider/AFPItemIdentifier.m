@@ -38,13 +38,20 @@
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier
 {
     NSString *identifier;
-    if(suffix)
+    if(accountIdentifier)
     {
-        identifier = [NSString stringWithFormat:@"%@.%@.%@", kFileProviderAccountsIdentifierPrefix, accountIdentifier, suffix];
+        if(suffix)
+        {
+            identifier = [NSString stringWithFormat:@"%@.%@.%@", kFileProviderAccountsIdentifierPrefix, accountIdentifier, suffix];
+        }
+        else
+        {
+            identifier = [NSString stringWithFormat:@"%@.%@", kFileProviderAccountsIdentifierPrefix, accountIdentifier];
+        }
     }
     else
     {
-        identifier = [NSString stringWithFormat:@"%@.%@", kFileProviderAccountsIdentifierPrefix, accountIdentifier];
+        identifier = kFileProviderLocalFilesPrefix;
     }
     return identifier;
 }
@@ -56,12 +63,30 @@
     return itemIdentifier;
 }
 
++ (NSFileProviderItemIdentifier)itemIdentifierForLocalFilePath:(NSString *)filePath
+{
+    NSString *filename = [filePath lastPathComponent];
+    NSString *itemIdentifier = [NSString stringWithFormat:@"%@.%@", kFileProviderLocalFilesPrefix, filename];
+    return itemIdentifier;
+}
+
 + (AlfrescoFileProviderItemIdentifierType)itemIdentifierTypeForIdentifier:(NSString *)identifier
 {
     NSArray *components = [identifier componentsSeparatedByString:@"."];
-    if(components.count == 2)
+    if(components.count == 2 && [components[0] isEqualToString:kFileProviderAccountsIdentifierPrefix])
     {
         return AlfrescoFileProviderItemIdentifierTypeAccount;
+    }
+    else if(components.count > 1 && [components[0] isEqualToString:kFileProviderLocalFilesPrefix])
+    {
+        if(components.count == 1)
+        {
+            return AlfrescoFileProviderItemIdentifierTypeLocalFiles;
+        }
+        else
+        {
+            return AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument;
+        }
     }
     else if(components.count == 3)
     {
@@ -140,6 +165,13 @@
     NSString *nodeTypePath = syncNode.isFolder? kFileProviderIdentifierComponentFolder : kFileProviderIdentifierComponentDocument;
     NSString *syncNodePathString = [NSString stringWithFormat:@"%@.%@", kFileProviderIdentifierComponentSync, nodeTypePath];
     return [AFPItemIdentifier itemIdentifierForIdentifier:syncNode.syncNodeInfoId typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
+}
+
++ (NSString *)filenameFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
+{
+    NSString *prefix = [NSString stringWithFormat:@"%@.", kFileProviderLocalFilesPrefix];
+    NSString *filename = [itemIdentifier substringFromIndex:[prefix length]];
+    return filename;
 }
 
 @end

@@ -30,6 +30,7 @@
 
 - (instancetype)initWithUserAccount:(UserAccount *)account;
 - (instancetype)initWithItemMetadata:(AFPItemMetadata *)accountInfo;
+- (instancetype)initWithLocalFilesPath:(NSString *)path;
 - (instancetype)initWithSyncedNode:(RealmSyncNodeInfo *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 
 @end
