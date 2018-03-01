@@ -28,7 +28,7 @@
 #import "AFPItem.h"
 #import "AFPItemIdentifier.h"
 
-#import "AFPEnumerator.h"
+#import "AFPEnumeratorBuilder.h"
 
 #import "AFPDataManager.h"
 #import "AFPAccountManager.h"
@@ -539,7 +539,7 @@
     }
     else
     {
-        enumerator = [[AFPEnumerator alloc] initWithEnumeratedItemIdentifier:containerItemIdentifier];
+        enumerator = [AFPEnumeratorBuilder enumeratorForItemIdentifier:containerItemIdentifier];
     }
     
     return enumerator;
