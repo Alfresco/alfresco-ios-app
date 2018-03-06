@@ -28,12 +28,14 @@
 + (instancetype)sharedManager;
 - (RLMRealm *)realm;
 
+- (void)saveLocalFilesItem;
 - (void)saveMenuItem:(NSString *)menuItemIdentifierSuffix displayName:(NSString *)displayName forAccount:(UserAccount *)account;
 - (AFPItemMetadata *)saveNode:(AlfrescoNode *)node parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
 - (AFPItemMetadata *)saveSite:(AlfrescoSite *)site parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
 - (void)cleanMenuItemsForAccount:(UserAccount *)account;
 - (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)itemIdentifier downloaded:(BOOL)isDownloaded;
 
+- (AFPItemMetadata *)localFilesItem;
 - (RLMResults<AFPItemMetadata *> *)menuItemsForAccount:(NSString *)accountIdentifier;
 - (RLMResults<AFPItemMetadata *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier;
 - (id)dbItemForIdentifier:(NSFileProviderItemIdentifier)identifier;

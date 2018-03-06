@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,35 +16,18 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AFPItemMetadata.h"
+#import "AFPServerEnumerator.h"
+#import "AFPItemIdentifier.h"
+#import "AFPAccountManager.h"
+#import "AFPDataManager.h"
+#import "AFPItem.h"
 
-@implementation AFPItemMetadata
+@interface AFPServerEnumerator()
 
-+ (NSDictionary *)defaultPropertyValues
-{
-    return @{@"identifier" : [[NSUUID UUID] UUIDString]};
-}
+@property (nonatomic, strong) NSFileProviderItemIdentifier itemIdentifier;
+@property (nonatomic, strong) id<NSFileProviderEnumerationObserver> observer;
+@property (nonatomic, strong) AlfrescoSiteService *siteService;
 
-+(NSArray<NSString *> *)requiredProperties
-{
-    return @[@"identifier"];
-}
-
-+ (NSString *)primaryKey
-{
-    return @"identifier";
-}
-
-- (AlfrescoNode *)alfrescoNode
-{
-    if(self.node)
-    {
-        return [NSKeyedUnarchiver unarchiveObjectWithData:self.node];
-    }
-    else
-    {
-        return nil;
-    }
-}
+- (void)setupSessionWithCompletionBlock:(void (^)(id<AlfrescoSession> session))completionBlock;
 
 @end

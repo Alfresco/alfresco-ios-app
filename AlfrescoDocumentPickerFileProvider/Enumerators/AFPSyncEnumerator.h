@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -18,10 +18,8 @@
 
 #import <FileProvider/FileProvider.h>
 
-@interface AFPEnumerator : NSObject <NSFileProviderEnumerator>
+@interface AFPSyncEnumerator : NSObject <NSFileProviderEnumerator>
 
-- (instancetype)initWithEnumeratedItemIdentifier:(NSFileProviderItemIdentifier)enumeratedItemIdentifier;
-
-@property (nonatomic, readonly, strong) NSFileProviderItemIdentifier enumeratedItemIdentifier;
+- (instancetype)initWithItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
 
 @end

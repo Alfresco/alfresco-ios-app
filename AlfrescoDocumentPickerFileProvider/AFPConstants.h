@@ -31,11 +31,14 @@ typedef NS_ENUM(NSInteger, AlfrescoFileProviderItemIdentifierType)
     AlfrescoFileProviderItemIdentifierTypeMySites,
     AlfrescoFileProviderItemIdentifierTypeFavoriteSites,
     AlfrescoFileProviderItemIdentifierTypeFavorites,
-    AlfrescoFileProviderItemIdentifierTypeSynced
+    AlfrescoFileProviderItemIdentifierTypeSynced,
+    AlfrescoFileProviderItemIdentifierTypeLocalFiles,
+    AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument
 };
 
 extern NSString * const kAccountsListIdentifier;
 
+extern NSString * const kFileProviderLocalFilesPrefix;
 extern NSString * const kFileProviderAccountsIdentifierPrefix;
 
 extern NSString * const kFileProviderSharedFilesFolderIdentifierSuffix;

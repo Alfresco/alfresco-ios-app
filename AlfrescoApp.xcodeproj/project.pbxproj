@@ -233,7 +233,6 @@
 		2B0660051C8989C5009CB8BC /* SyncThirdPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B0660041C8989C5009CB8BC /* SyncThirdPanel.xib */; };
 		2B09B0461B86121200448A52 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09B0441B86121200448A52 /* SearchViewController.m */; };
 		2B09B0471B86121200448A52 /* SearchViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B09B0451B86121200448A52 /* SearchViewController.xib */; };
-		2B09DC7C1F4F1DDF00F6A6DC /* AFPEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B09DC7B1F4F1DDF00F6A6DC /* AFPEnumerator.m */; };
 		2B114E601B1F39D4005A05AA /* cell-button-checked-filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */; };
 		2B114E611B1F39D4005A05AA /* cell-button-checked-filled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */; };
 		2B114E621B1F39D4005A05AA /* cell-button-unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */; };
@@ -271,6 +270,14 @@
 		2B53B35A1C91DA9800D4FD48 /* actionsheet-unsync@2x~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B53B3541C91DA9800D4FD48 /* actionsheet-unsync@2x~ipad.png */; };
 		2B55920B1B90AB1C00D85C7B /* SearchResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B5592091B90AB1C00D85C7B /* SearchResultsTableViewController.m */; };
 		2B55920C1B90AB1C00D85C7B /* SearchResultsTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */; };
+		2B62DC082046D36C00BEE35F /* AFPEnumeratorBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B62DC072046D36C00BEE35F /* AFPEnumeratorBuilder.m */; };
+		2B62DC0B2046D78700BEE35F /* AFPRootEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B62DC0A2046D78700BEE35F /* AFPRootEnumerator.m */; };
+		2B62DC0E2046DABF00BEE35F /* AFPAccountEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B62DC0D2046DABF00BEE35F /* AFPAccountEnumerator.m */; };
+		2B62DC112046DAD700BEE35F /* AFPLocalEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B62DC102046DAD700BEE35F /* AFPLocalEnumerator.m */; };
+		2B62DC142046DE1A00BEE35F /* AFPSyncEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B62DC132046DE1A00BEE35F /* AFPSyncEnumerator.m */; };
+		2B62DC172046DE7300BEE35F /* AFPSiteEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B62DC162046DE7300BEE35F /* AFPSiteEnumerator.m */; };
+		2B62DC1A2046DE8500BEE35F /* AFPFolderEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B62DC192046DE8500BEE35F /* AFPFolderEnumerator.m */; };
+		2B62DC1D2047001100BEE35F /* AFPServerEnumerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B62DC1C2047001100BEE35F /* AFPServerEnumerator.m */; };
 		2B7169F71B567CC1009A4487 /* large_folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F51B567CC1009A4487 /* large_folder.png */; };
 		2B7169F81B567CC1009A4487 /* large_folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F61B567CC1009A4487 /* large_folder@2x.png */; };
 		2B73E93F1EADFBD400B96560 /* AccessibilityConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B73E93E1EADFBD400B96560 /* AccessibilityConstants.m */; };
@@ -1237,8 +1244,6 @@
 		2B09B0431B86121200448A52 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		2B09B0441B86121200448A52 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		2B09B0451B86121200448A52 /* SearchViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchViewController.xib; sourceTree = "<group>"; };
-		2B09DC7A1F4F1DDF00F6A6DC /* AFPEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPEnumerator.h; sourceTree = "<group>"; };
-		2B09DC7B1F4F1DDF00F6A6DC /* AFPEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPEnumerator.m; sourceTree = "<group>"; };
 		2B114E5C1B1F39D4005A05AA /* cell-button-checked-filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled.png"; sourceTree = "<group>"; };
 		2B114E5D1B1F39D4005A05AA /* cell-button-checked-filled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-checked-filled@2x.png"; sourceTree = "<group>"; };
 		2B114E5E1B1F39D4005A05AA /* cell-button-unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cell-button-unchecked.png"; sourceTree = "<group>"; };
@@ -1285,6 +1290,23 @@
 		2B5592081B90AB1C00D85C7B /* SearchResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SearchResultsTableViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		2B5592091B90AB1C00D85C7B /* SearchResultsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SearchResultsTableViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		2B55920A1B90AB1C00D85C7B /* SearchResultsTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultsTableViewController.xib; sourceTree = "<group>"; };
+		2B62DC062046D36C00BEE35F /* AFPEnumeratorBuilder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPEnumeratorBuilder.h; sourceTree = "<group>"; };
+		2B62DC072046D36C00BEE35F /* AFPEnumeratorBuilder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPEnumeratorBuilder.m; sourceTree = "<group>"; };
+		2B62DC092046D78700BEE35F /* AFPRootEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPRootEnumerator.h; sourceTree = "<group>"; };
+		2B62DC0A2046D78700BEE35F /* AFPRootEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPRootEnumerator.m; sourceTree = "<group>"; };
+		2B62DC0C2046DABF00BEE35F /* AFPAccountEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPAccountEnumerator.h; sourceTree = "<group>"; };
+		2B62DC0D2046DABF00BEE35F /* AFPAccountEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPAccountEnumerator.m; sourceTree = "<group>"; };
+		2B62DC0F2046DAD700BEE35F /* AFPLocalEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPLocalEnumerator.h; sourceTree = "<group>"; };
+		2B62DC102046DAD700BEE35F /* AFPLocalEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPLocalEnumerator.m; sourceTree = "<group>"; };
+		2B62DC122046DE1A00BEE35F /* AFPSyncEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPSyncEnumerator.h; sourceTree = "<group>"; };
+		2B62DC132046DE1A00BEE35F /* AFPSyncEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPSyncEnumerator.m; sourceTree = "<group>"; };
+		2B62DC152046DE7300BEE35F /* AFPSiteEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPSiteEnumerator.h; sourceTree = "<group>"; };
+		2B62DC162046DE7300BEE35F /* AFPSiteEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPSiteEnumerator.m; sourceTree = "<group>"; };
+		2B62DC182046DE8500BEE35F /* AFPFolderEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPFolderEnumerator.h; sourceTree = "<group>"; };
+		2B62DC192046DE8500BEE35F /* AFPFolderEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPFolderEnumerator.m; sourceTree = "<group>"; };
+		2B62DC1B2047001100BEE35F /* AFPServerEnumerator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPServerEnumerator.h; sourceTree = "<group>"; };
+		2B62DC1C2047001100BEE35F /* AFPServerEnumerator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPServerEnumerator.m; sourceTree = "<group>"; };
+		2B62DC1E204700A000BEE35F /* AFPServerEnumerator+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AFPServerEnumerator+Internals.h"; sourceTree = "<group>"; };
 		2B7169F51B567CC1009A4487 /* large_folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_folder.png; sourceTree = "<group>"; };
 		2B7169F61B567CC1009A4487 /* large_folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_folder@2x.png"; sourceTree = "<group>"; };
 		2B73E93D1EADFBD400B96560 /* AccessibilityConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityConstants.h; sourceTree = "<group>"; };
@@ -2521,6 +2543,30 @@
 			path = "Sync View Controller/Data Source";
 			sourceTree = "<group>";
 		};
+		2B62DC022046D31300BEE35F /* Enumerators */ = {
+			isa = PBXGroup;
+			children = (
+				2B62DC062046D36C00BEE35F /* AFPEnumeratorBuilder.h */,
+				2B62DC072046D36C00BEE35F /* AFPEnumeratorBuilder.m */,
+				2B62DC092046D78700BEE35F /* AFPRootEnumerator.h */,
+				2B62DC0A2046D78700BEE35F /* AFPRootEnumerator.m */,
+				2B62DC0C2046DABF00BEE35F /* AFPAccountEnumerator.h */,
+				2B62DC0D2046DABF00BEE35F /* AFPAccountEnumerator.m */,
+				2B62DC0F2046DAD700BEE35F /* AFPLocalEnumerator.h */,
+				2B62DC102046DAD700BEE35F /* AFPLocalEnumerator.m */,
+				2B62DC122046DE1A00BEE35F /* AFPSyncEnumerator.h */,
+				2B62DC132046DE1A00BEE35F /* AFPSyncEnumerator.m */,
+				2B62DC152046DE7300BEE35F /* AFPSiteEnumerator.h */,
+				2B62DC162046DE7300BEE35F /* AFPSiteEnumerator.m */,
+				2B62DC182046DE8500BEE35F /* AFPFolderEnumerator.h */,
+				2B62DC192046DE8500BEE35F /* AFPFolderEnumerator.m */,
+				2B62DC1B2047001100BEE35F /* AFPServerEnumerator.h */,
+				2B62DC1E204700A000BEE35F /* AFPServerEnumerator+Internals.h */,
+				2B62DC1C2047001100BEE35F /* AFPServerEnumerator.m */,
+			);
+			path = Enumerators;
+			sourceTree = "<group>";
+		};
 		2B93CBC41ABACC34003BAD2E /* Connection Diagnostic View Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -2784,13 +2830,12 @@
 		734CC3FB1A700809005D148E /* AlfrescoDocumentPickerFileProvider */ = {
 			isa = PBXGroup;
 			children = (
+				2B62DC022046D31300BEE35F /* Enumerators */,
 				734CC3FF1A700809005D148E /* FileProvider.h */,
 				734CC4001A700809005D148E /* FileProvider.m */,
 				734CC3FC1A700809005D148E /* Supporting Files */,
 				2BA8B6FC1F4DAF3F00BFF4D9 /* AFPItem.h */,
 				2BA8B6FD1F4DAF3F00BFF4D9 /* AFPItem.m */,
-				2B09DC7A1F4F1DDF00F6A6DC /* AFPEnumerator.h */,
-				2B09DC7B1F4F1DDF00F6A6DC /* AFPEnumerator.m */,
 				2B1BC79E1F6044BE003B8790 /* AFPItemIdentifier.h */,
 				2B1BC79F1F6044BE003B8790 /* AFPItemIdentifier.m */,
 				2BA1AB751F558C010011BE07 /* AFPConstants.h */,
@@ -5112,20 +5157,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B62DC1D2047001100BEE35F /* AFPServerEnumerator.m in Sources */,
 				2BF0C7FB1F6A74C4001268FA /* AFPAccountManager.m in Sources */,
+				2B62DC1A2046DE8500BEE35F /* AFPFolderEnumerator.m in Sources */,
+				2B62DC082046D36C00BEE35F /* AFPEnumeratorBuilder.m in Sources */,
 				73697B961A979895009F10BA /* PersistentQueueStore.m in Sources */,
 				73697B9D1A9B738F009F10BA /* KeychainUtils.m in Sources */,
 				2B1BC7A11F6044BE003B8790 /* AFPItemIdentifier.m in Sources */,
 				734B87841AA741260093E702 /* NSFileManager+Extension.m in Sources */,
 				2BB912FC1F584A8C00AA7E56 /* AFPDataManager.m in Sources */,
-				2B09DC7C1F4F1DDF00F6A6DC /* AFPEnumerator.m in Sources */,
+				2B62DC0E2046DABF00BEE35F /* AFPAccountEnumerator.m in Sources */,
 				734B87651A9F7A0F0093E702 /* Utilities.m in Sources */,
 				2BB913041F58671200AA7E56 /* AFPItemMetadata.m in Sources */,
 				73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */,
 				73CD5B101A729544000A5523 /* SharedConstants.m in Sources */,
 				2BA1AB771F558C010011BE07 /* AFPConstants.m in Sources */,
+				2B62DC112046DAD700BEE35F /* AFPLocalEnumerator.m in Sources */,
+				2B62DC0B2046D78700BEE35F /* AFPRootEnumerator.m in Sources */,
 				2BA8B6FE1F4DAF3F00BFF4D9 /* AFPItem.m in Sources */,
 				2B15911D1F95F4EE0047D8BA /* RealmSyncError.m in Sources */,
+				2B62DC142046DE1A00BEE35F /* AFPSyncEnumerator.m in Sources */,
+				2B62DC172046DE7300BEE35F /* AFPSiteEnumerator.m in Sources */,
 				73697B921A979879009F10BA /* FileMetadata.m in Sources */,
 				2BC469CB1F6983BB00ABA980 /* CustomFolderService.m in Sources */,
 				73697BA21A9B74A3009F10BA /* UserAccount.m in Sources */,

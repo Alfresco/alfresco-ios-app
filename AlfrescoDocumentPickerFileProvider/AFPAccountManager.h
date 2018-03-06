@@ -20,6 +20,7 @@
 
 @interface AFPAccountManager : NSObject
 
++ (instancetype)sharedManager;
 - (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession> session, NSError *loginError))completionBlock;
 
 @end

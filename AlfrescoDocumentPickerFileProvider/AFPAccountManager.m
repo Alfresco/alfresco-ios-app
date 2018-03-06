@@ -29,6 +29,16 @@
 
 @implementation AFPAccountManager
 
++ (instancetype)sharedManager
+{
+    static dispatch_once_t predicate = 0;
+    __strong static id sharedObject = nil;
+    dispatch_once(&predicate, ^{
+        sharedObject = [[self alloc] init];
+    });
+    return sharedObject;
+}
+
 - (NSMutableDictionary *)accountIdentifierToSessionMappings
 {
     if (!_accountIdentifierToSessionMappings)

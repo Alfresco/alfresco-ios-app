@@ -20,6 +20,7 @@
 
 NSString * const kAccountsListIdentifier = @"AccountListNew";
 
+NSString * const kFileProviderLocalFilesPrefix = @"localFiles";
 NSString * const kFileProviderAccountsIdentifierPrefix = @"accounts";
 
 NSString * const kFileProviderSharedFilesFolderIdentifierSuffix = @"sharedFiles";
