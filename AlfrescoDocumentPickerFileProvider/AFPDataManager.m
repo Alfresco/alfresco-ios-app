@@ -153,7 +153,7 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     if(node && parentIdentifier)
     {
         RLMRealm *realm = [self realm];
-        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier = %@", parentIdentifier];
+        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier == %@", parentIdentifier];
         RLMResults<AFPItemMetadata *> *parentList = [AFPItemMetadata objectsInRealm:realm withPredicate:parentPred];
         if(parentList.count > 0)
         {
@@ -182,7 +182,7 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     if(site && parentIdentifier)
     {
         RLMRealm *realm = [self realm];
-        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier = %@", parentIdentifier];
+        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier == %@", parentIdentifier];
         RLMResults<AFPItemMetadata *> *parentList = [AFPItemMetadata objectsInRealm:realm withPredicate:parentPred];
         if(parentList.count > 0)
         {
@@ -208,7 +208,7 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     if(itemIdentifier)
     {
         RLMRealm *realm = [self realm];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", itemIdentifier];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", itemIdentifier];
         RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm withPredicate:pred];
         if(list.count > 0)
         {
@@ -224,9 +224,9 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
 {
     AFPItemMetadata *localFiles = nil;
     RLMRealm *realm = [self realm];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier = %@", [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"identifier == %@", [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil]];
     RLMResults<AFPItemMetadata *> *results = [AFPItemMetadata objectsInRealm:realm withPredicate:predicate];
-    if(results && results.count > 0)
+    if(results.count > 0)
     {
         localFiles = results.firstObject;
     }
@@ -252,12 +252,12 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     if(itemIdentifier)
     {
         RLMRealm *realm = [self realm];
-        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier = %@", itemIdentifier];
+        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier == %@", itemIdentifier];
         RLMResults<AFPItemMetadata *> *parentList = [AFPItemMetadata objectsInRealm:realm withPredicate:parentPred];
         if(parentList.count > 0)
         {
             AFPItemMetadata *parent = parentList.firstObject;
-            NSPredicate *resultsPred = [NSPredicate predicateWithFormat:@"parentFolder = %@", parent];
+            NSPredicate *resultsPred = [NSPredicate predicateWithFormat:@"parentFolder == %@", parent];
             result = [AFPItemMetadata objectsInRealm:realm withPredicate:resultsPred];
         }
     }
@@ -285,7 +285,7 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
         else
         {
             RLMRealm *realm = [self realm];
-            NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier = %@", identifier];
+            NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
             RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm withPredicate:pred];
             if(list.count > 0)
             {
@@ -312,7 +312,7 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
     else
     {
-        results = [RealmSyncNodeInfo objectsInRealm:realm where:@"isTopLevelSyncNode = %@", @YES];
+        results = [RealmSyncNodeInfo objectsInRealm:realm where:@"isTopLevelSyncNode == %@", @YES];
     }
     return results;
 }

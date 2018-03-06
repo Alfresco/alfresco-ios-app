@@ -25,6 +25,7 @@
 {
     self.observer = observer;
     AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.itemIdentifier];
+    __weak typeof(self) weakSelf = self;
     switch (identifierType) {
         case AlfrescoFileProviderItemIdentifierTypeSites:
         {
@@ -34,16 +35,18 @@
         case AlfrescoFileProviderItemIdentifierTypeMySites:
         {
             [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
-                self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
-                [self enumerateItemsInMySites];
+                __strong typeof(self) strongSelf = weakSelf;
+                strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+                [strongSelf enumerateItemsInMySites];
             }];
             break;
         }
         case AlfrescoFileProviderItemIdentifierTypeFavoriteSites:
         {
             [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
-                self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
-                [self enumerateItemsInFavoriteSites];
+                __strong typeof(self) strongSelf = weakSelf;
+                strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+                [strongSelf enumerateItemsInFavoriteSites];
             }];
             break;
         }
@@ -77,16 +80,20 @@
 - (void)enumerateItemsInMySites
 {
     AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:0];
+    __weak typeof(self) weakSelf = self;
     [self.siteService retrieveSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self handleEnumeratedSitesWithPagingResult:pagingResult error:error];
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf handleEnumeratedSitesWithPagingResult:pagingResult error:error];
     }];
 }
 
 - (void)enumerateItemsInFavoriteSites
 {
     AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:0];
+    __weak typeof(self) weakSelf = self;
     [self.siteService retrieveFavoriteSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self handleEnumeratedSitesWithPagingResult:pagingResult error:error];
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf handleEnumeratedSitesWithPagingResult:pagingResult error:error];
     }];
 }
 

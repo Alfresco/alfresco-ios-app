@@ -32,12 +32,10 @@
 - (instancetype)initWithItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
 {
     self = [super init];
-    if(!self)
+    if(self)
     {
-        return nil;
+        self.itemIdentifier = itemIdentifier;
     }
-    
-    self.itemIdentifier = itemIdentifier;
     
     return self;
 }

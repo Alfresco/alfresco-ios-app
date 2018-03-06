@@ -38,7 +38,7 @@
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier
 {
     NSString *identifier;
-    if(accountIdentifier)
+    if(accountIdentifier.length)
     {
         if(suffix)
         {

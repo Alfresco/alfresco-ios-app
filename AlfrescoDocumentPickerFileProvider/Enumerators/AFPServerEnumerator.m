@@ -23,12 +23,10 @@
 - (instancetype)initWithItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
 {
     self = [super init];
-    if(!self)
+    if(self)
     {
-        return nil;
+        self.itemIdentifier = itemIdentifier;
     }
-    
-    self.itemIdentifier = itemIdentifier;
     
     return self;
 }
@@ -70,10 +68,12 @@
 - (void)setupSessionWithCompletionBlock:(void (^)(id<AlfrescoSession> session))completionBlock
 {
     NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
+    __weak typeof(self) weakSelf = self;
     [[AFPAccountManager sharedManager] getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
         if(loginError)
         {
-            [self.observer finishEnumeratingWithError:loginError];
+            __strong typeof(self) strongSelf = weakSelf;
+            [strongSelf.observer finishEnumeratingWithError:loginError];
         }
         else
         {

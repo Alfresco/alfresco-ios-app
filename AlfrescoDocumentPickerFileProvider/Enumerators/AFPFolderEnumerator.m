@@ -33,38 +33,40 @@
 {
     self.observer = observer;
     
+    __weak typeof(self) weakSelf = self;
     [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
-        self.customFolderService = [[CustomFolderService alloc] initWithSession:session];
-        self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+        __strong typeof(self) strongSelf = weakSelf;
+        strongSelf.customFolderService = [[CustomFolderService alloc] initWithSession:session];
+        strongSelf.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
         
         AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.itemIdentifier];
         switch (identifierType) {
             case AlfrescoFileProviderItemIdentifierTypeMyFiles:
             {
-                [self enumerateItemsInMyFiles];
+                [strongSelf enumerateItemsInMyFiles];
                 break;
             }
             case AlfrescoFileProviderItemIdentifierTypeSharedFiles:
             {
-                [self enumerateItemsInSharedFiles];
+                [strongSelf enumerateItemsInSharedFiles];
                 break;
             }
             case AlfrescoFileProviderItemIdentifierTypeFolder:
             {
                 NSString *folderRef = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
-                [self enumerateItemsInFolderWithFolderRef:folderRef];
+                [strongSelf enumerateItemsInFolderWithFolderRef:folderRef];
                 break;
             }
             case AlfrescoFileProviderItemIdentifierTypeFavorites:
             {
-                [self enumerateItemsInFavoriteFolder];
+                [strongSelf enumerateItemsInFavoriteFolder];
                 break;
             }
             case AlfrescoFileProviderItemIdentifierTypeSite:
             {
-                self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+                strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
                 NSString *siteShortName = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
-                [self enumerateItemsInSiteWithSiteShortName:siteShortName];
+                [strongSelf enumerateItemsInSiteWithSiteShortName:siteShortName];
                 break;
             }
             default:
@@ -82,51 +84,63 @@
 
 - (void)enumerateItemsInMyFiles
 {
+    __weak typeof(self) weakSelf = self;
     [self.customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
-        [self handleEnumeratedCustomFolder:folder error:error];
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf handleEnumeratedCustomFolder:folder error:error];
     }];
 }
 
 - (void)enumerateItemsInSharedFiles
 {
+    __weak typeof(self) weakSelf = self;
     [self.customFolderService retrieveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
-        [self handleEnumeratedCustomFolder:folder error:error];
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf handleEnumeratedCustomFolder:folder error:error];
     }];
 }
 
 - (void)enumerateItemsInFolder:(AlfrescoFolder *)folder
 {
+    __weak typeof(self) weakSelf = self;
     AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:0];
     [self.documentService retrieveChildrenInFolder:folder listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self handleEnumeratedFolderWithPagingResult:pagingResult error:error];
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf handleEnumeratedFolderWithPagingResult:pagingResult error:error];
     }];
 }
 
 - (void)enumerateItemsInFolderWithFolderRef:(NSString *)folderRef
 {
+    __weak typeof(self) weakSelf = self;
     [self.documentService retrieveNodeWithIdentifier:folderRef completionBlock:^(AlfrescoNode *nodeRefNode, NSError *nodeRefError) {
-        [self handleEnumeratedCustomFolder:nodeRefNode error:nodeRefError];
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf handleEnumeratedCustomFolder:nodeRefNode error:nodeRefError];
     }];
 }
 
 - (void)enumerateItemsInFavoriteFolder
 {
+    __weak typeof(self) weakSelf = self;
     AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:0];
     [self.documentService retrieveFavoriteNodesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        [self handleEnumeratedFolderWithPagingResult:pagingResult error:error];
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf handleEnumeratedFolderWithPagingResult:pagingResult error:error];
     }];
 }
 
 - (void)enumerateItemsInSiteWithSiteShortName:(NSString *)siteShortName
 {
+    __weak typeof(self) weakSelf = self;
     [self.siteService retrieveDocumentLibraryFolderForSite:siteShortName completionBlock:^(AlfrescoFolder *folder, NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
         if (folder)
         {
-            [self enumerateItemsInFolder:folder];
+            [strongSelf enumerateItemsInFolder:folder];
         }
         else
         {
-            [self.observer finishEnumeratingWithError:error];
+            [strongSelf.observer finishEnumeratingWithError:error];
         }
     }];
 }
