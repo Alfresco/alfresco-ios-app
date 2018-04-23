@@ -18,6 +18,6 @@
 
 #import "AFPServerEnumerator.h"
 
-@interface AFPSiteEnumerator : AFPServerEnumerator
+@interface AFPSiteEnumerator : AFPServerEnumerator <NSFileProviderEnumerator>
 
 @end

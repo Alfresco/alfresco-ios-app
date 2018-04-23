@@ -23,36 +23,41 @@
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
-    self.observer = observer;
-    AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.itemIdentifier];
-    __weak typeof(self) weakSelf = self;
-    switch (identifierType) {
-        case AlfrescoFileProviderItemIdentifierTypeSites:
-        {
-            [self enumerateItemsInSites];
-            break;
+    AFPPage *alfrescoPage = [NSKeyedUnarchiver unarchiveObjectWithData:page];
+    if(alfrescoPage.hasMoreItems || alfrescoPage == nil)
+    {
+        self.observer = observer;
+        AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.itemIdentifier];
+        switch (identifierType) {
+            case AlfrescoFileProviderItemIdentifierTypeSites:
+            {
+                [self enumerateItemsInSites];
+                break;
+            }
+            case AlfrescoFileProviderItemIdentifierTypeMySites:
+            {
+                __weak typeof(self) weakSelf = self;
+                [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
+                    __strong typeof(self) strongSelf = weakSelf;
+                    strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+                    [strongSelf enumerateItemsInMySitesWithSkipCount:alfrescoPage.skipCount];
+                }];
+                break;
+            }
+            case AlfrescoFileProviderItemIdentifierTypeFavoriteSites:
+            {
+                __weak typeof(self) weakSelf = self;
+                [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
+                    __strong typeof(self) strongSelf = weakSelf;
+                    strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+                    [strongSelf enumerateItemsInFavoriteSitesWithSkipCount:alfrescoPage.skipCount];
+                }];
+                break;
+            }
+                
+            default:
+                break;
         }
-        case AlfrescoFileProviderItemIdentifierTypeMySites:
-        {
-            [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
-                __strong typeof(self) strongSelf = weakSelf;
-                strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
-                [strongSelf enumerateItemsInMySites];
-            }];
-            break;
-        }
-        case AlfrescoFileProviderItemIdentifierTypeFavoriteSites:
-        {
-            [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
-                __strong typeof(self) strongSelf = weakSelf;
-                strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
-                [strongSelf enumerateItemsInFavoriteSites];
-            }];
-            break;
-        }
-            
-        default:
-            break;
     }
 }
 
@@ -77,27 +82,27 @@
     [self.observer finishEnumeratingUpToPage:nil];
 }
 
-- (void)enumerateItemsInMySites
+- (void)enumerateItemsInMySitesWithSkipCount:(int)skipCount
 {
-    AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:0];
+    AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:skipCount];
     __weak typeof(self) weakSelf = self;
     [self.siteService retrieveSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
-        [strongSelf handleEnumeratedSitesWithPagingResult:pagingResult error:error];
+        [strongSelf handleEnumeratedSitesWithPagingResult:pagingResult skipCount:skipCount error:error];
     }];
 }
 
-- (void)enumerateItemsInFavoriteSites
+- (void)enumerateItemsInFavoriteSitesWithSkipCount:(int)skipCount
 {
-    AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:0];
+    AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:skipCount];
     __weak typeof(self) weakSelf = self;
     [self.siteService retrieveFavoriteSitesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
-        [strongSelf handleEnumeratedSitesWithPagingResult:pagingResult error:error];
+        [strongSelf handleEnumeratedSitesWithPagingResult:pagingResult skipCount:skipCount error:error];
     }];
 }
 
-- (void)handleEnumeratedSitesWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error
+- (void)handleEnumeratedSitesWithPagingResult:(AlfrescoPagingResult *)pagingResult skipCount:(int)skipCount error:(NSError *)error
 {
     if (error)
     {
@@ -114,7 +119,11 @@
         }
         
         [self.observer didEnumerateItems:enumeratedResults];
-        [self.observer finishEnumeratingUpToPage:nil];
+        
+        int newSkipCount = skipCount + (int)pagingResult.objects.count;
+        AFPPage *newPage = [[AFPPage alloc] initWithSkipCount:newSkipCount hasMoreItems:pagingResult.hasMoreItems];
+        NSFileProviderPage page = [NSKeyedArchiver archivedDataWithRootObject:newPage];
+        [self.observer finishEnumeratingUpToPage:page];
     }
 }
 

@@ -29,7 +29,7 @@
 
 @implementation AFPEnumeratorBuilder
 
-+ (id<NSFileProviderEnumerator>)enumeratorForItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
+- (id<NSFileProviderEnumerator>)enumeratorForItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
 {
     id<NSFileProviderEnumerator> enumerator = nil;
     

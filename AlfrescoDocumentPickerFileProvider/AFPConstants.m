@@ -36,4 +36,4 @@ NSString * const kFileProviderIdentifierComponentSite = @"site";
 NSString * const kFileProviderIdentifierComponentDocument = @"document";
 NSString * const kFileProviderIdentifierComponentSync = @"sync";
 
-int const kFileProviderMaxItemsPerListingRetrieve = 25;
+int const kFileProviderMaxItemsPerListingRetrieve = 5;

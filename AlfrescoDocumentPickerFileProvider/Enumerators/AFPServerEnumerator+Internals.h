@@ -21,12 +21,17 @@
 #import "AFPAccountManager.h"
 #import "AFPDataManager.h"
 #import "AFPItem.h"
+#import "AFPPage.h"
+#import "CustomFolderService.h"
 
 @interface AFPServerEnumerator()
 
 @property (nonatomic, strong) NSFileProviderItemIdentifier itemIdentifier;
 @property (nonatomic, strong) id<NSFileProviderEnumerationObserver> observer;
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
+@property (nonatomic, strong) CustomFolderService *customFolderService;
+@property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
+@property (nonatomic, strong) AFPAccountManager *accountManager;
 
 - (void)setupSessionWithCompletionBlock:(void (^)(id<AlfrescoSession> session))completionBlock;
 
