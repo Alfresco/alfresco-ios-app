@@ -256,6 +256,7 @@
 		2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */; };
 		2B34468B1B6A62EC00853B7D /* LoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */; };
 		2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */; };
+		2B379C00204FEF6A00DA4420 /* AFPPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B379BFF204FEF6A00DA4420 /* AFPPage.m */; };
 		2B410F561C7B5DBE00A3F52F /* RealmSyncError.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B410F531C7B5DBE00A3F52F /* RealmSyncError.m */; };
 		2B410F571C7B5DBE00A3F52F /* RealmSyncNodeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B410F551C7B5DBE00A3F52F /* RealmSyncNodeInfo.m */; };
 		2B482B3C1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B482B3B1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m */; };
@@ -1269,6 +1270,8 @@
 		2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParentCollectionViewController.xib; sourceTree = "<group>"; };
 		2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCollectionViewCell.xib; sourceTree = "<group>"; };
 		2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCollectionSectionHeader.xib; sourceTree = "<group>"; };
+		2B379BFE204FEF6A00DA4420 /* AFPPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPPage.h; sourceTree = "<group>"; };
+		2B379BFF204FEF6A00DA4420 /* AFPPage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPPage.m; sourceTree = "<group>"; };
 		2B410F521C7B5DBE00A3F52F /* RealmSyncError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncError.h; sourceTree = "<group>"; };
 		2B410F531C7B5DBE00A3F52F /* RealmSyncError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RealmSyncError.m; sourceTree = "<group>"; };
 		2B410F541C7B5DBE00A3F52F /* RealmSyncNodeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RealmSyncNodeInfo.h; sourceTree = "<group>"; };
@@ -2846,6 +2849,8 @@
 				2BB913021F58671200AA7E56 /* AFPItemMetadata.m */,
 				2BF0C7F91F6A74C4001268FA /* AFPAccountManager.h */,
 				2BF0C7FA1F6A74C4001268FA /* AFPAccountManager.m */,
+				2B379BFE204FEF6A00DA4420 /* AFPPage.h */,
+				2B379BFF204FEF6A00DA4420 /* AFPPage.m */,
 			);
 			path = AlfrescoDocumentPickerFileProvider;
 			sourceTree = "<group>";
@@ -5183,6 +5188,7 @@
 				73697BA21A9B74A3009F10BA /* UserAccount.m in Sources */,
 				2B9BCEEF1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m in Sources */,
 				734CC4011A700809005D148E /* FileProvider.m in Sources */,
+				2B379C00204FEF6A00DA4420 /* AFPPage.m in Sources */,
 				2B1591181F95F4840047D8BA /* RealmSyncNodeInfo.m in Sources */,
 				734B877F1AA734000093E702 /* AlfrescoFileManager+Extensions.m in Sources */,
 			);
