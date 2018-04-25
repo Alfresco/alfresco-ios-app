@@ -20,6 +20,6 @@
 
 @interface AFPEnumeratorBuilder : NSObject
 
-+ (id<NSFileProviderEnumerator>)enumeratorForItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
+- (id<NSFileProviderEnumerator>)enumeratorForItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
 
 @end

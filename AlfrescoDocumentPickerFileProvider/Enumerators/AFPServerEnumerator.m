@@ -41,35 +41,13 @@
     return _siteService;
 }
 
-- (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
-{
-    
-}
-
-- (void)invalidate
-{
-    // TODO: perform invalidation of server connection if necessary
-}
-
-- (void)enumerateChangesForObserver:(id<NSFileProviderChangeObserver>)observer fromSyncAnchor:(NSFileProviderSyncAnchor)anchor
-{
-    /* TODO:
-     - query the server for updates since the passed-in sync anchor
-     
-     If this is an enumerator for the active set:
-     - note the changes in your local database
-     
-     - inform the observer about item deletions and updates (modifications + insertions)
-     - inform the observer when you have finished enumerating up to a subsequent sync anchor
-     */
-}
-
 #pragma mark - Internal methods
 - (void)setupSessionWithCompletionBlock:(void (^)(id<AlfrescoSession> session))completionBlock
 {
     NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
     __weak typeof(self) weakSelf = self;
-    [[AFPAccountManager sharedManager] getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+    self.accountManager = [AFPAccountManager sharedManager];
+    [self.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
         if(loginError)
         {
             __strong typeof(self) strongSelf = weakSelf;

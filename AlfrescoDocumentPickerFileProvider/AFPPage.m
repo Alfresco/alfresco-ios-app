@@ -16,8 +16,38 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AFPServerEnumerator.h"
+#import "AFPPage.h"
 
-@interface AFPSiteEnumerator : AFPServerEnumerator <NSFileProviderEnumerator>
+@implementation AFPPage
+
+- (instancetype)initWithSkipCount:(int)skipCount hasMoreItems:(BOOL)hasMoreItems
+{
+    self = [super init];
+    if(self)
+    {
+        self.skipCount = skipCount;
+        self.hasMoreItems = hasMoreItems;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super init];
+    if(self)
+    {
+        self.skipCount = [aDecoder decodeIntForKey:@"AlfrescoFileProviderPageSkipCount"];
+        self.hasMoreItems = [aDecoder decodeBoolForKey:@"AlfrescoFileProviderPageHasMoreItems"];
+    }
+    
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeInt:self.skipCount forKey:@"AlfrescoFileProviderPageSkipCount"];
+    [aCoder encodeBool:self.hasMoreItems forKey:@"AlfrescoFileProviderPageHasMoreItems"];
+}
 
 @end

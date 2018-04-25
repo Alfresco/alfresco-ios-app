@@ -18,7 +18,7 @@
 
 #import <FileProvider/FileProvider.h>
 
-@interface AFPServerEnumerator : NSObject <NSFileProviderEnumerator>
+@interface AFPServerEnumerator : NSObject
 
 - (instancetype)initWithItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
 

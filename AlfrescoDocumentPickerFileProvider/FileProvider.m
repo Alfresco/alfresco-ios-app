@@ -36,6 +36,7 @@
 @interface FileProvider ()
 @property (nonatomic, strong) PersistentQueueStore *queueStore;
 @property (nonatomic, strong) AFPAccountManager *accountManager;
+@property (nonatomic, strong) AFPEnumeratorBuilder *enumeratorBuilder;
 @end
 
 @implementation FileProvider
@@ -51,7 +52,8 @@
             [[NSFileManager defaultManager] createDirectoryAtURL:newURL withIntermediateDirectories:YES attributes:nil error:&error];
         }];
         
-        self.accountManager = [AFPAccountManager new];
+        self.accountManager = [AFPAccountManager sharedManager];
+        self.enumeratorBuilder = [AFPEnumeratorBuilder new];
     }
     return self;
 }
@@ -539,7 +541,7 @@
     }
     else
     {
-        enumerator = [AFPEnumeratorBuilder enumeratorForItemIdentifier:containerItemIdentifier];
+        enumerator = [self.enumeratorBuilder enumeratorForItemIdentifier:containerItemIdentifier];
     }
     
     return enumerator;

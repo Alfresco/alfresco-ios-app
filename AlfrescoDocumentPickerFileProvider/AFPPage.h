@@ -16,8 +16,13 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "AFPServerEnumerator.h"
+#import <Foundation/Foundation.h>
 
-@interface AFPSiteEnumerator : AFPServerEnumerator <NSFileProviderEnumerator>
+@interface AFPPage : NSObject <NSCoding>
+
+@property (nonatomic, assign) int skipCount;
+@property (nonatomic, assign) BOOL hasMoreItems;
+
+- (instancetype)initWithSkipCount:(int)skipCount hasMoreItems:(BOOL)hasMoreItems;
 
 @end
