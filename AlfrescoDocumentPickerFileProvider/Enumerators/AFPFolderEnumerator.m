@@ -86,7 +86,7 @@
             {
                 [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             }
-            while (self.networkOperationsComplete == NO);
+            while (strongSelf.networkOperationsComplete == NO);
         }];
     }
 }
