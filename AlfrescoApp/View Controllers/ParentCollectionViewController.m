@@ -301,8 +301,10 @@
 #pragma mark - Empty view message
 - (void)updateEmptyView
 {
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if (!self.alfEmptyLabel)
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!strongSelf.alfEmptyLabel)
         {
             UILabel *emptyLabel = [[UILabel alloc] init];
             emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
@@ -311,28 +313,28 @@
             emptyLabel.textColor = [UIColor noItemsTextColor];
             emptyLabel.hidden = YES;
             
-            [self.collectionView addSubview:emptyLabel];
-            self.alfEmptyLabel = emptyLabel;
+            [strongSelf.collectionView addSubview:emptyLabel];
+            strongSelf.alfEmptyLabel = emptyLabel;
         }
         
-        CGRect frame = self.collectionView.bounds;
-        frame.origin = CGPointMake(0, 0);
-        frame.size.height -= self.collectionView.contentInset.top;
+        CGRect frame = strongSelf.collectionView.bounds;
+        frame.origin = CGPointZero;
+        frame.size.height -= strongSelf.collectionView.contentInset.top;
         
-        self.alfEmptyLabel.frame = frame;
-        self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
-        self.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
-        self.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
+        strongSelf.alfEmptyLabel.frame = frame;
+        strongSelf.alfEmptyLabel.text = strongSelf.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
+        strongSelf.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
+        strongSelf.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
         
-        BOOL shouldShowEmptyLabel = [self isDataSetEmpty];
-        BOOL isShowingEmptyLabel = !self.alfEmptyLabel.hidden;
+        BOOL shouldShowEmptyLabel = [strongSelf isDataSetEmpty];
+        BOOL isShowingEmptyLabel = !strongSelf.alfEmptyLabel.hidden;
         
         if (shouldShowEmptyLabel == isShowingEmptyLabel)
         {
             // Nothing to do
             return;
         }
-        self.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
+        strongSelf.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
     });
 }
 

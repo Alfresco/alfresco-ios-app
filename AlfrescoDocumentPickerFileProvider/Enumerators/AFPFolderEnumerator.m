@@ -43,7 +43,7 @@
                 strongSelf.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
             }
             
-            AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.itemIdentifier];
+            AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:strongSelf.itemIdentifier];
             switch (identifierType) {
                 case AlfrescoFileProviderItemIdentifierTypeMyFiles:
                 {
@@ -57,7 +57,7 @@
                 }
                 case AlfrescoFileProviderItemIdentifierTypeFolder:
                 {
-                    NSString *folderRef = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
+                    NSString *folderRef = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:strongSelf.itemIdentifier];
                     [strongSelf enumerateItemsInFolderWithFolderRef:folderRef skipCount:alfrescoPage.skipCount];
                     break;
                 }
