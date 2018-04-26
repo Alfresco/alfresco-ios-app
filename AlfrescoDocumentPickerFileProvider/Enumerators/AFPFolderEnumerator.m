@@ -21,8 +21,6 @@
 
 @interface AFPFolderEnumerator()
 
-@property (atomic) BOOL networkOperationsComplete;
-
 @end
 
 @implementation AFPFolderEnumerator
@@ -76,18 +74,17 @@
                 default:
                     break;
             }
-            
-            /*
-             * Keep this object around long enough for the network operations to complete.
-             * Running as a background thread, seperate from the UI, so should not cause
-             * Any issues when blocking the thread.
-             */
-            do
-            {
-                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-            }
-            while (strongSelf.networkOperationsComplete == NO);
         }];
+        /*
+         * Keep this object around long enough for the network operations to complete.
+         * Running as a background thread, seperate from the UI, so should not cause
+         * Any issues when blocking the thread.
+         */
+        do
+        {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
+        while (self.networkOperationsComplete == NO);
     }
 }
 
