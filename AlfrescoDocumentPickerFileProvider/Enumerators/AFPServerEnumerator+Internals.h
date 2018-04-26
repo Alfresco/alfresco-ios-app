@@ -32,6 +32,7 @@
 @property (nonatomic, strong) CustomFolderService *customFolderService;
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AFPAccountManager *accountManager;
+@property (atomic) BOOL networkOperationsComplete;
 
 - (void)setupSessionWithCompletionBlock:(void (^)(id<AlfrescoSession> session))completionBlock;
 
