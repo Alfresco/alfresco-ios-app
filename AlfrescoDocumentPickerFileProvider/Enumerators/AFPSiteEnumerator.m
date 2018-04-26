@@ -27,6 +27,7 @@
     if(alfrescoPage.hasMoreItems || alfrescoPage == nil)
     {
         self.observer = observer;
+        self.networkOperationsComplete = NO;
         AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.itemIdentifier];
         switch (identifierType) {
             case AlfrescoFileProviderItemIdentifierTypeSites:
@@ -36,12 +37,23 @@
             }
             case AlfrescoFileProviderItemIdentifierTypeMySites:
             {
+                
                 __weak typeof(self) weakSelf = self;
                 [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
                     __strong typeof(self) strongSelf = weakSelf;
                     strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
                     [strongSelf enumerateItemsInMySitesWithSkipCount:alfrescoPage.skipCount];
                 }];
+                /*
+                 * Keep this object around long enough for the network operations to complete.
+                 * Running as a background thread, seperate from the UI, so should not cause
+                 * Any issues when blocking the thread.
+                 */
+                do
+                {
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                }
+                while (self.networkOperationsComplete == NO);
                 break;
             }
             case AlfrescoFileProviderItemIdentifierTypeFavoriteSites:
@@ -52,6 +64,16 @@
                     strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
                     [strongSelf enumerateItemsInFavoriteSitesWithSkipCount:alfrescoPage.skipCount];
                 }];
+                /*
+                 * Keep this object around long enough for the network operations to complete.
+                 * Running as a background thread, seperate from the UI, so should not cause
+                 * Any issues when blocking the thread.
+                 */
+                do
+                {
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                }
+                while (self.networkOperationsComplete == NO);
                 break;
             }
                 
@@ -125,6 +147,7 @@
         NSFileProviderPage page = [NSKeyedArchiver archivedDataWithRootObject:newPage];
         [self.observer finishEnumeratingUpToPage:page];
     }
+    self.networkOperationsComplete = YES;
 }
 
 @end
