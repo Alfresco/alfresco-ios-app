@@ -121,15 +121,26 @@ CGFloat hiddenYOrigin;
     // Get the view width, allowing for rotations
     CGRect rotatedView = CGRectApplyAffineTransform(self.viewToDisplayOn.frame, self.viewToDisplayOn.transform);
     CGFloat viewWidth = rotatedView.size.width;
+
+    if (@available(iOS 11.0, *))
+    {
+        viewWidth -= self.viewToDisplayOn.safeAreaInsets.left;
+        viewWidth -= self.viewToDisplayOn.safeAreaInsets.right;
+    }
     
     // Status Bar Height - [[UIApplication sharedApplication] statusBarFrame].size.height yields 1024 occasionally
     CGFloat statusBarHeight = 20.0f;
+    
+    if (@available(iOS 11.0, *))
+    {
+        statusBarHeight = self.viewToDisplayOn.safeAreaInsets.top;
+    }
     
     // Padding
     CGFloat paddingBetweenMessageLabelAndBottomOfView = 10.0f;
     
     CGFloat messageLineHeight = 15.0;
-    CGFloat originY = (self.message) ? statusBarHeight : 25.0;
+    CGFloat originY = (self.message) ? statusBarHeight : statusBarHeight + 5;
     
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(55.0, originY, viewWidth - 70.0, 16.0)];
     titleLabel.textColor = self.labelColor;
@@ -163,7 +174,7 @@ CGFloat hiddenYOrigin;
     }
     
     // Calculate the notice view height
-    float noticeViewHeight = 25.0 + messageLineHeight + paddingBetweenMessageLabelAndBottomOfView;
+    float noticeViewHeight = originY + messageLineHeight + paddingBetweenMessageLabelAndBottomOfView;
     
     // Allow for shadow when hiding
     hiddenYOrigin = 0.0 - noticeViewHeight - 20.0;
