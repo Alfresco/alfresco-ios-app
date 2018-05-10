@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -35,7 +36,7 @@
                     </connections>
                 </view>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="hJK-bj-wBv">
-                    <rect key="frame" x="87.5" y="8" width="200" height="29"/>
+                    <rect key="frame" x="87.5" y="28" width="200" height="29"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="200" id="Nf1-A6-DRH"/>
                         <constraint firstAttribute="height" constant="28" id="gYK-gy-Vjg"/>
@@ -49,7 +50,7 @@
                     </connections>
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yvK-iX-rji" customClass="PagedScrollView">
-                    <rect key="frame" x="0.0" y="50" width="375" height="515"/>
+                    <rect key="frame" x="0.0" y="70" width="375" height="495"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="673-l1-SQV"/>
@@ -59,26 +60,22 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="RcP-UM-Kst" firstAttribute="top" secondItem="yvK-iX-rji" secondAttribute="bottom" constant="8" id="KU0-vA-Iro"/>
-                <constraint firstAttribute="trailing" secondItem="yvK-iX-rji" secondAttribute="trailing" id="aKr-ue-Mn1"/>
-                <constraint firstItem="RcP-UM-Kst" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="cRW-Np-VbZ"/>
-                <constraint firstAttribute="bottom" secondItem="RcP-UM-Kst" secondAttribute="bottom" id="cac-uw-7ri"/>
+                <constraint firstItem="AQc-Ba-cIt" firstAttribute="trailing" secondItem="yvK-iX-rji" secondAttribute="trailing" id="aKr-ue-Mn1"/>
+                <constraint firstItem="RcP-UM-Kst" firstAttribute="leading" secondItem="AQc-Ba-cIt" secondAttribute="leading" id="cRW-Np-VbZ"/>
+                <constraint firstItem="AQc-Ba-cIt" firstAttribute="bottom" secondItem="RcP-UM-Kst" secondAttribute="bottom" id="cac-uw-7ri"/>
                 <constraint firstAttribute="centerX" secondItem="hJK-bj-wBv" secondAttribute="centerX" id="gj4-nD-3Tx"/>
-                <constraint firstItem="yvK-iX-rji" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="knc-IW-y8f"/>
+                <constraint firstItem="yvK-iX-rji" firstAttribute="leading" secondItem="AQc-Ba-cIt" secondAttribute="leading" id="knc-IW-y8f"/>
                 <constraint firstItem="yvK-iX-rji" firstAttribute="top" secondItem="hJK-bj-wBv" secondAttribute="bottom" constant="14" id="m08-fY-U9D"/>
-                <constraint firstItem="hJK-bj-wBv" firstAttribute="top" secondItem="1" secondAttribute="top" constant="8" id="qhj-do-Lh0"/>
-                <constraint firstAttribute="trailing" secondItem="RcP-UM-Kst" secondAttribute="trailing" id="wvM-ah-cU8"/>
+                <constraint firstItem="hJK-bj-wBv" firstAttribute="top" secondItem="AQc-Ba-cIt" secondAttribute="top" constant="8" id="qhj-do-Lh0"/>
+                <constraint firstItem="AQc-Ba-cIt" firstAttribute="trailing" secondItem="RcP-UM-Kst" secondAttribute="trailing" id="wvM-ah-cU8"/>
                 <constraint firstItem="yvK-iX-rji" firstAttribute="top" secondItem="hJK-bj-wBv" secondAttribute="bottom" constant="14" id="zVj-Of-XcO"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <viewLayoutGuide key="safeArea" id="AQc-Ba-cIt"/>
         </view>
     </objects>
     <resources>
         <image name="segment-icon-comments-none.png" width="30" height="22"/>
         <image name="segment-icon-properties.png" width="30" height="22"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>
