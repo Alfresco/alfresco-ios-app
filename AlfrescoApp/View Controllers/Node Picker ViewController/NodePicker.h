@@ -16,7 +16,7 @@
  *  limitations under the License.
  ******************************************************************************/
   
-#import "MultiSelectActionsToolbar.h"
+#import "MultiSelectContainerView.h"
 
 @class NodePicker;
 

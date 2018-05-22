@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -16,7 +16,7 @@
  *  limitations under the License.
  ******************************************************************************/
   
-#import "MultiSelectActionsToolbar.h"
+#import "MultiSelectContainerView.h"
 
 @class PeoplePicker;
 

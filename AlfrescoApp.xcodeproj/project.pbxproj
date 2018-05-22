@@ -282,6 +282,7 @@
 		2B7169F71B567CC1009A4487 /* large_folder.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F51B567CC1009A4487 /* large_folder.png */; };
 		2B7169F81B567CC1009A4487 /* large_folder@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B7169F61B567CC1009A4487 /* large_folder@2x.png */; };
 		2B73E93F1EADFBD400B96560 /* AccessibilityConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B73E93E1EADFBD400B96560 /* AccessibilityConstants.m */; };
+		2B74894420B2E48200057157 /* MultiSelectContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B74894320B2E48200057157 /* MultiSelectContainerView.m */; };
 		2B81257A1D0807A100AC0AD9 /* SearchCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8125791D0807A100AC0AD9 /* SearchCollectionViewDataSource.m */; };
 		2B8366731D06F3C900CC77DC /* NodeCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B8366721D06F3C900CC77DC /* NodeCollectionViewDataSource.m */; };
 		2B841D521DD47BA2008D7F40 /* enterFullScreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B841D501DD47BA2008D7F40 /* enterFullScreen@2x.png */; };
@@ -1314,6 +1315,8 @@
 		2B7169F61B567CC1009A4487 /* large_folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_folder@2x.png"; sourceTree = "<group>"; };
 		2B73E93D1EADFBD400B96560 /* AccessibilityConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccessibilityConstants.h; sourceTree = "<group>"; };
 		2B73E93E1EADFBD400B96560 /* AccessibilityConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccessibilityConstants.m; sourceTree = "<group>"; };
+		2B74894220B2E48200057157 /* MultiSelectContainerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MultiSelectContainerView.h; sourceTree = "<group>"; };
+		2B74894320B2E48200057157 /* MultiSelectContainerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MultiSelectContainerView.m; sourceTree = "<group>"; };
 		2B8125781D0807A100AC0AD9 /* SearchCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCollectionViewDataSource.h; sourceTree = "<group>"; };
 		2B8125791D0807A100AC0AD9 /* SearchCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCollectionViewDataSource.m; sourceTree = "<group>"; };
 		2B8366711D06F3C900CC77DC /* NodeCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeCollectionViewDataSource.h; sourceTree = "<group>"; };
@@ -4093,6 +4096,8 @@
 				73B9583F17A6750F0099FB84 /* MultiSelectActionItem.m */,
 				73B9584017A6750F0099FB84 /* MultiSelectActionsToolbar.h */,
 				73B9584117A6750F0099FB84 /* MultiSelectActionsToolbar.m */,
+				2B74894220B2E48200057157 /* MultiSelectContainerView.h */,
+				2B74894320B2E48200057157 /* MultiSelectContainerView.m */,
 			);
 			path = MultiSelect;
 			sourceTree = "<group>";
@@ -5476,6 +5481,7 @@
 				738664B91906B13D0021D1BD /* FileFolderCell.m in Sources */,
 				7390B3611B03681E00E7191F /* AlfrescoViewConfigHelper.m in Sources */,
 				235CA9791E60888800447FC5 /* UISearchBar+Paste.m in Sources */,
+				2B74894420B2E48200057157 /* MultiSelectContainerView.m in Sources */,
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				275D6AD01BDEDB2E00FC5B60 /* FilteredTaskViewController.m in Sources */,
