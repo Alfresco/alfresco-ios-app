@@ -63,7 +63,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 @property (nonatomic, assign) FileFolderCollectionViewControllerType controllerType;
 @property (nonatomic) CustomFolderServiceFolderType customFolderType;
 @property (nonatomic) BOOL shouldAutoSelectFirstItem;
-@property (nonatomic) BOOL multiSelectViewSetupDone;
 
 @end
 
@@ -311,15 +310,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    if(!self.multiSelectViewSetupDone)
+    if (@available(iOS 11.0, *))
     {
-        if (@available(iOS 11.0, *))
-        {
-            self.multiSelectContanerViewHeightConstraint.constant = kPickerMultiSelectToolBarHeight + self.view.safeAreaInsets.bottom;
-        }
-        [self.view layoutIfNeeded];
+        self.multiSelectContanerViewHeightConstraint.constant = kPickerMultiSelectToolBarHeight + self.view.safeAreaInsets.bottom;
+    }
+    [self.view layoutIfNeeded];
+    if(!self.editing)
+    {
         [self.multiSelectContainerView hide];
-        self.multiSelectViewSetupDone = YES;
     }
 }
 
