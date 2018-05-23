@@ -713,7 +713,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
             selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
         }
         
-        if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
+        if([self.multiSelectContainerView.toolbar.selectedItems containsObject:selectedNode])
         {
             return YES;
         }

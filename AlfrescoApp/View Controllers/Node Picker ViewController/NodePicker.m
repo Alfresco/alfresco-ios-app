@@ -29,7 +29,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
 
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, strong) MultiSelectActionsToolbar *multiSelectToolbar;
+@property (nonatomic, strong) MultiSelectContainerView *multiSelectContainerView;
 @property (nonatomic, strong) NSMutableArray *nodesAlreadySelected;
 @property (nonatomic, strong) UIViewController *nextController;
 @property (nonatomic, assign) BOOL isMultiSelectToolBarVisible;
@@ -97,39 +97,43 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     }
     
     CGRect navFrame = self.navigationController.view.frame;
-    self.multiSelectToolbar = [[MultiSelectActionsToolbar alloc] initWithFrame:CGRectMake(0, navFrame.size.height - kPickerMultiSelectToolBarHeight, navFrame.size.width, kPickerMultiSelectToolBarHeight)];
-    self.multiSelectToolbar.multiSelectDelegate = self;
-    [self.multiSelectToolbar enterMultiSelectMode:nil];
+    CGFloat containerViewHeight = kPickerMultiSelectToolBarHeight;
+    if (@available(iOS 11.0, *)) {
+        containerViewHeight += self.navigationController.view.safeAreaInsets.bottom;
+    }
+    self.multiSelectContainerView = [[MultiSelectContainerView alloc] initWithFrame:CGRectMake(0, navFrame.size.height - containerViewHeight, navFrame.size.width, containerViewHeight)];
+    self.multiSelectContainerView.toolbar.multiSelectDelegate = self;
+    [self.multiSelectContainerView show];
     
     [self replaceSelectedNodesWithNodes:self.nodesAlreadySelected];
 }
 
 - (void)updateMultiSelectToolBarActionsForListView
 {
-    [self.multiSelectToolbar removeToolBarButtons];
-    [self.multiSelectToolbar createToolBarButtonForTitleKey:@"nodes.picker.button.deselectAll" actionId:kNodePickerDeSelectAll isDestructive:YES];
-    [self.multiSelectToolbar refreshToolBarButtons];
+    [self.multiSelectContainerView.toolbar removeToolBarButtons];
+    [self.multiSelectContainerView.toolbar createToolBarButtonForTitleKey:@"nodes.picker.button.deselectAll" actionId:kNodePickerDeSelectAll isDestructive:YES];
+    [self.multiSelectContainerView.toolbar refreshToolBarButtons];
     [self showMultiSelectToolBar];
 }
 
 - (void)updateMultiSelectToolBarActions
 {
-    [self.multiSelectToolbar removeToolBarButtons];
+    [self.multiSelectContainerView.toolbar removeToolBarButtons];
     if (self.type == NodePickerTypeDocuments && self.mode == NodePickerModeMultiSelect)
     {
-        [self.multiSelectToolbar createToolBarButtonForTitleKey:@"nodes.picker.button.select.documents" actionId:kNodePickerSelectDocuments isDestructive:NO];
+        [self.multiSelectContainerView.toolbar createToolBarButtonForTitleKey:@"nodes.picker.button.select.documents" actionId:kNodePickerSelectDocuments isDestructive:NO];
         [self showMultiSelectToolBar];
     }
     else if (self.type == NodePickerTypeFolders && self.mode == NodePickerModeSingleSelect)
     {
-        [self.multiSelectToolbar createToolBarButtonForTitleKey:@"nodes.picker.button.select.folder" actionId:kNodePickerSelectFolder isDestructive:NO];
+        [self.multiSelectContainerView.toolbar createToolBarButtonForTitleKey:@"nodes.picker.button.select.folder" actionId:kNodePickerSelectFolder isDestructive:NO];
         [self showMultiSelectToolBar];
     }
     else
     {
         [self hideMultiSelectToolBar];
     }
-    [self.multiSelectToolbar refreshToolBarButtons];
+    [self.multiSelectContainerView.toolbar refreshToolBarButtons];
 }
 
 - (void)cancel
@@ -172,7 +176,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
 {
     if (!self.isMultiSelectToolBarVisible)
     {
-        [self.navigationController.view addSubview:self.multiSelectToolbar];
+        [self.navigationController.view addSubview:self.multiSelectContainerView];
         self.isMultiSelectToolBarVisible = YES;
     }
 }
@@ -181,7 +185,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
 {
     if (self.isMultiSelectToolBarVisible)
     {
-        [self.multiSelectToolbar removeFromSuperview];
+        [self.multiSelectContainerView removeFromSuperview];
         self.isMultiSelectToolBarVisible = NO;
     }
 }
@@ -205,7 +209,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
 - (BOOL)isNodeSelected:(AlfrescoNode *)node
 {
     __block BOOL isSelected = NO;
-    [self.multiSelectToolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoNode *selectedNode, NSUInteger index, BOOL *stop) {
+    [self.multiSelectContainerView.toolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoNode *selectedNode, NSUInteger index, BOOL *stop) {
         
         if ([node.identifier isEqualToString:selectedNode.identifier])
         {
@@ -219,7 +223,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
 - (void)selectNode:(AlfrescoNode *)node
 {
     __block BOOL nodeExists = NO;
-    [self.multiSelectToolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoNode *selectedNode, NSUInteger index, BOOL *stop) {
+    [self.multiSelectContainerView.toolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoNode *selectedNode, NSUInteger index, BOOL *stop) {
         
         if ([node.identifier isEqualToString:selectedNode.identifier])
         {
@@ -230,19 +234,19 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     
     if (!nodeExists)
     {
-        [self.multiSelectToolbar userDidSelectItem:node];
+        [self.multiSelectContainerView.toolbar userDidSelectItem:node];
     }
 }
 
 - (void)replaceSelectedNodesWithNodes:(NSArray *)nodes
 {
-    [self.multiSelectToolbar replaceSelectedItemsWithItems:nodes];
+    [self.multiSelectContainerView.toolbar replaceSelectedItemsWithItems:nodes];
 }
 
 - (void)deselectNode:(AlfrescoNode *)node
 {
     __block id existingNode = nil;
-    [self.multiSelectToolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoNode *selectedNode, NSUInteger index, BOOL *stop) {
+    [self.multiSelectContainerView.toolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoNode *selectedNode, NSUInteger index, BOOL *stop) {
         
         if ([node.identifier isEqualToString:selectedNode.identifier])
         {
@@ -250,17 +254,17 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
             *stop = YES;
         }
     }];
-    [self.multiSelectToolbar userDidDeselectItem:existingNode];
+    [self.multiSelectContainerView.toolbar userDidDeselectItem:existingNode];
 }
 
 - (void)deselectAllNodes
 {
-    [self.multiSelectToolbar userDidDeselectAllItems];
+    [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
 }
 
 - (NSInteger)numberOfSelectedNodes
 {
-    return self.multiSelectToolbar.selectedItems.count;
+    return self.multiSelectContainerView.toolbar.selectedItems.count;
 }
 
 - (void)pickingNodesComplete
@@ -268,7 +272,7 @@ NSString * const kAlfrescoPickerDeselectAllNotification = @"AlfrescoPickerDesele
     [self cancel];
     if ([self.delegate respondsToSelector:@selector(nodePicker:didSelectNodes:)])
     {
-        [self.delegate nodePicker:self didSelectNodes:self.multiSelectToolbar.selectedItems];
+        [self.delegate nodePicker:self didSelectNodes:self.multiSelectContainerView.toolbar.selectedItems];
     }
 }
 

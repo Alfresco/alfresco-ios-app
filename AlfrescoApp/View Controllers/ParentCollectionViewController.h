@@ -18,7 +18,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ErrorDescriptions.h"
-#import "MultiSelectActionsToolbar.h"
+#import "MultiSelectContainerView.h"
 #import "BaseLayoutAttributes.h"
 #import "BaseCollectionViewFlowLayout.h"
 #import "CollectionViewProtocols.h"
@@ -37,8 +37,9 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 @interface ParentCollectionViewController : UIViewController < UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, CollectionViewCellAccessoryViewDelegate, DataSourceInformationProtocol, UIPopoverPresentationControllerDelegate, CollectionViewMultiSelectDelegate >
 
 // IBOutlets
-@property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
+@property (nonatomic, weak) IBOutlet MultiSelectContainerView *multiSelectContainerView;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectContanerViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *multiSelectContainerViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (nonatomic, strong) id<AlfrescoSession> session;

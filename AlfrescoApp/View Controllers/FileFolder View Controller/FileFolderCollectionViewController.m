@@ -270,10 +270,12 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     self.collectionView.dataSource = self.dataSource;
     
-    self.multiSelectToolbar.multiSelectDelegate = self;
-    [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
-    
     [self changeCollectionViewStyle:self.style animated:YES trackAnalytics:NO];
+    
+    self.multiSelectContainerView.toolbar.multiSelectDelegate = self;
+    [self.multiSelectContainerView.toolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
+    self.multiSelectContainerView.heightConstraint = self.multiSelectContanerViewHeightConstraint;
+    self.multiSelectContainerView.bottomConstraint = self.multiSelectContainerViewBottomConstraint;
     
     [self registerForNotifications];
 }
@@ -305,9 +307,24 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [self deselectAllItems];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (@available(iOS 11.0, *))
+    {
+        self.multiSelectContanerViewHeightConstraint.constant = kPickerMultiSelectToolBarHeight + self.view.safeAreaInsets.bottom;
+    }
+    [self.view layoutIfNeeded];
+    if(!self.editing)
+    {
+        [self.multiSelectContainerView hide];
+    }
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
     if(self.shouldAutoSelectFirstItem)
     {
         [self collectionView:self.collectionView didSelectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
@@ -364,13 +381,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         [self dismissPopoverOrModalWithAnimation:YES withCompletionBlock:nil];
         [self disablePullToRefresh];
-        [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint];
+        
+        [self.multiSelectContainerView show];
         self.swipeToDeleteGestureRecognizer.enabled = NO;
     }
     else
     {
         [self enablePullToRefresh];
-        [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
+        [self.multiSelectContainerView hide];
     }
     
     if ([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
@@ -449,8 +467,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)confirmDeletingMultipleNodes
 {
-    NSString *titleKey = (self.multiSelectToolbar.selectedItems.count == 1) ? @"multiselect.delete.confirmation.message.one-item" : @"multiselect.delete.confirmation.message.n-items";
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(titleKey, @"Are you sure you want to delete x items"), self.multiSelectToolbar.selectedItems.count];
+    NSString *titleKey = (self.multiSelectContainerView.toolbar.selectedItems.count == 1) ? @"multiselect.delete.confirmation.message.one-item" : @"multiselect.delete.confirmation.message.n-items";
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(titleKey, @"Are you sure you want to delete x items"), self.multiSelectContainerView.toolbar.selectedItems.count];
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
@@ -463,7 +481,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     alertController.modalPresentationStyle = UIModalPresentationPopover;
     
     UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
-    popoverPresenter.sourceView = self.multiSelectToolbar;
+    popoverPresenter.sourceView = self.multiSelectContainerView;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -471,7 +489,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     [self setEditing:NO animated:YES];
     [self showHUD];
-    [self deleteNodes:self.multiSelectToolbar.selectedItems completionBlock:^(NSInteger numberDeleted, NSInteger numberFailed) {
+    [self deleteNodes:self.multiSelectContainerView.toolbar.selectedItems completionBlock:^(NSInteger numberDeleted, NSInteger numberFailed) {
         [self hideHUD];
         if (numberFailed == 0)
         {
@@ -516,7 +534,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         if (self.isEditing)
         {
-            [self.multiSelectToolbar userDidSelectItem:selectedNode];
+            [self.multiSelectContainerView.toolbar userDidSelectItem:selectedNode];
             FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
             [cell wasSelectedInEditMode:YES];
         }
@@ -562,7 +580,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if (self.isEditing)
     {
         AlfrescoNode *selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
-        [self.multiSelectToolbar userDidDeselectItem:selectedNode];
+        [self.multiSelectContainerView.toolbar userDidDeselectItem:selectedNode];
         FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [cell wasSelectedInEditMode:NO];
     }
@@ -607,7 +625,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         AlfrescoPermissions *nodePermission = [self.dataSource permissionsForNode:node];
         if (!nodePermission.canDelete)
         {
-            [self.multiSelectToolbar enableAction:kMultiSelectDelete enable:NO];
+            [self.multiSelectContainerView.toolbar enableAction:kMultiSelectDelete enable:NO];
             break;
         }
     }
