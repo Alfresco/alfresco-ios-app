@@ -22,8 +22,6 @@ static CGFloat const kMultiSelectAnimationDuration = 0.2f;
 
 @interface MultiSelectContainerView()
 
-@property (nonatomic, assign) BOOL subviewAdded;
-
 @end
 
 @implementation MultiSelectContainerView
@@ -31,12 +29,22 @@ static CGFloat const kMultiSelectAnimationDuration = 0.2f;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
-    if(!self)
+    if(self)
     {
-        return nil;
+        [self createToolbar];
     }
     
-    [self createToolbar];
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if(self)
+    {
+        [self createToolbar];
+    }
     
     return self;
 }
@@ -44,14 +52,9 @@ static CGFloat const kMultiSelectAnimationDuration = 0.2f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if(!self.subviewAdded)
+    if(!self.toolbar.superview)
     {
-        if(!self.toolbar)
-        {
-            [self createToolbar];
-        }
         [self addSubview:self.toolbar];
-        self.subviewAdded = YES;
     }
 }
 
@@ -85,13 +88,5 @@ static CGFloat const kMultiSelectAnimationDuration = 0.2f;
 {
     self.toolbar = [[MultiSelectActionsToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.frame.size.width, kPickerMultiSelectToolBarHeight)];
 }
-
-/*
- // Only override drawRect: if you perform custom drawing.
- // An empty implementation adversely affects performance during animation.
- - (void)drawRect:(CGRect)rect {
- // Drawing code
- }
- */
 
 @end
