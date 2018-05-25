@@ -274,7 +274,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     self.multiSelectContainerView.toolbar.multiSelectDelegate = self;
     [self.multiSelectContainerView.toolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
-    self.multiSelectContainerView.heightConstraint = self.multiSelectContanerViewHeightConstraint;
+    self.multiSelectContainerView.heightConstraint = self.multiSelectContainerViewHeightConstraint;
     self.multiSelectContainerView.bottomConstraint = self.multiSelectContainerViewBottomConstraint;
     
     [self registerForNotifications];
@@ -312,7 +312,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     [super viewDidLayoutSubviews];
     if (@available(iOS 11.0, *))
     {
-        self.multiSelectContanerViewHeightConstraint.constant = kPickerMultiSelectToolBarHeight + self.view.safeAreaInsets.bottom;
+        self.multiSelectContainerViewHeightConstraint.constant = kPickerMultiSelectToolBarHeight + self.view.safeAreaInsets.bottom;
     }
     [self.view layoutIfNeeded];
     if(!self.editing)

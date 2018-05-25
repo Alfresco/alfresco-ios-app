@@ -38,7 +38,7 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 
 // IBOutlets
 @property (nonatomic, weak) IBOutlet MultiSelectContainerView *multiSelectContainerView;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectContanerViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectContainerViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *multiSelectContainerViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 

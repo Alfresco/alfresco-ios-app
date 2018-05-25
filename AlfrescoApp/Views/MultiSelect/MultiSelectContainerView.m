@@ -54,6 +54,7 @@ static CGFloat const kMultiSelectAnimationDuration = 0.2f;
     [super layoutSubviews];
     if(!self.toolbar.superview)
     {
+        self.toolbar.frame = CGRectMake(0, 0, self.frame.size.width, kPickerMultiSelectToolBarHeight);
         [self addSubview:self.toolbar];
     }
 }
