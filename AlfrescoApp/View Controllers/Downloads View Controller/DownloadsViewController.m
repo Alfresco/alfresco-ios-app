@@ -34,8 +34,9 @@ static NSString * const kDownloadInProgressExtension = @"-download";
 @property (nonatomic) BOOL noDocumentsSaved;
 @property (nonatomic) float totalFilesSize;
 @property (nonatomic, strong) id<DocumentFilter> documentFilter;
-@property (nonatomic, weak) IBOutlet MultiSelectActionsToolbar *multiSelectToolbar;
-@property (nonatomic, weak) IBOutlet NSLayoutConstraint *multiSelectToolbarHeightConstraint;
+@property (weak, nonatomic) IBOutlet MultiSelectContainerView *multiSelectContainerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *multiSelectContainerViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *multiSelectContainerViewBottomConstraint;
 
 @end
 
@@ -103,8 +104,24 @@ static NSString * const kDownloadInProgressExtension = @"-download";
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(performCancel:)];
     }
     
-    self.multiSelectToolbar.multiSelectDelegate = self;
-    [self.multiSelectToolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
+    self.multiSelectContainerView.toolbar.multiSelectDelegate = self;
+    [self.multiSelectContainerView.toolbar createToolBarButtonForTitleKey:@"multiselect.button.delete" actionId:kMultiSelectDelete isDestructive:YES];
+    self.multiSelectContainerView.heightConstraint = self.multiSelectContainerViewHeightConstraint;
+    self.multiSelectContainerView.bottomConstraint = self.multiSelectContainerViewBottomConstraint;
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (@available(iOS 11.0, *))
+    {
+        self.multiSelectContainerViewHeightConstraint.constant = kPickerMultiSelectToolBarHeight + self.view.safeAreaInsets.bottom;
+    }
+    [self.view layoutIfNeeded];
+    if(!self.editing)
+    {
+        [self.multiSelectContainerView hide];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -139,12 +156,12 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     if (editing)
     {
         [self disablePullToRefresh];
-        [self.multiSelectToolbar enterMultiSelectMode:self.multiSelectToolbarHeightConstraint];
+        [self.multiSelectContainerView show];
     }
     else
     {
         [self enablePullToRefresh];
-        [self.multiSelectToolbar leaveMultiSelectMode:self.multiSelectToolbarHeightConstraint];
+        [self.multiSelectContainerView hide];
     }
 }
 
@@ -243,7 +260,7 @@ static NSString * const kDownloadInProgressExtension = @"-download";
         NSString *contentFullPath = self.tableViewData[indexPath.row];
         if (self.tableView.isEditing)
         {
-            [self.multiSelectToolbar userDidSelectItem:contentFullPath];
+            [self.multiSelectContainerView.toolbar userDidSelectItem:contentFullPath];
         }
         else
         {
@@ -279,7 +296,7 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     if (self.tableView.isEditing)
     {
         NSString *contentFullPath = self.tableViewData[indexPath.row];
-        [self.multiSelectToolbar userDidDeselectItem:contentFullPath];
+        [self.multiSelectContainerView.toolbar userDidDeselectItem:contentFullPath];
     }
 }
 
@@ -331,8 +348,8 @@ static NSString * const kDownloadInProgressExtension = @"-download";
 
 - (void)confirmDeletingMultipleNodes
 {
-    NSString *titleKey = (self.multiSelectToolbar.selectedItems.count == 1) ? @"multiselect.delete.confirmation.message.one-download" : @"multiselect.delete.confirmation.message.n-downloads";
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(titleKey, @"Are you sure you want to delete x items"), self.multiSelectToolbar.selectedItems.count];
+    NSString *titleKey = (self.multiSelectContainerView.toolbar.selectedItems.count == 1) ? @"multiselect.delete.confirmation.message.one-download" : @"multiselect.delete.confirmation.message.n-downloads";
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(titleKey, @"Are you sure you want to delete x items"), self.multiSelectContainerView.toolbar.selectedItems.count];
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:nil preferredStyle:UIAlertControllerStyleAlert];
     
@@ -344,7 +361,7 @@ static NSString * const kDownloadInProgressExtension = @"-download";
     alertController.modalPresentationStyle = UIModalPresentationPopover;
     
     UIPopoverPresentationController *popoverPresenter = [alertController popoverPresentationController];
-    popoverPresenter.sourceView = self.multiSelectToolbar;
+    popoverPresenter.sourceView = self.multiSelectContainerView;
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
@@ -352,7 +369,7 @@ static NSString * const kDownloadInProgressExtension = @"-download";
 {
     [self setEditing:NO animated:YES];
     
-    for (NSString *filePath in self.multiSelectToolbar.selectedItems)
+    for (NSString *filePath in self.multiSelectContainerView.toolbar.selectedItems)
     {
         [self deleteDocumentFromDownloads:filePath];
     }
