@@ -432,6 +432,21 @@
             }
         }
     }
+    else
+    {
+        // iOS 11
+        NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
+        AlfrescoFileProviderItemIdentifierType itemIdentifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
+        if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
+        {
+            NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
+            NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:[AFPItemIdentifier filenameFromItemIdentifier:itemIdentifier]];
+            NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+            [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+                [self saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
+            }];
+        }
+    }
 }
 
 - (void)stopProvidingItemAtURL:(NSURL *)url
