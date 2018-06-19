@@ -506,16 +506,7 @@
     if(item)
     {
         AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:identifier];
-        if(identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNode)
-        {
-            RealmSyncNodeInfo *nodeInfo = (RealmSyncNodeInfo *)[[AFPDataManager sharedManager] dbItemForIdentifier:identifier];
-            NSFileProviderManager *manager = [NSFileProviderManager defaultManager];
-            NSString *itemPath = [[manager.documentStorageURL.absoluteString stringByDeletingLastPathComponent] stringByAppendingPathComponent:kSyncFolder];
-            itemPath = [itemPath stringByAppendingPathComponent:[AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier]];
-            itemPath = [itemPath stringByAppendingPathComponent:nodeInfo.syncContentPath];
-            fileURL = [NSURL URLWithString:itemPath];
-        }
-        else if (identifierType == AlfrescoFileProviderItemIdentifierTypeDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
+        if (identifierType == AlfrescoFileProviderItemIdentifierTypeDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNode)
         {
             // in this implementation, all paths are structured as <base storage directory>/<item identifier>/<item file name>
             NSFileProviderManager *manager = [NSFileProviderManager defaultManager];
