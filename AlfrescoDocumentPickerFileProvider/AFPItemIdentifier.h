@@ -25,8 +25,9 @@
 + (NSFileProviderItemIdentifier)getAccountIdentifierFromEnumeratedIdentifier:(NSFileProviderItemIdentifier)enumeratedIdentifier;
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccount:(UserAccount *)account;
 + (NSFileProviderItemIdentifier)itemIdentifierForSuffix:(NSString *)suffix andAccountIdentifier:(NSString *)accountIdentifier;
-+ (NSFileProviderItemIdentifier)itemIdentifierForLocalFilePath:(NSString *)filePath;
++ (NSFileProviderItemIdentifier)itemIdentifierForLocalFilename:(NSString *)filename;
 + (NSFileProviderItemIdentifier)itemIdentifierForIdentifier:(NSString *)identifier typePath:(NSString *)typePath andAccountIdentifier:(NSString *)accountIdentifier;
++ (NSFileProviderItemIdentifier)itemIdentifierForFilename:(NSString *)filename andFileParentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
 + (AlfrescoFileProviderItemIdentifierType)itemIdentifierTypeForIdentifier:(NSString *)identifier;
 + (NSString *)alfrescoIdentifierFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
 + (NSString *)filenameFromItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;

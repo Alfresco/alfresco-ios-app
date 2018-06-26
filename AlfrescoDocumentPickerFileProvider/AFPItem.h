@@ -23,14 +23,19 @@
 
 @interface AFPItem : NSObject <NSFileProviderItem>
 
-@property (nonatomic, readonly, copy) NSString *parentItemIdentifier;
 @property (nonatomic, readonly, copy) NSString *itemIdentifier;
+@property (nonatomic, readonly, copy) NSString *parentItemIdentifier;
 @property (nonatomic, readonly, copy) NSString *filename;
-@property (nonatomic, readonly, getter=isDownloaded) BOOL downloaded;
+@property (nonatomic, readonly, copy) NSDate *creationDate;
+@property (nonatomic, readonly, copy) NSDate *contentModificationDate;
+@property (nonatomic, readonly, copy) NSNumber *documentSize;
+@property (nonatomic, readonly, copy) NSString *typeIdentifier;
 
+- (instancetype)initWithRootContainterItem;
 - (instancetype)initWithUserAccount:(UserAccount *)account;
 - (instancetype)initWithItemMetadata:(AFPItemMetadata *)accountInfo;
 - (instancetype)initWithLocalFilesPath:(NSString *)path;
 - (instancetype)initWithSyncedNode:(RealmSyncNodeInfo *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
+- (instancetype)initWithImportedDocumentAtURL:(NSURL *)fileURL resourceValues:(NSDictionary *)resourceValues parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 
 @end

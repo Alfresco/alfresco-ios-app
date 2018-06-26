@@ -461,6 +461,39 @@
     [self providePlaceholderAtURL:url completionHandler:^(NSError *error) {}];
 }
 
+- (void)importDocumentAtURL:(NSURL *)fileURL toParentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier completionHandler:(void (^)(NSFileProviderItem _Nullable, NSError * _Nullable))completionHandler
+{
+    AlfrescoFileProviderItemIdentifierType typeIdentifier = [AFPItemIdentifier itemIdentifierTypeForIdentifier:parentItemIdentifier];
+    if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeLocalFiles)
+    {
+        [fileURL startAccessingSecurityScopedResource];
+        NSError *error = nil;
+        NSDictionary *resourceValues = [fileURL resourceValuesForKeys:@[NSURLNameKey, NSURLCreationDateKey, NSURLContentModificationDateKey, NSURLTypeIdentifierKey, NSURLTotalFileSizeKey] error:&error];
+        if(error)
+        {
+            completionHandler(nil, error);
+        }
+        else
+        {
+            NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
+            NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:resourceValues[NSURLNameKey]];
+            NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+            
+            AFPItem *item = [[AFPItem alloc] initWithImportedDocumentAtURL:fileURL resourceValues:resourceValues parentItemIdentifier:parentItemIdentifier];
+            
+            [self saveDocumentAtURL:fileURL toURL:destinationURL overwritingExistingFile:NO];
+            [fileURL stopAccessingSecurityScopedResource];
+            [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:parentItemIdentifier completionHandler:^(NSError * _Nullable error) {
+                completionHandler(item, error);
+            }];
+        }
+    }
+    else
+    {
+        completionHandler(nil, nil);
+    }
+}
+
 #pragma mark - iOS 11 support
 
 - (nullable NSFileProviderItem)itemForIdentifier:(NSFileProviderItemIdentifier)identifier error:(NSError * _Nullable *)error
@@ -495,6 +528,10 @@
             item = [[AFPItem alloc] initWithLocalFilesPath:path];
         }
     }
+    else
+    {
+        item = [[AFPItem alloc] initWithRootContainterItem];
+    }
     return item;
 }
 
@@ -525,7 +562,7 @@
     NSString *folderString = [url.path stringByDeletingLastPathComponent];
     if([folderString isEqualToString:[[AlfrescoFileManager sharedManager] downloadsContentFolderPath]])
     {
-        itemIdentifier = [AFPItemIdentifier itemIdentifierForLocalFilePath:url.path];
+        itemIdentifier = [AFPItemIdentifier itemIdentifierForLocalFilename:[url.path lastPathComponent]];
     }
     else
     {
