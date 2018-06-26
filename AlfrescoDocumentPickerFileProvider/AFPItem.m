@@ -30,14 +30,33 @@
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) AlfrescoNode *node;
 
-@property (nonatomic, readwrite, copy) NSString *parentItemIdentifier;
 @property (nonatomic, readwrite, copy) NSString *itemIdentifier;
+@property (nonatomic, readwrite, copy) NSString *parentItemIdentifier;
 @property (nonatomic, readwrite, copy) NSString *filename;
-@property (nonatomic, readwrite, getter=isDownloaded) BOOL downloaded;
+@property (nonatomic, readwrite, copy) NSDate *creationDate;
+@property (nonatomic, readwrite, copy) NSDate *contentModificationDate;
+@property (nonatomic, readwrite, copy) NSNumber *documentSize;
+@property (nonatomic, readwrite, copy) NSString *typeIdentifier;
 
 @end
 
 @implementation AFPItem
+
+- (instancetype)initWithRootContainterItem
+{
+    self = [super init];
+    if(!self)
+    {
+        return nil;
+    }
+    
+    self.itemIdentifier = NSFileProviderRootContainerItemIdentifier;
+    self.filename = @"";
+    self.typeIdentifier = @"public.folder";
+    
+    
+    return self;
+}
 
 - (instancetype)initWithUserAccount:(UserAccount *)account
 {
@@ -51,6 +70,7 @@
     self.parentItemIdentifier = NSFileProviderRootContainerItemIdentifier;
     self.itemIdentifier = [AFPItemIdentifier itemIdentifierForSuffix:nil andAccount:account];
     self.filename = self.account.accountDescription;
+    self.typeIdentifier = @"public.folder";
     
     return self;
 }
@@ -63,12 +83,16 @@
         return nil;
     }
     
-    self.parentItemIdentifier = [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil];
-    self.itemIdentifier = [AFPItemIdentifier itemIdentifierForLocalFilePath:path];
+    self.parentItemIdentifier = kFileProviderLocalFilesPrefix;
+    self.itemIdentifier = [AFPItemIdentifier itemIdentifierForLocalFilename:[path lastPathComponent]];
     self.filename = [path lastPathComponent];
-    self.downloaded = YES;
-    
-    
+    NSError *attributesError = nil;
+    NSDictionary *attributes = [[AlfrescoFileManager sharedManager] attributesOfItemAtPath:path error:&attributesError];
+    if(!attributesError)
+    {
+        self.documentSize = attributes[kAlfrescoFileSize];
+    }
+    self.typeIdentifier = (NSString *)CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)CFBridgingRetain([self.filename pathExtension]), NULL));
     
     return self;
 }
@@ -92,6 +116,7 @@
     self.itemIdentifier = itemMetadata.identifier;
     self.filename = itemMetadata.name;
     self.node = itemMetadata.alfrescoNode;
+    [self updateMetadataWithNodeInfo];
     
     return self;
 }
@@ -107,59 +132,56 @@
     self.parentItemIdentifier = parentItemIdentifier;
     self.node = node.alfrescoNode;
     self.filename = node.title;
-    self.downloaded = YES;
     
     NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentItemIdentifier];
     self.itemIdentifier = [AFPItemIdentifier itemIdentifierForSyncNode:node forAccountIdentifier:accountIdentifier];
+    [self updateMetadataWithNodeInfo];
     
     return self;
+}
+
+- (instancetype)initWithImportedDocumentAtURL:(NSURL *)fileURL resourceValues:(NSDictionary *)resourceValues parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier
+{
+    self = [super init];
+    if(!self)
+    {
+        return nil;
+    }
+    
+    self.parentItemIdentifier = parentItemIdentifier;
+    self.filename = resourceValues[NSURLNameKey];
+    self.creationDate = resourceValues[NSURLCreationDateKey];
+    self.contentModificationDate = resourceValues[NSURLContentModificationDateKey];
+    self.typeIdentifier = resourceValues[NSURLTypeIdentifierKey];
+    self.documentSize = resourceValues[NSURLTotalFileSizeKey];
+    self.itemIdentifier = [AFPItemIdentifier itemIdentifierForFilename:self.filename andFileParentIdentifier:parentItemIdentifier];
+    
+    return self;
+}
+
+#pragma mark - Private methods
+- (void)updateMetadataWithNodeInfo
+{
+    if(self.node.isDocument)
+    {
+        AlfrescoDocument *document = (AlfrescoDocument *)self.node;
+        self.documentSize = [NSNumber numberWithLongLong:document.contentLength];
+        self.typeIdentifier = (NSString *)CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)CFBridgingRetain([self.node.name pathExtension]), NULL));
+    }
+    else
+    {
+        self.typeIdentifier = @"public.folder";
+    }
 }
 
 #pragma mark - NSFileProviderItemProtocol
 - (NSFileProviderItemCapabilities)capabilities
 {
-    return NSFileProviderItemCapabilitiesAllowsAll;
-}
-
-- (NSString *)typeIdentifier
-{
-    if(self.node.isDocument || self.parentItemIdentifier == [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil])
+    if(self.node.isDocument || self.parentItemIdentifier == kFileProviderLocalFilesPrefix)
     {
-        NSString *filename = self.node.name;
-        if(!filename)
-        {
-            filename = self.filename;
-        }
-        NSString *UTI = (NSString *)CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)CFBridgingRetain([filename pathExtension]), NULL));
-        return UTI;
+        return NSFileProviderItemCapabilitiesAllowsAll;
     }
-    return @"public.folder";
-}
-
-- (BOOL)isDownloaded
-{
-    return _downloaded;
-}
-
-- (NSNumber *)documentSize
-{
-    NSNumber *size = [NSNumber numberWithLongLong:0];
-    if(self.node.isDocument)
-    {
-        AlfrescoDocument *document = (AlfrescoDocument *)self.node;
-        size = [NSNumber numberWithLongLong:document.contentLength];
-    }
-    else if (self.parentItemIdentifier == [AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil])
-    {
-        NSString *path = [[[AlfrescoFileManager sharedManager] downloadsContentFolderPath] stringByAppendingPathComponent:self.filename];
-        NSError *attributesError = nil;
-        NSDictionary *attributes = [[AlfrescoFileManager sharedManager] attributesOfItemAtPath:path error:&attributesError];
-        if(!attributesError)
-        {
-            size = attributes[kAlfrescoFileSize];
-        }
-    }
-    return size;
+    return NSFileProviderItemCapabilitiesAllowsAll | NSFileProviderItemCapabilitiesAllowsAddingSubItems | NSFileProviderItemCapabilitiesAllowsContentEnumerating;
 }
 
 @end

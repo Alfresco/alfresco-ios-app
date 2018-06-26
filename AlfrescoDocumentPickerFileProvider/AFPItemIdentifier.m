@@ -63,11 +63,19 @@
     return itemIdentifier;
 }
 
-+ (NSFileProviderItemIdentifier)itemIdentifierForLocalFilePath:(NSString *)filePath
++ (NSFileProviderItemIdentifier)itemIdentifierForLocalFilename:(NSString *)filename
 {
-    NSString *filename = [filePath lastPathComponent];
     NSString *itemIdentifier = [NSString stringWithFormat:@"%@.%@", kFileProviderLocalFilesPrefix, filename];
     return itemIdentifier;
+}
+
++ (NSFileProviderItemIdentifier)itemIdentifierForFilename:(NSString *)filename andFileParentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier
+{
+    if ([AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier] == AlfrescoFileProviderItemIdentifierTypeLocalFiles)
+    {
+        return [AFPItemIdentifier itemIdentifierForLocalFilename:filename];
+    }
+    return nil;
 }
 
 + (AlfrescoFileProviderItemIdentifierType)itemIdentifierTypeForIdentifier:(NSString *)identifier
@@ -77,7 +85,7 @@
     {
         return AlfrescoFileProviderItemIdentifierTypeAccount;
     }
-    else if(components.count > 1 && [components[0] isEqualToString:kFileProviderLocalFilesPrefix])
+    else if(components.count >= 1 && [components[0] isEqualToString:kFileProviderLocalFilesPrefix])
     {
         if(components.count == 1)
         {
