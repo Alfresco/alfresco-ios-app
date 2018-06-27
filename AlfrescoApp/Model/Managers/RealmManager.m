@@ -151,22 +151,24 @@
 - (RLMRealmConfiguration *)configForName:(NSString *)name
 {
     RLMRealmConfiguration *config = [RLMRealmConfiguration defaultConfiguration];
-
-    NSString *configFilePath = nil;
-    BOOL isContentMigrationNeeded = [[RealmSyncManager sharedManager] isContentMigrationNeeded];
-    
-    if (isContentMigrationNeeded)
+    if(name.length)
     {
-        // Use the default directory, but replace the filename with the accountId
-        configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+        NSString *configFilePath = nil;
+        BOOL isContentMigrationNeeded = [[RealmSyncManager sharedManager] isContentMigrationNeeded];
+        
+        if (isContentMigrationNeeded)
+        {
+            // Use the default directory, but replace the filename with the accountId
+            configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+        }
+        else
+        {
+            NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+            configFilePath = [[sharedAppGroupFolderURL.path stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+        }
+        
+        config.fileURL = [NSURL URLWithString:configFilePath];
     }
-    else
-    {
-        NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
-        configFilePath = [[sharedAppGroupFolderURL.path stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
-    }
-    
-    config.fileURL = [NSURL URLWithString:configFilePath];
     
     return config;
 }
