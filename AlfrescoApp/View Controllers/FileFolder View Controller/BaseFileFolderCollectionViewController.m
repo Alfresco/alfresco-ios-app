@@ -139,27 +139,22 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
+{    
     self.searchResults = nil;
     self.isOnSearchResults = NO;
     [self reloadCollectionView];
 }
 
-- (void)didPresentSearchController:(UISearchController *)searchController
-{
-    self.collectionViewTopConstraint.constant = 20;
-    [self.view layoutIfNeeded];
-}
-
-- (void)didDismissSearchController:(UISearchController *)searchController
-{
-    self.collectionViewTopConstraint.constant = 0;
-    [self.view layoutIfNeeded];
-}
-
-- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
-{
-    
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [searchController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+            searchController.searchBar.alpha = .0f;
+            [self.collectionView setContentOffset:CGPointMake(0, kCollectionViewHeaderHight)
+                                         animated:YES];
+        } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+            searchController.searchBar.alpha = 1.0f;
+        }];
+    });
 }
 
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
