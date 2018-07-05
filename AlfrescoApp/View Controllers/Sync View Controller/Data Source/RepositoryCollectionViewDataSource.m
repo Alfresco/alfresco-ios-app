@@ -239,20 +239,19 @@
     if (kind == UICollectionElementKindSectionHeader)
     {
         SearchCollectionSectionHeader *headerView = (SearchCollectionSectionHeader *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader" forIndexPath:indexPath];
-        
+
         if(!headerView.hasAddedSearchBar)
         {
             UISearchBar *searchBar = [self.delegate searchBarForSupplimentaryHeaderView];
             headerView.searchBar = searchBar;
             [headerView addSubview:searchBar];
             [searchBar sizeToFit];
-            BaseCollectionViewFlowLayout *collectionViewLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
-            searchBar.frame = CGRectMake(searchBar.frame.origin.x, searchBar.frame.origin.y, searchBar.frame.size.width, collectionViewLayout.headerReferenceSize.height);
+            headerView.hasAddedSearchBar = YES;
         }
-        
+
         reusableview = headerView;
     }
-    
+
     return reusableview;
 }
 

@@ -237,11 +237,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     [super viewDidLoad];
     
-    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
-    {
-        self.edgesForExtendedLayout = UIRectEdgeLeft | UIRectEdgeBottom | UIRectEdgeRight;
-    }
-    
     self.navigationController.navigationBar.translucent = NO;
     
     UINib *nodeCellNib = [UINib nibWithNibName:NSStringFromClass([FileFolderCollectionViewCell class]) bundle:nil];
@@ -298,9 +293,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     {
         if(self.shouldIncludeSearchBar)
         {
-            // hide search bar initially
-            self.collectionView.contentSize = CGSizeMake(self.collectionView.contentSize.width, self.collectionView.bounds.size.height - self.collectionView.contentInset.bottom - self.collectionView.contentInset.top + kCollectionViewHeaderHight);
-            self.collectionView.contentOffset = CGPointMake(0., kCollectionViewHeaderHight);
+            __weak typeof(self) weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                __strong typeof(self) strongSelf = weakSelf;
+                strongSelf.collectionView.contentOffset = CGPointMake(0, kCollectionViewHeaderHight);
+            });
         }
     }
     
@@ -360,7 +357,6 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     }
     
     [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
-    
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
