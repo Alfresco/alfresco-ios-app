@@ -291,7 +291,8 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (!IS_IPAD)
     {
-        if(self.shouldIncludeSearchBar)
+        if(self.shouldIncludeSearchBar &&
+           !self.isOnSearchResults)
         {
             __weak typeof(self) weakSelf = self;
             dispatch_async(dispatch_get_main_queue(), ^{
