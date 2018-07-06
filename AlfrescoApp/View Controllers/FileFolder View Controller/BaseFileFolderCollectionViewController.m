@@ -157,6 +157,11 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     });
 }
 
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    // No customization available for this class
+}
+
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     [searchBar enableReturnKeyForPastedText:text range:range];
