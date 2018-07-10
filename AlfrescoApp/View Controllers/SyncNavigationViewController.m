@@ -29,10 +29,21 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
 @property (nonatomic, assign) unsigned long long syncedSize;
 @property (nonatomic, strong) ProgressView *progressView;
 @property (nonatomic, assign) BOOL isProgressViewShowing;
+@property (nonatomic, strong) NSLock *lock;
 
 @end
 
 @implementation SyncNavigationViewController
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil
+                           bundle:nibBundleOrNil];
+    if (self) {
+        _lock = [NSLock new];
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -134,6 +145,10 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
     
     if (!self.isProgressViewShowing)
     {
+        [self.lock lock];
+        self.isProgressViewShowing = YES;
+        [self.lock unlock];
+        
         CGRect navFrame = self.view.bounds;
         CGRect progressViewFrame = self.progressView.frame;
         progressViewFrame.origin.y = navFrame.size.height - progressViewFrame.size.height;
@@ -142,7 +157,6 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
             self.progressView.frame = progressViewFrame;
         }];
         
-        self.isProgressViewShowing = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:self];
     }
 }
@@ -153,19 +167,27 @@ static CGFloat const kProgressViewAnimationDuration = 0.2f;
     self.syncedSize = 0;
     self.progressView.progressBar.progress = 0.0f;
     
+    [self.lock lock];
+    
     if (self.isProgressViewShowing)
     {
+        self.isProgressViewShowing = NO;
+        
         CGRect navFrame = self.view.bounds;
         CGRect progressViewFrame = self.progressView.frame;
         progressViewFrame.origin.y = navFrame.size.height;
         
-        [UIView animateWithDuration:kProgressViewAnimationDuration animations:^{
-            self.progressView.frame = progressViewFrame;
-        }];
+        [UIView animateWithDuration:kProgressViewAnimationDuration
+                         animations:
+         ^{
+             self.progressView.frame = progressViewFrame;
+         }];
         
-        self.isProgressViewShowing = NO;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSyncProgressViewVisiblityChangeNotification
+                                                            object:self];
     }
+    
+    [self.lock unlock];
 }
 
 - (void)updateProgressDetails
