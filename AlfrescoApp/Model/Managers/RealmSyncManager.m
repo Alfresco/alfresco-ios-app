@@ -1181,7 +1181,8 @@
 - (void)checkNode:(NSArray *)nodes forSizeAndDisplayAlertIfNeededWithProceedBlock:(void (^)(BOOL))proceedBlock
 {
     unsigned long long totalDownloadSize = [self totalSizeForDocuments:nodes];
-    if(totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
+    if([[ConnectivityManager sharedManager] isOnCellular] &&
+       totalDownloadSize > kDefaultMaximumAllowedDownloadSize)
     {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"sync.downloadsize.prompt.title", @"sync download size exceeded max alert title")
                                                                                  message:[NSString stringWithFormat:NSLocalizedString(@"sync.downloadsize.prompt.message", @"Sync download size"), stringForLongFileSize(totalDownloadSize)]
