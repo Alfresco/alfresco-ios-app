@@ -159,6 +159,15 @@
     return self;
 }
 
+- (NSURL *)fileURL
+{
+    // in this implementation, all paths are structured as <base storage directory>/<item identifier>/<item file name>
+    NSFileProviderManager *manager = [NSFileProviderManager defaultManager];
+    NSURL *perItemDirectory = [manager.documentStorageURL URLByAppendingPathComponent:self.itemIdentifier isDirectory:YES];
+    NSURL *fileURL = [perItemDirectory URLByAppendingPathComponent:self.filename isDirectory:NO];
+    return fileURL;
+}
+
 #pragma mark - Private methods
 - (void)updateMetadataWithNodeInfo
 {

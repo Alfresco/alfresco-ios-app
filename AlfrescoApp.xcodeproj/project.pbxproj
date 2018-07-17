@@ -245,6 +245,7 @@
 		2B1A050C1BB2E4CE00EE4AAE /* SiteMembersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */; };
 		2B1BC7A01F6044BE003B8790 /* AFPItemIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1BC79F1F6044BE003B8790 /* AFPItemIdentifier.m */; };
 		2B1BC7A11F6044BE003B8790 /* AFPItemIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1BC79F1F6044BE003B8790 /* AFPItemIdentifier.m */; };
+		2B1FEF4F20F4EA61004CA901 /* AFPFileService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1FEF4E20F4EA61004CA901 /* AFPFileService.m */; };
 		2B2472011C11C7DC00153247 /* noAccountsConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B2472001C11C7DC00153247 /* noAccountsConfiguration.json */; };
 		2B2609911B4AD2C100F2F26B /* dots-A.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098D1B4AD2C100F2F26B /* dots-A.png */; };
 		2B2609921B4AD2C100F2F26B /* dots-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */; };
@@ -1262,6 +1263,8 @@
 		2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteMembersViewController.xib; sourceTree = "<group>"; };
 		2B1BC79E1F6044BE003B8790 /* AFPItemIdentifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPItemIdentifier.h; sourceTree = "<group>"; };
 		2B1BC79F1F6044BE003B8790 /* AFPItemIdentifier.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPItemIdentifier.m; sourceTree = "<group>"; };
+		2B1FEF4D20F4EA61004CA901 /* AFPFileService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPFileService.h; sourceTree = "<group>"; };
+		2B1FEF4E20F4EA61004CA901 /* AFPFileService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPFileService.m; sourceTree = "<group>"; };
 		2B2472001C11C7DC00153247 /* noAccountsConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = noAccountsConfiguration.json; sourceTree = "<group>"; };
 		2B26098D1B4AD2C100F2F26B /* dots-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A.png"; sourceTree = "<group>"; };
 		2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A@2x.png"; sourceTree = "<group>"; };
@@ -2860,6 +2863,8 @@
 				2BF0C7FA1F6A74C4001268FA /* AFPAccountManager.m */,
 				2B379BFE204FEF6A00DA4420 /* AFPPage.h */,
 				2B379BFF204FEF6A00DA4420 /* AFPPage.m */,
+				2B1FEF4D20F4EA61004CA901 /* AFPFileService.h */,
+				2B1FEF4E20F4EA61004CA901 /* AFPFileService.m */,
 			);
 			path = AlfrescoDocumentPickerFileProvider;
 			sourceTree = "<group>";
@@ -5191,6 +5196,7 @@
 				2B62DC0E2046DABF00BEE35F /* AFPAccountEnumerator.m in Sources */,
 				734B87651A9F7A0F0093E702 /* Utilities.m in Sources */,
 				2BB913041F58671200AA7E56 /* AFPItemMetadata.m in Sources */,
+				2B1FEF4F20F4EA61004CA901 /* AFPFileService.m in Sources */,
 				73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */,
 				73CD5B101A729544000A5523 /* SharedConstants.m in Sources */,
 				2BA1AB771F558C010011BE07 /* AFPConstants.m in Sources */,

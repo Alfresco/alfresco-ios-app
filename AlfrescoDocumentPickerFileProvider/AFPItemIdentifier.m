@@ -147,7 +147,14 @@
         }
         else if ([components[2] isEqualToString:kFileProviderIdentifierComponentSync])
         {
-            return AlfrescoFileProviderItemIdentifierTypeSyncNode;
+            if([components[3] isEqualToString:kFileProviderIdentifierComponentFolder])
+            {
+                return AlfrescoFileProviderItemIdentifierTypeSyncFolder;
+            }
+            else
+            {
+                return AlfrescoFileProviderItemIdentifierTypeSyncDocument;
+            }
         }
     }
     

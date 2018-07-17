@@ -67,7 +67,7 @@
                 break;
             }
             case AlfrescoFileProviderItemIdentifierTypeSynced:
-            case AlfrescoFileProviderItemIdentifierTypeSyncNode:
+            case AlfrescoFileProviderItemIdentifierTypeSyncFolder:
             {
                 enumerator = [[AFPSyncEnumerator alloc] initWithItemIdentifier:itemIdentifier];
                 break;
