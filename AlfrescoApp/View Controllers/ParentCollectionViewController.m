@@ -119,11 +119,6 @@
 - (void)reloadCollectionView
 {
     [self.collectionView reloadData];
-    if ((!IS_IPAD) && (self.shouldIncludeSearchBar))
-    {
-        // hide search bar initially
-        self.collectionView.contentOffset = CGPointMake(0., kCollectionViewHeaderHight);
-    }
     [self updateEmptyView];
 }
 
@@ -236,7 +231,8 @@
         refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
         [refreshControl addTarget:self action:@selector(refreshCollectionView:) forControlEvents:UIControlEventValueChanged];
         self.refreshControl = refreshControl;
-        [self.collectionView addSubview:refreshControl];
+        self.collectionView.alwaysBounceVertical = YES;
+        self.collectionView.refreshControl = refreshControl;
     }
 }
 
