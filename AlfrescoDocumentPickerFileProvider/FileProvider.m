@@ -22,7 +22,6 @@
 #import "FileMetadata.h"
 #import "SharedConstants.h"
 #import "AlfrescoFileManager+Extensions.h"
-//#import "NSFileManager+Extension.h"
 #import "Utilities.h"
 
 #import "AFPItem.h"

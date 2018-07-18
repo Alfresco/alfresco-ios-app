@@ -50,7 +50,6 @@
                                     if(itemType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
                                     {
                                         //update sync db with the new item and delete the entry in the file provider db
-                                        [[AFPDataManager sharedManager] didUploadDocument:document fromFilePath:contentFile.fileUrl.path toSyncedFolder:(AlfrescoFolder *)node withFolderItemIdentifier:itemIdentifier];
                                     }
                                 }
                             } progressBlock:nil];

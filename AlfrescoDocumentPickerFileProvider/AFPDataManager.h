@@ -17,10 +17,8 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import <Realm/Realm.h>
 #import "AFPItemMetadata.h"
-#import "RealmSyncNodeInfo.h"
-#import "RealmSyncError.h"
+#import "RealmSyncCore.h"
 #import "AFPItem.h"
 @class UserAccount;
 
@@ -28,7 +26,6 @@
 
 + (instancetype)sharedManager;
 - (RLMRealm *)realm;
-- (RLMRealm *)realmForSyncWithAccountIdentifier:(NSString *)accountIdentifier;
 
 - (void)saveLocalFilesItem;
 - (void)saveMenuItem:(NSString *)menuItemIdentifierSuffix displayName:(NSString *)displayName forAccount:(UserAccount *)account;
@@ -43,12 +40,10 @@
 - (RLMResults<AFPItemMetadata *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier;
 - (id)dbItemForIdentifier:(NSFileProviderItemIdentifier)identifier;
 
-- (RLMResults<RealmSyncNodeInfo *> *)syncItemsInNodeWithId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
 - (NSFileProviderItemIdentifier)parentItemIdentifierOfSyncedNode:(RealmSyncNodeInfo *)syncedNode fromAccountIdentifier:(NSString *)accountIdentifier;
 - (NSFileProviderItemIdentifier)itemIdentifierOfSyncedNodeWithURL:(NSURL *)syncedNodeURL;
+- (RLMResults<RealmSyncNodeInfo *> *)syncItemsInParentNodeWithSyncId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
 - (RealmSyncNodeInfo *)syncItemForId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
-- (RealmSyncNodeInfo *)syncItemForId:(NSString *)identifier inRealm:(RLMRealm *)realm;
 - (void)updateSyncDocumentWithId:(NSString *)identifier fromAccountIdentifier:(NSString *)accountIdentifier withAlfrescoNode:(AlfrescoDocument *)document;
-- (void)didUploadDocument:(AlfrescoDocument *)alfDocument fromFilePath:(NSString *)tempFilePath toSyncedFolder:(AlfrescoFolder *)folder withFolderItemIdentifier:(NSFileProviderItemIdentifier)folderItemIdentifier;
 
 @end

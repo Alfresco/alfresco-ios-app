@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -17,7 +17,7 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import <Realm/Realm.h>
+#import "RealmSyncCore.h"
 #import "SyncConstants.h"
 #import "SyncNodeStatus.h"
 #import "RealmManager.h"
@@ -67,8 +67,6 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 - (void)retrySyncForDocument:(AlfrescoDocument *)document completionBlock:(void (^)(void))completionBlock;
 - (void)cancelSyncForDocumentWithIdentifier:(NSString *)documentIdentifier completionBlock:(void (^)(void))completionBlock;
 - (void)uploadDocument:(AlfrescoDocument *)document withCompletionBlock:(void (^)(BOOL completed))completionBlock;
-- (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)tempPath toFolder:(AlfrescoFolder *)folder;
-- (void)didUploadNewVersionForDocument:(AlfrescoDocument *)document updatedDocument:(AlfrescoDocument *)updatedDocument fromPath:(NSString *)path;
 - (void)addNodeToSync:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)unsyncNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;
 - (void)removeNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock;

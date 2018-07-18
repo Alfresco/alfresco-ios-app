@@ -44,3 +44,7 @@ NSString * const kShouldResetEntireAppKey = @"ShouldResetEntireApp";
 NSString * const kIsAppFirstLaunch = @"IsAppFirstLaunch";
 
 NSString * const kHasSyncedContentMigrationOccurred = @"hasSyncedContentMigrationOccurred";
+
+// Realm sync exceptions
+NSString * const kFailedToCreateRealmDatabase = @"FailedToCreateRealmDatabase";
+NSString * const kRealmSyncErrorKey = @"RealmSyncErrorKey";

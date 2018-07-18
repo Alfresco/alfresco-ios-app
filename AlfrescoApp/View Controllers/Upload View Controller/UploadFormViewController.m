@@ -24,6 +24,7 @@
 #import "UniversalDevice.h"
 #import "LocationManager.h"
 #import "RealmSyncManager.h"
+#import "AccountManager.h"
 
 NS_ENUM(NSUInteger, UploadFormCellTypes)
 {
@@ -686,7 +687,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
                                                          metricValue:@(document.contentLength)
              ];
             
-            [[RealmSyncManager sharedManager] didUploadNode:document fromPath:weakSelf.contentFile.fileUrl.absoluteURL.path toFolder:weakSelf.uploadToFolder];
+            [[RealmSyncCore sharedSyncCore] didUploadNode:document fromPath:weakSelf.contentFile.fileUrl.absoluteURL.path toFolder:weakSelf.uploadToFolder forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
             
             NSError *deleteAfterUploadError = nil;
             [[AlfrescoFileManager sharedManager] removeItemAtPath:weakSelf.contentFile.fileUrl.absoluteURL.path error:&deleteAfterUploadError];
@@ -804,7 +805,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
                                                             customMetric:AnalyticsMetricFileSize
                                                              metricValue:@(document.contentLength)];
                 
-                [[RealmSyncManager sharedManager] didUploadNode:document fromPath:pathToTempFile toFolder:weakSelf.uploadToFolder];
+                [[RealmSyncCore sharedSyncCore] didUploadNode:document fromPath:pathToTempFile toFolder:weakSelf.uploadToFolder forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
                 
                 NSError *deleteAfterUploadError = nil;
                 [[AlfrescoFileManager sharedManager] removeItemAtPath:pathToTempFile error:&deleteAfterUploadError];

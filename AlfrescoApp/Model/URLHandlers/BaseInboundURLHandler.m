@@ -18,7 +18,7 @@
  
 #import "BaseInboundURLHandler.h"
 #import "DownloadManager.h"
-
+#import "AccountManager.h"
 #import "RealmSyncManager.h"
 
 @interface BaseInboundURLHandler () <NSFileManagerDelegate>
@@ -193,7 +193,7 @@
                 [progressHUD hideAnimated:YES];
                 [creationInputStream close];
                 
-                [[RealmSyncManager sharedManager] didUploadNode:createdDocument fromPath:filePath toFolder:folder];
+                [[RealmSyncCore sharedSyncCore] didUploadNode:createdDocument fromPath:filePath toFolder:folder forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
                 [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:nil];
 
                 [selectionController dismissViewControllerAnimated:YES completion:^{

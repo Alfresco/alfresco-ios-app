@@ -23,6 +23,7 @@
 #import "ThumbnailManager.h"
 #import "FavouriteManager.h"
 #import "RealmSyncManager.h"
+#import "AccountManager.h"
 
 @implementation RepositoryCollectionViewDataSource
 
@@ -135,7 +136,7 @@
     [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if (permissions)
         {
-            [self.nodesPermissions setValue:permissions forKey:[node syncIdentifier]];
+            [self.nodesPermissions setValue:permissions forKey:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
             [[RealmManager sharedManager] savePermissions:permissions forNode:node];
         }
     }];
@@ -365,7 +366,7 @@
             {
                 [self retrievePermissionsForNode:folder];
                 [self addAlfrescoNodes:@[folder]];
-                [[RealmSyncManager sharedManager] didUploadNode:folder fromPath:nil toFolder:(AlfrescoFolder *)self.parentNode];
+                [[RealmSyncCore sharedSyncCore] didUploadNode:folder fromPath:nil toFolder:(AlfrescoFolder *)self.parentNode forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
                 
                 [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
                                                                   action:kAnalyticsEventActionCreate
@@ -392,7 +393,7 @@
     AlfrescoPermissions *permissions = nil;
     if(node)
     {
-        NSString *nodeIdentifier = [node syncIdentifier];
+        NSString *nodeIdentifier = [[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node];
         permissions = self.nodesPermissions[nodeIdentifier];
     }
     
@@ -414,7 +415,7 @@
     NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
     for (AlfrescoNode *node in alfrescoNodes)
     {
-        AlfrescoPermissions *nodePermissions = self.nodesPermissions[[node syncIdentifier]];
+        AlfrescoPermissions *nodePermissions = self.nodesPermissions[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
         if(!nodePermissions)
         {
             [self retrievePermissionsForNode:node];

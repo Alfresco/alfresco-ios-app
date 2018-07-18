@@ -40,6 +40,7 @@
 #import "UnderlayViewController.h"
 #import "RealmSyncManager+CoreDataMigration.h"
 #import <HockeySDK/HockeySDK.h>
+#import "RealmSyncCore.h"
 
 @import MediaPlayer;
 
@@ -138,9 +139,9 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         [[RealmSyncManager sharedManager] initiateMigrationProcess];
     }
     
-    if ([[RealmSyncManager sharedManager] isContentMigrationNeeded])
+    if ([[RealmSyncCore sharedSyncCore] isContentMigrationNeeded])
     {
-        [[RealmSyncManager sharedManager] initiateContentMigrationProcess];
+        [[RealmSyncCore sharedSyncCore] initiateContentMigrationProcessForAccounts:[AccountManager sharedManager].allAccounts];
     }
 
     // Setup the app and build it's UI

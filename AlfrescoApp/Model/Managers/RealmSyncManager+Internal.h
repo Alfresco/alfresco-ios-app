@@ -29,7 +29,6 @@
 @property (nonatomic, strong) NSMutableDictionary *syncQueues;
 @property (nonatomic, strong) NSMutableDictionary *syncNodesInfo;
 @property (nonatomic, strong) NSDictionary *syncObstacles;
-@property (nonatomic, strong) RealmManager *realmManager;
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
 
@@ -42,7 +41,5 @@
 @property (atomic, strong) NSMutableDictionary *unsyncCompletionBlocks;
 
 - (SyncOperationQueue *)currentOperationQueue;
-
-- (NSString *)syncContentDirectoryPathForAccountWithId:(NSString *)accountId;
 
 @end

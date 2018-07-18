@@ -24,7 +24,4 @@
 - (BOOL)isCoreDataMigrationNeeded;
 - (BOOL)shouldShowSyncInfoPanel;
 
-- (void)initiateContentMigrationProcess;
-- (BOOL)isContentMigrationNeeded;
-
 @end
