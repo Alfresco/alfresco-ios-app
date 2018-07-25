@@ -24,6 +24,7 @@
 #import "AlfrescoFileManager+Extensions.h"
 #import "NSFileManager+Extension.h"
 #import "Utilities.h"
+#import "KeychainUtils.h"
 
 #import "AFPItem.h"
 #import "AFPItemIdentifier.h"
@@ -586,19 +587,89 @@
     return itemIdentifier;
 }
 
+#pragma mark - PIN authentication handling
+
+- (BOOL)isPINAuthenticationSet {
+    NSError *error = nil;
+    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                                error:&error];
+    
+    BOOL isPINSet = NO;
+    
+    if (error && error.code != errSecItemNotFound)
+    {
+        AlfrescoLogError(@"Error retrieving PIN key from keychain. Reason: %@", error.localizedDescription);
+    } else
+    {
+        isPINSet = pin.length ? YES : NO;
+    }
+    
+    return isPINSet;
+}
+
+- (NSError *)authenticationError
+{
+    NSError *error = nil;
+    if (@available(iOS 11.0, *))
+    {
+        error = [NSError errorWithDomain:NSFileProviderErrorDomain
+                                        code:NSFileProviderErrorNotAuthenticated
+                                    userInfo:nil];
+    }
+    
+    return error;
+}
+
+- (NSError *)unsupportedError {
+    NSError *error = nil;
+    if (@available(iOS 11.0, *))
+    {
+        error = [NSError errorWithDomain:NSCocoaErrorDomain
+                                    code:NSFeatureUnsupportedError
+                                userInfo:nil];
+    }
+    
+    return error;
+}
+
 #pragma mark - Enumeration
 
-- (nullable id<NSFileProviderEnumerator>)enumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier error:(NSError **)error
+- (nullable id<NSFileProviderEnumerator>)enumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier
+                                                                        error:(NSError **)error
 {
     id<NSFileProviderEnumerator> enumerator = nil;
-    if ([containerItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
-    {
-        // TODO: instantiate an enumerator for the working set
+    NSError *errorToReturn = nil;
+    
+    if (@available(iOS 11.0, *)) {
+        if ([containerItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
+        {
+            // TODO: instantiate an enumerator for the working set
+        }
+        else
+        {
+            if ([containerItemIdentifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
+            {
+                if ([self isPINAuthenticationSet])
+                {
+                    errorToReturn = [self authenticationError];
+                }
+            }
+            
+            if (!errorToReturn) {
+                enumerator = [self.enumeratorBuilder enumeratorForItemIdentifier:containerItemIdentifier];
+                
+                if (!enumerator) {
+                    errorToReturn = [self unsupportedError];
+                }
+            }
+        }
     }
     else
     {
-        enumerator = [self.enumeratorBuilder enumeratorForItemIdentifier:containerItemIdentifier];
+        // Fallback on earlier versions
     }
+    
+    *error = errorToReturn;
     
     return enumerator;
 }
