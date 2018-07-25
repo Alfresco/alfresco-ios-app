@@ -769,6 +769,24 @@
     return documentsToUpload;
 }
 
+- (void)didUploadNode:(AlfrescoNode *)node fromPath:(NSString *)path toFolder:(AlfrescoFolder *)folder
+{
+    [[RealmSyncCore sharedSyncCore] didUploadNode:node fromPath:path toFolder:folder forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    SyncOperationQueue *syncOpQ = [self currentOperationQueue];
+    SyncNodeStatus *nodeStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
+    RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+    RealmSyncNodeInfo *syncNode = [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
+    if(syncNode.syncError && node.isDocument)
+    {
+        nodeStatus.status = SyncStatusFailed;
+    }
+    else
+    {
+        nodeStatus.status = SyncStatusSuccessful;
+        nodeStatus.activityType = SyncActivityTypeIdle;
+    }
+}
+
 #pragma mark - Sync node information
 - (BOOL)isNodeModifiedSinceLastDownload:(AlfrescoNode *)node inRealm:(RLMRealm *)realm
 {

@@ -366,7 +366,7 @@
             {
                 [self retrievePermissionsForNode:folder];
                 [self addAlfrescoNodes:@[folder]];
-                [[RealmSyncCore sharedSyncCore] didUploadNode:folder fromPath:nil toFolder:(AlfrescoFolder *)self.parentNode forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+                [[RealmSyncManager sharedManager] didUploadNode:folder fromPath:nil toFolder:(AlfrescoFolder *)self.parentNode];
                 
                 [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
                                                                   action:kAnalyticsEventActionCreate

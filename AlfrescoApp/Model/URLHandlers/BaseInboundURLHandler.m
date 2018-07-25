@@ -193,7 +193,7 @@
                 [progressHUD hideAnimated:YES];
                 [creationInputStream close];
                 
-                [[RealmSyncCore sharedSyncCore] didUploadNode:createdDocument fromPath:filePath toFolder:folder forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+                [[RealmSyncManager sharedManager] didUploadNode:createdDocument fromPath:filePath toFolder:folder];
                 [[AlfrescoFileManager sharedManager] removeItemAtPath:filePath error:nil];
 
                 [selectionController dismissViewControllerAnimated:YES completion:^{

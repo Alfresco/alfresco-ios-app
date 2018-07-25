@@ -263,10 +263,7 @@
         syncNodeInfo.parentNode = parentSyncNodeInfo;
         syncNodeInfo.isTopLevelSyncNode = NO;
         [realm commitWriteTransaction];
-        
-//        SyncOperationQueue *syncOpQ = [self currentOperationQueue];
-//        SyncNodeStatus *nodeStatus = [syncOpQ syncNodeStatusObjectForNodeWithId:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
-        
+            
         if(node.isDocument)
         {
             NSString *syncContentPath = [[self syncContentDirectoryPathForAccountWithId:accountIdentifier] stringByAppendingPathComponent:syncNameForNode];
@@ -275,9 +272,7 @@
             [[AlfrescoFileManager sharedManager] copyItemAtPath:tempPath toPath:syncContentPath error:&movingFileError];
             
             if(movingFileError)
-            {
-//                nodeStatus.status = SyncStatusFailed;
-                
+            {                
                 RealmSyncError *syncError = [self errorObjectForNode:node ifNotExistsCreateNew:YES inRealm:realm];
                 [realm beginWriteTransaction];
                 syncError.errorCode = movingFileError.code;
@@ -290,8 +285,6 @@
             else
             {
                 [self updateSyncNodeInfoForNodeWithSyncId:nil alfrescoNode:node lastDownloadedDate:[NSDate date] syncContentPath:syncNameForNode inRealm:realm];
-//                nodeStatus.status = SyncStatusSuccessful;
-//                nodeStatus.activityType = SyncActivityTypeIdle;
                 [realm beginWriteTransaction];
                 syncNodeInfo.reloadContent = NO;
                 [realm commitWriteTransaction];
@@ -300,8 +293,6 @@
         else if (node.isFolder)
         {
             [self updateSyncNodeInfoForNodeWithSyncId:nil alfrescoNode:node lastDownloadedDate:nil syncContentPath:nil inRealm:realm];
-//            nodeStatus.status = SyncStatusSuccessful;
-//            nodeStatus.activityType = SyncActivityTypeIdle;
         }
     }
 }
