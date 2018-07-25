@@ -28,52 +28,71 @@
 {
     NSString *itemIdentifier = item.identifier;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        __block BOOL networkOperationCallbackComplete = NO;
-        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
         
-        [[AFPAccountManager sharedManager] getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
-            if(session)
-            {
-                AFPItemMetadata *itemMetadata = (AFPItemMetadata *)[[AFPDataManager sharedManager] dbItemForIdentifier:itemIdentifier];
-                if(itemMetadata.parentIdentifier.length)
+        @autoreleasepool{
+            __block BOOL networkOperationCallbackComplete = NO;
+            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
+            
+            [[AFPAccountManager sharedManager] getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+                if(session)
                 {
-                    NSString *nodeIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemMetadata.parentIdentifier];
-                    AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-                    [docService retrieveNodeWithIdentifier:nodeIdentifier completionBlock:^(AlfrescoNode *node, NSError *error) {
-                        if(node)
-                        {
-                            AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:itemMetadata.fileURL];
-                            [docService createDocumentWithName:itemMetadata.name inParentFolder:(AlfrescoFolder *)node contentFile:contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                                if(document)
-                                {
-                                    AlfrescoFileProviderItemIdentifierType itemType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
-                                    if(itemType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+                    AFPItemMetadata *itemMetadata = (AFPItemMetadata *)[[AFPDataManager sharedManager] metadataItemForIdentifier:itemIdentifier];
+                    if(itemMetadata.parentIdentifier.length)
+                    {
+                        NSString *nodeIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemMetadata.parentIdentifier];
+                        AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+                        [docService retrieveNodeWithIdentifier:nodeIdentifier completionBlock:^(AlfrescoNode *node, NSError *error) {
+                            if(node)
+                            {
+                                AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:[NSURL fileURLWithPath:itemMetadata.filePath]];
+                                [docService createDocumentWithName:itemMetadata.name inParentFolder:(AlfrescoFolder *)node contentFile:contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                                    if(document)
                                     {
-                                        //update sync db with the new item and delete the entry in the file provider db
+                                        AlfrescoFileProviderItemIdentifierType itemType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
+                                        if(itemType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+                                        {
+                                            [[RealmSyncCore sharedSyncCore] didUploadNode:document fromPath:contentFile.fileUrl.path toFolder:(AlfrescoFolder *)node forAccountIdentifier:accountIdentifier];
+                                            [[AlfrescoFileManager sharedManager] removeItemAtURL:[contentFile.fileUrl URLByDeletingLastPathComponent] error:nil];
+                                            [[AFPDataManager sharedManager] removeItemMetadataForIdentifier:item.identifier];
+                                        }
                                     }
-                                }
-                            } progressBlock:nil];
-                        }
-                        else if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
-                        {
-                            // copy to local files as parent node was not found on server
-                            [self saveToLocalFilesDocumentAtURL:itemMetadata.fileURL];
-                        }
-                    }];
+                                    else
+                                    {
+                                        NSLog(@"==== this is error %@", error);
+                                    }
+                                    networkOperationCallbackComplete = YES;
+                                } progressBlock:nil];
+                            }
+                            else if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
+                            {
+                                // copy to local files as parent node was not found on server
+                                [self saveToLocalFilesDocumentAtURL:[NSURL fileURLWithPath:itemMetadata.filePath]];
+                                networkOperationCallbackComplete = YES;
+                            }
+                        }];
+                    }
+                    else
+                    {
+                        networkOperationCallbackComplete = YES;
+                    }
                 }
+                else
+                {
+                    networkOperationCallbackComplete = YES;
+                }
+            }];
+            
+            /*
+             * Keep this object around long enough for the network operations to complete.
+             * Running as a background thread, seperate from the UI, so should not cause
+             * Any issues when blocking the thread.
+             */
+            do
+            {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
             }
-        }];
-        
-        /*
-         * Keep this object around long enough for the network operations to complete.
-         * Running as a background thread, seperate from the UI, so should not cause
-         * Any issues when blocking the thread.
-         */
-        do
-        {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            while (networkOperationCallbackComplete == NO);
         }
-        while (networkOperationCallbackComplete == NO);
 
     });
 }

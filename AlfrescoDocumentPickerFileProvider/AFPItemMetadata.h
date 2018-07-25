@@ -29,7 +29,7 @@
 @property (nonatomic) BOOL downloaded;
 
 @property (nonatomic) BOOL needsUpload;
-@property (nonatomic, strong) NSURL *fileURL;
+@property (nonatomic, strong) NSString *filePath;
 // parentIdentifier is used for cases when a parentFolder metadata item is not available (ex: sync)
 @property (nonatomic, strong) NSString *parentIdentifier;
 

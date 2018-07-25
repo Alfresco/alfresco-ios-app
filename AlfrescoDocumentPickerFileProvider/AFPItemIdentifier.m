@@ -75,6 +75,12 @@
     {
         return [AFPItemIdentifier itemIdentifierForLocalFilename:filename];
     }
+    else if([AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier] == AlfrescoFileProviderItemIdentifierTypeSyncFolder)
+    {
+        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentIdentifier];
+        NSString *syncNodePathString = [NSString stringWithFormat:@"%@.%@", kFileProviderIdentifierComponentSync, kFileProviderIdentifierComponentNewDocument];
+        return [AFPItemIdentifier itemIdentifierForIdentifier:filename typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
+    }
     return nil;
 }
 
@@ -150,6 +156,10 @@
             if([components[3] isEqualToString:kFileProviderIdentifierComponentFolder])
             {
                 return AlfrescoFileProviderItemIdentifierTypeSyncFolder;
+            }
+            else if([components[3] isEqualToString:kFileProviderIdentifierComponentNewDocument])
+            {
+                return AlfrescoFileProviderItemIdentifierTypeSyncNewDocument;
             }
             else
             {

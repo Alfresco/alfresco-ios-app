@@ -441,6 +441,10 @@
                 while (networkOperationCallbackComplete == NO);
             }];
         }
+        else if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument)
+        {
+            NSLog(@"test");
+        }
     }
 }
 
@@ -473,15 +477,17 @@
         if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeLocalFiles)
         {
             [self.fileService saveToLocalFilesDocumentAtURL:fileURL];
+            [fileURL stopAccessingSecurityScopedResource];
         }
-        else if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+        else if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncFolder)
         {
             NSURL *storageURL = [item fileURL];
-            [self.fileService saveDocumentAtURL:fileURL toURL:storageURL overwritingExistingFile:NO];
-            AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveItem:item];
+            NSFileManager *fileManager = [NSFileManager new];
+            [fileManager createDirectoryAtURL:[storageURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
+            [self.fileService saveDocumentAtURL:fileURL toURL:storageURL overwritingExistingFile:YES];
+            AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveItem:item needsUpload:YES fileURL:storageURL];
             [self.fileService uploadDocumentItem:itemMetadata];
         }
-        
         [fileURL stopAccessingSecurityScopedResource];
         [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:parentItemIdentifier completionHandler:^(NSError * _Nullable error) {
             completionHandler(item, error);
@@ -498,18 +504,21 @@
     if(![identifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
     {
         AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:identifier];
-        if(identifierType == AlfrescoFileProviderItemIdentifierTypeDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+        if(identifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
         {
-            id realmItem = [[AFPDataManager sharedManager] dbItemForIdentifier:identifier];
-            if([realmItem isKindOfClass:[AFPItemMetadata class]])
-            {
-                item = [[AFPItem alloc] initWithItemMetadata:realmItem];
-            }
-            else if([realmItem isKindOfClass:[RealmSyncNodeInfo class]])
-            {
-                NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
-                item = [[AFPItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[AFPDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
-            }
+            AFPItemMetadata *realmItem = [[AFPDataManager sharedManager] metadataItemForIdentifier:identifier];
+            item = [[AFPItem alloc] initWithItemMetadata:realmItem];
+        }
+        else if(identifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+        {
+            RealmSyncNodeInfo *realmItem = [[AFPDataManager sharedManager] syncItemForId:identifier];
+            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+            item = [[AFPItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[AFPDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
+        }
+        else if (identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument)
+        {
+            AFPItemMetadata *realmItem = [[AFPDataManager sharedManager] metadataItemForIdentifier:identifier];
+            item = [[AFPItem alloc] initWithItemMetadata:realmItem];
         }
         else if (identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
         {

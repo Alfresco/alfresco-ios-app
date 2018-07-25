@@ -34,6 +34,7 @@ NSString * const kFileProviderFavoriteSitesFolderIdentifierSuffix = @"favoriteSi
 NSString * const kFileProviderIdentifierComponentFolder = @"folder";
 NSString * const kFileProviderIdentifierComponentSite = @"site";
 NSString * const kFileProviderIdentifierComponentDocument = @"document";
+NSString * const kFileProviderIdentifierComponentNewDocument = @"newDocument";
 NSString * const kFileProviderIdentifierComponentSync = @"sync";
 
 int const kFileProviderMaxItemsPerListingRetrieve = 5;

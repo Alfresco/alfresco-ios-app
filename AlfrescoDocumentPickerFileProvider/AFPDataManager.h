@@ -31,14 +31,16 @@
 - (void)saveMenuItem:(NSString *)menuItemIdentifierSuffix displayName:(NSString *)displayName forAccount:(UserAccount *)account;
 - (AFPItemMetadata *)saveNode:(AlfrescoNode *)node parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
 - (AFPItemMetadata *)saveSite:(AlfrescoSite *)site parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
-- (AFPItemMetadata *)saveItem:(AFPItem *)item;
+- (AFPItemMetadata *)saveItem:(AFPItem *)item needsUpload:(BOOL)needUpload fileURL:(NSURL *)fileURL;
+- (void)removeItemMetadataForIdentifier:(NSString *)identifier;
 - (void)cleanMenuItemsForAccount:(UserAccount *)account;
 - (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)itemIdentifier downloaded:(BOOL)isDownloaded;
 
 - (AFPItemMetadata *)localFilesItem;
 - (RLMResults<AFPItemMetadata *> *)menuItemsForAccount:(NSString *)accountIdentifier;
 - (RLMResults<AFPItemMetadata *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier;
-- (id)dbItemForIdentifier:(NSFileProviderItemIdentifier)identifier;
+- (AFPItemMetadata *)metadataItemForIdentifier:(NSFileProviderItemIdentifier)identifier;
+- (RealmSyncNodeInfo *)syncItemForId:(NSFileProviderItemIdentifier)identifier;
 
 - (NSFileProviderItemIdentifier)parentItemIdentifierOfSyncedNode:(RealmSyncNodeInfo *)syncedNode fromAccountIdentifier:(NSString *)accountIdentifier;
 - (NSFileProviderItemIdentifier)itemIdentifierOfSyncedNodeWithURL:(NSURL *)syncedNodeURL;

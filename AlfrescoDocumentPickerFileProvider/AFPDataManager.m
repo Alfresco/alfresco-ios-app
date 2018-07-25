@@ -186,10 +186,47 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return nil;
 }
 
-- (AFPItemMetadata *)saveItem:(AFPItem *)item
+- (AFPItemMetadata *)saveItem:(AFPItem *)item needsUpload:(BOOL)needUpload fileURL:(NSURL *)fileURL
 {
-    // TODO:
+    if(item)
+    {
+        RLMRealm *realm = [self realm];
+        NSString *parentIdentifier = item.parentItemIdentifier;
+        
+        AFPItemMetadata *itemMetadata = [AFPItemMetadata new];
+        itemMetadata.identifier = item.itemIdentifier;
+        itemMetadata.name = item.filename;
+        itemMetadata.parentIdentifier = parentIdentifier;
+        itemMetadata.needsUpload = needUpload;
+        itemMetadata.filePath = fileURL.path;
+        
+        NSPredicate *parentPred = [NSPredicate predicateWithFormat:@"identifier == %@", parentIdentifier];
+        RLMResults<AFPItemMetadata *> *parentList = [AFPItemMetadata objectsInRealm:realm withPredicate:parentPred];
+        if(parentList.count > 0)
+        {
+            itemMetadata.parentFolder = parentList[0];
+        }
+        
+        [realm transactionWithBlock:^{
+            [realm addOrUpdateObject:itemMetadata];
+        }];
+        
+        return itemMetadata;
+    }
     return nil;
+}
+
+- (void)removeItemMetadataForIdentifier:(NSString *)identifier
+{
+    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+    RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
+    AFPItemMetadata *itemMetadataToDelete = [self metadataItemForIdentifier:identifier];
+    if(itemMetadataToDelete)
+    {
+        [realm beginWriteTransaction];
+        [realm deleteObject:itemMetadataToDelete];
+        [realm commitWriteTransaction];
+    }
 }
 
 - (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)itemIdentifier downloaded:(BOOL)isDownloaded
@@ -254,32 +291,23 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return result;
 }
 
-- (id)dbItemForIdentifier:(NSFileProviderItemIdentifier)identifier
+- (AFPItemMetadata *)metadataItemForIdentifier:(NSFileProviderItemIdentifier)identifier
 {
-    id item;
-    if(identifier)
+    RLMRealm *realm = [self realm];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
+    RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm withPredicate:pred];
+    if(list.count > 0)
     {
-        AlfrescoFileProviderItemIdentifierType typeIdentifier = [AFPItemIdentifier itemIdentifierTypeForIdentifier:identifier];
-        if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncFolder || typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
-        {
-            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
-            NSString *itemSyncIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:identifier];
-            RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
-            item = [[RealmSyncCore sharedSyncCore] syncNodeInfoForId:itemSyncIdentifier inRealm:realm];
-        }
-        else
-        {
-            RLMRealm *realm = [self realm];
-            NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", identifier];
-            RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm withPredicate:pred];
-            if(list.count > 0)
-            {
-                item = list.firstObject;
-            }
-        }
+        return list.firstObject;
     }
-    
-    return item;
+    return nil;
+}
+
+- (RealmSyncNodeInfo *)syncItemForId:(NSFileProviderItemIdentifier)identifier
+{
+    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+    NSString *itemSyncIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:identifier];
+    return [self syncItemForId:itemSyncIdentifier forAccountIdentifier:accountIdentifier];
 }
 
 - (NSFileProviderItemIdentifier)parentItemIdentifierOfSyncedNode:(RealmSyncNodeInfo *)syncedNode fromAccountIdentifier:(NSString *)accountIdentifier
