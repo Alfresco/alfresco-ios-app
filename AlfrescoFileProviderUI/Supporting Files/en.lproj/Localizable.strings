@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,12 +16,14 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Foundation/Foundation.h>
 
-@interface AFPAccountManager : NSObject
+/**
+ * General
+ */
+"fileproviderui.button.cancel.title" = "Cancel";
 
-+ (instancetype)sharedManager;
-- (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession> session, NSError *loginError))completionBlock;
-+ (NSError *)authenticationErrorForPIN;
-
-@end
+/**
+ * Security
+ */
+"fileproviderui.security.passcode.enabled.title" = "Passcode Lock is enabled";
+"fileproviderui.security.passcode.message" = "Files cannot be used with a passcode. If you would like to use Files, please open Alfresco Content Services and disable Passcode Lock.";

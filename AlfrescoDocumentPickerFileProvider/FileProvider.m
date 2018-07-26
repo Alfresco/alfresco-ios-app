@@ -24,6 +24,7 @@
 #import "AlfrescoFileManager+Extensions.h"
 #import "NSFileManager+Extension.h"
 #import "Utilities.h"
+#import "KeychainUtils.h"
 
 #import "AFPItem.h"
 #import "AFPItemIdentifier.h"
@@ -84,7 +85,7 @@
     
     /*
      * We need the unique document identifier appended onto the URL.
-     * Since we can't get access to the document, in order to generate this, we simply take the 
+     * Since we can't get access to the document, in order to generate this, we simply take the
      * last two path components from the url provided in order to generate the search url.
      */
     NSArray *pathComponents = fileURL.pathComponents;
@@ -189,7 +190,7 @@
         {
             NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
             AFPItem *item = [self itemForIdentifier:itemIdentifier error:&placeholderWriteError];
-
+            
             if(item)
             {
                 NSURL *placeholderURL = [NSFileProviderManager placeholderURLForURL:url];
@@ -409,10 +410,10 @@
                     }];
                     
                     /*
-                    * Keep this object around long enough for the network operations to complete.
-                    * Running as a background thread, seperate from the UI, so should not cause
-                    * Any issues when blocking the thread.
-                    */
+                     * Keep this object around long enough for the network operations to complete.
+                     * Running as a background thread, seperate from the UI, so should not cause
+                     * Any issues when blocking the thread.
+                     */
                     do
                     {
                         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
@@ -588,9 +589,12 @@
 
 #pragma mark - Enumeration
 
-- (nullable id<NSFileProviderEnumerator>)enumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier error:(NSError **)error
+- (nullable id<NSFileProviderEnumerator>)enumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier
+                                                                        error:(NSError **)error
 {
     id<NSFileProviderEnumerator> enumerator = nil;
+    NSError *errorToReturn = nil;
+    
     if ([containerItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
     {
         // TODO: instantiate an enumerator for the working set
@@ -598,8 +602,15 @@
     else
     {
         enumerator = [self.enumeratorBuilder enumeratorForItemIdentifier:containerItemIdentifier];
+        
+        if (!enumerator) {
+            errorToReturn = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                code:NSFeatureUnsupportedError
+                                            userInfo:nil];
+        }
     }
     
+    *error = errorToReturn;
     return enumerator;
 }
 

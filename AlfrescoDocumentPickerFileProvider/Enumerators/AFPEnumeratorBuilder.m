@@ -26,11 +26,21 @@
 #import "AFPSyncEnumerator.h"
 #import "AFPSiteEnumerator.h"
 #import "AFPFolderEnumerator.h"
+#import "KeychainUtils.h"
 
 @implementation AFPEnumeratorBuilder
 
 - (id<NSFileProviderEnumerator>)enumeratorForItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
 {
+    NSError *error = nil;
+    [KeychainUtils saveItem:itemIdentifier
+                     forKey:kFileProviderCurrentItemIdentifier
+                    inGroup:kSharedAppGroupIdentifier
+                      error:&error];
+    if (error) {
+        AlfrescoLogError(@"An error occured while saving the item identifier. Reason:%@", error.localizedDescription);
+    }
+    
     id<NSFileProviderEnumerator> enumerator = nil;
     
     if([itemIdentifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
