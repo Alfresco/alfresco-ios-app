@@ -30,6 +30,7 @@
 #import "UniversalDevice.h"
 #import "SecurityManager.h"
 #import "TouchIDManager.h"
+#import "KeychainUtils.h"
 
 @interface SettingsViewController () <SettingsCellProtocol, MFMailComposeViewControllerDelegate>
 @end
@@ -447,6 +448,18 @@
 
 - (void)notifyFileProviderAboutUpdates {
     if (@available(iOS 11.0, *)) {
+        NSError *error = nil;
+        NSString *itemIdentifier = [KeychainUtils retrieveItemForKey:kFileProviderCurrentItemIdentifier
+                                                             inGroup:kSharedAppGroupIdentifier
+                                                               error:&error];
+        
+        if (error) {
+            AlfrescoLogError(@"An error occured while retrieving the current file provider item identifier. Reason:%@", error.localizedDescription);
+        } else {
+            [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:itemIdentifier
+                                                                             completionHandler:^(NSError * _Nullable error) {}];
+        }
+        
         [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:NSFileProviderRootContainerItemIdentifier
                                                                          completionHandler:^(NSError * _Nullable error) {}];
     }

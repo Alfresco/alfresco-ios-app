@@ -85,7 +85,7 @@
     
     /*
      * We need the unique document identifier appended onto the URL.
-     * Since we can't get access to the document, in order to generate this, we simply take the 
+     * Since we can't get access to the document, in order to generate this, we simply take the
      * last two path components from the url provided in order to generate the search url.
      */
     NSArray *pathComponents = fileURL.pathComponents;
@@ -190,7 +190,7 @@
         {
             NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
             AFPItem *item = [self itemForIdentifier:itemIdentifier error:&placeholderWriteError];
-
+            
             if(item)
             {
                 NSURL *placeholderURL = [NSFileProviderManager placeholderURLForURL:url];
@@ -410,10 +410,10 @@
                     }];
                     
                     /*
-                    * Keep this object around long enough for the network operations to complete.
-                    * Running as a background thread, seperate from the UI, so should not cause
-                    * Any issues when blocking the thread.
-                    */
+                     * Keep this object around long enough for the network operations to complete.
+                     * Running as a background thread, seperate from the UI, so should not cause
+                     * Any issues when blocking the thread.
+                     */
                     do
                     {
                         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
@@ -587,51 +587,6 @@
     return itemIdentifier;
 }
 
-#pragma mark - PIN authentication handling
-
-- (BOOL)isPINAuthenticationSet {
-    NSError *error = nil;
-    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
-                                                error:&error];
-    
-    BOOL isPINSet = NO;
-    
-    if (error && error.code != errSecItemNotFound)
-    {
-        AlfrescoLogError(@"Error retrieving PIN key from keychain. Reason: %@", error.localizedDescription);
-    } else
-    {
-        isPINSet = pin.length ? YES : NO;
-    }
-    
-    return isPINSet;
-}
-
-- (NSError *)authenticationError
-{
-    NSError *error = nil;
-    if (@available(iOS 11.0, *))
-    {
-        error = [NSError errorWithDomain:NSFileProviderErrorDomain
-                                        code:NSFileProviderErrorNotAuthenticated
-                                    userInfo:nil];
-    }
-    
-    return error;
-}
-
-- (NSError *)unsupportedError {
-    NSError *error = nil;
-    if (@available(iOS 11.0, *))
-    {
-        error = [NSError errorWithDomain:NSCocoaErrorDomain
-                                    code:NSFeatureUnsupportedError
-                                userInfo:nil];
-    }
-    
-    return error;
-}
-
 #pragma mark - Enumeration
 
 - (nullable id<NSFileProviderEnumerator>)enumeratorForContainerItemIdentifier:(NSFileProviderItemIdentifier)containerItemIdentifier
@@ -640,37 +595,22 @@
     id<NSFileProviderEnumerator> enumerator = nil;
     NSError *errorToReturn = nil;
     
-    if (@available(iOS 11.0, *)) {
-        if ([containerItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
-        {
-            // TODO: instantiate an enumerator for the working set
-        }
-        else
-        {
-            if ([containerItemIdentifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
-            {
-                if ([self isPINAuthenticationSet])
-                {
-                    errorToReturn = [self authenticationError];
-                }
-            }
-            
-            if (!errorToReturn) {
-                enumerator = [self.enumeratorBuilder enumeratorForItemIdentifier:containerItemIdentifier];
-                
-                if (!enumerator) {
-                    errorToReturn = [self unsupportedError];
-                }
-            }
-        }
+    if ([containerItemIdentifier isEqualToString:NSFileProviderWorkingSetContainerItemIdentifier])
+    {
+        // TODO: instantiate an enumerator for the working set
     }
     else
     {
-        // Fallback on earlier versions
+        enumerator = [self.enumeratorBuilder enumeratorForItemIdentifier:containerItemIdentifier];
+        
+        if (!enumerator) {
+            errorToReturn = [NSError errorWithDomain:NSCocoaErrorDomain
+                                                code:NSFeatureUnsupportedError
+                                            userInfo:nil];
+        }
     }
     
     *error = errorToReturn;
-    
     return enumerator;
 }
 

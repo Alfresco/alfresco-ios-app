@@ -37,3 +37,5 @@ NSString * const kFileProviderIdentifierComponentDocument = @"document";
 NSString * const kFileProviderIdentifierComponentSync = @"sync";
 
 int const kFileProviderMaxItemsPerListingRetrieve = 5;
+
+NSString * const kFileProviderCurrentItemIdentifier = @"fpcurrentItemIdentifier";

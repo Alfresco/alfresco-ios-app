@@ -27,64 +27,72 @@
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
-    AFPPage *alfrescoPage = [NSKeyedUnarchiver unarchiveObjectWithData:page];
-    if(alfrescoPage.hasMoreItems || alfrescoPage == nil)
+    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    if (authenticationError)
     {
-        self.observer = observer;
-        __weak typeof(self) weakSelf = self;
-        self.networkOperationsComplete = NO;
-        [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
-            __strong typeof(self) strongSelf = weakSelf;
-            if(!strongSelf.customFolderService)
-            {
-                strongSelf.customFolderService = [[CustomFolderService alloc] initWithSession:session];
-                strongSelf.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-            }
-            
-            AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:strongSelf.itemIdentifier];
-            switch (identifierType) {
-                case AlfrescoFileProviderItemIdentifierTypeMyFiles:
-                {
-                    [strongSelf enumerateItemsInMyFilesWithSkipCount:alfrescoPage.skipCount];
-                    break;
-                }
-                case AlfrescoFileProviderItemIdentifierTypeSharedFiles:
-                {
-                    [strongSelf enumerateItemsInSharedFilesWithSkipCount:alfrescoPage.skipCount];
-                    break;
-                }
-                case AlfrescoFileProviderItemIdentifierTypeFolder:
-                {
-                    NSString *folderRef = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:strongSelf.itemIdentifier];
-                    [strongSelf enumerateItemsInFolderWithFolderRef:folderRef skipCount:alfrescoPage.skipCount];
-                    break;
-                }
-                case AlfrescoFileProviderItemIdentifierTypeFavorites:
-                {
-                    [strongSelf enumerateItemsInFavoriteFolderWithSkipCount:alfrescoPage.skipCount];
-                    break;
-                }
-                case AlfrescoFileProviderItemIdentifierTypeSite:
-                {
-                    strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
-                    NSString *siteShortName = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:strongSelf.itemIdentifier];
-                    [strongSelf enumerateItemsInSiteWithSiteShortName:siteShortName skipCount:alfrescoPage.skipCount];
-                    break;
-                }
-                default:
-                    break;
-            }
-        }];
-        /*
-         * Keep this object around long enough for the network operations to complete.
-         * Running as a background thread, seperate from the UI, so should not cause
-         * Any issues when blocking the thread.
-         */
-        do
+        [observer finishEnumeratingWithError:authenticationError];
+    }
+    else
+    {
+        AFPPage *alfrescoPage = [NSKeyedUnarchiver unarchiveObjectWithData:page];
+        if(alfrescoPage.hasMoreItems || alfrescoPage == nil)
         {
-            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            self.observer = observer;
+            __weak typeof(self) weakSelf = self;
+            self.networkOperationsComplete = NO;
+            [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
+                __strong typeof(self) strongSelf = weakSelf;
+                if(!strongSelf.customFolderService)
+                {
+                    strongSelf.customFolderService = [[CustomFolderService alloc] initWithSession:session];
+                    strongSelf.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+                }
+                
+                AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:strongSelf.itemIdentifier];
+                switch (identifierType) {
+                    case AlfrescoFileProviderItemIdentifierTypeMyFiles:
+                    {
+                        [strongSelf enumerateItemsInMyFilesWithSkipCount:alfrescoPage.skipCount];
+                        break;
+                    }
+                    case AlfrescoFileProviderItemIdentifierTypeSharedFiles:
+                    {
+                        [strongSelf enumerateItemsInSharedFilesWithSkipCount:alfrescoPage.skipCount];
+                        break;
+                    }
+                    case AlfrescoFileProviderItemIdentifierTypeFolder:
+                    {
+                        NSString *folderRef = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:strongSelf.itemIdentifier];
+                        [strongSelf enumerateItemsInFolderWithFolderRef:folderRef skipCount:alfrescoPage.skipCount];
+                        break;
+                    }
+                    case AlfrescoFileProviderItemIdentifierTypeFavorites:
+                    {
+                        [strongSelf enumerateItemsInFavoriteFolderWithSkipCount:alfrescoPage.skipCount];
+                        break;
+                    }
+                    case AlfrescoFileProviderItemIdentifierTypeSite:
+                    {
+                        strongSelf.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+                        NSString *siteShortName = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:strongSelf.itemIdentifier];
+                        [strongSelf enumerateItemsInSiteWithSiteShortName:siteShortName skipCount:alfrescoPage.skipCount];
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }];
+            /*
+             * Keep this object around long enough for the network operations to complete.
+             * Running as a background thread, seperate from the UI, so should not cause
+             * Any issues when blocking the thread.
+             */
+            do
+            {
+                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+            }
+            while (self.networkOperationsComplete == NO);
         }
-        while (self.networkOperationsComplete == NO);
     }
 }
 

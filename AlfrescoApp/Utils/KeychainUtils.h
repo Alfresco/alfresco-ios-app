@@ -27,7 +27,9 @@
 + (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError;
 
 + (OSStatus)saveItem:(id)value forKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error;
++ (OSStatus)saveItem:(id)value forKey:(NSString *)keychainItemId inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error;
 + (id)retrieveItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error;
++ (id)retrieveItemForKey:(NSString *)keychainItemId inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error;
 + (OSStatus)deleteItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error;
 
 @end

@@ -55,3 +55,5 @@ extern NSString * const kFileProviderIdentifierComponentDocument;
 extern NSString * const kFileProviderIdentifierComponentSync;
 
 extern int const kFileProviderMaxItemsPerListingRetrieve;
+
+extern NSString * const kFileProviderCurrentItemIdentifier;
