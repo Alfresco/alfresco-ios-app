@@ -116,7 +116,7 @@
 - (NSError *)saveDocumentAtURL:(NSURL *)readingURL toURL:(NSURL *)writingURL overwritingExistingFile:(BOOL)shouldOverwrite
 {
     NSError *copyError = nil;
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     if(!shouldOverwrite && [fileManager fileExistsAtPath:[writingURL path]])
     {
         NSString *filename = [self fileNameAppendedWithDate:writingURL.lastPathComponent];

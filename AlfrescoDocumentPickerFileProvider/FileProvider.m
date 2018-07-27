@@ -394,8 +394,10 @@
         if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
         {
             NSURL *destinationURL = [self.fileService localFilesURLForFilename:[AFPItemIdentifier filenameFromItemIdentifier:itemIdentifier]];
+            __weak typeof(self) weakSelf = self;
             [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                [self.fileService saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
+                __strong typeof(self) strongSelf = weakSelf;
+                [strongSelf.fileService saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
             }];
         }
         else if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
@@ -405,21 +407,23 @@
             RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:docSyncIdentifier forAccountIdentifier:accountIdentifier];
             AlfrescoDocument *alfrescoDoc = (AlfrescoDocument *)syncNode.alfrescoNode;
             // Coordinate the reading of the file for uploading
+            __weak typeof(self) weakSelf = self;
             [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newReadingURL) {
+                __strong typeof(self) strongSelf = weakSelf;
                 NSURL *destinationURL = [NSURL fileURLWithPath:syncNode.syncContentPath];
-                [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                    [self.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                [strongSelf.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
+                    [weakSelf.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
                 }];
                 
                 __block BOOL networkOperationCallbackComplete = NO;
                 // Session exists, use that, else do a login and then upload.
-                [self.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+                [strongSelf.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
                     if(session)
                     {
-                        [self uploadDocument:alfrescoDoc sourceURL:newReadingURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
+                        [weakSelf uploadDocument:alfrescoDoc sourceURL:newReadingURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
                             if (updateError)
                             {
-                                AlfrescoLogError(@"Error Updating Document: %@. Error: %@", syncNode.alfrescoNode.name, updateError.localizedDescription);
+                                AlfrescoLogError(@"Error Updating Document: %@. Error: %@", alfrescoDoc.name, updateError.localizedDescription);
                             }
                             else
                             {
@@ -483,7 +487,7 @@
         else if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncFolder)
         {
             NSURL *storageURL = [item fileURL];
-            NSFileManager *fileManager = [NSFileManager new];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
             [fileManager createDirectoryAtURL:[storageURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
             [self.fileService saveDocumentAtURL:fileURL toURL:storageURL overwritingExistingFile:YES];
             AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveItem:item needsUpload:YES fileURL:storageURL];

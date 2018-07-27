@@ -50,8 +50,10 @@
 {
     if ([NSThread isMainThread])
     {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            _mainThreadRealm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            __strong typeof(self) strongSelf = weakSelf;
+            strongSelf.mainThreadRealm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
             if (completionBlock)
             {
                 completionBlock();
@@ -60,8 +62,10 @@
     }
     else
     {
+        __weak typeof(self) weakSelf = self;
         dispatch_sync(dispatch_get_main_queue(), ^{
-            _mainThreadRealm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
+            __strong typeof(self) strongSelf = weakSelf;
+            strongSelf.mainThreadRealm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
             if (completionBlock)
             {
                 completionBlock();
