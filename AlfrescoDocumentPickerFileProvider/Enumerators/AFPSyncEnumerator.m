@@ -55,7 +55,7 @@
         
         NSString *nodeId = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
         
-        RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInNodeWithId:nodeId forAccountIdentifier:accountIdentifier];
+        RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nodeId forAccountIdentifier:accountIdentifier];
         for(RealmSyncNodeInfo *node in syncedItems)
         {
             AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];

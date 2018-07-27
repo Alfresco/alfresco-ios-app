@@ -137,10 +137,6 @@ NSString * const kSyncProgressViewVisiblityChangeNotification = @"kSyncProgressV
 NSString * const kTopLevelSyncDidAddNodeNotification = @"TopLevelSyncDidAddNodeNotification";
 NSString * const kTopLevelSyncDidRemoveNodeNotification = @"TopLevelSyncDidRemoveNodeNotification";
 
-// Realm sync exceptions
-NSString * const kFailedToCreateRealmDatabase = @"FailedToCreateRealmDatabase";
-NSString * const kRealmSyncErrorKey = @"RealmSyncErrorKey";
-
 // Download Notifications
 NSString * const kDocumentPreviewManagerWillStartDownloadNotification = @"DocumentPreviewManagerWillStartDownloadNotification";
 NSString * const kDocumentPreviewManagerProgressNotification = @"DocumentPreviewManagerProgressNotification";

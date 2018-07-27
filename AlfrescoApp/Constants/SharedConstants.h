@@ -44,3 +44,7 @@ extern NSString * const kShouldResetEntireAppKey;
 extern NSString * const kIsAppFirstLaunch;
 
 extern NSString * const kHasSyncedContentMigrationOccurred;
+
+// Realm sync exceptions
+extern NSString * const kFailedToCreateRealmDatabase;
+extern NSString * const kRealmSyncErrorKey;

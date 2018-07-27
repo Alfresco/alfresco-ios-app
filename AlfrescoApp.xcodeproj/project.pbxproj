@@ -252,6 +252,7 @@
 		2B1A050C1BB2E4CE00EE4AAE /* SiteMembersViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */; };
 		2B1BC7A01F6044BE003B8790 /* AFPItemIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1BC79F1F6044BE003B8790 /* AFPItemIdentifier.m */; };
 		2B1BC7A11F6044BE003B8790 /* AFPItemIdentifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1BC79F1F6044BE003B8790 /* AFPItemIdentifier.m */; };
+		2B1FEF4F20F4EA61004CA901 /* AFPFileService.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B1FEF4E20F4EA61004CA901 /* AFPFileService.m */; };
 		2B2472011C11C7DC00153247 /* noAccountsConfiguration.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B2472001C11C7DC00153247 /* noAccountsConfiguration.json */; };
 		2B2609911B4AD2C100F2F26B /* dots-A.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098D1B4AD2C100F2F26B /* dots-A.png */; };
 		2B2609921B4AD2C100F2F26B /* dots-A@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */; };
@@ -260,6 +261,9 @@
 		2B2D5F341D3F676900428730 /* SyncOperationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B2D5F331D3F676900428730 /* SyncOperationQueue.m */; };
 		2B314C861B7B7D750031E965 /* UserAccountWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 738B41071A714872008F8784 /* UserAccountWrapper.m */; };
 		2B314C8B1B7B8A8A0031E965 /* AlfrescoKitBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 734CC3AB1A6FBC4C005D148E /* AlfrescoKitBundle.bundle */; };
+		2B32E10520FDD03B00D23115 /* RealmSyncCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B32E10420FDD03B00D23115 /* RealmSyncCore.m */; };
+		2B32E10620FDD03B00D23115 /* RealmSyncCore.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B32E10420FDD03B00D23115 /* RealmSyncCore.m */; };
+		2B32E10720FDDA2A00D23115 /* SyncConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9507C1CAE6D09009299C8 /* SyncConstants.m */; };
 		2B3446851B6A5F7600853B7D /* ParentCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */; };
 		2B34468B1B6A62EC00853B7D /* LoadingCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */; };
 		2B34468D1B6A638400853B7D /* SearchCollectionSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */; };
@@ -1289,6 +1293,8 @@
 		2B1A050B1BB2E4CE00EE4AAE /* SiteMembersViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SiteMembersViewController.xib; sourceTree = "<group>"; };
 		2B1BC79E1F6044BE003B8790 /* AFPItemIdentifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPItemIdentifier.h; sourceTree = "<group>"; };
 		2B1BC79F1F6044BE003B8790 /* AFPItemIdentifier.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPItemIdentifier.m; sourceTree = "<group>"; };
+		2B1FEF4D20F4EA61004CA901 /* AFPFileService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFPFileService.h; sourceTree = "<group>"; };
+		2B1FEF4E20F4EA61004CA901 /* AFPFileService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AFPFileService.m; sourceTree = "<group>"; };
 		2B2472001C11C7DC00153247 /* noAccountsConfiguration.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = noAccountsConfiguration.json; sourceTree = "<group>"; };
 		2B26098D1B4AD2C100F2F26B /* dots-A.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A.png"; sourceTree = "<group>"; };
 		2B26098E1B4AD2C100F2F26B /* dots-A@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dots-A@2x.png"; sourceTree = "<group>"; };
@@ -1298,6 +1304,8 @@
 		2B2BEFF41D00824E0090B45B /* DocumentCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentCollectionViewDataSource.m; sourceTree = "<group>"; };
 		2B2D5F321D3F676900428730 /* SyncOperationQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncOperationQueue.h; sourceTree = "<group>"; };
 		2B2D5F331D3F676900428730 /* SyncOperationQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncOperationQueue.m; sourceTree = "<group>"; };
+		2B32E10320FDD03B00D23115 /* RealmSyncCore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RealmSyncCore.h; sourceTree = "<group>"; };
+		2B32E10420FDD03B00D23115 /* RealmSyncCore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RealmSyncCore.m; sourceTree = "<group>"; };
 		2B3446841B6A5F7600853B7D /* ParentCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ParentCollectionViewController.xib; sourceTree = "<group>"; };
 		2B34468A1B6A62EC00853B7D /* LoadingCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingCollectionViewCell.xib; sourceTree = "<group>"; };
 		2B34468C1B6A638400853B7D /* SearchCollectionSectionHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCollectionSectionHeader.xib; sourceTree = "<group>"; };
@@ -2915,6 +2923,8 @@
 				2BF0C7FA1F6A74C4001268FA /* AFPAccountManager.m */,
 				2B379BFE204FEF6A00DA4420 /* AFPPage.h */,
 				2B379BFF204FEF6A00DA4420 /* AFPPage.m */,
+				2B1FEF4D20F4EA61004CA901 /* AFPFileService.h */,
+				2B1FEF4E20F4EA61004CA901 /* AFPFileService.m */,
 			);
 			path = AlfrescoDocumentPickerFileProvider;
 			sourceTree = "<group>";
@@ -3951,14 +3961,16 @@
 				2B8CF80E1C7C57D40079BB99 /* RealmSyncManager.h */,
 				2B8CF80F1C7C57D40079BB99 /* RealmSyncManager.m */,
 				23FBC9FB1D3D11DD00E935B2 /* RealmSyncManager+Internal.h */,
+				1DE950781CAC0887009299C8 /* RealmManager.h */,
+				1DE950791CAC0887009299C8 /* RealmManager.m */,
 				2B8CF8181C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.h */,
 				2B8CF8191C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m */,
+				2B32E10320FDD03B00D23115 /* RealmSyncCore.h */,
+				2B32E10420FDD03B00D23115 /* RealmSyncCore.m */,
 				231A0B4D1CABCCCD0029A10E /* SecurityManager.h */,
 				231A0B4E1CABCCCD0029A10E /* SecurityManager.m */,
 				23BE84D41CE9C3B200FA5BCB /* TouchIDManager.h */,
 				23BE84D51CE9C3B200FA5BCB /* TouchIDManager.m */,
-				1DE950781CAC0887009299C8 /* RealmManager.h */,
-				1DE950791CAC0887009299C8 /* RealmManager.m */,
 				2B2D5F321D3F676900428730 /* SyncOperationQueue.h */,
 				2B2D5F331D3F676900428730 /* SyncOperationQueue.m */,
 				232D38A61D7D937100B2F2E8 /* PermissionChecker.h */,
@@ -5285,6 +5297,7 @@
 				2BF0C7FB1F6A74C4001268FA /* AFPAccountManager.m in Sources */,
 				2B62DC1A2046DE8500BEE35F /* AFPFolderEnumerator.m in Sources */,
 				2B62DC082046D36C00BEE35F /* AFPEnumeratorBuilder.m in Sources */,
+				2B32E10720FDDA2A00D23115 /* SyncConstants.m in Sources */,
 				73697B961A979895009F10BA /* PersistentQueueStore.m in Sources */,
 				73697B9D1A9B738F009F10BA /* KeychainUtils.m in Sources */,
 				2B1BC7A11F6044BE003B8790 /* AFPItemIdentifier.m in Sources */,
@@ -5293,6 +5306,7 @@
 				2B62DC0E2046DABF00BEE35F /* AFPAccountEnumerator.m in Sources */,
 				734B87651A9F7A0F0093E702 /* Utilities.m in Sources */,
 				2BB913041F58671200AA7E56 /* AFPItemMetadata.m in Sources */,
+				2B1FEF4F20F4EA61004CA901 /* AFPFileService.m in Sources */,
 				73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */,
 				73CD5B101A729544000A5523 /* SharedConstants.m in Sources */,
 				2BA1AB771F558C010011BE07 /* AFPConstants.m in Sources */,
@@ -5300,6 +5314,7 @@
 				2B62DC0B2046D78700BEE35F /* AFPRootEnumerator.m in Sources */,
 				2BA8B6FE1F4DAF3F00BFF4D9 /* AFPItem.m in Sources */,
 				2B15911D1F95F4EE0047D8BA /* RealmSyncError.m in Sources */,
+				2B32E10620FDD03B00D23115 /* RealmSyncCore.m in Sources */,
 				2B62DC142046DE1A00BEE35F /* AFPSyncEnumerator.m in Sources */,
 				2B62DC172046DE7300BEE35F /* AFPSiteEnumerator.m in Sources */,
 				73697B921A979879009F10BA /* FileMetadata.m in Sources */,
@@ -5398,6 +5413,7 @@
 				7390B3621B03681E00E7191F /* AlfrescoActionConfig.m in Sources */,
 				7390B3791B03681E00E7191F /* AlfrescoPlaceholderConfigService.m in Sources */,
 				2B73E93F1EADFBD400B96560 /* AccessibilityConstants.m in Sources */,
+				2B32E10520FDD03B00D23115 /* RealmSyncCore.m in Sources */,
 				7366F74D1ACD44CA008DD92E /* MDMUserDefaultsConfigurationHelper.m in Sources */,
 				7384BE0517F42CA800C6A54F /* PreferenceManager.m in Sources */,
 				7390B36C1B03681E00E7191F /* AlfrescoFormConfig.m in Sources */,

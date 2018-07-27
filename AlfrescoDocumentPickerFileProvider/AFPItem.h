@@ -37,5 +37,6 @@
 - (instancetype)initWithLocalFilesPath:(NSString *)path;
 - (instancetype)initWithSyncedNode:(RealmSyncNodeInfo *)node parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
 - (instancetype)initWithImportedDocumentAtURL:(NSURL *)fileURL resourceValues:(NSDictionary *)resourceValues parentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier;
+- (NSURL *)fileURL;
 
 @end

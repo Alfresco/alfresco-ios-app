@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,23 +16,14 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Realm/Realm.h>
+#import <Foundation/Foundation.h>
+#import "AFPDataManager.h"
 
-@interface AFPItemMetadata : RLMObject
+@interface AFPFileService : NSObject
 
-@property (nonatomic, strong) NSString *name;
-@property (nonatomic, strong) NSString *identifier;
-@property (nonatomic) AFPItemMetadata *parentFolder;
-@property (nonatomic) BOOL isShared;
-@property (nonatomic, strong) NSDate *creationDate;
-@property (nonatomic, strong) NSData *node;
-@property (nonatomic) BOOL downloaded;
-
-@property (nonatomic) BOOL needsUpload;
-@property (nonatomic, strong) NSString *filePath;
-// parentIdentifier is used for cases when a parentFolder metadata item is not available (ex: sync)
-@property (nonatomic, strong) NSString *parentIdentifier;
-
-@property (readonly) AlfrescoNode *alfrescoNode;
+- (void)uploadDocumentItem:(AFPItemMetadata *)item;
+- (void)saveToLocalFilesDocumentAtURL:(NSURL *)url;
+- (NSError *)saveDocumentAtURL:(NSURL *)readingURL toURL:(NSURL *)writingURL overwritingExistingFile:(BOOL)shouldOverwrite;
+- (NSURL *)localFilesURLForFilename:(NSString *)filename;
 
 @end

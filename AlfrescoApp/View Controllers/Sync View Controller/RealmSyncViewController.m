@@ -154,7 +154,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
     }
     else
     {
-        NSString *filePath = [selectedNode contentPath];
+        NSString *filePath = [[RealmSyncCore sharedSyncCore] contentPathForNode:selectedNode forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
         AlfrescoPermissions *syncNodePermissions = [syncManager permissionsForSyncNode:selectedNode];
         
         void (^displayPermissionRetrievalError)(NSError *) = ^void (NSError *error){

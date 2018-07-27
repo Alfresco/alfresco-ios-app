@@ -457,7 +457,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         self.isTopLevelSyncNode = [self.node isTopLevelSyncNode];
         
         //The node could be in another top level folder. In this case, we should only remove the top level and mentain the synced flag.  
-        RealmSyncNodeInfo *realmSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:[[RealmManager sharedManager] realmForCurrentThread]];
+        RealmSyncNodeInfo *realmSyncNodeInfo = [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:[[RealmManager sharedManager] realmForCurrentThread]];
         self.isSyncNode = realmSyncNodeInfo != nil;
         
         [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:self.isSyncNode isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];

@@ -342,7 +342,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
         
         if ([document.identifier isEqualToString:self.document.identifier])
         {
-            self.documentContentFilePath = [document contentPath];
+            self.documentContentFilePath = [[RealmSyncCore sharedSyncCore] contentPathForNode:document forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];;
         }
     }
 }
@@ -368,7 +368,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
         
         if ([document.identifier isEqualToString:self.document.identifier])
         {
-            self.documentContentFilePath = [document contentPath];
+            self.documentContentFilePath = [[RealmSyncCore sharedSyncCore] contentPathForNode:document forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];;
         }
     }
 }

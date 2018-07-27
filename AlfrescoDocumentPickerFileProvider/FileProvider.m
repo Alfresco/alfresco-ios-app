@@ -22,7 +22,6 @@
 #import "FileMetadata.h"
 #import "SharedConstants.h"
 #import "AlfrescoFileManager+Extensions.h"
-#import "NSFileManager+Extension.h"
 #import "Utilities.h"
 #import "KeychainUtils.h"
 
@@ -31,13 +30,14 @@
 
 #import "AFPEnumeratorBuilder.h"
 
-#import "AFPDataManager.h"
+#import "AFPFileService.h"
 #import "AFPAccountManager.h"
 
 @interface FileProvider ()
 @property (nonatomic, strong) PersistentQueueStore *queueStore;
 @property (nonatomic, strong) AFPAccountManager *accountManager;
 @property (nonatomic, strong) AFPEnumeratorBuilder *enumeratorBuilder;
+@property (nonatomic, strong) AFPFileService *fileService;
 @end
 
 @implementation FileProvider
@@ -55,6 +55,7 @@
         
         self.accountManager = [AFPAccountManager sharedManager];
         self.enumeratorBuilder = [AFPEnumeratorBuilder new];
+        self.fileService = [AFPFileService new];
     }
     return self;
 }
@@ -127,39 +128,6 @@
             } progressBlock:nil];
         }
     }];
-}
-
-- (void)saveDocumentAtURL:(NSURL *)readingURL toURL:(NSURL *)writingURL overwritingExistingFile:(BOOL)shouldOverwrite
-{
-    NSError *copyError = nil;
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
-    if(!shouldOverwrite && [fileManager fileExistsAtPath:[writingURL path]])
-    {
-        NSString *filename = [self fileNameAppendedWithDate:writingURL.lastPathComponent];
-        writingURL = [[writingURL URLByDeletingLastPathComponent] URLByAppendingPathComponent:filename];
-    }
-    [fileManager copyItemAtURL:readingURL toURL:writingURL overwritingExistingFile:shouldOverwrite error:&copyError];
-    
-    if (copyError)
-    {
-        AlfrescoLogError(@"Unable to copy file at path: %@, to location: %@. Error: %@", readingURL, writingURL, copyError.localizedDescription);
-    }
-}
-
-- (NSString *)fileNameAppendedWithDate:(NSString *)name
-{
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd-HH-mm-ss"];
-    NSString *dateString = [dateFormatter stringFromDate:[NSDate date]];
-    NSString *fileExtension = name.pathExtension;
-    NSString *fileName = [NSString stringWithFormat:@"%@_%@", name.stringByDeletingPathExtension, dateString];
-    
-    if (fileExtension.length > 0)
-    {
-        fileName = [fileName stringByAppendingPathExtension:fileExtension];
-    }
-    
-    return fileName;
 }
 
 #pragma mark - File Provider Methods
@@ -281,18 +249,8 @@
             AlfrescoFileProviderItemIdentifierType itemIdentifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
             if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
             {
-                NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
-                NSString *fullSourcePath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
-                NSURL *sourceURL = [NSURL fileURLWithPath:fullSourcePath];
-                
-                NSError *copyError = nil;
-                NSFileManager *fileManager = [[NSFileManager alloc] init];
-                [fileManager copyItemAtURL:sourceURL toURL:url error:&copyError];
-                if (copyError)
-                {
-                    AlfrescoLogError(@"Unable to copy item from: %@, to: %@. Error: %@", sourceURL, url, copyError.localizedDescription);
-                }
-                
+                NSURL *sourceURL = [self.fileService localFilesURLForFilename:url.lastPathComponent];
+                NSError *copyError = [self.fileService saveDocumentAtURL:sourceURL toURL:url overwritingExistingFile:NO];
                 completionHandler(copyError);
             }
             else
@@ -365,13 +323,11 @@
                             if (updateError)
                             {
                                 AlfrescoLogError(@"Error Updating Document: %@. Error: %@", updateDocument.name, updateError.localizedDescription);
-                                NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
                                 NSString *filename = url.lastPathComponent;
                                 filename = [Utilities filenameWithoutVersionFromFilename:filename nodeIdentifier:repoNode.identifier];
-                                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:filename];
-                                NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+                                NSURL *destinationURL = [self.fileService localFilesURLForFilename:filename];
                                 [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                                    [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                                    [self.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
                                 }];
                             }
                             else
@@ -394,13 +350,11 @@
                         if(loginError)
                         {
                             AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
-                            NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
                             NSString *filename = url.lastPathComponent;
                             filename = [Utilities filenameWithoutVersionFromFilename:filename nodeIdentifier:repoNode.identifier];
-                            NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:filename];
-                            NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+                            NSURL *destinationURL = [self.fileService localFilesURLForFilename:filename];
                             [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                                [self saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                                [self.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
                             }];
                         }
                         else
@@ -424,11 +378,10 @@
             }
             else if (metadata.saveLocation == FileMetadataSaveLocationLocalFiles)
             {
-                NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
-                NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
-                NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+                NSURL *destinationURL = [self.fileService localFilesURLForFilename:url.lastPathComponent];
                 [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                    [self saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
+                    [self.fileService saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
+                    
                 }];
             }
         }
@@ -440,12 +393,62 @@
         AlfrescoFileProviderItemIdentifierType itemIdentifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
         if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
         {
-            NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
-            NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:[AFPItemIdentifier filenameFromItemIdentifier:itemIdentifier]];
-            NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
+            NSURL *destinationURL = [self.fileService localFilesURLForFilename:[AFPItemIdentifier filenameFromItemIdentifier:itemIdentifier]];
+            __weak typeof(self) weakSelf = self;
             [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                [self saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
+                __strong typeof(self) strongSelf = weakSelf;
+                [strongSelf.fileService saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
             }];
+        }
+        else if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+        {
+            NSString *docSyncIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
+            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
+            RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:docSyncIdentifier forAccountIdentifier:accountIdentifier];
+            AlfrescoDocument *alfrescoDoc = (AlfrescoDocument *)syncNode.alfrescoNode;
+            // Coordinate the reading of the file for uploading
+            __weak typeof(self) weakSelf = self;
+            [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newReadingURL) {
+                __strong typeof(self) strongSelf = weakSelf;
+                NSURL *destinationURL = [NSURL fileURLWithPath:syncNode.syncContentPath];
+                [strongSelf.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
+                    [weakSelf.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                }];
+                
+                __block BOOL networkOperationCallbackComplete = NO;
+                // Session exists, use that, else do a login and then upload.
+                [strongSelf.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+                    if(session)
+                    {
+                        [weakSelf uploadDocument:alfrescoDoc sourceURL:newReadingURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
+                            if (updateError)
+                            {
+                                AlfrescoLogError(@"Error Updating Document: %@. Error: %@", alfrescoDoc.name, updateError.localizedDescription);
+                            }
+                            else
+                            {
+                                [[AFPDataManager sharedManager] updateSyncDocumentWithId:docSyncIdentifier fromAccountIdentifier:accountIdentifier withAlfrescoNode:document];
+                            }
+                            networkOperationCallbackComplete = YES;
+                        }];
+                    }
+                }];
+                
+                /*
+                 * Keep this object around long enough for the network operations to complete.
+                 * Running as a background thread, seperate from the UI, so should not cause
+                 * Any issues when blocking the thread.
+                 */
+                do
+                {
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                }
+                while (networkOperationCallbackComplete == NO);
+            }];
+        }
+        else if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument)
+        {
+            NSLog(@"test");
         }
     }
 }
@@ -464,34 +467,36 @@
 
 - (void)importDocumentAtURL:(NSURL *)fileURL toParentItemIdentifier:(NSFileProviderItemIdentifier)parentItemIdentifier completionHandler:(void (^)(NSFileProviderItem _Nullable, NSError * _Nullable))completionHandler
 {
-    AlfrescoFileProviderItemIdentifierType typeIdentifier = [AFPItemIdentifier itemIdentifierTypeForIdentifier:parentItemIdentifier];
-    if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeLocalFiles)
+    [fileURL startAccessingSecurityScopedResource];
+    NSError *error = nil;
+    NSDictionary *resourceValues = [fileURL resourceValuesForKeys:@[NSURLNameKey, NSURLCreationDateKey, NSURLContentModificationDateKey, NSURLTypeIdentifierKey, NSURLTotalFileSizeKey] error:&error];
+    if(error)
     {
-        [fileURL startAccessingSecurityScopedResource];
-        NSError *error = nil;
-        NSDictionary *resourceValues = [fileURL resourceValuesForKeys:@[NSURLNameKey, NSURLCreationDateKey, NSURLContentModificationDateKey, NSURLTypeIdentifierKey, NSURLTotalFileSizeKey] error:&error];
-        if(error)
-        {
-            completionHandler(nil, error);
-        }
-        else
-        {
-            NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
-            NSString *fullDestinationPath = [downloadContentPath stringByAppendingPathComponent:resourceValues[NSURLNameKey]];
-            NSURL *destinationURL = [NSURL fileURLWithPath:fullDestinationPath];
-            
-            AFPItem *item = [[AFPItem alloc] initWithImportedDocumentAtURL:fileURL resourceValues:resourceValues parentItemIdentifier:parentItemIdentifier];
-            
-            [self saveDocumentAtURL:fileURL toURL:destinationURL overwritingExistingFile:NO];
-            [fileURL stopAccessingSecurityScopedResource];
-            [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:parentItemIdentifier completionHandler:^(NSError * _Nullable error) {
-                completionHandler(item, error);
-            }];
-        }
+        completionHandler(nil, error);
     }
     else
     {
-        completionHandler(nil, nil);
+        AFPItem *item = [[AFPItem alloc] initWithImportedDocumentAtURL:fileURL resourceValues:resourceValues parentItemIdentifier:parentItemIdentifier];
+        
+        AlfrescoFileProviderItemIdentifierType typeIdentifier = [AFPItemIdentifier itemIdentifierTypeForIdentifier:parentItemIdentifier];
+        if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeLocalFiles)
+        {
+            [self.fileService saveToLocalFilesDocumentAtURL:fileURL];
+            [fileURL stopAccessingSecurityScopedResource];
+        }
+        else if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncFolder)
+        {
+            NSURL *storageURL = [item fileURL];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            [fileManager createDirectoryAtURL:[storageURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
+            [self.fileService saveDocumentAtURL:fileURL toURL:storageURL overwritingExistingFile:YES];
+            AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveItem:item needsUpload:YES fileURL:storageURL];
+            [self.fileService uploadDocumentItem:itemMetadata];
+        }
+        [fileURL stopAccessingSecurityScopedResource];
+        [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:parentItemIdentifier completionHandler:^(NSError * _Nullable error) {
+            completionHandler(item, error);
+        }];
     }
 }
 
@@ -504,29 +509,27 @@
     if(![identifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
     {
         AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:identifier];
-        if(identifierType == AlfrescoFileProviderItemIdentifierTypeDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNode)
+        if(identifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
         {
-            id realmItem = [[AFPDataManager sharedManager] dbItemForIdentifier:identifier];
-            if([realmItem isKindOfClass:[AFPItemMetadata class]])
-            {
-                item = [[AFPItem alloc] initWithItemMetadata:realmItem];
-            }
-            else if([realmItem isKindOfClass:[RealmSyncNodeInfo class]])
-            {
-                RealmSyncNodeInfo *realmSyncItem = (RealmSyncNodeInfo *)realmItem;
-                if(!realmSyncItem.isFolder)
-                {
-                    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
-                    item = [[AFPItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[AFPDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
-                }
-            }
+            AFPItemMetadata *realmItem = [[AFPDataManager sharedManager] metadataItemForIdentifier:identifier];
+            item = [[AFPItem alloc] initWithItemMetadata:realmItem];
+        }
+        else if(identifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+        {
+            RealmSyncNodeInfo *realmItem = [[AFPDataManager sharedManager] syncItemForId:identifier];
+            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+            item = [[AFPItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[AFPDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
+        }
+        else if (identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument)
+        {
+            AFPItemMetadata *realmItem = [[AFPDataManager sharedManager] metadataItemForIdentifier:identifier];
+            item = [[AFPItem alloc] initWithItemMetadata:realmItem];
         }
         else if (identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
         {
-            AlfrescoFileManager *fileManager = [AlfrescoFileManager sharedManager];
             NSString *filename = [AFPItemIdentifier filenameFromItemIdentifier:identifier];
-            NSString *path = [[fileManager downloadsContentFolderPath] stringByAppendingPathComponent:filename];
-            item = [[AFPItem alloc] initWithLocalFilesPath:path];
+            NSURL *fileURL = [self.fileService localFilesURLForFilename:filename];
+            item = [[AFPItem alloc] initWithLocalFilesPath:fileURL.path];
         }
     }
     else
@@ -544,12 +547,9 @@
     if(item)
     {
         AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:identifier];
-        if (identifierType == AlfrescoFileProviderItemIdentifierTypeDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNode)
+        if (identifierType == AlfrescoFileProviderItemIdentifierTypeDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument || identifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
         {
-            // in this implementation, all paths are structured as <base storage directory>/<item identifier>/<item file name>
-            NSFileProviderManager *manager = [NSFileProviderManager defaultManager];
-            NSURL *perItemDirectory = [manager.documentStorageURL URLByAppendingPathComponent:identifier isDirectory:YES];
-            fileURL = [perItemDirectory URLByAppendingPathComponent:item.filename isDirectory:NO];
+            fileURL = [item fileURL];
         }
     }
     

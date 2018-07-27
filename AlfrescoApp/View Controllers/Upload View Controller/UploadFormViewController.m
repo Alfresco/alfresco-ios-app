@@ -24,6 +24,7 @@
 #import "UniversalDevice.h"
 #import "LocationManager.h"
 #import "RealmSyncManager.h"
+#import "AccountManager.h"
 
 NS_ENUM(NSUInteger, UploadFormCellTypes)
 {

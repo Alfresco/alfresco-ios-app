@@ -177,10 +177,6 @@ extern NSString * const kSyncProgressViewVisiblityChangeNotification;
 extern NSString * const kTopLevelSyncDidAddNodeNotification;
 extern NSString * const kTopLevelSyncDidRemoveNodeNotification;
 
-// Realm sync exceptions
-extern NSString * const kFailedToCreateRealmDatabase;
-extern NSString * const kRealmSyncErrorKey;
-
 // Download Status Notifications
 extern NSString * const kDocumentPreviewManagerWillStartDownloadNotification;
 extern NSString * const kDocumentPreviewManagerProgressNotification;

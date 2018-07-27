@@ -52,10 +52,12 @@
 - (void)loginToAccount:(id<AKUserAccount>)account completionBlock:(void (^)(BOOL successful, id<AlfrescoSession> session, NSError *loginError))completionBlock
 {
     AKLoginService *loginService = [[AKLoginService alloc] init];
+    __weak typeof(self) weakSelf = self;
     [loginService loginToAccount:account networkIdentifier:account.selectedNetworkIdentifier completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
         if (successful)
         {
-            self.accountIdentifierToSessionMappings[account.identifier] = session;
+            __strong typeof(self) strongSelf = weakSelf;
+            strongSelf.accountIdentifierToSessionMappings[account.identifier] = session;
         }
         
         completionBlock(successful, session, loginError);

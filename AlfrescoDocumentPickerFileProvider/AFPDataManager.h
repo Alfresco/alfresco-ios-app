@@ -17,10 +17,9 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import <Realm/Realm.h>
 #import "AFPItemMetadata.h"
-#import "RealmSyncNodeInfo.h"
-#import "RealmSyncError.h"
+#import "RealmSyncCore.h"
+#import "AFPItem.h"
 @class UserAccount;
 
 @interface AFPDataManager : NSObject
@@ -32,16 +31,21 @@
 - (void)saveMenuItem:(NSString *)menuItemIdentifierSuffix displayName:(NSString *)displayName forAccount:(UserAccount *)account;
 - (AFPItemMetadata *)saveNode:(AlfrescoNode *)node parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
 - (AFPItemMetadata *)saveSite:(AlfrescoSite *)site parentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier;
+- (AFPItemMetadata *)saveItem:(AFPItem *)item needsUpload:(BOOL)needUpload fileURL:(NSURL *)fileURL;
+- (void)removeItemMetadataForIdentifier:(NSString *)identifier;
 - (void)cleanMenuItemsForAccount:(UserAccount *)account;
 - (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)itemIdentifier downloaded:(BOOL)isDownloaded;
 
 - (AFPItemMetadata *)localFilesItem;
 - (RLMResults<AFPItemMetadata *> *)menuItemsForAccount:(NSString *)accountIdentifier;
 - (RLMResults<AFPItemMetadata *> *)menuItemsForParentIdentifier:(NSString *)itemIdentifier;
-- (id)dbItemForIdentifier:(NSFileProviderItemIdentifier)identifier;
+- (AFPItemMetadata *)metadataItemForIdentifier:(NSFileProviderItemIdentifier)identifier;
+- (RealmSyncNodeInfo *)syncItemForId:(NSFileProviderItemIdentifier)identifier;
 
-- (RLMResults<RealmSyncNodeInfo *> *)syncItemsInNodeWithId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
 - (NSFileProviderItemIdentifier)parentItemIdentifierOfSyncedNode:(RealmSyncNodeInfo *)syncedNode fromAccountIdentifier:(NSString *)accountIdentifier;
 - (NSFileProviderItemIdentifier)itemIdentifierOfSyncedNodeWithURL:(NSURL *)syncedNodeURL;
+- (RLMResults<RealmSyncNodeInfo *> *)syncItemsInParentNodeWithSyncId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
+- (RealmSyncNodeInfo *)syncItemForId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
+- (void)updateSyncDocumentWithId:(NSString *)identifier fromAccountIdentifier:(NSString *)accountIdentifier withAlfrescoNode:(AlfrescoDocument *)document;
 
 @end

@@ -27,6 +27,8 @@
 #import "RootRevealViewController.h"
 #import "SearchResultsTableViewDataSource.h"
 #import "UIBarButtonItem+MainMenu.h"
+#import "RealmSyncCore.h"
+#import "AccountManager.h"
 
 static CGFloat const kCellHeight = 73.0f;
 
@@ -149,7 +151,7 @@ static CGFloat const kCellHeight = 73.0f;
                     }
                     else
                     {
-                        NSString *contentPath = [(AlfrescoDocument *)currentItem contentPath];
+                        NSString *contentPath = [[RealmSyncCore sharedSyncCore] contentPathForNode:currentItem forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];
                         BOOL isDirectory = NO;
                         if (![[AlfrescoFileManager sharedManager] fileExistsAtPath:contentPath isDirectory:&isDirectory])
                         {
