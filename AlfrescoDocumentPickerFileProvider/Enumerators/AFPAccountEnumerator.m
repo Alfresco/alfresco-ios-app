@@ -20,6 +20,7 @@
 #import "AFPItem.h"
 #import "AFPDataManager.h"
 #import "AFPItemIdentifier.h"
+#import "AFPAccountManager.h"
 
 @interface AFPAccountEnumerator()
 
@@ -42,17 +43,25 @@
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
-    NSMutableArray *enumeratedFolders = [NSMutableArray new];
-    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
-    RLMResults<AFPItemMetadata *> *menuItems = [[AFPDataManager sharedManager] menuItemsForAccount:accountIdentifier];
-    for(AFPItemMetadata *menuItem in menuItems)
+    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    if (authenticationError)
     {
-        AFPItem *item = [[AFPItem alloc] initWithItemMetadata:menuItem];
-        [enumeratedFolders addObject:item];
+        [observer finishEnumeratingWithError:authenticationError];
     }
-    
-    [observer didEnumerateItems:enumeratedFolders];
-    [observer finishEnumeratingUpToPage:nil];
+    else
+    {
+        NSMutableArray *enumeratedFolders = [NSMutableArray new];
+        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
+        RLMResults<AFPItemMetadata *> *menuItems = [[AFPDataManager sharedManager] menuItemsForAccount:accountIdentifier];
+        for(AFPItemMetadata *menuItem in menuItems)
+        {
+            AFPItem *item = [[AFPItem alloc] initWithItemMetadata:menuItem];
+            [enumeratedFolders addObject:item];
+        }
+        
+        [observer didEnumerateItems:enumeratedFolders];
+        [observer finishEnumeratingUpToPage:nil];
+    }
 }
 
 - (void)invalidate

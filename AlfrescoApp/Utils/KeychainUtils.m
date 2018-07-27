@@ -1,21 +1,21 @@
 /*******************************************************************************
  * Copyright (C) 2005-2015 Alfresco Software Limited.
- * 
+ *
  * This file is part of the Alfresco Mobile iOS App.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *  http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
  *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  ******************************************************************************/
- 
+
 #import "KeychainUtils.h"
 #import "NSObject+DebugCheck.h"
 #import "UserAccount.h"
@@ -163,11 +163,19 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
 
 + (OSStatus)saveItem:(id)value forKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
 {
+    return [self saveItem:value forKey:keychainItemId inGroup:nil error:error];
+}
+
++ (OSStatus)saveItem:(id)value forKey:(NSString *)keychainItemId inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error
+{
     id existingValue = [self retrieveItemForKey:keychainItemId error:error];
     
     if (existingValue == nil)
     {
         NSMutableDictionary *keychainItem = [self keychainItem:keychainItemId withValue:value];
+        if (groupID.length) {
+            [keychainItem setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
+        }
         
         OSStatus statusCode = SecItemAdd((__bridge CFDictionaryRef)keychainItem, NULL);
         if (error && statusCode != errSecSuccess)
@@ -180,6 +188,9 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     else
     {
         NSMutableDictionary *keychainItemQuery = [self keychainItem:keychainItemId];
+        if (groupID.length) {
+            [keychainItemQuery setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
+        }
         NSMutableDictionary *updateDictionary = [[NSMutableDictionary alloc] init];
         NSData *encodedValue = [NSData data];
         
@@ -200,9 +211,12 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     }
 }
 
-+ (id)retrieveItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
++ (id)retrieveItemForKey:(NSString *)keychainItemId inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error
 {
     NSMutableDictionary *keychainItemQuery = [self keychainItemQuery:keychainItemId];
+    if (groupID.length) {
+        [keychainItemQuery setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
+    }
     
     CFTypeRef decryptedItem = NULL;
     OSStatus statusCode = SecItemCopyMatching((__bridge CFDictionaryRef)keychainItemQuery, &decryptedItem);
@@ -222,6 +236,11 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
         *error = [NSError errorWithDomain:@"SecItemCopyMatching failed " code:statusCode userInfo:nil];
     }
     return nil;
+}
+
++ (id)retrieveItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
+{
+    return [self retrieveItemForKey:keychainItemId inGroup:nil error:error];
 }
 
 + (OSStatus)deleteItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error

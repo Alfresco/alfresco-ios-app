@@ -22,24 +22,34 @@
 
 #import "AFPItem.h"
 #import "AFPDataManager.h"
+#import "AFPAccountManager.h"
 
 @implementation AFPRootEnumerator
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
-    NSArray *accounts = [self getAccountFromKeychain];
-    NSMutableArray *enumeratedAccounts = [NSMutableArray new];
-    for(UserAccount *account in accounts)
+    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    if (authenticationError)
     {
-        AFPItem *fpItem = [[AFPItem alloc] initWithUserAccount:account];
-        [enumeratedAccounts addObject:fpItem];
+        [observer finishEnumeratingWithError:authenticationError];
     }
-    
-    AFPItem *localFilesItem = [[AFPItem alloc] initWithItemMetadata:[[AFPDataManager sharedManager] localFilesItem]];
-    [enumeratedAccounts addObject:localFilesItem];
-    
-    [observer didEnumerateItems:enumeratedAccounts];
-    [observer finishEnumeratingUpToPage:nil];
+    else
+    {
+        
+        NSArray *accounts = [self getAccountFromKeychain];
+        NSMutableArray *enumeratedAccounts = [NSMutableArray new];
+        for(UserAccount *account in accounts)
+        {
+            AFPItem *fpItem = [[AFPItem alloc] initWithUserAccount:account];
+            [enumeratedAccounts addObject:fpItem];
+        }
+        
+        AFPItem *localFilesItem = [[AFPItem alloc] initWithItemMetadata:[[AFPDataManager sharedManager] localFilesItem]];
+        [enumeratedAccounts addObject:localFilesItem];
+        
+        [observer didEnumerateItems:enumeratedAccounts];
+        [observer finishEnumeratingUpToPage:nil];
+    }
 }
 
 - (void)invalidate

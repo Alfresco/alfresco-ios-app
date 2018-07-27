@@ -20,6 +20,7 @@
 #import "KeychainUtils.h"
 #import "UserAccountWrapper.h"
 #import "FileMetadata.h"
+#import <FileProvider/FileProvider.h>
 
 @interface AFPAccountManager()
 
@@ -86,7 +87,39 @@
     return account;
 }
 
++ (BOOL)isPINAuthenticationSet {
+    NSError *error = nil;
+    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                                error:&error];
+    
+    BOOL isPINSet = NO;
+    
+    if (error && error.code != errSecItemNotFound)
+    {
+        AlfrescoLogError(@"Error retrieving PIN key from keychain. Reason: %@", error.localizedDescription);
+    } else
+    {
+        isPINSet = pin.length ? YES : NO;
+    }
+    
+    return isPINSet;
+}
+
++ (NSError *)authenticationError
+{
+    NSError *error = nil;
+    if (@available(iOS 11.0, *))
+    {
+        error = [NSError errorWithDomain:NSFileProviderErrorDomain
+                                    code:NSFileProviderErrorNotAuthenticated
+                                userInfo:nil];
+    }
+    
+    return error;
+}
+
 #pragma mark - Public methods
+
 - (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession>, NSError *))completionBlock
 {
     id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[accountIdentifier];
@@ -101,6 +134,14 @@
             completionBlock(session, loginError);
         }];
     }
+}
+
++ (NSError *)authenticationErrorForPIN {
+    if ([self isPINAuthenticationSet]) {
+        return [self authenticationError];
+    }
+    
+    return nil;
 }
 
 @end

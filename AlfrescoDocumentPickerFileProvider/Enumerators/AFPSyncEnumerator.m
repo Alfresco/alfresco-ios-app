@@ -20,6 +20,7 @@
 #import "AFPDataManager.h"
 #import "AFPItem.h"
 #import "AFPItemIdentifier.h"
+#import "AFPAccountManager.h"
 
 @interface AFPSyncEnumerator()
 
@@ -42,20 +43,28 @@
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
-    NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
-    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
-    
-    NSString *nodeId = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
-    
-    RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nodeId forAccountIdentifier:accountIdentifier];
-    for(RealmSyncNodeInfo *node in syncedItems)
+    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    if (authenticationError)
     {
-        AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];
-        [enumeratedSyncedItems addObject:fpItem];
+        [observer finishEnumeratingWithError:authenticationError];
     }
-    
-    [observer didEnumerateItems:enumeratedSyncedItems];
-    [observer finishEnumeratingUpToPage:nil];
+    else
+    {
+        NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
+        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
+        
+        NSString *nodeId = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
+        
+        RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nodeId forAccountIdentifier:accountIdentifier];
+        for(RealmSyncNodeInfo *node in syncedItems)
+        {
+            AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];
+            [enumeratedSyncedItems addObject:fpItem];
+        }
+        
+        [observer didEnumerateItems:enumeratedSyncedItems];
+        [observer finishEnumeratingUpToPage:nil];
+    }
 }
 
 - (void)invalidate

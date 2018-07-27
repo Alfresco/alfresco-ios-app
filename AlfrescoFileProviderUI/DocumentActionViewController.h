@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,12 +16,10 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <FileProviderUI/FileProviderUI.h>
 
-@interface AFPAccountManager : NSObject
-
-+ (instancetype)sharedManager;
-- (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession> session, NSError *loginError))completionBlock;
-+ (NSError *)authenticationErrorForPIN;
+API_AVAILABLE(ios(11.0))
+@interface DocumentActionViewController : FPUIActionExtensionViewController
 
 @end
