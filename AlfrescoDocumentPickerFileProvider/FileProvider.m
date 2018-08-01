@@ -261,6 +261,8 @@
                 [self.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
                     if (session)
                     {
+                        __block BOOL networkOperationCallbackComplete = NO;
+                        
                         NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:url append:NO];
                         
                         AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
@@ -268,6 +270,8 @@
                             if(node)
                             {
                                 [docService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
+                                    networkOperationCallbackComplete = YES;
+                                    
                                     if (error)
                                     {
                                         completionHandler(error);
@@ -282,8 +286,20 @@
                             else
                             {
                                 completionHandler(error);
+                                networkOperationCallbackComplete = YES;
                             }
                         }];
+                        
+                        /*
+                         * Keep this object around long enough for the network operations to complete.
+                         * Running as a background thread, seperate from the UI, so should not cause
+                         * Any issues when blocking the thread.
+                         */
+                        do
+                        {
+                            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                        }
+                        while (networkOperationCallbackComplete == NO);
                     }
                     else
                     {
