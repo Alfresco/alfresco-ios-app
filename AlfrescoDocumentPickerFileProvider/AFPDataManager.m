@@ -378,15 +378,11 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return syncNode;
 }
 
-- (void)updateSyncDocumentWithId:(NSString *)identifier fromAccountIdentifier:(NSString *)accountIdentifier withAlfrescoNode:(AlfrescoDocument *)document
+- (void)updateSyncDocument:(AlfrescoDocument *)oldDocument withAlfrescoNode:(AlfrescoDocument *)document fromPath:(NSString *)path fromAccountIdentifier:(NSString *)accountIdentifier
 {
     if(accountIdentifier.length)
     {
-        RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
-        if(identifier.length)
-        {
-            [[RealmSyncCore sharedSyncCore] updateSyncNodeInfoForNodeWithSyncId:identifier alfrescoNode:document lastDownloadedDate:[NSDate date] syncContentPath:nil inRealm:realm];
-        }
+        [[RealmSyncCore sharedSyncCore] didUploadNewVersionForDocument:oldDocument updatedDocument:document fromPath:path forAccountIdentifier:accountIdentifier];
     }
 }
 

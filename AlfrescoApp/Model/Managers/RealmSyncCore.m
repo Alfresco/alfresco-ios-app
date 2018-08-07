@@ -309,9 +309,12 @@
             documentInfo.lastDownloadedDate = [NSDate date];
             [backgroundRealm commitWriteTransaction];
             
-            NSString *existingDocumentPath = [self contentPathForNode:document forAccountIdentifier:accountIdentifier];
-            [[AlfrescoFileManager sharedManager] removeItemAtPath:existingDocumentPath error:nil];
-            [[AlfrescoFileManager sharedManager] moveItemAtPath:path toPath:existingDocumentPath error:nil];
+            if(path.length)
+            {
+                NSString *existingDocumentPath = [self contentPathForNode:document forAccountIdentifier:accountIdentifier];
+                [[AlfrescoFileManager sharedManager] removeItemAtPath:existingDocumentPath error:nil];
+                [[AlfrescoFileManager sharedManager] moveItemAtPath:path toPath:existingDocumentPath error:nil];
+            }
         }
     });
 }

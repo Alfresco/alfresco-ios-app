@@ -422,11 +422,11 @@
             NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
             RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:docSyncIdentifier forAccountIdentifier:accountIdentifier];
             AlfrescoDocument *alfrescoDoc = (AlfrescoDocument *)syncNode.alfrescoNode;
+            NSURL *destinationURL = [NSURL fileURLWithPath:[[[RealmSyncCore sharedSyncCore] syncContentDirectoryPathForAccountWithId:accountIdentifier] stringByAppendingPathComponent:syncNode.syncContentPath]];
             // Coordinate the reading of the file for uploading
             __weak typeof(self) weakSelf = self;
             [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newReadingURL) {
                 __strong typeof(self) strongSelf = weakSelf;
-                NSURL *destinationURL = [NSURL fileURLWithPath:syncNode.syncContentPath];
                 [strongSelf.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
                     [weakSelf.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
                 }];
@@ -443,7 +443,7 @@
                             }
                             else
                             {
-                                [[AFPDataManager sharedManager] updateSyncDocumentWithId:docSyncIdentifier fromAccountIdentifier:accountIdentifier withAlfrescoNode:document];
+                                [[AFPDataManager sharedManager] updateSyncDocument:alfrescoDoc withAlfrescoNode:document fromPath:nil fromAccountIdentifier:accountIdentifier];
                             }
                             networkOperationCallbackComplete = YES;
                         }];
