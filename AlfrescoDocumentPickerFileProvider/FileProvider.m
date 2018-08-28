@@ -416,13 +416,28 @@
                 [strongSelf.fileService saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
             }];
         }
-        else if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+        else if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument || itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
         {
-            NSString *docSyncIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
-            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
-            RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:docSyncIdentifier forAccountIdentifier:accountIdentifier];
-            AlfrescoDocument *alfrescoDoc = (AlfrescoDocument *)syncNode.alfrescoNode;
-            NSURL *destinationURL = [NSURL fileURLWithPath:[[[RealmSyncCore sharedSyncCore] syncContentDirectoryPathForAccountWithId:accountIdentifier] stringByAppendingPathComponent:syncNode.syncContentPath]];
+            AlfrescoDocument *alfrescoDoc;
+            NSString *accountIdentifier;
+            NSURL *destinationURL;
+            if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+            {
+                NSString *docSyncIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
+                accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
+                RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:docSyncIdentifier forAccountIdentifier:accountIdentifier];
+                alfrescoDoc = (AlfrescoDocument *)syncNode.alfrescoNode;
+                destinationURL = [NSURL fileURLWithPath:[[[RealmSyncCore sharedSyncCore] syncContentDirectoryPathForAccountWithId:accountIdentifier] stringByAppendingPathComponent:syncNode.syncContentPath]];
+            }
+            else if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
+            {
+                accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
+                AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] metadataItemForIdentifier:itemIdentifier];
+                alfrescoDoc = (AlfrescoDocument *)itemMetadata.alfrescoNode;
+                AFPItem *item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
+                destinationURL = [item fileURL];
+            }
+            
             // Coordinate the reading of the file for uploading
             __weak typeof(self) weakSelf = self;
             [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newReadingURL) {
