@@ -189,10 +189,21 @@
     else
     {
         NSMutableArray *fileProviderItems = [NSMutableArray new];
+        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
+        RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
         for (AlfrescoNode *node in pagingResult.objects)
         {
-            AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveNode:node parentIdentifier:self.itemIdentifier];
-            AFPItem *item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
+            AFPItem *item;
+            if([[RealmSyncCore sharedSyncCore] isNode:node inSyncListInRealm:realm])
+            {
+                RealmSyncNodeInfo *syncNode = [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
+                item = [[AFPItem alloc] initWithSyncedNode:syncNode parentItemIdentifier:self.itemIdentifier];
+            }
+            else
+            {
+                AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveNode:node parentIdentifier:self.itemIdentifier];
+                item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
+            }
             [fileProviderItems addObject:item];
         }
         [self.observer didEnumerateItems:fileProviderItems];
