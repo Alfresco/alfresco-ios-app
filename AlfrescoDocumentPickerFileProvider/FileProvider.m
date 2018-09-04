@@ -134,61 +134,37 @@
 
 - (void)providePlaceholderAtURL:(NSURL *)url completionHandler:(void (^)(NSError *error))completionHandler
 {
-    FileMetadata *fileMetadata = [self fileMetadataForURL:url];
-    NSError *placeholderWriteError = nil;
-    if (fileMetadata)
+    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    if(!authenticationError)
     {
-        // iOS 10
-        AlfrescoDocument *document = (AlfrescoDocument *)fileMetadata.repositoryNode;
-        NSString *fileName = document.name;
-        unsigned long long fileSize = document.contentLength;
-        
-        NSURL *placeholderURL = [NSFileProviderExtension placeholderURLForURL:[self.documentStorageURL URLByAppendingPathComponent:fileName]];
-        
-        [self.fileCoordinator coordinateWritingItemAtURL:placeholderURL options:0 error:&placeholderWriteError byAccessor:^(NSURL *newURL) {
-            NSDictionary *metadata = @{NSURLNameKey : document.name, NSURLFileSizeKey : @(fileSize), NSURLContentModificationDateKey : document.modifiedAt};
-            [NSFileProviderExtension writePlaceholderAtURL:placeholderURL withMetadata:metadata error:NULL];
-        }];
-    }
-    else
-    {
-        // iOS 11
-        NSError * authenticationError = [AFPAccountManager authenticationErrorForPIN];
-        if(!authenticationError)
+        NSArray <NSString *> *pathComponents = [url pathComponents];
+        if(pathComponents.count > 2)
         {
-            NSArray <NSString *> *pathComponents = [url pathComponents];
-            if(pathComponents.count > 2)
+            NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
+            AFPItem *item = [self itemForIdentifier:itemIdentifier error:&authenticationError];
+            
+            if(item)
             {
-                NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
-                AFPItem *item = [self itemForIdentifier:itemIdentifier error:&placeholderWriteError];
-                
-                if(item)
+                NSURL *placeholderURL = [NSFileProviderManager placeholderURLForURL:url];
+                NSFileManager *fileManager = [NSFileManager new];
+                [fileManager createDirectoryAtURL:[placeholderURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
+                NSError *error = nil;
+                @try
                 {
-                    NSURL *placeholderURL = [NSFileProviderManager placeholderURLForURL:url];
-                    NSFileManager *fileManager = [NSFileManager new];
-                    [fileManager createDirectoryAtURL:[placeholderURL URLByDeletingLastPathComponent] withIntermediateDirectories:YES attributes:nil error:nil];
-                    NSError *error = nil;
-                    @try
-                    {
-                        [NSFileProviderManager writePlaceholderAtURL:placeholderURL withMetadata:item error:&error];
-                    }
-                    @catch (NSException *e)
-                    {
-                        AlfrescoLogError(@"Exception: %@", e);
-                    }
-                    placeholderWriteError = error;
+                    [NSFileProviderManager writePlaceholderAtURL:placeholderURL withMetadata:item error:&error];
                 }
+                @catch (NSException *e)
+                {
+                    AlfrescoLogError(@"Exception: %@", e);
+                }
+                authenticationError = error;
             }
-        }
-        else
-        {
-            placeholderWriteError = authenticationError;
         }
     }
     
     if (completionHandler)
     {
-        completionHandler(placeholderWriteError);
+        completionHandler(authenticationError);
     }
 }
 
@@ -210,115 +186,64 @@
         }
         else
         {
-            FileMetadata *metadata = [self fileMetadataForURL:url];
-            if(metadata)
+            NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
+            AlfrescoFileProviderItemIdentifierType itemIdentifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
+            if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
             {
-                // iOS 10
-                if (metadata.saveLocation == FileMetadataSaveLocationRepository)
-                {
-                    [self.accountManager getSessionForAccountIdentifier:metadata.accountIdentifier networkIdentifier:metadata.networkIdentifier withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
-                        if (session)
-                        {
-                            NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:url append:NO];
-                            
-                            AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-                            [docService retrieveContentOfDocument:(AlfrescoDocument *)metadata.repositoryNode outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-                                if (error)
-                                {
-                                    completionHandler(error);
-                                }
-                                else
-                                {
-                                    completionHandler(nil);
-                                }
-                            } progressBlock:nil];
-                        }
-                        else
-                        {
-                            completionHandler(loginError);
-                        }
-                    }];
-                }
-                else if (metadata.saveLocation == FileMetadataSaveLocationLocalFiles)
-                {
-                    NSString *downloadContentPath = [[AlfrescoFileManager sharedManager] downloadsContentFolderPath];
-                    NSString *fullSourcePath = [downloadContentPath stringByAppendingPathComponent:url.lastPathComponent];
-                    NSURL *sourceURL = [NSURL fileURLWithPath:fullSourcePath];
-                    
-                    NSError *copyError = nil;
-                    NSFileManager *fileManager = [[NSFileManager alloc] init];
-                    [fileManager copyItemAtURL:sourceURL toURL:url error:&copyError];
-                    
-                    if (copyError)
-                    {
-                        AlfrescoLogError(@"Unable to copy item from: %@, to: %@. Error: %@", sourceURL, url, copyError.localizedDescription);
-                    }
-                    
-                    completionHandler(copyError);
-                }
+                NSURL *sourceURL = [self.fileService localFilesURLForFilename:url.lastPathComponent];
+                NSError *copyError = [self.fileService saveDocumentAtURL:sourceURL toURL:url overwritingExistingFile:NO];
+                completionHandler(copyError);
             }
             else
             {
-                // iOS 11
-                NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
-                AlfrescoFileProviderItemIdentifierType itemIdentifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
-                if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
-                {
-                    NSURL *sourceURL = [self.fileService localFilesURLForFilename:url.lastPathComponent];
-                    NSError *copyError = [self.fileService saveDocumentAtURL:sourceURL toURL:url overwritingExistingFile:NO];
-                    completionHandler(copyError);
-                }
-                else
-                {
-                    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
-                    NSString *documentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
-                    [self.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
-                        if (session)
-                        {
-                            __block BOOL networkOperationCallbackComplete = NO;
-                            NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:url append:NO];
-                            AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-                            [docService retrieveNodeWithIdentifier:documentIdentifier completionBlock:^(AlfrescoNode *node, NSError *error) {
-                                if(node)
-                                {
-                                    [docService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
-                                        networkOperationCallbackComplete = YES;
-                                        
-                                        if (error)
-                                        {
-                                            completionHandler(error);
-                                        }
-                                        else
-                                        {
-                                            [[AFPDataManager sharedManager] updateMetadataForIdentifier:itemIdentifier downloaded:YES];
-                                            completionHandler(nil);
-                                        }
-                                    } progressBlock:nil];
-                                }
-                                else
-                                {
-                                    completionHandler(error);
-                                    networkOperationCallbackComplete = YES;
-                                }
-                            }];
-                            
-                            /*
-                             * Keep this object around long enough for the network operations to complete.
-                             * Running as a background thread, seperate from the UI, so should not cause
-                             * Any issues when blocking the thread.
-                             */
-                            do
+                NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
+                NSString *documentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
+                [self.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+                    if (session)
+                    {
+                        __block BOOL networkOperationCallbackComplete = NO;
+                        NSOutputStream *outputStream = [NSOutputStream outputStreamWithURL:url append:NO];
+                        AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+                        [docService retrieveNodeWithIdentifier:documentIdentifier completionBlock:^(AlfrescoNode *node, NSError *error) {
+                            if(node)
                             {
-                                [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                                [docService retrieveContentOfDocument:(AlfrescoDocument *)node outputStream:outputStream completionBlock:^(BOOL succeeded, NSError *error) {
+                                    networkOperationCallbackComplete = YES;
+                                    
+                                    if (error)
+                                    {
+                                        completionHandler(error);
+                                    }
+                                    else
+                                    {
+                                        [[AFPDataManager sharedManager] updateMetadataForIdentifier:itemIdentifier downloaded:YES];
+                                        completionHandler(nil);
+                                    }
+                                } progressBlock:nil];
                             }
-                            while (networkOperationCallbackComplete == NO);
-                        }
-                        else
+                            else
+                            {
+                                completionHandler(error);
+                                networkOperationCallbackComplete = YES;
+                            }
+                        }];
+                        
+                        /*
+                         * Keep this object around long enough for the network operations to complete.
+                         * Running as a background thread, seperate from the UI, so should not cause
+                         * Any issues when blocking the thread.
+                         */
+                        do
                         {
-                            completionHandler(loginError);
+                            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                         }
-                    }];
-                }
+                        while (networkOperationCallbackComplete == NO);
+                    }
+                    else
+                    {
+                        completionHandler(loginError);
+                    }
+                }];
             }
         }
     }
@@ -328,171 +253,80 @@
 {
     AlfrescoLogInfo(@"Item changed at URL %@", url);
     
-    NSFileManager *fileManager = [[NSFileManager alloc] init];
-    NSDictionary *fileAttributes = [fileManager attributesOfItemAtPath:url.path error:nil];
-    NSDate *urlModificationDate = fileAttributes[NSFileModificationDate];
-    
-    FileMetadata *metadata = [self fileMetadataForURL:url];
-    if(metadata)
+    NSError * authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    if(!authenticationError)
     {
-        // the document exists in the AlfrescoRepository
-        AlfrescoDocument *repoNode = (AlfrescoDocument *)metadata.repositoryNode;
-        
-        if (![repoNode.modifiedAt isEqualToDate:urlModificationDate] && metadata.status != FileMetadataStatusUploading)
+        NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
+        AlfrescoFileProviderItemIdentifierType itemIdentifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
+        if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
         {
-            if (metadata.saveLocation == FileMetadataSaveLocationRepository)
+            NSURL *destinationURL = [self.fileService localFilesURLForFilename:[AFPItemIdentifier filenameFromItemIdentifier:itemIdentifier]];
+            __weak typeof(self) weakSelf = self;
+            [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
+                __strong typeof(self) strongSelf = weakSelf;
+                [strongSelf.fileService saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
+            }];
+        }
+        else if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument || itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
+        {
+            AlfrescoDocument *alfrescoDoc;
+            NSString *accountIdentifier;
+            NSURL *destinationURL;
+            if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
             {
-                // Coordinate the reading of the file for uploading
-                [self.fileCoordinator coordinateReadingItemAtURL:metadata.fileURL options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newReadingURL) {
-                    // define an upload block
-                    __block BOOL networkOperationCallbackComplete = NO;
-                    void (^uploadBlock)(id<AlfrescoSession>session) = ^(id<AlfrescoSession>session) {
-                        AlfrescoDocument *updateDocument = (AlfrescoDocument *)metadata.repositoryNode;
-                        [self uploadDocument:updateDocument sourceURL:newReadingURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
+                NSString *docSyncIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
+                accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
+                RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:docSyncIdentifier forAccountIdentifier:accountIdentifier];
+                alfrescoDoc = (AlfrescoDocument *)syncNode.alfrescoNode;
+                destinationURL = [NSURL fileURLWithPath:[[[RealmSyncCore sharedSyncCore] syncContentDirectoryPathForAccountWithId:accountIdentifier] stringByAppendingPathComponent:syncNode.syncContentPath]];
+            }
+            else if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
+            {
+                accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
+                AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] metadataItemForIdentifier:itemIdentifier];
+                alfrescoDoc = (AlfrescoDocument *)itemMetadata.alfrescoNode;
+                AFPItem *item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
+                destinationURL = [item fileURL];
+            }
+            
+            // Coordinate the reading of the file for uploading
+            __weak typeof(self) weakSelf = self;
+            [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newReadingURL) {
+                __strong typeof(self) strongSelf = weakSelf;
+                [strongSelf.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
+                    [weakSelf.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
+                }];
+                
+                __block BOOL networkOperationCallbackComplete = NO;
+                // Session exists, use that, else do a login and then upload.
+                [strongSelf.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+                    if(session)
+                    {
+                        [weakSelf uploadDocument:alfrescoDoc sourceURL:newReadingURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
                             if (updateError)
                             {
-                                AlfrescoLogError(@"Error Updating Document: %@. Error: %@", updateDocument.name, updateError.localizedDescription);
-                                NSString *filename = url.lastPathComponent;
-                                filename = [Utilities filenameWithoutVersionFromFilename:filename nodeIdentifier:repoNode.identifier];
-                                NSURL *destinationURL = [self.fileService localFilesURLForFilename:filename];
-                                [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                                    [self.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
-                                }];
+                                AlfrescoLogError(@"Error Updating Document: %@. Error: %@", alfrescoDoc.name, updateError.localizedDescription);
                             }
                             else
                             {
-                                AlfrescoLogInfo(@"Successfully updated document: %@, Modified At: %@, Created At: %@", document.name, document.modifiedAt, document.createdAt);
-                                metadata.repositoryNode = document;
+                                [[AFPDataManager sharedManager] updateSyncDocument:alfrescoDoc withAlfrescoNode:document fromPath:nil fromAccountIdentifier:accountIdentifier];
                             }
                             networkOperationCallbackComplete = YES;
-                            metadata.status = FileMetadataStatusPendingUpload;
-                            [self.queueStore saveQueue];
                         }];
-                        
-                        // Set the metadata to uploading - ensure the upload doesnt start again.
-                        metadata.status = FileMetadataStatusUploading;
-                        [self.queueStore saveQueue];
-                    };
-                    
-                    // Session exists, use that, else do a login and then upload.
-                    [self.accountManager getSessionForAccountIdentifier:metadata.accountIdentifier networkIdentifier:metadata.networkIdentifier withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
-                        if(loginError)
-                        {
-                            AlfrescoLogError(@"Error Logging In: %@", loginError.localizedDescription);
-                            NSString *filename = url.lastPathComponent;
-                            filename = [Utilities filenameWithoutVersionFromFilename:filename nodeIdentifier:repoNode.identifier];
-                            NSURL *destinationURL = [self.fileService localFilesURLForFilename:filename];
-                            [self.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                                [self.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
-                            }];
-                        }
-                        else
-                        {
-                            uploadBlock(session);
-                        }
-                    }];
-                    
-                    /*
-                     * Keep this object around long enough for the network operations to complete.
-                     * Running as a background thread, seperate from the UI, so should not cause
-                     * Any issues when blocking the thread.
-                     */
-                    do
-                    {
-                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                     }
-                    while (networkOperationCallbackComplete == NO);
                 }];
                 
-            }
-            else if (metadata.saveLocation == FileMetadataSaveLocationLocalFiles)
-            {
-                NSURL *destinationURL = [self.fileService localFilesURLForFilename:url.lastPathComponent];
-                [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                    [self.fileService saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
-                    
-                }];
-            }
-        }
-    }
-    else
-    {
-        // iOS 11
-        NSError * authenticationError = [AFPAccountManager authenticationErrorForPIN];
-        if(!authenticationError)
-        {
-            NSFileProviderItemIdentifier itemIdentifier = [self persistentIdentifierForItemAtURL:url];
-            AlfrescoFileProviderItemIdentifierType itemIdentifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
-            if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
-            {
-                NSURL *destinationURL = [self.fileService localFilesURLForFilename:[AFPItemIdentifier filenameFromItemIdentifier:itemIdentifier]];
-                __weak typeof(self) weakSelf = self;
-                [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading writingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL *newReadingURL, NSURL *newWritingURL) {
-                    __strong typeof(self) strongSelf = weakSelf;
-                    [strongSelf.fileService saveDocumentAtURL:newReadingURL toURL:newWritingURL overwritingExistingFile:YES];
-                }];
-            }
-            else if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument || itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
-            {
-                AlfrescoDocument *alfrescoDoc;
-                NSString *accountIdentifier;
-                NSURL *destinationURL;
-                if(itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+                /*
+                 * Keep this object around long enough for the network operations to complete.
+                 * Running as a background thread, seperate from the UI, so should not cause
+                 * Any issues when blocking the thread.
+                 */
+                do
                 {
-                    NSString *docSyncIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
-                    accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
-                    RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:docSyncIdentifier forAccountIdentifier:accountIdentifier];
-                    alfrescoDoc = (AlfrescoDocument *)syncNode.alfrescoNode;
-                    destinationURL = [NSURL fileURLWithPath:[[[RealmSyncCore sharedSyncCore] syncContentDirectoryPathForAccountWithId:accountIdentifier] stringByAppendingPathComponent:syncNode.syncContentPath]];
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
                 }
-                else if (itemIdentifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
-                {
-                    accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
-                    AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] metadataItemForIdentifier:itemIdentifier];
-                    alfrescoDoc = (AlfrescoDocument *)itemMetadata.alfrescoNode;
-                    AFPItem *item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
-                    destinationURL = [item fileURL];
-                }
-                
-                // Coordinate the reading of the file for uploading
-                __weak typeof(self) weakSelf = self;
-                [self.fileCoordinator coordinateReadingItemAtURL:url options:NSFileCoordinatorReadingForUploading error:nil byAccessor:^(NSURL *newReadingURL) {
-                    __strong typeof(self) strongSelf = weakSelf;
-                    [strongSelf.fileCoordinator coordinateWritingItemAtURL:destinationURL options:NSFileCoordinatorWritingForReplacing error:nil byAccessor:^(NSURL * _Nonnull newURL) {
-                        [weakSelf.fileService saveDocumentAtURL:newReadingURL toURL:newURL overwritingExistingFile:YES];
-                    }];
-                    
-                    __block BOOL networkOperationCallbackComplete = NO;
-                    // Session exists, use that, else do a login and then upload.
-                    [strongSelf.accountManager getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
-                        if(session)
-                        {
-                            [weakSelf uploadDocument:alfrescoDoc sourceURL:newReadingURL session:session completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
-                                if (updateError)
-                                {
-                                    AlfrescoLogError(@"Error Updating Document: %@. Error: %@", alfrescoDoc.name, updateError.localizedDescription);
-                                }
-                                else
-                                {
-                                    [[AFPDataManager sharedManager] updateSyncDocument:alfrescoDoc withAlfrescoNode:document fromPath:nil fromAccountIdentifier:accountIdentifier];
-                                }
-                                networkOperationCallbackComplete = YES;
-                            }];
-                        }
-                    }];
-                    
-                    /*
-                     * Keep this object around long enough for the network operations to complete.
-                     * Running as a background thread, seperate from the UI, so should not cause
-                     * Any issues when blocking the thread.
-                     */
-                    do
-                    {
-                        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-                    }
-                    while (networkOperationCallbackComplete == NO);
-                }];
-            }
+                while (networkOperationCallbackComplete == NO);
+            }];
         }
     }
 }
