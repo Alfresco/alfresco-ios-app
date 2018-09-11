@@ -39,9 +39,9 @@
                     AFPItemMetadata *itemMetadata = (AFPItemMetadata *)[[AFPDataManager sharedManager] metadataItemForIdentifier:itemIdentifier];
                     if(itemMetadata.parentIdentifier.length)
                     {
-                        NSString *nodeIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemMetadata.parentIdentifier];
+                        NSString *parentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemMetadata.parentIdentifier];
                         AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-                        [docService retrieveNodeWithIdentifier:nodeIdentifier completionBlock:^(AlfrescoNode *node, NSError *error) {
+                        [docService retrieveNodeWithIdentifier:parentIdentifier completionBlock:^(AlfrescoNode *node, NSError *error) {
                             if(node)
                             {
                                 AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:[NSURL fileURLWithPath:itemMetadata.filePath]];
@@ -54,6 +54,9 @@
                                             [[RealmSyncCore sharedSyncCore] didUploadNode:document fromPath:contentFile.fileUrl.path toFolder:(AlfrescoFolder *)node forAccountIdentifier:accountIdentifier];
                                             [[AlfrescoFileManager sharedManager] removeItemAtURL:[contentFile.fileUrl URLByDeletingLastPathComponent] error:nil];
                                             [[AFPDataManager sharedManager] removeItemMetadataForIdentifier:item.identifier];
+                                        } else if (itemType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument) {
+                                            [[AFPDataManager sharedManager] updateMetadata:itemMetadata
+                                                                          withSyncDocument:document];
                                         }
                                     }
                                     else
