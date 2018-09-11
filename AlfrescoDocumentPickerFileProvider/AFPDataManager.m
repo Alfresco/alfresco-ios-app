@@ -218,8 +218,7 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
 
 - (void)removeItemMetadataForIdentifier:(NSString *)identifier
 {
-    NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
-    RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
+    RLMRealm *realm = [self realm];
     AFPItemMetadata *itemMetadataToDelete = [self metadataItemForIdentifier:identifier];
     if(itemMetadataToDelete)
     {
@@ -383,6 +382,27 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     if(accountIdentifier.length)
     {
         [[RealmSyncCore sharedSyncCore] didUploadNewVersionForDocument:oldDocument updatedDocument:document fromPath:path forAccountIdentifier:accountIdentifier];
+    }
+}
+
+- (void)updateMetadata:(AFPItemMetadata *)metadata
+      withSyncDocument:(AlfrescoDocument *)alfrescoDocument
+{
+    if(alfrescoDocument && metadata)
+    {
+        RLMRealm *realm = [self realm];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", metadata.identifier];
+        RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm
+                                                                withPredicate:pred];
+        if(list.count > 0)
+        {
+            AFPItemMetadata *item = list.firstObject;
+            
+            [realm transactionWithBlock:^{
+                item.node = [NSKeyedArchiver archivedDataWithRootObject:alfrescoDocument];
+                [realm addOrUpdateObject:item];
+            }];
+        }
     }
 }
 
