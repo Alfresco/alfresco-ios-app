@@ -567,7 +567,7 @@
     AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] metadataItemForIdentifier:itemIdentifier];
     
     if (itemMetadata.alfrescoNode) {
-        RLMRealm *realm = [[AFPDataManager sharedManager] realm];
+        RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
         
         RealmSyncNodeInfo *syncNode =
         [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:itemMetadata.alfrescoNode
@@ -657,7 +657,7 @@
     forAccountIdentifier:(NSString *)accountIdentifier
 
 {
-    __block AlfrescoDocument *document = alfrescoDocument;
+    __block AlfrescoDocument *oldAlfrescoDocument = alfrescoDocument;
     __block BOOL networkOperationCallbackComplete = NO;
     __weak typeof(self) weakSelf = self;
     
@@ -668,18 +668,18 @@
      {
          if(session)
          {
-             [weakSelf uploadDocument:document
+             [weakSelf uploadDocument:oldAlfrescoDocument
                             sourceURL:url
                               session:session
-                      completionBlock:^(AlfrescoDocument *document, NSError *updateError) {
+                      completionBlock:^(AlfrescoDocument *newAlfrescoDocument, NSError *updateError) {
                           if (updateError)
                           {
-                              AlfrescoLogError(@"Error Updating Document: %@. Error: %@", document.name, updateError.localizedDescription);
+                              AlfrescoLogError(@"Error Updating Document: %@. Error: %@", oldAlfrescoDocument.name, updateError.localizedDescription);
                           }
                           else
                           {
-                              [[AFPDataManager sharedManager] updateSyncDocument:document
-                                                                withAlfrescoNode:document
+                              [[AFPDataManager sharedManager] updateSyncDocument:oldAlfrescoDocument
+                                                                withAlfrescoNode:newAlfrescoDocument
                                                                         fromPath:nil
                                                            fromAccountIdentifier:accountIdentifier];
                               [[AFPDataManager sharedManager] removeItemMetadataForIdentifier:itemIdentifier];
