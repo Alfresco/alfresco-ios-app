@@ -327,20 +327,27 @@
                  return ;
              }
              
-             NSError *fError, *createError;
+             NSError *moveError, *removeError;
              
              [fileManager createDirectoryAtURL:[storageURL URLByDeletingLastPathComponent]
                    withIntermediateDirectories:YES
                                     attributes:nil
-                                         error:&createError];
+                                         error:nil];
+             
+             [fileManager removeItemAtPath:storageURL.path
+                                     error:&removeError];
+             
+             if (removeError) {
+                 AlfrescoLogError(@"Encountered an error while removing file: %@", removeError.localizedDescription);
+             }
              
              [fileManager moveItemAtPath:url.path
                                   toPath:storageURL.path
-                                   error:&fError];
-             if (fError)
+                                   error:&moveError];
+             if (moveError)
              {
-                 AlfrescoLogError(@"Encountered an error while importing file:%@", fError.localizedDescription);
-                 completionHandler(nil, fError);
+                 AlfrescoLogError(@"Encountered an error while importing file: %@", moveError.localizedDescription);
+                 completionHandler(nil, moveError);
                  return;
              } else {
                  [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:parentItemIdentifier
