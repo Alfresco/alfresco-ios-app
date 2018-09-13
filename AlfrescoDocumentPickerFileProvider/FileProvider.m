@@ -405,7 +405,7 @@
     
     AFPItem *item = [self itemForIdentifier:identifier
                                       error:NULL];
-    if(item)
+    if([item.itemIdentifier isEqualToString:identifier])
     {
         AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:identifier];
         if (identifierType == AlfrescoFileProviderItemIdentifierTypeDocument ||
