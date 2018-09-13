@@ -605,7 +605,12 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
 #pragma mark - File Provider support
 - (void)informLocalFilesEnumerator
 {
-    [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:kFileProviderLocalFilesPrefix completionHandler:nil];
+    [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:kFileProviderLocalFilesPrefix completionHandler:^(NSError * _Nullable error) {
+        if (error != NULL)
+        {
+            AlfrescoLogError(@"ERROR: Couldn't signal enumerator for changes %@", error);
+        }
+    }];
 }
 
 @end

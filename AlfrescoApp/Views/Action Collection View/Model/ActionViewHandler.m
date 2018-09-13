@@ -38,6 +38,7 @@
 #import "PrintingWebView.h"
 #import "RealmSyncNodeInfo.h"
 #import "RealmManager.h"
+#import "AFPItemIdentifier.h"
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -137,10 +138,12 @@
                                                                label:[weakSelf analyticsLabel]
                                                                value:@1];
             
+            [weakSelf informFavoritesEnumerator];
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierUnfavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.unfavourite", @"Unfavourite Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-unfavorite.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
+            
         }
     }];
 }
@@ -157,6 +160,7 @@
                                                                label:[weakSelf analyticsLabel]
                                                                value:@1];
             
+            [weakSelf informFavoritesEnumerator];
             NSDictionary *userInfo = @{kActionCollectionItemUpdateItemIndentifier : kActionCollectionIdentifierFavourite,
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-favorite.png"};
@@ -890,6 +894,19 @@
 {
     NSDictionary *notificationObject = @{kAlfrescoNodeAddedOnServerParentFolderKey : self.node, kAlfrescoNodeAddedOnServerSubNodeKey : node, kAlfrescoNodeAddedOnServerContentLocationLocally : locationURL};
     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoNodeAddedOnServerNotification object:notificationObject];
+}
+
+#pragma mark - File Provider support
+- (void)informFavoritesEnumerator
+{
+    UserAccount *currentAccount = [[AccountManager sharedManager] selectedAccount];
+    NSFileProviderItemIdentifier favoriteFolderItemIdentifier = [AFPItemIdentifier itemIdentifierForSuffix:kFileProviderFavoritesFolderIdentifierSuffix andAccount:currentAccount];
+    [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:favoriteFolderItemIdentifier completionHandler:^(NSError * _Nullable error) {
+        if (error != NULL)
+        {
+            AlfrescoLogError(@"ERROR: Couldn't signal enumerator for changes %@", error);
+        }
+    }];
 }
 
 @end
