@@ -18,8 +18,6 @@
 
 #import "AFPRootEnumerator.h"
 
-#import "KeychainUtils.h"
-
 #import "AFPItem.h"
 #import "AFPDataManager.h"
 #import "AFPAccountManager.h"
@@ -36,7 +34,7 @@
     else
     {
         
-        NSArray *accounts = [self getAccountFromKeychain];
+        NSArray *accounts = [AFPAccountManager getAccountsFromKeychain];
         NSMutableArray *enumeratedAccounts = [NSMutableArray new];
         for(UserAccount *account in accounts)
         {
@@ -55,20 +53,6 @@
 - (void)invalidate
 {
     // TODO: perform invalidation of server connection if necessary
-}
-
-#pragma mark - Private methods
-- (NSArray *)getAccountFromKeychain
-{
-    NSError *keychainError = nil;
-    NSArray *accounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&keychainError];
-    
-    if (keychainError)
-    {
-        AlfrescoLogError(@"Error retreiving accounts. Error: %@", keychainError.localizedDescription);
-    }
-    
-    return accounts;
 }
 
 @end
