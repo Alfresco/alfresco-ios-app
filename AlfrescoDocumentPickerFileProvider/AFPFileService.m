@@ -33,6 +33,7 @@
             __block BOOL networkOperationCallbackComplete = NO;
             NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:itemIdentifier];
             
+            __weak typeof(self) weakSelf = self;
             [[AFPAccountManager sharedManager] getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
                 if(session)
                 {
@@ -51,12 +52,18 @@
                                         AlfrescoFileProviderItemIdentifierType itemType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
                                         if(itemType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
                                         {
-                                            [[RealmSyncCore sharedSyncCore] didUploadNode:document fromPath:contentFile.fileUrl.path toFolder:(AlfrescoFolder *)node forAccountIdentifier:accountIdentifier];
-                                            [[AlfrescoFileManager sharedManager] removeItemAtURL:[contentFile.fileUrl URLByDeletingLastPathComponent] error:nil];
-                                            [[AFPDataManager sharedManager] removeItemMetadataForIdentifier:item.identifier];
-                                        } else if (itemType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument) {
-                                            [[AFPDataManager sharedManager] updateMetadata:itemMetadata
-                                                                          withSyncDocument:document];
+                                            [weakSelf handleUploadOfSyncDocument:document
+                                                                        fromFile:contentFile
+                                                                        toFolder:(AlfrescoFolder *)node
+                                                                      forAccount:accountIdentifier
+                                                      withItemMetadataIdentifier:itemIdentifier];
+                                        }
+                                        else if (itemType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument)
+                                        {
+                                            [weakSelf handleUploadOfNewSyncDocument:document
+                                                                       withMetadata:itemMetadata
+                                                                         forAccount:accountIdentifier
+                                                                              error:error];
                                         }
                                     }
                                     else
@@ -148,6 +155,70 @@
     }
     
     return fileName;
+}
+
+#pragma mark - Handlers
+
+- (void)handleUploadOfSyncDocument:(AlfrescoDocument *)document
+                          fromFile:(AlfrescoContentFile *)contentFile
+                          toFolder:(AlfrescoFolder *)folder
+                        forAccount:(NSString *)accountIdentifier
+        withItemMetadataIdentifier:(NSString *)metadataIdentifier
+{
+    [[RealmSyncCore sharedSyncCore] didUploadNode:document
+                                         fromPath:contentFile.fileUrl.path
+                                         toFolder:(AlfrescoFolder *)folder
+                             forAccountIdentifier:accountIdentifier];
+    
+    [[AlfrescoFileManager sharedManager] removeItemAtURL:[contentFile.fileUrl URLByDeletingLastPathComponent]
+                                                   error:nil];
+    
+    [[AFPDataManager sharedManager] removeItemMetadataForIdentifier:metadataIdentifier];
+}
+
+- (void)handleUploadOfNewSyncDocument:(AlfrescoDocument *)document
+                         withMetadata:(AFPItemMetadata *)itemMetadata
+                           forAccount:(NSString *)accountIdentifier
+                                error:(NSError *)error
+{
+    [[AFPDataManager sharedManager] updateMetadata:itemMetadata
+                                  withSyncDocument:document];
+    
+    NSString *parentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemMetadata.parentIdentifier];
+    RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
+    RealmSyncNodeInfo *parentNode = [[AFPDataManager sharedManager] syncItemForId:parentIdentifier
+                                                             forAccountIdentifier:accountIdentifier];
+    RealmSyncNodeInfo *childNode = [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:document
+                                                                    ifNotExistsCreateNew:YES
+                                                                                 inRealm:realm];
+    
+    NSString *syncNameForNode = [[RealmSyncCore sharedSyncCore] syncNameForNode:document
+                                                                        inRealm:realm];
+    NSString *destinationPath = [[[RealmSyncCore sharedSyncCore] syncContentDirectoryPathForAccountWithId:accountIdentifier] stringByAppendingPathComponent:syncNameForNode];
+    
+    
+    [realm transactionWithBlock:^{
+        childNode.parentNode = parentNode;
+        childNode.syncContentPath = syncNameForNode;
+    } error:nil];
+    
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *syncFileCopyError;
+    
+    [fileManager createDirectoryAtURL:[NSURL fileURLWithPath:[destinationPath stringByDeletingLastPathComponent]]
+          withIntermediateDirectories:YES
+                           attributes:nil
+                                error:nil];
+    
+    [fileManager copyItemAtPath:itemMetadata.filePath
+                         toPath:destinationPath
+                          error:&syncFileCopyError];
+    
+    if (syncFileCopyError)
+    {
+        AlfrescoLogError(@"Encountered an error while copying new sync document to sync location. Reason: %@", error.localizedDescription);
+    }
 }
 
 @end

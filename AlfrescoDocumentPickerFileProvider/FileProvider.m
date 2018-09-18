@@ -338,7 +338,7 @@
                                      error:&removeError];
              
              if (removeError) {
-                 AlfrescoLogError(@"Encountered an error while removing file: %@", removeError.localizedDescription);
+                 AlfrescoLogWarning(@"Warning - Removing file: %@", removeError.localizedDescription);
              }
              
              [fileManager moveItemAtPath:url.path
@@ -578,7 +578,7 @@
         
         RealmSyncNodeInfo *syncNode =
         [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:itemMetadata.alfrescoNode
-                                         ifNotExistsCreateNew:YES
+                                         ifNotExistsCreateNew:NO
                                                       inRealm:realm];
         
         AlfrescoDocument *alfrescoDoc = (AlfrescoDocument *)syncNode.alfrescoNode;
