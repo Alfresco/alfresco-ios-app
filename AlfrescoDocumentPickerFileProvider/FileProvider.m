@@ -563,7 +563,8 @@
          [strongSelf uploadEditedItem:alfrescoDoc
                    withItemIdentifier:itemIdentifier
                                 atURL:readingURL
-                 forAccountIdentifier:accountIdentifier];
+                 forAccountIdentifier:accountIdentifier
+                  withCompletionBlock:nil];
      }];
 }
 
@@ -594,7 +595,13 @@
              [strongSelf uploadEditedItem:alfrescoDoc
                        withItemIdentifier:itemIdentifier
                                     atURL:readingURL
-                     forAccountIdentifier:accountIdentifier];
+                     forAccountIdentifier:accountIdentifier
+                      withCompletionBlock:^(NSError *error) {
+                          if(!error)
+                          {
+                              [[AFPDataManager sharedManager] removeItemMetadataForIdentifier:itemIdentifier];
+                          }
+                      }];
          }];
     }
 }
@@ -618,7 +625,8 @@
          [strongSelf uploadEditedItem:alfrescoDoc
                    withItemIdentifier:itemIdentifier
                                 atURL:readingURL
-                 forAccountIdentifier:accountIdentifier];
+                 forAccountIdentifier:accountIdentifier
+                  withCompletionBlock:nil];
      }];
 }
 
@@ -662,6 +670,7 @@
       withItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
                    atURL:(NSURL *)url
     forAccountIdentifier:(NSString *)accountIdentifier
+     withCompletionBlock:(void (^)(NSError *error))completionBlock
 
 {
     __block AlfrescoDocument *oldAlfrescoDocument = alfrescoDocument;
@@ -689,12 +698,21 @@
                                                                 withAlfrescoNode:newAlfrescoDocument
                                                                         fromPath:nil
                                                            fromAccountIdentifier:accountIdentifier];
-                              [[AFPDataManager sharedManager] removeItemMetadataForIdentifier:itemIdentifier];
+                          }
+                          if(completionBlock)
+                          {
+                              completionBlock(updateError);
                           }
                           
                           networkOperationCallbackComplete = YES;
                       }];
-         } else {
+         }
+         else
+         {
+             if(completionBlock)
+             {
+                 completionBlock(loginError);
+             }
              networkOperationCallbackComplete = YES;
          }
      }];
