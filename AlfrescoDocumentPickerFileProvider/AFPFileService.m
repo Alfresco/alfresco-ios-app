@@ -62,13 +62,12 @@
                                         {
                                             [weakSelf handleUploadOfNewSyncDocument:document
                                                                        withMetadata:itemMetadata
-                                                                         forAccount:accountIdentifier
-                                                                              error:error];
+                                                                         forAccount:accountIdentifier];
                                         }
                                     }
                                     else
                                     {
-                                        NSLog(@"==== this is error %@", error);
+                                        AlfrescoLogError(@"Encountered an error while uploading item:%@. Reason:%@", itemMetadata.name, error.localizedDescription);
                                     }
                                     networkOperationCallbackComplete = YES;
                                 } progressBlock:nil];
@@ -179,7 +178,6 @@
 - (void)handleUploadOfNewSyncDocument:(AlfrescoDocument *)document
                          withMetadata:(AFPItemMetadata *)itemMetadata
                            forAccount:(NSString *)accountIdentifier
-                                error:(NSError *)error
 {
     [[AFPDataManager sharedManager] updateMetadata:itemMetadata
                                   withSyncDocument:document];
@@ -217,7 +215,7 @@
     
     if (syncFileCopyError)
     {
-        AlfrescoLogError(@"Encountered an error while copying new sync document to sync location. Reason: %@", error.localizedDescription);
+        AlfrescoLogError(@"Encountered an error while copying new sync document to sync location. Reason: %@", syncFileCopyError.localizedDescription);
     }
 }
 
