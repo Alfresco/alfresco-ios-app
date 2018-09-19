@@ -21,6 +21,7 @@
 #import "UserAccountWrapper.h"
 #import "FileMetadata.h"
 #import <FileProvider/FileProvider.h>
+#import "UserAccount.h"
 
 @interface AFPAccountManager()
 
@@ -144,6 +145,32 @@
     }
     
     return nil;
+}
+
++ (id)userAccountForAccountIdentifier:(NSString *)accountIdentifier
+{
+    NSArray *accounts = [AFPAccountManager getAccountsFromKeychain];
+    for(UserAccount *account in accounts)
+    {
+        if ([account.accountIdentifier isEqualToString:accountIdentifier])
+        {
+            return account;
+        }
+    }
+    return nil;
+}
+
++ (NSArray *)getAccountsFromKeychain
+{
+    NSError *keychainError = nil;
+    NSArray *accounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&keychainError];
+    
+    if (keychainError)
+    {
+        AlfrescoLogError(@"Error retreiving accounts. Error: %@", keychainError.localizedDescription);
+    }
+    
+    return accounts;
 }
 
 @end

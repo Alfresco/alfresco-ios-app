@@ -17,11 +17,14 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
+@class UserAccount;
 
 @interface AFPAccountManager : NSObject
 
 + (instancetype)sharedManager;
 - (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession> session, NSError *loginError))completionBlock;
 + (NSError *)authenticationErrorForPIN;
++ (UserAccount *)userAccountForAccountIdentifier:(NSString *)accountIdentifier;
++ (NSArray *)getAccountsFromKeychain;
 
 @end
