@@ -376,27 +376,59 @@
     if(![identifier isEqualToString:NSFileProviderRootContainerItemIdentifier])
     {
         AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:identifier];
-        if(identifierType == AlfrescoFileProviderItemIdentifierTypeDocument)
-        {
-            AFPItemMetadata *realmItem = [[AFPDataManager sharedManager] metadataItemForIdentifier:identifier];
-            item = [[AFPItem alloc] initWithItemMetadata:realmItem];
-        }
-        else if(identifierType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
-        {
-            RealmSyncNodeInfo *realmItem = [[AFPDataManager sharedManager] syncItemForId:identifier];
-            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
-            item = [[AFPItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[AFPDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
-        }
-        else if (identifierType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument)
-        {
-            AFPItemMetadata *realmItem = [[AFPDataManager sharedManager] metadataItemForIdentifier:identifier];
-            item = [[AFPItem alloc] initWithItemMetadata:realmItem];
-        }
-        else if (identifierType == AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument)
-        {
-            NSString *filename = [AFPItemIdentifier filenameFromItemIdentifier:identifier];
-            NSURL *fileURL = [self.fileService localFilesURLForFilename:filename];
-            item = [[AFPItem alloc] initWithLocalFilesPath:fileURL.path];
+        
+        switch (identifierType) {
+            case AlfrescoFileProviderItemIdentifierTypeAccount:
+            {
+                NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+                UserAccount *account = [AFPAccountManager userAccountForAccountIdentifier:accountIdentifier];
+                item = [[AFPItem alloc] initWithUserAccount:account];
+                
+            }
+            break;
+            case AlfrescoFileProviderItemIdentifierTypeLocalFilesDocument:
+            {
+                NSString *filename = [AFPItemIdentifier filenameFromItemIdentifier:identifier];
+                NSURL *fileURL = [self.fileService localFilesURLForFilename:filename];
+                item = [[AFPItem alloc] initWithLocalFilesPath:fileURL.path];
+            }
+            break;
+            case AlfrescoFileProviderItemIdentifierTypeSharedFiles:
+            case AlfrescoFileProviderItemIdentifierTypeMyFiles:
+            case AlfrescoFileProviderItemIdentifierTypeFavorites:
+            case AlfrescoFileProviderItemIdentifierTypeSynced:
+            case AlfrescoFileProviderItemIdentifierTypeSites:
+            case AlfrescoFileProviderItemIdentifierTypeFavoriteSites:
+            case AlfrescoFileProviderItemIdentifierTypeMySites:
+            case AlfrescoFileProviderItemIdentifierTypeFolder:
+            case AlfrescoFileProviderItemIdentifierTypeSite:
+            case AlfrescoFileProviderItemIdentifierTypeDocument:
+            {
+                AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] metadataItemForIdentifier:identifier];
+                item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
+            }
+            break;
+            case AlfrescoFileProviderItemIdentifierTypeSyncFolder:
+            case AlfrescoFileProviderItemIdentifierTypeSyncDocument:
+            {
+                RealmSyncNodeInfo *realmItem = [[AFPDataManager sharedManager] syncItemForId:identifier];
+                NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:identifier];
+                item = [[AFPItem alloc] initWithSyncedNode:realmItem parentItemIdentifier:[[AFPDataManager sharedManager] parentItemIdentifierOfSyncedNode:realmItem fromAccountIdentifier:accountIdentifier]];
+            }
+                break;
+            case AlfrescoFileProviderItemIdentifierTypeLocalFiles:
+            {
+                item = [[AFPItem alloc] initWithItemMetadata:[[AFPDataManager sharedManager] localFilesItem]];
+            }
+            break;
+            case AlfrescoFileProviderItemIdentifierTypeSyncNewDocument:
+            {
+                AFPItemMetadata *realmItem = [[AFPDataManager sharedManager] metadataItemForIdentifier:identifier];
+                item = [[AFPItem alloc] initWithItemMetadata:realmItem];
+            }
+            break;
+            default:
+                break;
         }
     }
     else
@@ -500,7 +532,6 @@
                                                                          atURL:url];
         }
             break;
-            
         case AlfrescoFileProviderItemIdentifierTypeSyncDocument:
         {
             [self handleItemChangeActionForSyncDocumentWithItemIdentifier:itemIdentifier

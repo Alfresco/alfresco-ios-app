@@ -147,7 +147,7 @@
     return nil;
 }
 
-+ (id)userAccountForAccountIdentifier:(NSString *)accountIdentifier
++ (UserAccount *)userAccountForAccountIdentifier:(NSString *)accountIdentifier
 {
     NSArray *accounts = [AFPAccountManager getAccountsFromKeychain];
     for(UserAccount *account in accounts)

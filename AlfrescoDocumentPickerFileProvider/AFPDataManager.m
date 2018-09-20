@@ -315,8 +315,15 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     if(syncedNode && accountIdentifier.length)
     {
         RealmSyncNodeInfo *parentNode = syncedNode.parentNode;
-        NSString *syncNodePathString = [NSString stringWithFormat:@"%@/%@", kFileProviderIdentifierComponentSync, kFileProviderIdentifierComponentFolder];
-        identifier = [AFPItemIdentifier itemIdentifierForIdentifier:parentNode.syncNodeInfoId typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
+        if(parentNode)
+        {
+            NSString *syncNodePathString = [NSString stringWithFormat:@"%@/%@", kFileProviderIdentifierComponentSync, kFileProviderIdentifierComponentFolder];
+            identifier = [AFPItemIdentifier itemIdentifierForIdentifier:parentNode.syncNodeInfoId typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
+        }
+        else
+        {
+            identifier = [AFPItemIdentifier itemIdentifierForSuffix:kFileProviderSyncedFolderIdentifierSuffix andAccountIdentifier:accountIdentifier];
+        }
     }
     
     return identifier;
