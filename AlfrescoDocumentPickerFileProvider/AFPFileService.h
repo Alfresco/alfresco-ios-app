@@ -21,9 +21,11 @@
 
 @interface AFPFileService : NSObject
 
-- (void)uploadDocumentItem:(AFPItemMetadata *)item;
+- (void)uploadDocumentItem:(AFPItemMetadata *)item
+           completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock;
 - (void)saveToLocalFilesDocumentAtURL:(NSURL *)url;
 - (NSError *)saveDocumentAtURL:(NSURL *)readingURL toURL:(NSURL *)writingURL overwritingExistingFile:(BOOL)shouldOverwrite;
 - (NSURL *)localFilesURLForFilename:(NSString *)filename;
+- (NSString *)fileNameAppendedWithDate:(NSString *)name;
 
 @end
