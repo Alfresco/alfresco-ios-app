@@ -23,16 +23,7 @@
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionFileProviderActions</key>
-		<array>
-			<dict>
-				<key>NSExtensionFileProviderActionActivationRule</key>
-				<string>TRUEPREDICATE</string>
-				<key>NSExtensionFileProviderActionIdentifier</key>
-				<string>com.mycompany.FileProviderUI.CustomAction</string>
-				<key>NSExtensionFileProviderActionName</key>
-				<string>Alfresco Content Services</string>
-			</dict>
-		</array>
+		<array/>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
 		<key>NSExtensionPointIdentifier</key>

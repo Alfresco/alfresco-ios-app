@@ -25,6 +25,7 @@
 @implementation AFPFileService
 
 - (void)uploadDocumentItem:(AFPItemMetadata *)item
+           completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock
 {
     NSString *itemIdentifier = item.identifier;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -46,31 +47,42 @@
                             if(node)
                             {
                                 AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:[NSURL fileURLWithPath:itemMetadata.filePath]];
-                                [docService createDocumentWithName:itemMetadata.name inParentFolder:(AlfrescoFolder *)node contentFile:contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                                    if(document)
-                                    {
-                                        AlfrescoFileProviderItemIdentifierType itemType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
-                                        if(itemType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
-                                        {
-                                            [weakSelf handleUploadOfSyncDocument:document
-                                                                        fromFile:contentFile
-                                                                        toFolder:(AlfrescoFolder *)node
-                                                                      forAccount:accountIdentifier
-                                                      withItemMetadataIdentifier:itemIdentifier];
-                                        }
-                                        else if (itemType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument)
-                                        {
-                                            [weakSelf handleUploadOfNewSyncDocument:document
-                                                                       withMetadata:itemMetadata
-                                                                         forAccount:accountIdentifier];
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AlfrescoLogError(@"Encountered an error while uploading item:%@. Reason:%@", itemMetadata.name, error.localizedDescription);
-                                    }
-                                    networkOperationCallbackComplete = YES;
-                                } progressBlock:nil];
+                                [docService createDocumentWithName:itemMetadata.name
+                                                    inParentFolder:(AlfrescoFolder *)node
+                                                       contentFile:contentFile
+                                                        properties:nil
+                                                   completionBlock:^(AlfrescoDocument *document, NSError *error)
+                                 {
+                                     if (error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists) {
+                                         if (completionBlock) {
+                                             completionBlock(YES);
+                                         }
+                                     }
+                                     else if(document)
+                                     {
+                                         AlfrescoFileProviderItemIdentifierType itemType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
+                                         if(itemType == AlfrescoFileProviderItemIdentifierTypeSyncDocument)
+                                         {
+                                             [weakSelf handleUploadOfSyncDocument:document
+                                                                         fromFile:contentFile
+                                                                         toFolder:(AlfrescoFolder *)node
+                                                                       forAccount:accountIdentifier
+                                                       withItemMetadataIdentifier:itemIdentifier];
+                                         }
+                                         else if (itemType == AlfrescoFileProviderItemIdentifierTypeSyncNewDocument)
+                                         {
+                                             [weakSelf handleUploadOfNewSyncDocument:document
+                                                                        withMetadata:itemMetadata
+                                                                          forAccount:accountIdentifier];
+                                         }
+                                     }
+                                     else
+                                     {
+                                         AlfrescoLogError(@"Encountered an error while uploading item:%@. Reason:%@", itemMetadata.name, error.localizedDescription);
+                                     }
+                                     
+                                     networkOperationCallbackComplete = YES;
+                                 } progressBlock:nil];
                             }
                             else if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
                             {
