@@ -71,6 +71,10 @@
     return [UIColor colorWithRed:(CGFloat)212.0/255.0 green:(CGFloat)212.0/255.0 blue:212.0/255.0 alpha:1.0f];
 }
 
++ (UIColor *)documentDetailsColor {
+    return [UIColor colorWithRed:138/255.0 green:137/255.0 blue:139/255.0 alpha:1.0f];
+}
+
 + (UIColor *)systemNoticeInformationColor
 {
     return [UIColor colorWithRed:(CGFloat)56.0/255.0 green:(CGFloat)170.0/255.0 blue:(CGFloat)218.0/255.0 alpha:1.0];

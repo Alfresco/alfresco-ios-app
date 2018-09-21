@@ -344,7 +344,9 @@
 {
     BaseCollectionViewFlowLayout *associatedLayoutForStyle = [self layoutForStyle:style];
     self.style = style;
+    [self.collectionView reloadItemsAtIndexPaths:[self.collectionView indexPathsForVisibleItems]];
     [self.collectionView setCollectionViewLayout:associatedLayoutForStyle animated:animated];
+    
 }
 
 - (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style
