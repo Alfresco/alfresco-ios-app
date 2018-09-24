@@ -28,6 +28,7 @@
 + (UIColor *)documentActionsHighlightColor;
 + (UIColor *)syncFailedColor;
 + (UIColor *)borderGreyColor;
++ (UIColor *)documentDetailsColor;
 + (UIColor *)systemNoticeInformationColor;
 + (UIColor *)systemNoticeErrorColor;
 + (UIColor *)systemNoticeWarningColor;

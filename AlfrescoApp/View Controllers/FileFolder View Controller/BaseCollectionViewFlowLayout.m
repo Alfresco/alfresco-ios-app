@@ -25,7 +25,9 @@ static CGFloat const kThumbnailWidthInListLayout = 40.0f;
 static CGFloat const kThumbnailSideSpace = 10.0f;
 static CGFloat const kEditImageTopSpaceInListLayout = 17.0f;
 static CGFloat const kEditImageTopSpaceInGridLayout = 0.0f;
-static CGFloat const kFolderNameTopSpace = 20.0f;
+static CGFloat const kFolderNameTopSpace = 18.0f;
+static CGFloat const kNodeTitleHeight = 40.0f;
+static CGFloat const kDefaultPaddingSpacing = 30.0f;
 
 @interface BaseCollectionViewFlowLayout ()
 
@@ -139,7 +141,7 @@ static CGFloat const kFolderNameTopSpace = 20.0f;
     CGFloat height = 0;
     if (self.itemHeight == -1)
     {
-        height = (self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns  * 1.3f;
+        height = (self.collectionViewWidth - ((self.numberOfColumns + 1) * self.minimumInteritemSpacing)) / self.numberOfColumns + kNodeTitleHeight + kDefaultPaddingSpacing;
     }
     else
     {
@@ -243,8 +245,8 @@ static CGFloat const kFolderNameTopSpace = 20.0f;
     attributes.shouldShowSmallThumbnailImage = self.shouldShowSmallThumbnail;
     attributes.nodeNameHorizontalDisplacement = (self.numberOfColumns == 1)? kThumbnailWidthInListLayout + 2 * kThumbnailSideSpace : kThumbnailSideSpace;
     attributes.nodeNameVerticalDisplacement = (self.numberOfColumns == 1)? ([self.dataSourceInfoDelegate isNodeAFolderAtIndex:indexPath])? kFolderNameTopSpace : kThumbnailSideSpace : self.thumbnailWidth + 2 * kThumbnailSideSpace;
-    attributes.folderNameNoStatusVerticalDisplacement = (self.numberOfColumns == 1) ? kFolderNameTopSpace : kThumbnailSideSpace;
-    attributes.folderNameWithStatusVerticalDisplacement = kThumbnailSideSpace;
+    attributes.folderNameNoStatusVerticalDisplacement = kFolderNameTopSpace;
+    attributes.folderNameWithStatusVerticalDisplacement = kFolderNameTopSpace;
     // On list layout - just one column - font size is 17
     // On grid layout - 2+ columns - font and font size the same as the one used in UISegmentedControl
     attributes.nodeNameFont = (self.numberOfColumns == 1)? [UIFont systemFontOfSize:17] : [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
