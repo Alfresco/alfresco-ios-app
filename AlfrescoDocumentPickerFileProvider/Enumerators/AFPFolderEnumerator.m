@@ -144,6 +144,7 @@
 {
     __weak typeof(self) weakSelf = self;
     AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:skipCount];
+    [self.documentService clear];
     [self.documentService retrieveFavoriteNodesWithListingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
         [strongSelf handleEnumeratedFolderWithPagingResult:pagingResult skipCount:skipCount error:error];
