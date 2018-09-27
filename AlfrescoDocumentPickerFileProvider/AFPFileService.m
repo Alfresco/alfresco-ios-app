@@ -21,8 +21,58 @@
 #import "AFPAccountManager.h"
 #import "AlfrescoFileManager+Extensions.h"
 #import "NSFileManager+Extension.h"
+#import "CustomFolderService.h"
+
+@interface AFPFileService()
+
+@property (strong, nonatomic) AlfrescoSiteService *siteService;
+
+@end
 
 @implementation AFPFileService
+
+- (void)retrieveFolderNodeForItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier usingSession:(id<AlfrescoSession>)session completionBlock:(AlfrescoNodeCompletionBlock)completionBlock
+{
+    AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
+    switch (identifierType) {
+        case AlfrescoFileProviderItemIdentifierTypeFolder:
+        {
+            AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+            NSString *parentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
+            [documentFolderService retrieveNodeWithIdentifier:parentIdentifier completionBlock:completionBlock];
+        }
+            break;
+        case AlfrescoFileProviderItemIdentifierTypeMyFiles:
+        {
+            CustomFolderService *customFolderService = [[CustomFolderService alloc] initWithSession:session];
+            [customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+                completionBlock(folder, error);
+            }];
+        }
+            break;
+        case AlfrescoFileProviderItemIdentifierTypeSharedFiles:
+        {
+            CustomFolderService *customFolderService = [[CustomFolderService alloc] initWithSession:session];
+            [customFolderService retrieveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+                completionBlock(folder, error);
+            }];
+        }
+            break;
+        case AlfrescoFileProviderItemIdentifierTypeSite:
+        {
+            self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+            NSString *parentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
+            [self.siteService retrieveDocumentLibraryFolderForSite:parentIdentifier completionBlock:^(AlfrescoFolder *folder, NSError *error) {
+                completionBlock(folder, error);
+            }];
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+}
 
 - (void)uploadDocumentItem:(AFPItemMetadata *)item
 {
@@ -35,18 +85,20 @@
             
             __weak typeof(self) weakSelf = self;
             [[AFPAccountManager sharedManager] getSessionForAccountIdentifier:accountIdentifier networkIdentifier:nil withCompletionBlock:^(id<AlfrescoSession> session, NSError *loginError) {
+                __strong typeof(self) strongSelf = weakSelf;
                 if(session)
                 {
                     AFPItemMetadata *itemMetadata = (AFPItemMetadata *)[[AFPDataManager sharedManager] metadataItemForIdentifier:itemIdentifier];
+                    NSString *filePath = itemMetadata.filePath;
+                    NSString *fileName = itemMetadata.name;
                     if(itemMetadata.parentIdentifier.length)
                     {
-                        NSString *parentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemMetadata.parentIdentifier];
                         AlfrescoDocumentFolderService *docService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-                        [docService retrieveNodeWithIdentifier:parentIdentifier completionBlock:^(AlfrescoNode *node, NSError *error) {
+                        [strongSelf retrieveFolderNodeForItemIdentifier:itemMetadata.parentIdentifier usingSession:session completionBlock:^(AlfrescoNode *node, NSError *error) {
                             if(node)
                             {
-                                AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:[NSURL fileURLWithPath:itemMetadata.filePath]];
-                                [docService createDocumentWithName:itemMetadata.name inParentFolder:(AlfrescoFolder *)node contentFile:contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
+                                AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:[NSURL fileURLWithPath:filePath]];
+                                [docService createDocumentWithName:fileName inParentFolder:(AlfrescoFolder *)node contentFile:contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
                                     if(document)
                                     {
                                         AlfrescoFileProviderItemIdentifierType itemType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:itemIdentifier];
@@ -64,6 +116,11 @@
                                                                        withMetadata:itemMetadata
                                                                          forAccount:accountIdentifier];
                                         }
+                                        else if (itemType == AlfrescoFileProviderItemIdentifierTypeNewDocument)
+                                        {
+                                            [[AFPDataManager sharedManager] updateMetadata:itemMetadata
+                                                                          withSyncDocument:document];
+                                        }
                                     }
                                     else
                                     {
@@ -75,7 +132,7 @@
                             else if (error.code == kAlfrescoErrorCodeRequestedNodeNotFound)
                             {
                                 // copy to local files as parent node was not found on server
-                                [self saveToLocalFilesDocumentAtURL:[NSURL fileURLWithPath:itemMetadata.filePath]];
+                                [strongSelf saveToLocalFilesDocumentAtURL:[NSURL fileURLWithPath:itemMetadata.filePath]];
                                 networkOperationCallbackComplete = YES;
                             }
                         }];

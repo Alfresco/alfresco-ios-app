@@ -81,6 +81,11 @@
         NSString *syncNodePathString = [NSString stringWithFormat:@"%@.%@", kFileProviderIdentifierComponentSync, kFileProviderIdentifierComponentNewDocument];
         return [AFPItemIdentifier itemIdentifierForIdentifier:filename typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
     }
+    else if ([AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier] == AlfrescoFileProviderItemIdentifierTypeFolder || [AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier] == AlfrescoFileProviderItemIdentifierTypeSite)
+    {
+        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentIdentifier];
+        return [AFPItemIdentifier itemIdentifierForIdentifier:filename typePath:kFileProviderIdentifierComponentNewDocument andAccountIdentifier:accountIdentifier];
+    }
     return nil;
 }
 
@@ -108,31 +113,31 @@
         {
             return AlfrescoFileProviderItemIdentifierTypeMyFiles;
         }
-        else if ([components[2] isEqualToString:kFileProviderSharedFilesFolderIdentifierSuffix])
+        else if([components[2] isEqualToString:kFileProviderSharedFilesFolderIdentifierSuffix])
         {
             return AlfrescoFileProviderItemIdentifierTypeSharedFiles;
         }
-        else if ([components[2] isEqualToString:kFileProviderSitesFolderIdentifierSuffix])
+        else if([components[2] isEqualToString:kFileProviderSitesFolderIdentifierSuffix])
         {
             return AlfrescoFileProviderItemIdentifierTypeSites;
         }
-        else if ([components[2] isEqualToString:kFileProviderFavoritesFolderIdentifierSuffix])
+        else if([components[2] isEqualToString:kFileProviderFavoritesFolderIdentifierSuffix])
         {
             return AlfrescoFileProviderItemIdentifierTypeFavorites;
         }
-        else if ([components[2] isEqualToString:kFileProviderSitesFolderIdentifierSuffix])
+        else if([components[2] isEqualToString:kFileProviderSitesFolderIdentifierSuffix])
         {
             return AlfrescoFileProviderItemIdentifierTypeSites;
         }
-        else if ([components[2] isEqualToString:kFileProviderMySitesFolderIdentifierSuffix])
+        else if([components[2] isEqualToString:kFileProviderMySitesFolderIdentifierSuffix])
         {
             return AlfrescoFileProviderItemIdentifierTypeMySites;
         }
-        else if ([components[2] isEqualToString:kFileProviderFavoriteSitesFolderIdentifierSuffix])
+        else if([components[2] isEqualToString:kFileProviderFavoriteSitesFolderIdentifierSuffix])
         {
             return AlfrescoFileProviderItemIdentifierTypeFavoriteSites;
         }
-        else if ([components[2] isEqualToString:kFileProviderSyncedFolderIdentifierSuffix])
+        else if([components[2] isEqualToString:kFileProviderSyncedFolderIdentifierSuffix])
         {
             return AlfrescoFileProviderItemIdentifierTypeSynced;
         }
@@ -147,11 +152,15 @@
         {
             return AlfrescoFileProviderItemIdentifierTypeSite;
         }
-        else if ([components[2] isEqualToString:kFileProviderIdentifierComponentDocument])
+        else if([components[2] isEqualToString:kFileProviderIdentifierComponentDocument])
         {
             return AlfrescoFileProviderItemIdentifierTypeDocument;
         }
-        else if ([components[2] isEqualToString:kFileProviderIdentifierComponentSync])
+        else if([components[2] isEqualToString:kFileProviderIdentifierComponentNewDocument])
+        {
+            return AlfrescoFileProviderItemIdentifierTypeNewDocument;
+        }
+        else if([components[2] isEqualToString:kFileProviderIdentifierComponentSync])
         {
             if([components[3] isEqualToString:kFileProviderIdentifierComponentFolder])
             {
