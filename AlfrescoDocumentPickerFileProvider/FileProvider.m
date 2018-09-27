@@ -175,7 +175,7 @@
         completionHandler(authenticationError);
     }
     else
-    {
+    {        
         NSFileManager *fileManager = [[NSFileManager alloc] init];
         NSString *pathToFile = url.path;
         
@@ -365,7 +365,23 @@
                  AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveItem:item
                                                                               needsUpload:YES
                                                                                   fileURL:storageURL];
-                 [strongSelf.fileService uploadDocumentItem:itemMetadata];
+                 NSString *metadataIdentifier = itemMetadata.identifier;
+                 
+                 [strongSelf.fileService uploadDocumentItem:itemMetadata
+                                            completionBlock:^(BOOL filenameExistsInParentFolder)
+                  {
+                      if (filenameExistsInParentFolder)
+                      {
+                          AFPItemMetadata *itemMetadataToRename = [[AFPDataManager sharedManager] metadataItemForIdentifier:metadataIdentifier];
+                          NSString *metadataFilename = itemMetadataToRename.name;
+                          NSString *documentName =  [weakSelf.fileService fileNameAppendedWithDate:metadataFilename];
+                          [[AFPDataManager sharedManager] updateMetadata:itemMetadataToRename
+                                                            withFileName:documentName];
+                          
+                          [weakSelf.fileService uploadDocumentItem:itemMetadataToRename
+                                                   completionBlock:nil];
+                      }
+                  }];
              }
          }];
         

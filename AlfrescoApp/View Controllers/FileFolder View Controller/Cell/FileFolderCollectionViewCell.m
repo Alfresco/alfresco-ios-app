@@ -620,7 +620,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 
 - (void)updateSyncStatusDetails:(SyncNodeStatus *)nodeStatus
 {
-    self.details.textColor = [UIColor textDefaultColor];
+    self.details.textColor = [UIColor documentDetailsColor];
     
     if (nodeStatus.status == SyncStatusWaiting)
     {

@@ -413,4 +413,23 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
 }
 
+- (void)updateMetadata:(AFPItemMetadata *)metadata
+          withFileName:(NSString *)updatedFileName
+{
+    if (metadata && updatedFileName.length) {
+        RLMRealm *realm = [self realm];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", metadata.identifier];
+        RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm
+                                                                withPredicate:pred];
+        if(list.count > 0)
+        {
+            AFPItemMetadata *item = list.firstObject;
+            [realm transactionWithBlock:^{
+                item.name = updatedFileName;
+                [realm addOrUpdateObject:item];
+            }];
+        }
+    }
+}
+
 @end

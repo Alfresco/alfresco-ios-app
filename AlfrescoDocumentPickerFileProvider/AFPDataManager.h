@@ -49,5 +49,7 @@
 - (void)updateSyncDocument:(AlfrescoDocument *)oldDocument withAlfrescoNode:(AlfrescoDocument *)document fromPath:(NSString *)path fromAccountIdentifier:(NSString *)accountIdentifier;
 - (void)updateMetadata:(AFPItemMetadata *)metadata
       withSyncDocument:(AlfrescoDocument *)alfrescoDocument;
+- (void)updateMetadata:(AFPItemMetadata *)metadata
+          withFileName:(NSString *)updatedFileName;
 
 @end

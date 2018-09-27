@@ -344,7 +344,14 @@
 {
     BaseCollectionViewFlowLayout *associatedLayoutForStyle = [self layoutForStyle:style];
     self.style = style;
+    
+    NSArray *visibleIndexPaths = self.collectionView.indexPathsForVisibleItems;
+    if (visibleIndexPaths.count) {
+        [self.collectionView reloadItemsAtIndexPaths:visibleIndexPaths];
+    }
+    
     [self.collectionView setCollectionViewLayout:associatedLayoutForStyle animated:animated];
+    
 }
 
 - (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style
