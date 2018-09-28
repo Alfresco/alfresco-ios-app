@@ -310,7 +310,7 @@
         [self.fileService saveToLocalFilesDocumentAtURL:fileURL];
         [fileURL stopAccessingSecurityScopedResource];
     }
-    else if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncFolder || typeIdentifier == AlfrescoFileProviderItemIdentifierTypeFolder || typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSite)
+    else if(typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSyncFolder || typeIdentifier == AlfrescoFileProviderItemIdentifierTypeFolder || typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSite || typeIdentifier == AlfrescoFileProviderItemIdentifierTypeMyFiles || typeIdentifier == AlfrescoFileProviderItemIdentifierTypeSharedFiles)
     {
         NSURL *storageURL = [item fileURL];
         
@@ -375,7 +375,7 @@
                           AFPItemMetadata *itemMetadataToRename = [[AFPDataManager sharedManager] metadataItemForIdentifier:metadataIdentifier];
                           NSString *metadataFilename = itemMetadataToRename.name;
                           NSString *documentName =  [weakSelf.fileService fileNameAppendedWithDate:metadataFilename];
-                          [[AFPDataManager sharedManager] updateMetadata:itemMetadataToRename
+                          [[AFPDataManager sharedManager] updateMetadataForIdentifier:metadataIdentifier
                                                             withFileName:documentName];
                           
                           [weakSelf.fileService uploadDocumentItem:itemMetadataToRename

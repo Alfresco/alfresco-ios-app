@@ -71,17 +71,18 @@
 
 + (NSFileProviderItemIdentifier)itemIdentifierForFilename:(NSString *)filename andFileParentIdentifier:(NSFileProviderItemIdentifier)parentIdentifier
 {
-    if ([AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier] == AlfrescoFileProviderItemIdentifierTypeLocalFiles)
+    AlfrescoFileProviderItemIdentifierType parentIdentifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier];
+    if (parentIdentifierType == AlfrescoFileProviderItemIdentifierTypeLocalFiles)
     {
         return [AFPItemIdentifier itemIdentifierForLocalFilename:filename];
     }
-    else if([AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier] == AlfrescoFileProviderItemIdentifierTypeSyncFolder)
+    else if(parentIdentifierType == AlfrescoFileProviderItemIdentifierTypeSyncFolder)
     {
         NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentIdentifier];
         NSString *syncNodePathString = [NSString stringWithFormat:@"%@.%@", kFileProviderIdentifierComponentSync, kFileProviderIdentifierComponentNewDocument];
         return [AFPItemIdentifier itemIdentifierForIdentifier:filename typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
     }
-    else if ([AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier] == AlfrescoFileProviderItemIdentifierTypeFolder || [AFPItemIdentifier itemIdentifierTypeForIdentifier:parentIdentifier] == AlfrescoFileProviderItemIdentifierTypeSite)
+    else if (parentIdentifierType == AlfrescoFileProviderItemIdentifierTypeFolder || parentIdentifierType == AlfrescoFileProviderItemIdentifierTypeSite || parentIdentifierType == AlfrescoFileProviderItemIdentifierTypeMyFiles || parentIdentifierType == AlfrescoFileProviderItemIdentifierTypeSharedFiles)
     {
         NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:parentIdentifier];
         return [AFPItemIdentifier itemIdentifierForIdentifier:filename typePath:kFileProviderIdentifierComponentNewDocument andAccountIdentifier:accountIdentifier];

@@ -26,6 +26,8 @@
 @interface AFPFileService()
 
 @property (strong, nonatomic) AlfrescoSiteService *siteService;
+@property (strong, nonatomic) CustomFolderService *customFolderService;
+@property (strong, nonatomic) AlfrescoDocumentFolderService *documentFolderService;
 
 @end
 
@@ -37,23 +39,23 @@
     switch (identifierType) {
         case AlfrescoFileProviderItemIdentifierTypeFolder:
         {
-            AlfrescoDocumentFolderService *documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+            self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
             NSString *parentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemIdentifier];
-            [documentFolderService retrieveNodeWithIdentifier:parentIdentifier completionBlock:completionBlock];
+            [self.documentFolderService retrieveNodeWithIdentifier:parentIdentifier completionBlock:completionBlock];
         }
             break;
         case AlfrescoFileProviderItemIdentifierTypeMyFiles:
         {
-            CustomFolderService *customFolderService = [[CustomFolderService alloc] initWithSession:session];
-            [customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+            self.customFolderService = [[CustomFolderService alloc] initWithSession:session];
+            [self.customFolderService retrieveMyFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
                 completionBlock(folder, error);
             }];
         }
             break;
         case AlfrescoFileProviderItemIdentifierTypeSharedFiles:
         {
-            CustomFolderService *customFolderService = [[CustomFolderService alloc] initWithSession:session];
-            [customFolderService retrieveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
+            self.customFolderService = [[CustomFolderService alloc] initWithSession:session];
+            [self.customFolderService retrieveSharedFilesFolderWithCompletionBlock:^(AlfrescoFolder *folder, NSError *error) {
                 completionBlock(folder, error);
             }];
         }
@@ -126,7 +128,7 @@
                                         }
                                         else if (itemType == AlfrescoFileProviderItemIdentifierTypeNewDocument)
                                         {
-                                            [[AFPDataManager sharedManager] updateMetadata:itemMetadata
+                                            [[AFPDataManager sharedManager] updateMetadataForIdentifier:itemIdentifier
                                                                           withSyncDocument:document];
                                         }
                                     }
@@ -244,7 +246,7 @@
                          withMetadata:(AFPItemMetadata *)itemMetadata
                            forAccount:(NSString *)accountIdentifier
 {
-    [[AFPDataManager sharedManager] updateMetadata:itemMetadata
+    [[AFPDataManager sharedManager] updateMetadataForIdentifier:itemMetadata.identifier
                                   withSyncDocument:document];
     
     NSString *parentIdentifier = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:itemMetadata.parentIdentifier];
