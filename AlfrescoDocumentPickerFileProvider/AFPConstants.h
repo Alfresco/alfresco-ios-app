@@ -23,6 +23,7 @@ typedef NS_ENUM(NSInteger, AlfrescoFileProviderItemIdentifierType)
     AlfrescoFileProviderItemIdentifierTypeAccount,
     AlfrescoFileProviderItemIdentifierTypeFolder,
     AlfrescoFileProviderItemIdentifierTypeDocument,
+    AlfrescoFileProviderItemIdentifierTypeNewDocument,
     AlfrescoFileProviderItemIdentifierTypeSyncFolder,
     AlfrescoFileProviderItemIdentifierTypeSyncDocument,
     AlfrescoFileProviderItemIdentifierTypeSyncNewDocument,

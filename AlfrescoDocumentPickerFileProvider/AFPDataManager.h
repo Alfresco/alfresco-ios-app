@@ -47,9 +47,9 @@
 - (RLMResults<RealmSyncNodeInfo *> *)syncItemsInParentNodeWithSyncId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
 - (RealmSyncNodeInfo *)syncItemForId:(NSString *)identifier forAccountIdentifier:(NSString *)accountIdentifier;
 - (void)updateSyncDocument:(AlfrescoDocument *)oldDocument withAlfrescoNode:(AlfrescoDocument *)document fromPath:(NSString *)path fromAccountIdentifier:(NSString *)accountIdentifier;
-- (void)updateMetadata:(AFPItemMetadata *)metadata
+- (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)metadataIdentifier
       withSyncDocument:(AlfrescoDocument *)alfrescoDocument;
-- (void)updateMetadata:(AFPItemMetadata *)metadata
+- (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)metadataIdentifier
           withFileName:(NSString *)updatedFileName;
 
 @end

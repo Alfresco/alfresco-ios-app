@@ -315,8 +315,15 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     if(syncedNode && accountIdentifier.length)
     {
         RealmSyncNodeInfo *parentNode = syncedNode.parentNode;
-        NSString *syncNodePathString = [NSString stringWithFormat:@"%@/%@", kFileProviderIdentifierComponentSync, kFileProviderIdentifierComponentFolder];
-        identifier = [AFPItemIdentifier itemIdentifierForIdentifier:parentNode.syncNodeInfoId typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
+        if(parentNode)
+        {
+            NSString *syncNodePathString = [NSString stringWithFormat:@"%@/%@", kFileProviderIdentifierComponentSync, kFileProviderIdentifierComponentFolder];
+            identifier = [AFPItemIdentifier itemIdentifierForIdentifier:parentNode.syncNodeInfoId typePath:syncNodePathString andAccountIdentifier:accountIdentifier];
+        }
+        else
+        {
+            identifier = [AFPItemIdentifier itemIdentifierForSuffix:kFileProviderSyncedFolderIdentifierSuffix andAccountIdentifier:accountIdentifier];
+        }
     }
     
     return identifier;
@@ -385,13 +392,13 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
 }
 
-- (void)updateMetadata:(AFPItemMetadata *)metadata
+- (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)metadataIdentifier
       withSyncDocument:(AlfrescoDocument *)alfrescoDocument
 {
-    if(alfrescoDocument && metadata)
+    if(alfrescoDocument && metadataIdentifier.length)
     {
         RLMRealm *realm = [self realm];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", metadata.identifier];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", metadataIdentifier];
         RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm
                                                                 withPredicate:pred];
         if(list.count > 0)
@@ -406,12 +413,12 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     }
 }
 
-- (void)updateMetadata:(AFPItemMetadata *)metadata
+- (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)metadataIdentifier
           withFileName:(NSString *)updatedFileName
 {
-    if (metadata && updatedFileName.length) {
+    if (metadataIdentifier.length && updatedFileName.length) {
         RLMRealm *realm = [self realm];
-        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", metadata.identifier];
+        NSPredicate *pred = [NSPredicate predicateWithFormat:@"identifier == %@", metadataIdentifier];
         RLMResults<AFPItemMetadata *> *list = [AFPItemMetadata objectsInRealm:realm
                                                                 withPredicate:pred];
         if(list.count > 0)
