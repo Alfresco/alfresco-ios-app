@@ -16,10 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <FileProvider/FileProvider.h>
+#import "AFPServerEnumerator.h"
 
-@interface AFPSyncEnumerator : NSObject <NSFileProviderEnumerator>
-
-- (instancetype)initWithItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier;
+@interface AFPSyncEnumerator : AFPServerEnumerator <NSFileProviderEnumerator>
 
 @end

@@ -33,7 +33,11 @@
 @property (nonatomic, strong) AlfrescoDocumentFolderService *documentService;
 @property (nonatomic, strong) AFPAccountManager *accountManager;
 @property (atomic) BOOL networkOperationsComplete;
+@property (nonatomic, strong) NSMutableArray *childrenIdentifiers;
 
 - (void)setupSessionWithCompletionBlock:(void (^)(id<AlfrescoSession> session))completionBlock;
+- (void)handleEnumeratedCustomFolder:(AlfrescoNode *)node skipCount:(int)skipCount error:(NSError *)error;
+- (void)enumerateItemsInFolder:(AlfrescoFolder *)folder skipCount:(int)skipCount;
+- (void)handleEnumeratedFolderWithPagingResult:(AlfrescoPagingResult *)pagingResult skipCount:(int)skipCount error:(NSError *)error;
 
 @end

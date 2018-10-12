@@ -21,25 +21,9 @@
 #import "AFPItem.h"
 #import "AFPItemIdentifier.h"
 #import "AFPAccountManager.h"
-
-@interface AFPSyncEnumerator()
-
-@property (nonatomic, strong) NSFileProviderItemIdentifier itemIdentifier;
-
-@end
+#import "AFPServerEnumerator+Internals.h"
 
 @implementation AFPSyncEnumerator
-
-- (instancetype)initWithItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
-{
-    self = [super init];
-    if(self)
-    {
-        self.itemIdentifier = itemIdentifier;
-    }
-    
-    return self;
-}
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
@@ -50,20 +34,31 @@
     }
     else
     {
-        NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
-        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
-        
-        NSString *nodeId = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
-        
-        RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nodeId forAccountIdentifier:accountIdentifier];
-        for(RealmSyncNodeInfo *node in syncedItems)
+        AFPPage *alfrescoPage = [NSKeyedUnarchiver unarchiveObjectWithData:page];
+        if(alfrescoPage.hasMoreItems || alfrescoPage == nil)
         {
-            AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];
-            [enumeratedSyncedItems addObject:fpItem];
+            __weak typeof(self) weakSelf = self;
+            [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
+                __strong typeof(self) strongSelf = weakSelf;
+                RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:strongSelf.itemIdentifier];
+                AlfrescoNode *parentNode = syncNode.alfrescoNode;
+                [self enumerateItemsInFolder:(AlfrescoFolder *)parentNode skipCount:alfrescoPage.skipCount];
+            }];
         }
         
-        [observer didEnumerateItems:enumeratedSyncedItems];
-        [observer finishEnumeratingUpToPage:nil];
+        //==== old ====
+//        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
+//        NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
+//        NSString *nodeId = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
+//        RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nodeId forAccountIdentifier:accountIdentifier];
+//        for(RealmSyncNodeInfo *node in syncedItems)
+//        {
+//            AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];
+//            [enumeratedSyncedItems addObject:fpItem];
+//        }
+//
+//        [observer didEnumerateItems:enumeratedSyncedItems];
+//        [observer finishEnumeratingUpToPage:nil];
     }
 }
 

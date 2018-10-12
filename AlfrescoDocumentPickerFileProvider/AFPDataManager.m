@@ -384,6 +384,11 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return syncNode;
 }
 
+- (void)cleanRemovedChildrenFromSyncFolder:(AlfrescoNode *)syncFolder usingUpdatedChildrenIdList:(NSArray *)childrenIdList fromAccountIdentifier:(NSString *)accountIdentifier
+{
+    
+}
+
 - (void)updateSyncDocument:(AlfrescoDocument *)oldDocument withAlfrescoNode:(AlfrescoDocument *)document fromPath:(NSString *)path fromAccountIdentifier:(NSString *)accountIdentifier
 {
     if(accountIdentifier.length)

@@ -121,16 +121,6 @@
     }];
 }
 
-- (void)enumerateItemsInFolder:(AlfrescoFolder *)folder skipCount:(int)skipCount
-{
-    __weak typeof(self) weakSelf = self;
-    AlfrescoListingContext *listingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kFileProviderMaxItemsPerListingRetrieve skipCount:skipCount];
-    [self.documentService retrieveChildrenInFolder:folder listingContext:listingContext completionBlock:^(AlfrescoPagingResult *pagingResult, NSError *error) {
-        __strong typeof(self) strongSelf = weakSelf;
-        [strongSelf handleEnumeratedFolderWithPagingResult:pagingResult skipCount:skipCount error:error];
-    }];
-}
-
 - (void)enumerateItemsInFolderWithFolderRef:(NSString *)folderRef skipCount:(int)skipCount
 {
     __weak typeof(self) weakSelf = self;
@@ -166,55 +156,6 @@
             self.networkOperationsComplete = YES;
         }
     }];
-}
-
-- (void)handleEnumeratedCustomFolder:(AlfrescoNode *)node skipCount:(int)skipCount error:(NSError *)error
-{
-    if (error)
-    {
-        [self.observer finishEnumeratingWithError:error];
-        self.networkOperationsComplete = YES;
-    }
-    else if ([node isKindOfClass:[AlfrescoFolder class]])
-    {
-        [self enumerateItemsInFolder:(AlfrescoFolder *)node skipCount:skipCount];
-    }
-}
-
-- (void)handleEnumeratedFolderWithPagingResult:(AlfrescoPagingResult *)pagingResult skipCount:(int)skipCount error:(NSError *)error
-{
-    if (error)
-    {
-        [self.observer finishEnumeratingWithError:error];
-    }
-    else
-    {
-        NSMutableArray *fileProviderItems = [NSMutableArray new];
-        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
-        RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
-        for (AlfrescoNode *node in pagingResult.objects)
-        {
-            AFPItem *item;
-            if([[RealmSyncCore sharedSyncCore] isNode:node inSyncListInRealm:realm])
-            {
-                RealmSyncNodeInfo *syncNode = [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:realm];
-                item = [[AFPItem alloc] initWithSyncedNode:syncNode parentItemIdentifier:self.itemIdentifier];
-            }
-            else
-            {
-                AFPItemMetadata *itemMetadata = [[AFPDataManager sharedManager] saveNode:node parentIdentifier:self.itemIdentifier];
-                item = [[AFPItem alloc] initWithItemMetadata:itemMetadata];
-            }
-            [fileProviderItems addObject:item];
-        }
-        [self.observer didEnumerateItems:fileProviderItems];
-        
-        int newSkipCount = skipCount + (int)pagingResult.objects.count;
-        AFPPage *newPage = [[AFPPage alloc] initWithSkipCount:newSkipCount hasMoreItems:pagingResult.hasMoreItems];
-        NSFileProviderPage page = [NSKeyedArchiver archivedDataWithRootObject:newPage];
-        [self.observer finishEnumeratingUpToPage:page];
-    }
-    self.networkOperationsComplete = YES;
 }
 
 @end
