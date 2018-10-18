@@ -63,7 +63,7 @@
                     strongSelf.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
                     RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:strongSelf.itemIdentifier];
                     AlfrescoNode *parentNode = syncNode.alfrescoNode;
-                    [self enumerateItemsInFolder:(AlfrescoFolder *)parentNode skipCount:alfrescoPage.skipCount];
+                    [strongSelf enumerateItemsInFolder:(AlfrescoFolder *)parentNode skipCount:alfrescoPage.skipCount];
                 }];
                 /*
                  * Keep this object around long enough for the network operations to complete.
