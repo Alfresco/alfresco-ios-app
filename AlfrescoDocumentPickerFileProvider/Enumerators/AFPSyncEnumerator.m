@@ -21,25 +21,9 @@
 #import "AFPItem.h"
 #import "AFPItemIdentifier.h"
 #import "AFPAccountManager.h"
-
-@interface AFPSyncEnumerator()
-
-@property (nonatomic, strong) NSFileProviderItemIdentifier itemIdentifier;
-
-@end
+#import "AFPServerEnumerator+Internals.h"
 
 @implementation AFPSyncEnumerator
-
-- (instancetype)initWithItemIdentifier:(NSFileProviderItemIdentifier)itemIdentifier
-{
-    self = [super init];
-    if(self)
-    {
-        self.itemIdentifier = itemIdentifier;
-    }
-    
-    return self;
-}
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
@@ -50,20 +34,49 @@
     }
     else
     {
-        NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
-        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
-        
-        NSString *nodeId = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
-        
-        RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nodeId forAccountIdentifier:accountIdentifier];
-        for(RealmSyncNodeInfo *node in syncedItems)
+        AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.itemIdentifier];
+        if(identifierType == AlfrescoFileProviderItemIdentifierTypeSynced)
         {
-            AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];
-            [enumeratedSyncedItems addObject:fpItem];
+            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
+            NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
+            RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nil forAccountIdentifier:accountIdentifier];
+            for(RealmSyncNodeInfo *node in syncedItems)
+            {
+                AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];
+                [enumeratedSyncedItems addObject:fpItem];
+            }
+            
+            [observer didEnumerateItems:enumeratedSyncedItems];
+            [observer finishEnumeratingUpToPage:nil];
+
         }
-        
-        [observer didEnumerateItems:enumeratedSyncedItems];
-        [observer finishEnumeratingUpToPage:nil];
+        else
+        {
+            AFPPage *alfrescoPage = [NSKeyedUnarchiver unarchiveObjectWithData:page];
+            if(alfrescoPage.hasMoreItems || alfrescoPage == nil)
+            {
+                __weak typeof(self) weakSelf = self;
+                self.networkOperationsComplete = NO;
+                self.observer = observer;
+                [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
+                    __strong typeof(self) strongSelf = weakSelf;
+                    strongSelf.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+                    RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:strongSelf.itemIdentifier];
+                    AlfrescoNode *parentNode = syncNode.alfrescoNode;
+                    [strongSelf enumerateItemsInFolder:(AlfrescoFolder *)parentNode skipCount:alfrescoPage.skipCount];
+                }];
+                /*
+                 * Keep this object around long enough for the network operations to complete.
+                 * Running as a background thread, seperate from the UI, so should not cause
+                 * Any issues when blocking the thread.
+                 */
+                do
+                {
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                }
+                while (self.networkOperationsComplete == NO);
+            }
+        }
     }
 }
 

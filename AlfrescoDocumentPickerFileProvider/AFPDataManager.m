@@ -384,6 +384,28 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
     return syncNode;
 }
 
+- (void)cleanRemovedChildrenFromSyncFolder:(AlfrescoNode *)syncFolder usingUpdatedChildrenIdList:(NSArray *)childrenIdList fromAccountIdentifier:(NSString *)accountIdentifier
+{
+    RLMRealm *realm = [[RealmSyncCore sharedSyncCore] realmWithIdentifier:accountIdentifier];
+    RealmSyncNodeInfo *syncNode = [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:syncFolder ifNotExistsCreateNew:NO inRealm:realm];
+    RLMLinkingObjects *childrenArray = syncNode.nodes;
+    NSMutableArray *nodesToDelete = [NSMutableArray new];
+    for (RealmSyncNodeInfo *child in childrenArray)
+    {
+        if(![childrenIdList containsObject:child.syncNodeInfoId])
+        {
+            [nodesToDelete addObject:child];
+        }
+    }
+    
+    [realm transactionWithBlock:^{
+        for (RealmSyncNodeInfo *child in nodesToDelete)
+        {
+            [realm deleteObject:child];
+        }
+    }];
+}
+
 - (void)updateSyncDocument:(AlfrescoDocument *)oldDocument withAlfrescoNode:(AlfrescoDocument *)document fromPath:(NSString *)path fromAccountIdentifier:(NSString *)accountIdentifier
 {
     if(accountIdentifier.length)
