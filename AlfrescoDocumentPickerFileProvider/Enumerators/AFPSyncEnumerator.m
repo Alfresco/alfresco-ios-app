@@ -34,31 +34,49 @@
     }
     else
     {
-        AFPPage *alfrescoPage = [NSKeyedUnarchiver unarchiveObjectWithData:page];
-        if(alfrescoPage.hasMoreItems || alfrescoPage == nil)
+        AlfrescoFileProviderItemIdentifierType identifierType = [AFPItemIdentifier itemIdentifierTypeForIdentifier:self.itemIdentifier];
+        if(identifierType == AlfrescoFileProviderItemIdentifierTypeSynced)
         {
-            __weak typeof(self) weakSelf = self;
-            [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
-                __strong typeof(self) strongSelf = weakSelf;
-                RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:strongSelf.itemIdentifier];
-                AlfrescoNode *parentNode = syncNode.alfrescoNode;
-                [self enumerateItemsInFolder:(AlfrescoFolder *)parentNode skipCount:alfrescoPage.skipCount];
-            }];
+            NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
+            NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
+            RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nil forAccountIdentifier:accountIdentifier];
+            for(RealmSyncNodeInfo *node in syncedItems)
+            {
+                AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];
+                [enumeratedSyncedItems addObject:fpItem];
+            }
+            
+            [observer didEnumerateItems:enumeratedSyncedItems];
+            [observer finishEnumeratingUpToPage:nil];
+
         }
-        
-        //==== old ====
-//        NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
-//        NSMutableArray *enumeratedSyncedItems = [NSMutableArray new];
-//        NSString *nodeId = [AFPItemIdentifier alfrescoIdentifierFromItemIdentifier:self.itemIdentifier];
-//        RLMResults<RealmSyncNodeInfo *> *syncedItems = [[AFPDataManager sharedManager] syncItemsInParentNodeWithSyncId:nodeId forAccountIdentifier:accountIdentifier];
-//        for(RealmSyncNodeInfo *node in syncedItems)
-//        {
-//            AFPItem *fpItem = [[AFPItem alloc] initWithSyncedNode:node parentItemIdentifier:self.itemIdentifier];
-//            [enumeratedSyncedItems addObject:fpItem];
-//        }
-//
-//        [observer didEnumerateItems:enumeratedSyncedItems];
-//        [observer finishEnumeratingUpToPage:nil];
+        else
+        {
+            AFPPage *alfrescoPage = [NSKeyedUnarchiver unarchiveObjectWithData:page];
+            if(alfrescoPage.hasMoreItems || alfrescoPage == nil)
+            {
+                __weak typeof(self) weakSelf = self;
+                self.networkOperationsComplete = NO;
+                self.observer = observer;
+                [self setupSessionWithCompletionBlock:^(id<AlfrescoSession> session) {
+                    __strong typeof(self) strongSelf = weakSelf;
+                    strongSelf.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+                    RealmSyncNodeInfo *syncNode = [[AFPDataManager sharedManager] syncItemForId:strongSelf.itemIdentifier];
+                    AlfrescoNode *parentNode = syncNode.alfrescoNode;
+                    [self enumerateItemsInFolder:(AlfrescoFolder *)parentNode skipCount:alfrescoPage.skipCount];
+                }];
+                /*
+                 * Keep this object around long enough for the network operations to complete.
+                 * Running as a background thread, seperate from the UI, so should not cause
+                 * Any issues when blocking the thread.
+                 */
+                do
+                {
+                    [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+                }
+                while (self.networkOperationsComplete == NO);
+            }
+        }
     }
 }
 
