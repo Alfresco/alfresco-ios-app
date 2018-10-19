@@ -77,7 +77,7 @@
 }
 
 - (void)uploadDocumentItem:(AFPItemMetadata *)item
-           completionBlock:(void (^)(BOOL filenameExistsInParentFolder))completionBlock
+           completionBlock:(void (^)(NSError *error))completionBlock
 {
     NSString *itemIdentifier = item.identifier;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -102,11 +102,11 @@
                             {
                                 AlfrescoContentFile *contentFile = [[AlfrescoContentFile alloc] initWithUrl:[NSURL fileURLWithPath:filePath]];
                                 [docService createDocumentWithName:fileName inParentFolder:(AlfrescoFolder *)node contentFile:contentFile properties:nil completionBlock:^(AlfrescoDocument *document, NSError *error) {
-                                    if (error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists)
+                                    if (error)
                                     {
                                         if (completionBlock)
                                         {
-                                            completionBlock(YES);
+                                            completionBlock(error);
                                         }
                                     }
                                     else if(document)

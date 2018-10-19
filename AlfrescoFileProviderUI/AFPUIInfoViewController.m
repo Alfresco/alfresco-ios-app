@@ -16,31 +16,47 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "DocumentActionViewController.h"
+#import "AFPUIInfoViewController.h"
+#import "AFPUIConstants.h"
 
-static CGFloat const kToolbarHeight = 44.0f;
-
-@interface DocumentActionViewController()
+@interface AFPUIInfoViewController()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem        *cancelBarButtonItem;
-@property (weak, nonatomic) IBOutlet UILabel                *passcodeTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel                *passcodeMessageLabel;
+@property (weak, nonatomic) IBOutlet UILabel                *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel                *messageLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint     *toolbarHeightConstraint;
 @property (assign, nonatomic) CGFloat                       initialToolbarHeight;
 
 @end
 
-@implementation DocumentActionViewController
+@implementation AFPUIInfoViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.cancelBarButtonItem.title = NSLocalizedString(@"fileproviderui.button.cancel.title", @"Cancel button");
-    self.passcodeTitleLabel.text = NSLocalizedString(@"fileproviderui.security.passcode.enabled.title", @"Passcode message title");
-    self.passcodeMessageLabel.text = NSLocalizedString(@"fileproviderui.security.passcode.message", @"Passcode message text");
     
-    self.initialToolbarHeight = kToolbarHeight;
+    switch (self.controllerType)
+    {
+        case AFPUIInfoViewControllerTypePIN:
+        {
+            self.titleLabel.text = NSLocalizedString(@"fileproviderui.security.passcode.enabled.title", @"Passcode message title");
+            self.messageLabel.text = NSLocalizedString(@"fileproviderui.security.passcode.message", @"Passcode message text");
+        }
+            break;
+            
+        case AFPUIInfoViewControllerTypeBasicAuth:
+        {
+            self.titleLabel.text = NSLocalizedString(@"fileproviderui.security.credentials.invalid.title", @"Invalid credentials title");
+            self.messageLabel.text = NSLocalizedString(@"fileproviderui.security.credentials.invalid.message", @"Invalid credentials text");
+        }
+            break;
+            
+        default: break;
+    }
+    
+    self.initialToolbarHeight = kUIExtensionToolbarHeight;
 }
 
 - (void)viewDidLayoutSubviews
@@ -54,9 +70,12 @@ static CGFloat const kToolbarHeight = 44.0f;
     
 - (IBAction)cancelButtonTapped:(id)sender
 {
-    [self.extensionContext cancelRequestWithError:[NSError errorWithDomain:FPUIErrorDomain
-                                                                      code:FPUIExtensionErrorCodeUserCancelled
-                                                                  userInfo:nil]];
+    [self dismissViewControllerAnimated:NO
+                             completion:nil];
+    
+    if ([self.delegate respondsToSelector:@selector(userDidCancelledInfoScreen)]) {
+        [self.delegate userDidCancelledInfoScreen];
+    }
 }
 
 @end

@@ -19,6 +19,7 @@
 #import "KeychainUtils.h"
 #import "NSObject+DebugCheck.h"
 #import "UserAccount.h"
+#import "SharedConstants.h"
 
 @implementation KeychainUtils
 
@@ -29,10 +30,13 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
 #ifndef DEBUG
     SEC_IS_BEING_DEBUGGED_RETURN_NIL();
 #endif
+    
     NSArray *accountsArray = nil;
     NSDictionary *query = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
                             (__bridge id)kSecAttrGeneric : (id)listIdentifier,
-                            (__bridge id)kSecReturnData : @YES};
+                            (__bridge id)kSecReturnData : @YES
+//                            (__bridge id)kSecAttrAccessGroup : kSharedAppGroupIdentifier
+                            };
     
     NSData *data = NULL;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (void *)&data);
@@ -68,7 +72,9 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     {
         NSData *accountsArrayData = [NSKeyedArchiver archivedDataWithRootObject:accounts];
         NSDictionary *searchDictionary = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                                           (__bridge id)kSecAttrGeneric : (id)listIdentifier};
+                                           (__bridge id)kSecAttrGeneric : (id)listIdentifier
+//                                           (__bridge id)kSecAttrAccessGroup : kSharedAppGroupIdentifier
+                                           };
         
         NSDictionary *updateDictionary = @{(__bridge id)kSecValueData : (id)accountsArrayData};
         
@@ -146,7 +152,9 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
 {
     BOOL deleteSucceeded = YES;
     NSDictionary *query = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                            (__bridge id)kSecAttrGeneric : (id)listIdentifier};
+                            (__bridge id)kSecAttrGeneric : (id)listIdentifier,
+                            (__bridge id)kSecAttrAccessGroup : kSharedAppGroupIdentifier
+                            };
     
     OSStatus status = noErr;
     status = SecItemDelete((__bridge CFDictionaryRef)query);

@@ -128,14 +128,23 @@
     id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[accountIdentifier];
     if(cachedSession)
     {
-        completionBlock(cachedSession, nil);
+        if (completionBlock) {
+            completionBlock(cachedSession, nil);
+        }
     }
     else
     {
         UserAccountWrapper *account = [self userAccountForAccountIdentifier:accountIdentifier networkIdentifier:networkIdentifier];
-        [self loginToAccount:account completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
-            completionBlock(session, loginError);
-        }];
+        [self loginToAccount:account
+             completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
+                 if (completionBlock) {
+                     if (!session) {
+                         completionBlock(nil, [AFPAccountManager authenticationError]);
+                     } else {
+                         completionBlock(session, nil);
+                     }
+                 }
+             }];
     }
 }
 

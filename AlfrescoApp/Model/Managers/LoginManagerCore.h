@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,33 +16,38 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import "LoginViewController.h"
+#import <Foundation/Foundation.h>
 #import "LoginManagerCoreDelegate.h"
 
-@class UserAccount;
+@interface LoginManagerCore : NSObject <AlfrescoOAuthLoginDelegate>
 
-@interface LoginManager : NSObject <LoginViewControllerDelegate, LoginManagerCoreDelegate>
-
-@property (nonatomic, assign, readonly) BOOL sessionExpired;
-
-+ (LoginManager *)sharedManager;
+@property (nonatomic, weak) id<LoginManagerCoreDelegate>    delegate;
+@property (nonatomic, assign) BOOL                          sessionExpired;
+@property (nonatomic, readonly) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession, NSError *error);
 
 - (void)attemptLoginToAccount:(UserAccount *)account
                     networkId:(NSString *)networkId
               completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock;
 - (void)authenticateOnPremiseAccount:(UserAccount *)account
+                            username:(NSString *)username
                             password:(NSString *)password
                      completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
 - (void)authenticateCloudAccount:(UserAccount *)account
                        networkId:(NSString *)networkId
             navigationController:(UINavigationController *)navigationController
                  completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock;
+- (void)authenticateOnPremiseAccount:(UserAccount *)account
+                            password:(NSString *)password
+                     completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
 - (void)authenticateWithSAMLOnPremiseAccount:(UserAccount *)account
                         navigationController:(UINavigationController *)navigationController
                              completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock;
 - (void)showSAMLWebViewForAccount:(UserAccount *)account
              navigationController:(UINavigationController *)navigationController
                   completionBlock:(AlfrescoSAMLAuthCompletionBlock)completionBlock;
-- (void)showSignInAlertWithSignedInBlock:(void (^)())completionBlock;
+
+- (void)cancelSamlAuthentication;
+- (void)cancelCloudAuthentication;
+- (void)cancelLoginRequest;
 
 @end

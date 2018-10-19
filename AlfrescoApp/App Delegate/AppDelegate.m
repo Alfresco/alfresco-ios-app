@@ -41,6 +41,7 @@
 #import "RealmSyncManager+CoreDataMigration.h"
 #import <HockeySDK/HockeySDK.h>
 #import "RealmSyncCore.h"
+#import "AppConfigurationManager.h"
 
 @import MediaPlayer;
 
@@ -120,6 +121,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         // Migrate any old accounts if required
         [MigrationAssistant runMigrationAssistant];
     }
+    
+    AccountManager *accountManager = [AccountManager sharedManager];
+    accountManager.realmManager = [RealmManager sharedManager];
+    accountManager.appConfigurationManager = [AppConfigurationManager sharedManager];
+    accountManager.analyticsManager = [AnalyticsManager sharedManager];
     
     BOOL isFirstLaunch = [self isAppFirstLaunch];
     if (isFirstLaunch)

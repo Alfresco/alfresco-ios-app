@@ -17,23 +17,10 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import "RealmSyncCore.h"
+#import "RealmManagerProtocol.h"
 
-@interface RealmManager : NSObject
+@interface RealmManager : NSObject <RealmManagerProtocol>
 
 + (RealmManager *)sharedManager;
-
-- (void)deleteRealmWithName:(NSString *)realmName;
-- (RLMRealm *)realmForCurrentThread;
-
-- (void)savePermissions:(AlfrescoPermissions *)permissions forNode:(AlfrescoNode *)node;
-
-- (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm;
-- (void)deleteRealmObjects:(NSArray *)objectsToDelete inRealm:(RLMRealm *)realm;
-
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account completionBlock:(void (^)(void))completionBlock;
-- (void)resetDefaultRealmConfiguration;
-
-- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm;
 
 @end

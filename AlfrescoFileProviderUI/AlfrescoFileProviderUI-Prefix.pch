@@ -16,10 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
-#import <FileProviderUI/FileProviderUI.h>
-
-API_AVAILABLE(ios(11.0))
-@interface DocumentActionViewController : FPUIActionExtensionViewController
-
-@end
+#import <Foundation/Foundation.h>
+#import <AlfrescoSDK-iOS/AlfrescoSDK.h>
+#import <AlfrescoKit/AlfrescoKit.h>
+#import "Constants.h"
+#import "AFPConstants.h"

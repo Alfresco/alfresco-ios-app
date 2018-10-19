@@ -17,6 +17,9 @@
  ******************************************************************************/
   
 #import "UserAccount.h"
+#import "RealmManagerProtocol.h"
+#import "AppConfigurationManagerProtocol.h"
+#import "AnalyticsManagerProtocol.h"
 
 @class RequestHandler;
 
@@ -30,6 +33,10 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 @interface AccountManager : NSObject
 
 @property (nonatomic, strong, readonly) UserAccount *selectedAccount;
+
+@property (nonatomic, weak) id<RealmManagerProtocol> realmManager;
+@property (nonatomic, weak) id<AppConfigurationManagerProtocol> appConfigurationManager;
+@property (nonatomic, weak) id<AnalyticsManagerProtocol> analyticsManager;
 
 + (AccountManager *)sharedManager;
 - (NSArray *)allAccounts;

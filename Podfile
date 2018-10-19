@@ -17,3 +17,8 @@ target 'AlfrescoDocumentPickerFileProvider' do
     pod 'Realm', '~>2.9.1'
 end
 
+target 'AlfrescoFileProviderUI' do
+    pod 'Realm', '~>2.9.1'
+    pod 'MBProgressHUD', '~> 1.0'
+end
+

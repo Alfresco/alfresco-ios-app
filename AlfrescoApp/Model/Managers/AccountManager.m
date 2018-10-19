@@ -23,7 +23,6 @@
 #import "AccountCertificate.h"
 #import "AlfrescoProfileConfig.h"
 #import "AppConfigurationManager.h"
-#import "RealmManager.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
@@ -109,10 +108,12 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 {
     NSString *labelString = account.accountType == UserAccountTypeOnPremise ? ([account.samlData isSamlEnabled] ? kAnalyticsEventLabelOnPremiseSAML : kAnalyticsEventLabelOnPremise) : kAnalyticsEventLabelCloud;
     
-    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
-                                                      action:kAnalyticsEventActionDelete
-                                                       label:labelString
-                                                       value:@1];
+    if ([self.analyticsManager respondsToSelector:@selector(trackEventWithCategory:action:label:value:)]) {
+        [self.analyticsManager trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                               action:kAnalyticsEventActionDelete
+                                                label:labelString
+                                                value:@1];
+    }
     
     [self.accountsFromKeychain removeObject:account];
     [self saveAccountsToKeychain];
@@ -169,14 +170,20 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 {
     if (self.selectedAccount == selectedAccount)
     {
-        [[[AppConfigurationManager sharedManager] configurationServiceForAccount:selectedAccount] clear];
+        if ([self.appConfigurationManager respondsToSelector:@selector(configurationServiceForAccount:)]) {
+            [[self.appConfigurationManager configurationServiceForAccount:selectedAccount] clear];
+        }
     }
     
     self.selectedAccount = selectedAccount;
     
     if (selectedAccount)
     {
-        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:selectedAccount completionBlock:nil];
+        if ([self.realmManager respondsToSelector:@selector(changeDefaultConfigurationForAccount:completionBlock:)])
+        {
+            [self.realmManager changeDefaultConfigurationForAccount:selectedAccount
+                                                    completionBlock:nil];
+        }
     }
     
     for (UserAccount *account in self.accountsFromKeychain)

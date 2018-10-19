@@ -62,7 +62,7 @@ static NSString * const kConfigurationFolder = @"Configuration";
 {
     NSString *syncFolderPathString = nil;
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
-    BOOL syncedContentMigrationOccurred = [defaults objectForKey:kHasSyncedContentMigrationOccurred];
+    BOOL syncedContentMigrationOccurred = [defaults boolForKey:kHasSyncedContentMigrationOccurred];
     
     if (syncedContentMigrationOccurred)
     {
