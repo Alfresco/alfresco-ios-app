@@ -27,16 +27,26 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
 
 + (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error
 {
+    return [self savedAccountsForListIdentifier:listIdentifier
+                                        inGroup:kSharedAppGroupIdentifier
+                                          error:error];
+}
+
++ (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error {
 #ifndef DEBUG
     SEC_IS_BEING_DEBUGGED_RETURN_NIL();
 #endif
     
     NSArray *accountsArray = nil;
-    NSDictionary *query = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                            (__bridge id)kSecAttrGeneric : (id)listIdentifier,
-                            (__bridge id)kSecReturnData : @YES
-//                            (__bridge id)kSecAttrAccessGroup : kSharedAppGroupIdentifier
-                            };
+    NSMutableDictionary *query = [NSMutableDictionary dictionaryWithDictionary:
+                                  @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
+                                    (__bridge id)kSecAttrGeneric : (id)listIdentifier,
+                                    (__bridge id)kSecReturnData : @YES
+                                    }];
+    if (groupID.length) {
+        [query setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
+    }
+    
     
     NSData *data = NULL;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)query, (void *)&data);
@@ -67,14 +77,27 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
 
 + (BOOL)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError
 {
+    return [self updateSavedAccounts:accounts
+                   forListIdentifier:listIdentifier
+                             inGroup:kSharedAppGroupIdentifier
+                               error:updateError];
+}
+
++ (BOOL)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)updateError
+{
     BOOL updateSucceeded = YES;
     if (accounts)
     {
         NSData *accountsArrayData = [NSKeyedArchiver archivedDataWithRootObject:accounts];
-        NSDictionary *searchDictionary = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                                           (__bridge id)kSecAttrGeneric : (id)listIdentifier
-//                                           (__bridge id)kSecAttrAccessGroup : kSharedAppGroupIdentifier
-                                           };
+        NSMutableDictionary *searchDictionary = [NSMutableDictionary dictionaryWithDictionary:
+                                                 @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
+                                                   (__bridge id)kSecAttrGeneric : (id)listIdentifier,
+                                                   (__bridge id)kSecAttrAccessGroup : groupID
+                                                   }];
+        
+        if (groupID.length) {
+            [searchDictionary setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
+        }
         
         NSDictionary *updateDictionary = @{(__bridge id)kSecValueData : (id)accountsArrayData};
         
@@ -148,13 +171,18 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     return updateSucceeded;
 }
 
-+ (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError
++ (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)deleteError
 {
     BOOL deleteSucceeded = YES;
-    NSDictionary *query = @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                            (__bridge id)kSecAttrGeneric : (id)listIdentifier,
-                            (__bridge id)kSecAttrAccessGroup : kSharedAppGroupIdentifier
-                            };
+    NSMutableDictionary *query = [NSMutableDictionary dictionaryWithDictionary:
+                                  @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
+                                    (__bridge id)kSecAttrGeneric : (id)listIdentifier,
+                                    (__bridge id)kSecAttrAccessGroup : groupID
+                                    }];
+    
+    if (groupID.length) {
+        [query setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
+    }
     
     OSStatus status = noErr;
     status = SecItemDelete((__bridge CFDictionaryRef)query);
@@ -165,6 +193,12 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
         deleteSucceeded = NO;
     }
     return deleteSucceeded;
+}
+
++ (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError {
+    return [self deleteSavedAccountsForListIdentifier:listIdentifier
+                                              inGroup:kSharedAppGroupIdentifier
+                                                error:deleteError];
 }
 
 #pragma mark - Public Methods

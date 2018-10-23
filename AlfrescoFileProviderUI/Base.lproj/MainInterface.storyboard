@@ -103,18 +103,26 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9by-yO-u1T">
+                                <rect key="frame" x="0.0" y="44" width="350" height="356"/>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="N1J-Nm-f2f" firstAttribute="top" secondItem="1Yo-dd-m9g" secondAttribute="top" id="24c-cn-IST"/>
+                            <constraint firstItem="bdd-rZ-C3K" firstAttribute="trailing" secondItem="9by-yO-u1T" secondAttribute="trailing" id="2BH-xX-69r"/>
                             <constraint firstItem="N1J-Nm-f2f" firstAttribute="leading" secondItem="1Yo-dd-m9g" secondAttribute="leading" id="2Xq-33-kGl"/>
+                            <constraint firstItem="bdd-rZ-C3K" firstAttribute="bottom" secondItem="9by-yO-u1T" secondAttribute="bottom" id="DJq-FV-3bw"/>
+                            <constraint firstItem="9by-yO-u1T" firstAttribute="top" secondItem="N1J-Nm-f2f" secondAttribute="bottom" id="IQh-tW-ZRg"/>
                             <constraint firstAttribute="trailing" secondItem="N1J-Nm-f2f" secondAttribute="trailing" id="VNP-1d-gdW"/>
+                            <constraint firstItem="9by-yO-u1T" firstAttribute="leading" secondItem="bdd-rZ-C3K" secondAttribute="leading" id="pui-Nz-Izy"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bdd-rZ-C3K"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <size key="freeformSize" width="350" height="400"/>
                     <connections>
+                        <outlet property="containerView" destination="9by-yO-u1T" id="DwK-0b-Kt6"/>
                         <outlet property="toolbarHeightConstraint" destination="RZ5-C3-tVe" id="zRm-wu-Qbe"/>
                         <segue destination="J6p-g8-CHO" kind="showDetail" identifier="PINViewControllerSegueIdentifier" animates="NO" id="veY-9W-Ngn"/>
                         <segue destination="J6p-g8-CHO" kind="showDetail" identifier="BasicAuthViewControllerSegueIdentifier" animates="NO" id="phG-mV-jh8"/>
@@ -122,7 +130,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohM-kk-u37" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-237" y="-94"/>
+            <point key="canvasLocation" x="-238.40000000000001" y="-94.452773613193415"/>
         </scene>
     </scenes>
     <resources>

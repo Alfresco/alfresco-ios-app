@@ -23,6 +23,7 @@
 #import "AFPUIConstants.h"
 #import "LoginManagerCore.h"
 #import "MBProgressHUD.h"
+#import "UserAccountWrapper.h"
 
 @interface AFPAuthenticateViewController () <LoginManagerCoreDelegate, AFPUIInfoViewControllerDelegate>
 
@@ -31,6 +32,7 @@
 @property (strong, nonatomic) LoginManagerCore *loginManagerCore;
 @property (strong, nonatomic) MBProgressHUD    *progressHud;
 @property (assign, nonatomic) CGFloat          initialToolbarHeight;
+@property (weak, nonatomic) IBOutlet UIView    *containerView;
 
 @end
 
@@ -75,12 +77,21 @@
                                   sender:nil];
     } else {
         AccountManager *accountManager = [AccountManager sharedManager];
+        [accountManager loadAccountsFromKeychain];
+        
         if (accountManager.selectedAccount)
         {
+            __weak typeof(self) weakSelf = self;
             [self.loginManagerCore attemptLoginToAccount:accountManager.selectedAccount
                                                networkId:accountManager.selectedAccount.selectedNetworkId
                                          completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                                             NSLog(@"");
+                                             __strong typeof(self) strongSelf = weakSelf;
+                                             
+                                             if (alfrescoSession)
+                                             {
+                                                 [[AccountManager sharedManager] saveAccountsToKeychain];
+                                                 [strongSelf.extensionContext completeRequest];
+                                             }
             }];
         }
     }
@@ -137,18 +148,16 @@
 - (void)showSAMLLoginViewController:(AlfrescoSAMLUILoginViewController *)viewController
              inNavigationController:(UINavigationController *)navigationController
 {
-    NSLog(@"");
-}
-
-- (void)showOauthLoginController:(AlfrescoOAuthUILoginViewController *)viewController
-          inNavigationController:(UINavigationController *)navigationController
-{
-    NSLog(@"");
+    [self addChildViewController:viewController];
+    viewController.view.frame = self.containerView.bounds;
+    [self.containerView addSubview:viewController.view];
+    [viewController didMoveToParentViewController:self];
 }
 
 - (void)showSignInAlertWithSignedInBlock:(void (^)(void))completionBlock
 {
-    NSLog(@"");
+    [self performSegueWithIdentifier:kUIExtentionBasicAuthViewControllerSegueIdentifier
+                              sender:nil];
 }
 
 - (void)displayLoginViewControllerWithAccount:(UserAccount *)account
@@ -156,25 +165,6 @@
 {
     [self performSegueWithIdentifier:kUIExtentionBasicAuthViewControllerSegueIdentifier
                               sender:nil];
-}
-
-
-- (void)clearDetailViewController
-{
-    NSLog(@"");
-}
-
-- (void)trackAnalyticsEventWithCategory:(NSString *)eventCategory
-                                 action:(NSString *)eventAction
-                                  label:(NSString *)eventLabel
-                                  value:(NSNumber *)value
-{
-    NSLog(@"");
-}
-
-- (void)trackAnalyticsScreenWithName:(NSString *)screenName
-{
-    NSLog(@"");
 }
 
 #pragma mark - Hud component

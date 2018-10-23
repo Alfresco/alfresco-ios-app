@@ -90,7 +90,8 @@
     return account;
 }
 
-+ (BOOL)isPINAuthenticationSet {
++ (BOOL)isPINAuthenticationSet
+{
     NSError *error = nil;
     NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
                                                 error:&error];
@@ -134,13 +135,18 @@
     }
     else
     {
-        UserAccountWrapper *account = [self userAccountForAccountIdentifier:accountIdentifier networkIdentifier:networkIdentifier];
+        UserAccountWrapper *account = [self userAccountForAccountIdentifier:accountIdentifier
+                                                          networkIdentifier:networkIdentifier];
         [self loginToAccount:account
              completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
-                 if (completionBlock) {
-                     if (!session) {
+                 if (completionBlock)
+                 {
+                     if (!session)
+                     {
                          completionBlock(nil, [AFPAccountManager authenticationError]);
-                     } else {
+                     }
+                     else
+                     {
                          completionBlock(session, nil);
                      }
                  }
@@ -172,7 +178,8 @@
 + (NSArray *)getAccountsFromKeychain
 {
     NSError *keychainError = nil;
-    NSArray *accounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&keychainError];
+    NSArray *accounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier
+                                                                error:&keychainError];
     
     if (keychainError)
     {

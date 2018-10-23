@@ -47,6 +47,8 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 - (void)saveAccountsToKeychain;
 - (NSInteger)totalNumberOfAddedAccounts;
 - (NSInteger)numberOfPaidAccounts;
+- (void)loadAccountsFromKeychain;
+
 - (void)selectAccount:(UserAccount *)selectedAccount selectNetwork:(NSString *)networkIdentifier alfrescoSession:(id<AlfrescoSession>)alfrescoSession;
 - (void)deselectSelectedAccount;
 - (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock;
