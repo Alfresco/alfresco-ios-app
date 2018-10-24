@@ -22,7 +22,6 @@
 #import "Constants.h"
 #import "AccountCertificate.h"
 #import "AlfrescoProfileConfig.h"
-#import "AppConfigurationManager.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 

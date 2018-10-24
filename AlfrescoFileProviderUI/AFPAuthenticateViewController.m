@@ -61,7 +61,8 @@
 {
     [super viewDidLayoutSubviews];
     
-    if (@available(iOS 11.0, *)) {
+    if (@available(iOS 11.0, *))
+    {
         self.toolbarHeightConstraint.constant = self.initialToolbarHeight + self.view.safeAreaInsets.top;
     }
 }
@@ -119,7 +120,8 @@
 
 #pragma mark - Actions
 
-- (IBAction)onCancel:(id)sender {
+- (IBAction)onCancel:(id)sender
+{
     [self.loginManagerCore cancelLoginRequest];
     [self userDidCancelledInfoScreen];
 }

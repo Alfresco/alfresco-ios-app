@@ -43,7 +43,8 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
                                     (__bridge id)kSecAttrGeneric : (id)listIdentifier,
                                     (__bridge id)kSecReturnData : @YES
                                     }];
-    if (groupID.length) {
+    if (groupID.length)
+    {
         [query setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
     }
     
@@ -95,7 +96,8 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
                                                    (__bridge id)kSecAttrAccessGroup : groupID
                                                    }];
         
-        if (groupID.length) {
+        if (groupID.length)
+        {
             [searchDictionary setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
         }
         
@@ -180,7 +182,8 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
                                     (__bridge id)kSecAttrAccessGroup : groupID
                                     }];
     
-    if (groupID.length) {
+    if (groupID.length)
+    {
         [query setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
     }
     
@@ -195,7 +198,8 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     return deleteSucceeded;
 }
 
-+ (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError {
++ (BOOL)deleteSavedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)deleteError
+{
     return [self deleteSavedAccountsForListIdentifier:listIdentifier
                                               inGroup:kSharedAppGroupIdentifier
                                                 error:deleteError];

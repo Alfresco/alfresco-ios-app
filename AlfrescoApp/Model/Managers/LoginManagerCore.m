@@ -252,7 +252,8 @@
                              [strongSelf authenticateWithSAMLOnPremiseAccount:account
                                                          navigationController:nil
                                                               completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                                                                  if ([weakSelf.delegate respondsToSelector:@selector(willEndVisualAuthenticationProgress)]) {
+                                                                  if ([weakSelf.delegate respondsToSelector:@selector(willEndVisualAuthenticationProgress)])
+                                                                  {
                                                                       [weakSelf.delegate willEndVisualAuthenticationProgress];
                                                                   }
                                                                   
@@ -278,14 +279,16 @@
                          account.samlData = samlData;
                          self.sessionExpired = YES;
                          
-                         if ([self.delegate respondsToSelector:@selector(trackEventWithCategory:action:label:value:)]) {
+                         if ([self.delegate respondsToSelector:@selector(trackEventWithCategory:action:label:value:)])
+                         {
                              [self.delegate trackAnalyticsEventWithCategory:kAnalyticsEventCategoryAccount
                                                                      action:kAnalyticsEventActionChangeAuthentication
                                                                       label:kAnalyticsEventLabelSAML
                                                                       value:nil];
                          }
                          
-                         if ([strongSelf.delegate respondsToSelector:@selector(showSignInAlertWithSignedInBlock:)]) {
+                         if ([strongSelf.delegate respondsToSelector:@selector(showSignInAlertWithSignedInBlock:)])
+                         {
                              [strongSelf.delegate showSignInAlertWithSignedInBlock:showSAMLWebViewAndAuthenticate];
                          }
                      }
@@ -300,7 +303,8 @@
                            completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *error) {
                                __strong typeof(self) strongSelf = weakSelf;
                                
-                               if ([self.delegate respondsToSelector:@selector(willEndVisualAuthenticationProgress)]) {
+                               if ([self.delegate respondsToSelector:@selector(willEndVisualAuthenticationProgress)])
+                               {
                                    [self.delegate willEndVisualAuthenticationProgress];
                                }
                                
@@ -470,7 +474,8 @@
     AlfrescoOAuthUILoginViewController * (^showOAuthLoginViewController)(void) = ^AlfrescoOAuthUILoginViewController * (void) {
         __strong typeof(self) strongSelf = weakSelf;
         
-        if ([strongSelf.delegate respondsToSelector:@selector(willEndVisualAuthenticationProgress)]) {
+        if ([strongSelf.delegate respondsToSelector:@selector(willEndVisualAuthenticationProgress)])
+        {
             [strongSelf.delegate willEndVisualAuthenticationProgress];
         }
         
@@ -506,12 +511,14 @@
                                                        }
                                                    }];
         
-        if ([strongSelf.delegate respondsToSelector:@selector(showOauthLoginController:inNavigationController:)]) {
+        if ([strongSelf.delegate respondsToSelector:@selector(showOauthLoginController:inNavigationController:)])
+        {
             [strongSelf.delegate showOauthLoginController:oauthLoginController
                                    inNavigationController:navigationController];
         }
         
-        if ([strongSelf.delegate respondsToSelector:@selector(trackAnalyticsScreenWithName:)]) {
+        if ([strongSelf.delegate respondsToSelector:@selector(trackAnalyticsScreenWithName:)])
+        {
             [strongSelf.delegate trackAnalyticsScreenWithName:kAnalyticsViewAccountOAuth];
         }
         
@@ -719,9 +726,11 @@
 
 - (void)cancelLoginRequest
 {
-    if ([self.delegate respondsToSelector:@selector(willEndVisualAuthenticationProgress)]) {
+    if ([self.delegate respondsToSelector:@selector(willEndVisualAuthenticationProgress)])
+    {
         [self.delegate willEndVisualAuthenticationProgress];
     }
+    
     [self.currentLoginRequest cancel];
     self.didCancelLogin = YES;
     self.currentLoginRequest = nil;

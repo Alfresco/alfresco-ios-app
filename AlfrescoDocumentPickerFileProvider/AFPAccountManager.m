@@ -129,7 +129,8 @@
     id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[accountIdentifier];
     if(cachedSession)
     {
-        if (completionBlock) {
+        if (completionBlock)
+        {
             completionBlock(cachedSession, nil);
         }
     }

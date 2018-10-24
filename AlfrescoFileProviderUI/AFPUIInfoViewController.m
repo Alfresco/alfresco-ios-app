@@ -63,7 +63,8 @@
 {
     [super viewDidLayoutSubviews];
     
-    if (@available(iOS 11.0, *)) {
+    if (@available(iOS 11.0, *))
+    {
         self.toolbarHeightConstraint.constant = self.initialToolbarHeight + self.view.safeAreaInsets.top;
     }
 }
@@ -73,7 +74,8 @@
     [self dismissViewControllerAnimated:NO
                              completion:nil];
     
-    if ([self.delegate respondsToSelector:@selector(userDidCancelledInfoScreen)]) {
+    if ([self.delegate respondsToSelector:@selector(userDidCancelledInfoScreen)])
+    {
         [self.delegate userDidCancelledInfoScreen];
     }
 }

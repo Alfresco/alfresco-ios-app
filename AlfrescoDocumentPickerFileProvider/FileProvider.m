@@ -380,7 +380,8 @@
                           [weakSelf.fileService uploadDocumentItem:itemMetadataToRename
                                                    completionBlock:nil];
                       } else {
-                          if (completionHandler) {
+                          if (completionHandler)
+                          {
                               completionHandler(nil, error);
                           }
                       }
