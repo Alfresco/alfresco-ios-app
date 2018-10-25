@@ -21,3 +21,4 @@
 #import <AlfrescoKit/AlfrescoKit.h>
 #import "Constants.h"
 #import "AFPConstants.h"
+#import "NSObject+DebugCheck.h"
