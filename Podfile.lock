@@ -35,6 +35,18 @@ DEPENDENCIES:
   - NJKWebViewProgress (~> 0.2)
   - Realm (~> 2.9.1)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - GoogleAnalytics
+    - GoogleInterchangeUtilities
+    - GoogleNetworkingUtilities
+    - GoogleSymbolUtilities
+    - GoogleUtilities
+    - HockeySDK
+    - MBProgressHUD
+    - NJKWebViewProgress
+    - Realm
+
 EXTERNAL SOURCES:
   Google:
     :podspec: http://alfresco.github.io/alfresco-ios-app/Google.podspec.json
@@ -51,6 +63,6 @@ SPEC CHECKSUMS:
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   Realm: f91fb43bd474c4f731a116ebf7392c75dd015920
 
-PODFILE CHECKSUM: 2890721e228b579dc4d08f07edf48840b7362b4d
+PODFILE CHECKSUM: 5ab33aadde17971a5cc398be37530a51154b7161
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.5.3

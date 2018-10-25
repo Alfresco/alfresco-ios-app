@@ -74,7 +74,7 @@
     }
 }
 
-#pragma mark - Public methods
+#pragma mark - RealmManagerProtocol
 #pragma mark Realm management methods
 
 - (void)deleteRealmWithName:(NSString *)realmName

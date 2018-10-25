@@ -90,7 +90,8 @@
     return account;
 }
 
-+ (BOOL)isPINAuthenticationSet {
++ (BOOL)isPINAuthenticationSet
+{
     NSError *error = nil;
     NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
                                                 error:&error];
@@ -128,14 +129,29 @@
     id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[accountIdentifier];
     if(cachedSession)
     {
-        completionBlock(cachedSession, nil);
+        if (completionBlock)
+        {
+            completionBlock(cachedSession, nil);
+        }
     }
     else
     {
-        UserAccountWrapper *account = [self userAccountForAccountIdentifier:accountIdentifier networkIdentifier:networkIdentifier];
-        [self loginToAccount:account completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
-            completionBlock(session, loginError);
-        }];
+        UserAccountWrapper *account = [self userAccountForAccountIdentifier:accountIdentifier
+                                                          networkIdentifier:networkIdentifier];
+        [self loginToAccount:account
+             completionBlock:^(BOOL successful, id<AlfrescoSession> session, NSError *loginError) {
+                 if (completionBlock)
+                 {
+                     if (!session)
+                     {
+                         completionBlock(nil, [AFPAccountManager authenticationError]);
+                     }
+                     else
+                     {
+                         completionBlock(session, nil);
+                     }
+                 }
+             }];
     }
 }
 
@@ -163,7 +179,8 @@
 + (NSArray *)getAccountsFromKeychain
 {
     NSError *keychainError = nil;
-    NSArray *accounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier error:&keychainError];
+    NSArray *accounts = [KeychainUtils savedAccountsForListIdentifier:kAccountsListIdentifier
+                                                                error:&keychainError];
     
     if (keychainError)
     {

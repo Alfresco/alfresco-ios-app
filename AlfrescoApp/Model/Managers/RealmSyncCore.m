@@ -394,17 +394,18 @@
 - (BOOL)isContentMigrationNeeded
 {
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
-    BOOL isMigrationNeededResult = ![defaults objectForKey:kHasSyncedContentMigrationOccurred];
+    BOOL isMigrationNeededResult = ![defaults boolForKey:kHasSyncedContentMigrationOccurred];
     
     return isMigrationNeededResult;
 }
 
 - (void)initiateContentMigrationProcessForAccounts:(NSArray *)accounts
 {
-    void (^saveContentMigrationOccured)() = ^()
+    void (^saveContentMigrationOccured)(void) = ^()
     {
         NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
-        [defaults setObject:@YES forKey:kHasSyncedContentMigrationOccurred];
+        [defaults setBool:YES
+                   forKey:kHasSyncedContentMigrationOccurred];
         [defaults synchronize];
     };
     
