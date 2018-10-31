@@ -34,5 +34,6 @@
 + (id)retrieveItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error;
 + (id)retrieveItemForKey:(NSString *)keychainItemId inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error;
 + (OSStatus)deleteItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error;
++ (OSStatus)deleteItemForKey:(NSString *)keychainItemId inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error;
 
 @end

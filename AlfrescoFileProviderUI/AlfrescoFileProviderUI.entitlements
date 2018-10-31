@@ -6,9 +6,5 @@
 	<array>
 		<string>group.com.alfresco.mobile</string>
 	</array>
-	<key>keychain-access-groups</key>
-	<array>
-		<string>$(AppIdentifierPrefix)com.alfresco.mobile</string>
-	</array>
 </dict>
 </plist>

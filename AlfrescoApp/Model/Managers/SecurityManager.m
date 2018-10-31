@@ -57,6 +57,7 @@
     
     if ([[PreferenceManager sharedManager] shouldUsePasscodeLock])
     {
+        [self migratePINValuesInKeychain];
         self.pinScreenWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
         self.pinScreenWindow.rootViewController = [UIViewController new];
         [self.pinScreenWindow makeKeyAndVisible];
@@ -126,8 +127,11 @@
 + (void)reset
 {
     NSError *error;
-    [KeychainUtils deleteItemForKey:kPinKey error:&error];
-    [KeychainUtils deleteItemForKey:kRemainingAttemptsKey error:&error];
+    [KeychainUtils deleteItemForKey:kPinKey
+                            inGroup:kSharedAppGroupIdentifier
+                              error:&error];
+    [KeychainUtils deleteItemForKey:kRemainingAttemptsKey
+                              error:&error];
 }
 
 + (void)resetWithType:(ResetType)resetType
@@ -448,6 +452,24 @@
             }
         });
     });
+}
+
+- (void)migratePINValuesInKeychain
+{
+    NSError *error;
+    
+    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                                error:&error];
+    if (pin.length)
+    {
+        [KeychainUtils deleteItemForKey:kPinKey
+                                  error:&error];
+        
+        [KeychainUtils saveItem:pin
+                         forKey:kPinKey
+                        inGroup:kSharedAppGroupIdentifier
+                          error:&error];
+    }
 }
 
 @end
