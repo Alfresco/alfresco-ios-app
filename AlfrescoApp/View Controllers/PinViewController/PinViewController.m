@@ -284,7 +284,9 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
     if (_step == 1)
     {
         NSError *error;
-        NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+        NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                                  inGroup:kSharedAppGroupIdentifier
+                                                    error:&error];
         
         if ([_oldPin isEqualToString:pin])
         {
@@ -350,7 +352,10 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         if ([_reenteredPin isEqualToString:_enteredPin])
         {
             NSError *error;
-            [KeychainUtils saveItem:_enteredPin forKey:kPinKey error:&error];
+            [KeychainUtils saveItem:_enteredPin
+                             forKey:kPinKey
+                            inGroup:kSharedAppGroupIdentifier
+                              error:&error];
             
             if (self.completionBlock)
             {
@@ -381,7 +386,9 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
     _titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeEnterString, @"Enter your Alfresco Passcode");
     
     NSError *error;
-    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                              inGroup:kSharedAppGroupIdentifier
+                                                error:&error];
     __weak typeof(self) weakSelf = self;
     
     if ([_oldPin isEqualToString:pin])
@@ -463,7 +470,11 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         if ([_reenteredPin isEqualToString:_enteredPin])
         {
             NSError *error;
-            [KeychainUtils saveItem:_enteredPin forKey:kPinKey error:&error];
+            [KeychainUtils saveItem:_enteredPin
+                             forKey:kPinKey
+                            inGroup:kSharedAppGroupIdentifier
+                              error:&error];
+            
             [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
             
             [self dismissViewControllerAnimated:self.animatedDismiss completion:^{
@@ -493,7 +504,9 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
 - (void)validateUnsetFlow
 {
     NSError *error;
-    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+    NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                              inGroup:kSharedAppGroupIdentifier
+                                                error:&error];
     
     if ([_oldPin isEqualToString:pin])
     {
@@ -562,7 +575,9 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
 {
     NSError *error;
     [KeychainUtils saveItem:@(REMAINING_ATTEMPTS_MAX_VALUE) forKey:kRemainingAttemptsKey error:&error];
-    [KeychainUtils deleteItemForKey:kPinKey error:&error];
+    [KeychainUtils deleteItemForKey:kPinKey
+                            inGroup:kSharedAppGroupIdentifier
+                              error:&error];
     
     [self dismissViewControllerAnimated:self.animatedDismiss completion:completionBlock];
 }

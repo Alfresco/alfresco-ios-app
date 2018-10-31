@@ -92,8 +92,7 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
         NSData *accountsArrayData = [NSKeyedArchiver archivedDataWithRootObject:accounts];
         NSMutableDictionary *searchDictionary = [NSMutableDictionary dictionaryWithDictionary:
                                                  @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                                                   (__bridge id)kSecAttrGeneric : (id)listIdentifier,
-                                                   (__bridge id)kSecAttrAccessGroup : groupID
+                                                   (__bridge id)kSecAttrGeneric : (id)listIdentifier
                                                    }];
         
         if (groupID.length)
@@ -178,8 +177,7 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     BOOL deleteSucceeded = YES;
     NSMutableDictionary *query = [NSMutableDictionary dictionaryWithDictionary:
                                   @{(__bridge id)kSecClass : (__bridge id)kSecClassGenericPassword,
-                                    (__bridge id)kSecAttrGeneric : (id)listIdentifier,
-                                    (__bridge id)kSecAttrAccessGroup : groupID
+                                    (__bridge id)kSecAttrGeneric : (id)listIdentifier
                                     }];
     
     if (groupID.length)
@@ -219,7 +217,8 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     if (existingValue == nil)
     {
         NSMutableDictionary *keychainItem = [self keychainItem:keychainItemId withValue:value];
-        if (groupID.length) {
+        if (groupID.length)
+        {
             [keychainItem setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
         }
         
@@ -234,7 +233,8 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     else
     {
         NSMutableDictionary *keychainItemQuery = [self keychainItem:keychainItemId];
-        if (groupID.length) {
+        if (groupID.length)
+        {
             [keychainItemQuery setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
         }
         NSMutableDictionary *updateDictionary = [[NSMutableDictionary alloc] init];
@@ -260,7 +260,8 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
 + (id)retrieveItemForKey:(NSString *)keychainItemId inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error
 {
     NSMutableDictionary *keychainItemQuery = [self keychainItemQuery:keychainItemId];
-    if (groupID.length) {
+    if (groupID.length)
+    {
         [keychainItemQuery setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
     }
     
@@ -289,9 +290,14 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     return [self retrieveItemForKey:keychainItemId inGroup:nil error:error];
 }
 
-+ (OSStatus)deleteItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
++ (OSStatus)deleteItemForKey:(NSString *)keychainItemId inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error
 {
     NSMutableDictionary *keychainItemQuery = [self keychainItem:keychainItemId];
+    
+    if (groupID.length)
+    {
+        [keychainItemQuery setObject:groupID forKey:(__bridge id)kSecAttrAccessGroup];
+    }
     
     OSStatus statusCode = SecItemDelete((__bridge CFDictionaryRef)keychainItemQuery);
     
@@ -309,6 +315,13 @@ static NSString *kKeychainItemServiceName = @"Alfresco";
     }
     
     return statusCode;
+}
+
++ (OSStatus)deleteItemForKey:(NSString *)keychainItemId error:(NSError *__autoreleasing *)error
+{
+    return [self deleteSavedAccountsForListIdentifier:keychainItemId
+                                              inGroup:nil
+                                                error:error];
 }
 
 #pragma mark - Private Methods

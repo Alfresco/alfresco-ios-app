@@ -92,8 +92,9 @@
 
 + (BOOL)isPINAuthenticationSet
 {
-    NSError *error = nil;
+    NSError *error;
     NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                              inGroup:kSharedAppGroupIdentifier
                                                 error:&error];
     
     BOOL isPINSet = NO;
