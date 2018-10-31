@@ -368,9 +368,8 @@
                  NSString *metadataIdentifier = itemMetadata.identifier;
                  
                  [strongSelf.fileService uploadDocumentItem:itemMetadata
-                                            completionBlock:^(BOOL filenameExistsInParentFolder)
-                  {
-                      if (filenameExistsInParentFolder)
+                                            completionBlock:^(NSError *error) {
+                      if (error.code == kAlfrescoErrorCodeDocumentFolderNodeAlreadyExists)
                       {
                           AFPItemMetadata *itemMetadataToRename = [[AFPDataManager sharedManager] metadataItemForIdentifier:metadataIdentifier];
                           NSString *metadataFilename = itemMetadataToRename.name;
@@ -380,6 +379,11 @@
                           
                           [weakSelf.fileService uploadDocumentItem:itemMetadataToRename
                                                    completionBlock:nil];
+                      } else {
+                          if (completionHandler)
+                          {
+                              completionHandler(nil, error);
+                          }
                       }
                   }];
              }
@@ -766,6 +770,7 @@
              {
                  completionBlock(loginError);
              }
+             
              networkOperationCallbackComplete = YES;
          }
      }];

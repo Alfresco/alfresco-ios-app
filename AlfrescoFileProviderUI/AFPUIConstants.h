@@ -16,10 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <UIKit/UIKit.h>
-#import <FileProviderUI/FileProviderUI.h>
+#import <Foundation/Foundation.h>
 
-API_AVAILABLE(ios(11.0))
-@interface DocumentActionViewController : FPUIActionExtensionViewController
-
-@end
+extern NSString *const kUIExtentionPinViewControllerSegueIdentifier;
+extern NSString *const kUIExtentionBasicAuthViewControllerSegueIdentifier;
+extern CGFloat const   kUIExtensionToolbarHeight;

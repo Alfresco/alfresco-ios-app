@@ -99,7 +99,9 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         self.appResetedView.hidden = YES;
         
         NSError *error;
-        NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+        NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                                  inGroup:kSharedAppGroupIdentifier
+                                                    error:&error];
         
         BOOL isPasscodeSet = (pin != nil);
         
