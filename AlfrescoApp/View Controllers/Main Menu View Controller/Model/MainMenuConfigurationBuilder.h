@@ -27,5 +27,6 @@
 @property (nonatomic, strong) NSDictionary *managedAccountConfiguration;
 
 - (instancetype)initWithAccount:(UserAccount *)account session:(id<AlfrescoSession>)session;
+- (void)viewConfigCollectionForMenuItemCollection:(NSArray *)menuItemsCollection completionBlock:(void (^)(NSArray *configs, NSError *error))completionBlock;
 
 @end

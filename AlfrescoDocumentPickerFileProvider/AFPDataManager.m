@@ -22,6 +22,8 @@
 #import "AFPItemIdentifier.h"
 #import "AlfrescoNode+Utilities.h"
 
+#import "AlfrescoViewConfig.h"
+
 static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
 
 @implementation AFPDataManager
@@ -243,6 +245,109 @@ static NSString * const kFileProviderAccountInfo = @"FileProviderAccountInfo";
             }];
         }
     }
+}
+
+- (void)updateMenuItemsWithHiddenCollectionOfViewConfigs:(NSArray *)viewConfigs forAccount:(UserAccount *)account
+{
+    for(AlfrescoViewConfig *config in viewConfigs)
+    {
+        if([config.type isEqualToString:kAlfrescoConfigViewTypeFavourites])
+        {
+            [self removeItemMetadataForIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:kFileProviderFavoritesFolderIdentifierSuffix andAccount:account]];
+        }
+        else if([config.type isEqualToString:kAlfrescoConfigViewTypeSiteBrowser])
+        {
+            [self removeItemMetadataForIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:kFileProviderSitesFolderIdentifierSuffix andAccount:account]];
+            [self removeItemMetadataForIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:kFileProviderFavoriteSitesFolderIdentifierSuffix andAccount:account]];
+            [self removeItemMetadataForIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:kFileProviderMySitesFolderIdentifierSuffix andAccount:account]];
+        }
+        else if([config.type isEqualToString:kAlfrescoConfigViewTypeSync])
+        {
+            [self removeItemMetadataForIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:kFileProviderSyncedFolderIdentifierSuffix andAccount:account]];
+        }
+        else if([config.type isEqualToString:kAlfrescoConfigViewTypeRepository])
+        {
+            NSString *folderTypeId = config.parameters[kAlfrescoConfigViewParameterFolderTypeKey];
+            
+            if ([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeMyFiles])
+            {
+                [self removeItemMetadataForIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:kFileProviderMyFilesFolderIdentifierSuffix andAccount:account]];
+            }
+            else if([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeShared])
+            {
+                [self removeItemMetadataForIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:kFileProviderSharedFilesFolderIdentifierSuffix andAccount:account]];
+            }
+        }
+        else if([config.type isEqualToString:kAlfrescoConfigViewTypeLocal])
+        {
+            [self removeItemMetadataForIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:nil andAccountIdentifier:nil]];
+            [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:NSFileProviderRootContainerItemIdentifier completionHandler:^(NSError * _Nullable error) {
+                if (error != NULL)
+                {
+                    AlfrescoLogError(@"ERROR: Couldn't signal enumerator %@ for changes %@", NSFileProviderRootContainerItemIdentifier, error);
+                }
+            }];
+        }
+    }
+    [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:nil andAccount:account] completionHandler:^(NSError * _Nullable error) {
+        if (error != NULL)
+        {
+            AlfrescoLogError(@"ERROR: Couldn't signal enumerator %@ for changes %@", [AFPItemIdentifier itemIdentifierForSuffix:nil andAccount:account], error);
+        }
+    }];
+}
+
+- (void)updateMenuItemsWithVisibleCollectionOfViewConfigs:(NSArray *)viewConfigs forAccount:(UserAccount *)account
+{
+    NSString *displayName;
+    for(AlfrescoViewConfig *config in viewConfigs)
+    {
+        if([config.type isEqualToString:kAlfrescoConfigViewTypeFavourites])
+        {
+            displayName = config.label ?: NSLocalizedString(@"favourites.title", @"Favorites Title");
+            [self saveMenuItem:kFileProviderFavoritesFolderIdentifierSuffix displayName:displayName forAccount:account];
+        }
+        else if([config.type isEqualToString:kAlfrescoConfigViewTypeSiteBrowser])
+        {
+            displayName = config.label ?: NSLocalizedString(@"sites.title", @"Sites Title");
+            [self saveMenuItem:kFileProviderSitesFolderIdentifierSuffix displayName:displayName forAccount:account];
+        }
+        else if([config.type isEqualToString:kAlfrescoConfigViewTypeSync])
+        {
+            displayName = config.label ?: NSLocalizedString(@"sync.title", @"Sync Title");
+            [self saveMenuItem:kFileProviderSyncedFolderIdentifierSuffix displayName:displayName forAccount:account];
+        }
+        else if([config.type isEqualToString:kAlfrescoConfigViewTypeRepository])
+        {
+            NSString *folderTypeId = config.parameters[kAlfrescoConfigViewParameterFolderTypeKey];
+            if ([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeMyFiles])
+            {
+                displayName = config.label ?: NSLocalizedString(@"myFiles.title", @"My Files");
+                [self saveMenuItem:kFileProviderMyFilesFolderIdentifierSuffix displayName:displayName forAccount:account];
+            }
+            else if([folderTypeId isEqualToString:kAlfrescoConfigViewParameterFolderTypeShared])
+            {
+                displayName = config.label ?: NSLocalizedString(@"sharedFiles.title", @"Shared Files");
+                [self saveMenuItem:kFileProviderSharedFilesFolderIdentifierSuffix displayName:displayName forAccount:account];
+            }
+        }
+        else if ([config.type isEqualToString:kAlfrescoConfigViewTypeLocal])
+        {
+            [self saveLocalFilesItem];
+            [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:NSFileProviderRootContainerItemIdentifier completionHandler:^(NSError * _Nullable error) {
+                if (error != NULL)
+                {
+                    AlfrescoLogError(@"ERROR: Couldn't signal enumerator %@ for changes %@", NSFileProviderRootContainerItemIdentifier, error);
+                }
+            }];
+        }
+    }
+    [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:[AFPItemIdentifier itemIdentifierForSuffix:nil andAccount:account] completionHandler:^(NSError * _Nullable error) {
+        if (error != NULL)
+        {
+            AlfrescoLogError(@"ERROR: Couldn't signal enumerator %@ for changes %@", [AFPItemIdentifier itemIdentifierForSuffix:nil andAccount:account], error);
+        }
+    }];
 }
 
 - (AFPItemMetadata *)localFilesItem

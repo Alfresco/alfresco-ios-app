@@ -21,6 +21,8 @@
 #import "MainMenuLocalConfigurationBuilder.h"
 #import "RealmSyncManager.h"
 #import "MainMenuItemsVisibilityUtils.h"
+#import "AFPDataManager.h"
+
 
 typedef NS_ENUM(NSUInteger, MainMenuReorderSections)
 {
@@ -120,6 +122,17 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
     if (![self.oldData isEqualToArray:self.visibleItems])
     {
         [MainMenuItemsVisibilityUtils saveVisibleMenuItems:self.visibleItems hiddenMenuItems:self.hiddenItems forAccount:self.account];
+        
+        if([self.mainMenuBuilder isKindOfClass:[MainMenuConfigurationBuilder class]])
+        {
+            MainMenuConfigurationBuilder *menuConfigBuilder = (MainMenuConfigurationBuilder *)self.mainMenuBuilder;
+            [menuConfigBuilder viewConfigCollectionForMenuItemCollection:self.hiddenItems completionBlock:^(NSArray *configs, NSError *error) {
+                if(configs)
+                {
+                    [[AFPDataManager sharedManager] updateMenuItemsWithHiddenCollectionOfViewConfigs:configs forAccount:self.account];
+                }
+            }];
+        }
         
         [self trackUpdateMenuEvent];
 

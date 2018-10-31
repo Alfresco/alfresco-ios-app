@@ -309,6 +309,8 @@
 		2B9C60901C9714F400898161 /* ic_sync_screenshot_cropped.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B9C608C1C9714F400898161 /* ic_sync_screenshot_cropped.png */; };
 		2B9C60911C9714F400898161 /* ic_sync_screenshot_cropped@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B9C608D1C9714F400898161 /* ic_sync_screenshot_cropped@2x.png */; };
 		2B9D5AD11EF0356A00BB7713 /* UIBarButtonItem+MainMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B9D5AD01EF0356A00BB7713 /* UIBarButtonItem+MainMenu.m */; };
+		2BA11869217F5577003F325D /* MainMenuSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 73B5798E1B15EC4E009D30B6 /* MainMenuSection.m */; };
+		2BA1186E217F558A003F325D /* MainMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 73632AF418080E7C007172EE /* MainMenuItem.m */; };
 		2BA1AB771F558C010011BE07 /* AFPConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA1AB761F558C010011BE07 /* AFPConstants.m */; };
 		2BA24A691B8C5D470075CA99 /* SearchViewControllerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA24A681B8C5D470075CA99 /* SearchViewControllerDataSource.m */; };
 		2BA7FA011B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA7FA001B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m */; };
@@ -318,6 +320,11 @@
 		2BB912FC1F584A8C00AA7E56 /* AFPDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB912FA1F584A8C00AA7E56 /* AFPDataManager.m */; };
 		2BB913031F58671200AA7E56 /* AFPItemMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB913021F58671200AA7E56 /* AFPItemMetadata.m */; };
 		2BB913041F58671200AA7E56 /* AFPItemMetadata.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BB913021F58671200AA7E56 /* AFPItemMetadata.m */; };
+		2BBBBEE12181B42000993F96 /* AlfrescoViewConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B34D1B03681E00E7191F /* AlfrescoViewConfig.m */; };
+		2BBBBEE62181B42C00993F96 /* AlfrescoConfigPropertyConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3191B03681D00E7191F /* AlfrescoConfigPropertyConstants.m */; };
+		2BBBBEE72181B43E00993F96 /* NSDictionary+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 7366F7491ACAD8DE008DD92E /* NSDictionary+Extension.m */; };
+		2BBBBEE82181BB2A00993F96 /* AlfrescoItemConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B3411B03681E00E7191F /* AlfrescoItemConfig.m */; };
+		2BBBBEE92181BB3D00993F96 /* AlfrescoBaseConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 7390B32D1B03681E00E7191F /* AlfrescoBaseConfig.m */; };
 		2BC0D92F1C98480400CAFF6D /* status-synced-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC0D92B1C98480400CAFF6D /* status-synced-highlighted.png */; };
 		2BC0D9301C98480400CAFF6D /* status-synced-highlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC0D92C1C98480400CAFF6D /* status-synced-highlighted@2x.png */; };
 		2BC0D9311C98480400CAFF6D /* status-synced.png in Resources */ = {isa = PBXBuildFile; fileRef = 2BC0D92D1C98480400CAFF6D /* status-synced.png */; };
@@ -5293,12 +5300,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BBBBEE12181B42000993F96 /* AlfrescoViewConfig.m in Sources */,
+				2BBBBEE72181B43E00993F96 /* NSDictionary+Extension.m in Sources */,
 				2B62DC1D2047001100BEE35F /* AFPServerEnumerator.m in Sources */,
 				2BF0C7FB1F6A74C4001268FA /* AFPAccountManager.m in Sources */,
 				2B62DC1A2046DE8500BEE35F /* AFPFolderEnumerator.m in Sources */,
 				2B62DC082046D36C00BEE35F /* AFPEnumeratorBuilder.m in Sources */,
 				2B32E10720FDDA2A00D23115 /* SyncConstants.m in Sources */,
 				73697B961A979895009F10BA /* PersistentQueueStore.m in Sources */,
+				2BBBBEE92181BB3D00993F96 /* AlfrescoBaseConfig.m in Sources */,
 				73697B9D1A9B738F009F10BA /* KeychainUtils.m in Sources */,
 				2B1BC7A11F6044BE003B8790 /* AFPItemIdentifier.m in Sources */,
 				734B87841AA741260093E702 /* NSFileManager+Extension.m in Sources */,
@@ -5307,7 +5317,10 @@
 				734B87651A9F7A0F0093E702 /* Utilities.m in Sources */,
 				2BB913041F58671200AA7E56 /* AFPItemMetadata.m in Sources */,
 				2B1FEF4F20F4EA61004CA901 /* AFPFileService.m in Sources */,
+				2BA1186E217F558A003F325D /* MainMenuItem.m in Sources */,
 				73697BA81A9B8112009F10BA /* UserAccountWrapper.m in Sources */,
+				2BA11869217F5577003F325D /* MainMenuSection.m in Sources */,
+				2BBBBEE82181BB2A00993F96 /* AlfrescoItemConfig.m in Sources */,
 				73CD5B101A729544000A5523 /* SharedConstants.m in Sources */,
 				2BA1AB771F558C010011BE07 /* AFPConstants.m in Sources */,
 				2B62DC112046DAD700BEE35F /* AFPLocalEnumerator.m in Sources */,
@@ -5315,6 +5328,7 @@
 				2BA8B6FE1F4DAF3F00BFF4D9 /* AFPItem.m in Sources */,
 				2B15911D1F95F4EE0047D8BA /* RealmSyncError.m in Sources */,
 				2B32E10620FDD03B00D23115 /* RealmSyncCore.m in Sources */,
+				2BBBBEE62181B42C00993F96 /* AlfrescoConfigPropertyConstants.m in Sources */,
 				2B62DC142046DE1A00BEE35F /* AFPSyncEnumerator.m in Sources */,
 				2B62DC172046DE7300BEE35F /* AFPSiteEnumerator.m in Sources */,
 				73697B921A979879009F10BA /* FileMetadata.m in Sources */,
