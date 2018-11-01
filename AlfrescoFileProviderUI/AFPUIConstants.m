@@ -18,6 +18,7 @@
 
 #import "AFPUIConstants.h"
 
-NSString *const kUIExtentionPinViewControllerSegueIdentifier        = @"PINViewControllerSegueIdentifier";
-NSString *const kUIExtentionBasicAuthViewControllerSegueIdentifier  = @"BasicAuthViewControllerSegueIdentifier";
-CGFloat const kUIExtensionToolbarHeight                             = 44.0f;
+NSString * const kUIExtentionPinViewControllerSegueIdentifier                 = @"PINViewControllerSegueIdentifier";
+NSString * const kUIExtentionBasicAuthViewControllerSegueIdentifier           = @"BasicAuthViewControllerSegueIdentifier";
+NSString * const kUIExtentionAccountNotActivatedViewControllerSegueIdentifier = @"AccountNotActivatedViewControllerSegueIdentifier";
+CGFloat const kUIExtensionToolbarHeight                                       = 44.0f;

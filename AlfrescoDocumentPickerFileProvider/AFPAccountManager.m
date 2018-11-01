@@ -110,6 +110,8 @@
     return isPINSet;
 }
 
+#pragma mark - Public methods
+
 + (NSError *)authenticationError
 {
     NSError *error = nil;
@@ -122,8 +124,6 @@
     
     return error;
 }
-
-#pragma mark - Public methods
 
 - (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession>, NSError *))completionBlock
 {

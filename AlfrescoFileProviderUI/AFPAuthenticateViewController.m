@@ -72,11 +72,20 @@
     [super viewDidAppear:animated];
     [self setupProgressHudComponent];
     
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+    
     if ([AFPAccountManager isPINAuthenticationSet])
     {
         [self performSegueWithIdentifier:kUIExtentionPinViewControllerSegueIdentifier
                                   sender:nil];
-    } else {
+    }
+    else if ([defaults objectForKey:kFileProviderAccountNotActivatedKey])
+    {
+        [self performSegueWithIdentifier:kUIExtentionAccountNotActivatedViewControllerSegueIdentifier
+                                  sender:nil];
+    }
+    else
+    {
         AccountManager *accountManager = [AccountManager sharedManager];
         [accountManager loadAccountsFromKeychain];
         
@@ -102,7 +111,8 @@
                  sender:(id)sender
 {
     if ([kUIExtentionPinViewControllerSegueIdentifier isEqualToString:segue.identifier] ||
-        [kUIExtentionBasicAuthViewControllerSegueIdentifier isEqualToString:segue.identifier])
+        [kUIExtentionBasicAuthViewControllerSegueIdentifier isEqualToString:segue.identifier] ||
+        [kUIExtentionAccountNotActivatedViewControllerSegueIdentifier isEqualToString:segue.identifier])
     {
         AFPUIInfoViewController *infoViewController = (AFPUIInfoViewController *)segue.destinationViewController;
         infoViewController.delegate = self;
@@ -110,6 +120,10 @@
         if ([kUIExtentionPinViewControllerSegueIdentifier isEqualToString:segue.identifier])
         {
             infoViewController.controllerType = AFPUIInfoViewControllerTypePIN;
+        }
+        else if ([kUIExtentionAccountNotActivatedViewControllerSegueIdentifier isEqualToString:segue.identifier])
+        {
+            infoViewController.controllerType = AFPUIInfoViewControllerTypeAccountNotActivated;
         }
         else
         {

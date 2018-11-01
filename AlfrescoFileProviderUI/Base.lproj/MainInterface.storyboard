@@ -126,17 +126,18 @@
                         <outlet property="toolbarHeightConstraint" destination="RZ5-C3-tVe" id="zRm-wu-Qbe"/>
                         <segue destination="J6p-g8-CHO" kind="showDetail" identifier="PINViewControllerSegueIdentifier" animates="NO" id="veY-9W-Ngn"/>
                         <segue destination="J6p-g8-CHO" kind="showDetail" identifier="BasicAuthViewControllerSegueIdentifier" animates="NO" id="phG-mV-jh8"/>
+                        <segue destination="J6p-g8-CHO" kind="showDetail" identifier="AccountNotActivatedViewControllerSegueIdentifier" animates="NO" id="Vfz-ug-U8M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohM-kk-u37" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-238.40000000000001" y="-94.452773613193415"/>
+            <point key="canvasLocation" x="-341" y="-94"/>
         </scene>
     </scenes>
     <resources>
         <image name="alfrescoLogo.png" width="320" height="102"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="phG-mV-jh8"/>
+        <segue reference="veY-9W-Ngn"/>
     </inferredMetricsTieBreakers>
 </document>

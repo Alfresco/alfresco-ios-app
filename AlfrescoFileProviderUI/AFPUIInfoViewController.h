@@ -22,7 +22,8 @@
 typedef NS_ENUM(NSUInteger, AFPUIInfoViewControllerType) {
     AFPUIInfoViewControllerTypeUndefined = -1,
     AFPUIInfoViewControllerTypePIN = 1,
-    AFPUIInfoViewControllerTypeBasicAuth
+    AFPUIInfoViewControllerTypeBasicAuth,
+    AFPUIInfoViewControllerTypeAccountNotActivated
 };
 
 @protocol AFPUIInfoViewControllerDelegate <NSObject>

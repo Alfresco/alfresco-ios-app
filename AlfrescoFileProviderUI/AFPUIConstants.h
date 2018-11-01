@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const kUIExtentionPinViewControllerSegueIdentifier;
-extern NSString *const kUIExtentionBasicAuthViewControllerSegueIdentifier;
-extern CGFloat const   kUIExtensionToolbarHeight;
+extern NSString * const kUIExtentionPinViewControllerSegueIdentifier;
+extern NSString * const kUIExtentionBasicAuthViewControllerSegueIdentifier;
+extern NSString * const kUIExtentionAccountNotActivatedViewControllerSegueIdentifier;
+extern CGFloat const    kUIExtensionToolbarHeight;

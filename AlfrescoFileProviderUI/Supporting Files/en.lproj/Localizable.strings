@@ -29,4 +29,6 @@
 "fileproviderui.security.passcode.message" = "Files cannot be used with a passcode. If you would like to use Files, please open Alfresco Content Services and disable Passcode Lock.";
 "fileproviderui.security.credentials.invalid.title" = "Sign in to Alfresco Content Services";
 "fileproviderui.security.credentials.invalid.message" = "Please open the Alfresco Content Services app and sign in to continue.";
+"fileproviderui.security.accountnotactivated.title" = "Account not activated";
+"fileproviderui.security.accountnotactivated.message" = "Please open the Alfresco Content Services app and activate the account.";
 
