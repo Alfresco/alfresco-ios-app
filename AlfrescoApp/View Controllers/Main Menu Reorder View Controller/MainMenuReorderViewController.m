@@ -126,10 +126,12 @@ static NSString * const kCellIdentifier = @"ReorderCellIdentifier";
         if([self.mainMenuBuilder isKindOfClass:[MainMenuConfigurationBuilder class]])
         {
             MainMenuConfigurationBuilder *menuConfigBuilder = (MainMenuConfigurationBuilder *)self.mainMenuBuilder;
+            __weak typeof(self) weakSelf = self;
             [menuConfigBuilder viewConfigCollectionForMenuItemCollection:self.hiddenItems completionBlock:^(NSArray *configs, NSError *error) {
                 if(configs)
                 {
-                    [[AFPDataManager sharedManager] updateMenuItemsWithHiddenCollectionOfViewConfigs:configs forAccount:self.account];
+                    __strong typeof(self) strongSelf = weakSelf;
+                    [[AFPDataManager sharedManager] updateMenuItemsWithHiddenCollectionOfViewConfigs:configs forAccount:strongSelf.account];
                 }
             }];
         }

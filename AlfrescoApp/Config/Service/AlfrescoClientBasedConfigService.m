@@ -750,13 +750,15 @@
                                                   scope:(AlfrescoConfigScope *)scope
                                         completionBlock:(AlfrescoViewConfigsCompletionBlock)completionBlock
 {
+    __weak typeof(self) weakSelf = self;
     return [self initializeInternalStateWithCompletionBlock:^(BOOL succeeded, NSError *error) {
         if(succeeded)
         {
+            __strong typeof(self) strongSelf = weakSelf;
             NSMutableArray *configs = [NSMutableArray new];
             for(NSString *identifier in identifiers)
             {
-                AlfrescoViewConfig *config = [self.viewConfigHelper viewConfigForIdentifier:identifier];
+                AlfrescoViewConfig *config = [strongSelf.viewConfigHelper viewConfigForIdentifier:identifier];
                 if (config)
                 {
                     [configs addObject:config];
