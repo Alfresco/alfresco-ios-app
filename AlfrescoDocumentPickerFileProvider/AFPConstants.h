@@ -61,3 +61,5 @@ extern NSString * const kFileProviderIdentifierComponentSync;
 extern int const kFileProviderMaxItemsPerListingRetrieve;
 
 extern NSString * const kFileProviderCurrentItemIdentifier;
+
+extern NSString * const kFileProviderAccountNotActivatedKey;

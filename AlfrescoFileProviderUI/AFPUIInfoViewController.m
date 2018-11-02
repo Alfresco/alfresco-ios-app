@@ -53,6 +53,13 @@
         }
             break;
             
+        case AFPUIInfoViewControllerTypeAccountNotActivated:
+        {
+            self.titleLabel.text = NSLocalizedString(@"fileproviderui.security.accountnotactivated.title", @"Account not activated title");
+            self.messageLabel.text = NSLocalizedString(@"fileproviderui.security.accountnotactivated.message", @"Account not activated text");
+        }
+            break;
+            
         default: break;
     }
     

@@ -59,8 +59,21 @@
             [enumeratedFolders addObject:item];
         }
         
-        [observer didEnumerateItems:enumeratedFolders];
-        [observer finishEnumeratingUpToPage:nil];
+        NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+        if (enumeratedFolders.count == 0)
+        {
+            [defaults setObject:accountIdentifier forKey:kFileProviderAccountNotActivatedKey];
+            [defaults synchronize];
+            
+            [observer finishEnumeratingWithError:[AFPAccountManager authenticationError]];
+        }
+        else
+        {
+            [defaults removeObjectForKey:kFileProviderAccountNotActivatedKey];
+            [defaults synchronize];
+            [observer didEnumerateItems:enumeratedFolders];
+            [observer finishEnumeratingUpToPage:nil];
+        }
     }
 }
 

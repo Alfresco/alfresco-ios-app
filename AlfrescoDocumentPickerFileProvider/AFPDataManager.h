@@ -35,6 +35,8 @@
 - (void)removeItemMetadataForIdentifier:(NSString *)identifier;
 - (void)cleanMenuItemsForAccount:(UserAccount *)account;
 - (void)updateMetadataForIdentifier:(NSFileProviderItemIdentifier)itemIdentifier downloaded:(BOOL)isDownloaded;
+- (void)updateMenuItemsWithHiddenCollectionOfViewConfigs:(NSArray *)viewConfigs forAccount:(UserAccount *)account;
+- (void)updateMenuItemsWithVisibleCollectionOfViewConfigs:(NSArray *)viewConfigs forAccount:(UserAccount *)account;
 
 - (AFPItemMetadata *)localFilesItem;
 - (RLMResults<AFPItemMetadata *> *)menuItemsForAccount:(NSString *)accountIdentifier;

@@ -40,3 +40,5 @@ NSString * const kFileProviderIdentifierComponentSync = @"sync";
 int const kFileProviderMaxItemsPerListingRetrieve = 5;
 
 NSString * const kFileProviderCurrentItemIdentifier = @"fpcurrentItemIdentifier";
+
+NSString * const kFileProviderAccountNotActivatedKey = @"AlfrescoFileProviderAccountNotActivatedKey";
