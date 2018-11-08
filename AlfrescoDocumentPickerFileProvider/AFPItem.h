@@ -30,6 +30,9 @@
 @property (nonatomic, readonly, copy) NSDate *contentModificationDate;
 @property (nonatomic, readonly, copy) NSNumber *documentSize;
 @property (nonatomic, readonly, copy) NSString *typeIdentifier;
+@property(nonatomic, readonly, getter=isDownloaded) BOOL downloaded;
+@property(nonatomic, readonly, getter=isMostRecentVersionDownloaded) BOOL mostRecentVersionDownloaded;
+@property(nonatomic, copy) NSData *tagData;
 
 - (instancetype)initWithRootContainterItem;
 - (instancetype)initWithUserAccount:(UserAccount *)account;

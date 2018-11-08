@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #import "AFPServerEnumerator+Internals.h"
+#import "AFPErrorBuilder.h"
 
 @implementation AFPServerEnumerator
 
@@ -43,6 +44,7 @@
 }
 
 #pragma mark - Internal methods
+
 - (void)setupSessionWithCompletionBlock:(void (^)(id<AlfrescoSession> session))completionBlock
 {
     NSString *accountIdentifier = [AFPItemIdentifier getAccountIdentifierFromEnumeratedIdentifier:self.itemIdentifier];
@@ -65,7 +67,7 @@
 {
     if (error)
     {
-        [self.observer finishEnumeratingWithError:error];
+        [self.observer finishEnumeratingWithError:[AFPErrorBuilder fileProviderErrorForGenericError:error]];
         self.networkOperationsComplete = YES;
     }
     else if ([node isKindOfClass:[AlfrescoFolder class]])
@@ -88,7 +90,7 @@
 {
     if (error)
     {
-        [self.observer finishEnumeratingWithError:error];
+        [self.observer finishEnumeratingWithError:[AFPErrorBuilder fileProviderErrorForGenericError:error]];
     }
     else
     {

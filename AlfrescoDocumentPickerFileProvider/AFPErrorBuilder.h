@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -17,14 +17,11 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-@class UserAccount;
 
-@interface AFPAccountManager : NSObject
+@interface AFPErrorBuilder : NSObject
 
-+ (instancetype)sharedManager;
-- (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession> session, NSError *loginError))completionBlock;
-+ (UserAccount *)userAccountForAccountIdentifier:(NSString *)accountIdentifier;
-+ (NSArray *)getAccountsFromKeychain;
-+ (BOOL)isPINAuthenticationSet;
++ (NSError *)authenticationError;
++ (NSError *)authenticationErrorForPIN;
++ (NSError *)fileProviderErrorForGenericError:(NSError *)error;
 
 @end

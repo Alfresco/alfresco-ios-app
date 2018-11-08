@@ -168,13 +168,36 @@
     return fileURL;
 }
 
+- (BOOL)isDownloaded
+{
+    if (_documentSize.unsignedLongValue)
+    {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)isMostRecentVersionDownloaded
+{
+    return [self isDownloaded];
+}
+
 #pragma mark - Private methods
+
 - (void)updateMetadataWithNodeInfo
 {
     if(self.node.isDocument)
     {
-        AlfrescoDocument *document = (AlfrescoDocument *)self.node;
-        self.documentSize = [NSNumber numberWithLongLong:document.contentLength];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *pathToFile = self.fileURL.path;
+        
+        if ([fileManager fileExistsAtPath:pathToFile])
+        {
+            AlfrescoDocument *document = (AlfrescoDocument *)self.node;
+            self.documentSize = [NSNumber numberWithLongLong:document.contentLength];
+        }
+        
         self.typeIdentifier = (NSString *)CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (CFStringRef)CFBridgingRetain([self.node.name pathExtension]), NULL));
     }
     else

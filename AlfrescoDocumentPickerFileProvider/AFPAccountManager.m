@@ -22,6 +22,7 @@
 #import "FileMetadata.h"
 #import <FileProvider/FileProvider.h>
 #import "UserAccount.h"
+#import "AFPErrorBuilder.h"
 
 @interface AFPAccountManager()
 
@@ -112,19 +113,6 @@
 
 #pragma mark - Public methods
 
-+ (NSError *)authenticationError
-{
-    NSError *error = nil;
-    if (@available(iOS 11.0, *))
-    {
-        error = [NSError errorWithDomain:NSFileProviderErrorDomain
-                                    code:NSFileProviderErrorNotAuthenticated
-                                userInfo:nil];
-    }
-    
-    return error;
-}
-
 - (void)getSessionForAccountIdentifier:(NSString *)accountIdentifier networkIdentifier:(NSString *)networkIdentifier withCompletionBlock:(void (^)(id<AlfrescoSession>, NSError *))completionBlock
 {
     id<AlfrescoSession> cachedSession = self.accountIdentifierToSessionMappings[accountIdentifier];
@@ -145,7 +133,7 @@
                  {
                      if (!session)
                      {
-                         completionBlock(nil, [AFPAccountManager authenticationError]);
+                         completionBlock(nil, [AFPErrorBuilder authenticationError]);
                      }
                      else
                      {
@@ -154,14 +142,6 @@
                  }
              }];
     }
-}
-
-+ (NSError *)authenticationErrorForPIN {
-    if ([self isPINAuthenticationSet]) {
-        return [self authenticationError];
-    }
-    
-    return nil;
 }
 
 + (UserAccount *)userAccountForAccountIdentifier:(NSString *)accountIdentifier

@@ -19,13 +19,13 @@
 #import "AFPLocalEnumerator.h"
 #import "AFPItem.h"
 #import "AlfrescoFileManager+Extensions.h"
-#import "AFPAccountManager.h"
+#import "AFPErrorBuilder.h"
 
 @implementation AFPLocalEnumerator
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
-    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    NSError *authenticationError = [AFPErrorBuilder authenticationErrorForPIN];
     if (authenticationError)
     {
         [observer finishEnumeratingWithError:authenticationError];
