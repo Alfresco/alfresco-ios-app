@@ -18,12 +18,13 @@
 
 #import "AFPSiteEnumerator.h"
 #import "AFPServerEnumerator+Internals.h"
+#import "AFPErrorBuilder.h"
 
 @implementation AFPSiteEnumerator
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
-    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    NSError *authenticationError = [AFPErrorBuilder authenticationErrorForPIN];
     if (authenticationError)
     {
         [observer finishEnumeratingWithError:authenticationError];
@@ -136,7 +137,7 @@
 {
     if (error)
     {
-        [self.observer finishEnumeratingWithError:error];
+        [self.observer finishEnumeratingWithError:[AFPErrorBuilder fileProviderErrorForGenericError:error]];
     }
     else
     {

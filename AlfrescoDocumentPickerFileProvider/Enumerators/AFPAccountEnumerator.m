@@ -20,7 +20,7 @@
 #import "AFPItem.h"
 #import "AFPDataManager.h"
 #import "AFPItemIdentifier.h"
-#import "AFPAccountManager.h"
+#import "AFPErrorBuilder.h"
 
 @interface AFPAccountEnumerator()
 
@@ -43,7 +43,7 @@
 
 - (void)enumerateItemsForObserver:(id<NSFileProviderEnumerationObserver>)observer startingAtPage:(NSFileProviderPage)page
 {
-    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    NSError *authenticationError = [AFPErrorBuilder authenticationErrorForPIN];
     if (authenticationError)
     {
         [observer finishEnumeratingWithError:authenticationError];
@@ -65,7 +65,7 @@
             [defaults setObject:accountIdentifier forKey:kFileProviderAccountNotActivatedKey];
             [defaults synchronize];
             
-            [observer finishEnumeratingWithError:[AFPAccountManager authenticationError]];
+            [observer finishEnumeratingWithError:[AFPErrorBuilder authenticationError]];
         }
         else
         {

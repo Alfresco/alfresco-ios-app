@@ -32,6 +32,7 @@
 
 #import "AFPFileService.h"
 #import "AFPAccountManager.h"
+#import "AFPErrorBuilder.h"
 
 @interface FileProvider ()
 @property (nonatomic, strong) PersistentQueueStore *queueStore;
@@ -133,7 +134,7 @@
 
 - (void)providePlaceholderAtURL:(NSURL *)url completionHandler:(void (^)(NSError *error))completionHandler
 {
-    NSError *authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    NSError *authenticationError = [AFPErrorBuilder authenticationErrorForPIN];
     if(!authenticationError)
     {
         NSArray <NSString *> *pathComponents = [url pathComponents];
@@ -169,14 +170,14 @@
 
 - (void)startProvidingItemAtURL:(NSURL *)url completionHandler:(void (^)(NSError *))completionHandler
 {
-    NSError * authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    NSError * authenticationError = [AFPErrorBuilder authenticationErrorForPIN];
     if(authenticationError)
     {
         completionHandler(authenticationError);
     }
     else
     {        
-        NSFileManager *fileManager = [[NSFileManager alloc] init];
+        NSFileManager *fileManager = [NSFileManager defaultManager];
         NSString *pathToFile = url.path;
         
         if ([fileManager fileExistsAtPath:pathToFile])
@@ -222,7 +223,20 @@
                             }
                             else
                             {
-                                completionHandler(error);
+                                if ([kAlfrescoErrorDomainName isEqualToString:error.domain])
+                                {
+                                    if (kAlfrescoErrorCodeUnauthorisedAccess == error.code)
+                                    {
+                                        NSError *fpError = [NSError errorWithDomain:NSFileProviderErrorDomain
+                                                                               code:NSFileProviderErrorServerUnreachable
+                                                                           userInfo:nil];
+                                        completionHandler(fpError);
+                                    }
+                                } else
+                                {
+                                    completionHandler(error);
+                                }
+                                
                                 networkOperationCallbackComplete = YES;
                             }
                         }];
@@ -252,7 +266,7 @@
 {
     AlfrescoLogInfo(@"Item changed at URL %@", url);
 
-    NSError * authenticationError = [AFPAccountManager authenticationErrorForPIN];
+    NSError * authenticationError = [AFPErrorBuilder authenticationErrorForPIN];
     if (authenticationError) {
         return;
     }
