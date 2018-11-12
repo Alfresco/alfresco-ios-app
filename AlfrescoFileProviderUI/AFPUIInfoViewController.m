@@ -18,12 +18,13 @@
 
 #import "AFPUIInfoViewController.h"
 #import "AFPUIConstants.h"
+#import "NSMutableAttributedString+URLSupport.h"
 
 @interface AFPUIInfoViewController()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem        *cancelBarButtonItem;
 @property (weak, nonatomic) IBOutlet UILabel                *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel                *messageLabel;
+@property (weak, nonatomic) IBOutlet UITextView             *messageTextView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint     *toolbarHeightConstraint;
 @property (assign, nonatomic) CGFloat                       initialToolbarHeight;
@@ -42,21 +43,28 @@
         case AFPUIInfoViewControllerTypePIN:
         {
             self.titleLabel.text = NSLocalizedString(@"fileproviderui.security.passcode.enabled.title", @"Passcode message title");
-            self.messageLabel.text = NSLocalizedString(@"fileproviderui.security.passcode.message", @"Passcode message text");
+            self.messageTextView.text = NSLocalizedString(@"fileproviderui.security.passcode.message", @"Passcode message text");
         }
             break;
             
         case AFPUIInfoViewControllerTypeBasicAuth:
         {
             self.titleLabel.text = NSLocalizedString(@"fileproviderui.security.credentials.invalid.title", @"Invalid credentials title");
-            self.messageLabel.text = NSLocalizedString(@"fileproviderui.security.credentials.invalid.message", @"Invalid credentials text");
+            self.messageTextView.text = NSLocalizedString(@"fileproviderui.security.credentials.invalid.message", @"Invalid credentials text");
         }
             break;
             
         case AFPUIInfoViewControllerTypeAccountNotActivated:
         {
             self.titleLabel.text = NSLocalizedString(@"fileproviderui.security.accountnotactivated.title", @"Account not activated title");
-            self.messageLabel.text = NSLocalizedString(@"fileproviderui.security.accountnotactivated.message", @"Account not activated text");
+            
+            NSMutableAttributedString *message = [[NSMutableAttributedString alloc] initWithString:NSLocalizedString(@"fileproviderui.security.accountnotactivated.message", @"Account not activated text")];
+            [message setAsLink:NSLocalizedString(@"fileproviderui.security.accountnotactivated.multipleaccounts", @"Multiple accounts") linkURL:kUIExtentionMultipleAccountsURLString];
+            [message setAsLink:NSLocalizedString(@"fileproviderui.security.accountnotactivated.editmainmenu", @"Edit Main Menu") linkURL:kUIExtentionEditMainMenuURLString];
+            [message setAsLink:NSLocalizedString(@"fileproviderui.security.accountnotactivated.customizeapp", @"Customize the app") linkURL:kUIExtentionCustomizeAppURLString];
+            self.messageTextView.attributedText = message;
+            self.messageTextView.delegate = self;
+            
         }
             break;
             
@@ -85,6 +93,20 @@
     {
         [self.delegate userDidCancelledInfoScreen];
     }
+}
+
+#pragma mark - UITextViewDelegate methods
+- (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange interaction:(UITextItemInteraction)interaction
+{
+    if([URL.absoluteString isEqualToString:kUIExtentionMultipleAccountsURLString] || [URL.absoluteString isEqualToString:kUIExtentionEditMainMenuURLString] || [URL.absoluteString isEqualToString:kUIExtentionCustomizeAppURLString])
+    {
+        if([self.delegate respondsToSelector:@selector(userDidTapOnURL:)])
+        {
+            [self.delegate userDidTapOnURL:URL];
+        }
+        return YES;
+    }
+    return NO;
 }
 
 @end

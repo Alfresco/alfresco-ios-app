@@ -16,13 +16,19 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#import <Foundation/Foundation.h>
+#import "NSMutableAttributedString+URLSupport.h"
 
-extern NSString * const kUIExtentionPinViewControllerSegueIdentifier;
-extern NSString * const kUIExtentionBasicAuthViewControllerSegueIdentifier;
-extern NSString * const kUIExtentionAccountNotActivatedViewControllerSegueIdentifier;
-extern CGFloat const    kUIExtensionToolbarHeight;
+@implementation NSMutableAttributedString(URLSupport)
 
-extern NSString * const kUIExtentionMultipleAccountsURLString;
-extern NSString * const kUIExtentionEditMainMenuURLString;
-extern NSString * const kUIExtentionCustomizeAppURLString;
+- (BOOL)setAsLink:(NSString*)textToFind linkURL:(NSString*)linkURL
+{
+    NSRange foundRange = [self.mutableString rangeOfString:textToFind];
+    if (foundRange.location != NSNotFound)
+    {
+        [self addAttribute:NSLinkAttributeName value:linkURL range:foundRange];
+        return YES;
+    }
+    return NO;
+}
+
+@end

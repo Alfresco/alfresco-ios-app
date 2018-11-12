@@ -29,10 +29,11 @@ typedef NS_ENUM(NSUInteger, AFPUIInfoViewControllerType) {
 @protocol AFPUIInfoViewControllerDelegate <NSObject>
 
 - (void)userDidCancelledInfoScreen;
+- (void)userDidTapOnURL:(NSURL *)URL;
 
 @end
 
-@interface AFPUIInfoViewController : UIViewController
+@interface AFPUIInfoViewController : UIViewController <UITextViewDelegate>
 
 @property (nonatomic, weak) id<AFPUIInfoViewControllerDelegate> delegate;
 @property (nonatomic, assign) AFPUIInfoViewControllerType       controllerType;

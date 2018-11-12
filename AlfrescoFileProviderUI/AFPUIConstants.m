@@ -22,3 +22,7 @@ NSString * const kUIExtentionPinViewControllerSegueIdentifier                 = 
 NSString * const kUIExtentionBasicAuthViewControllerSegueIdentifier           = @"BasicAuthViewControllerSegueIdentifier";
 NSString * const kUIExtentionAccountNotActivatedViewControllerSegueIdentifier = @"AccountNotActivatedViewControllerSegueIdentifier";
 CGFloat const kUIExtensionToolbarHeight                                       = 44.0f;
+
+NSString * const kUIExtentionMultipleAccountsURLString                        = @"https://docs.alfresco.com/ios/tasks/ios-mobile-connect-more-accounts.html";
+NSString * const kUIExtentionEditMainMenuURLString                            = @"https://docs.alfresco.com/ios/references/ios-account-settings.html#ios-account-settings__menu";
+NSString * const kUIExtentionCustomizeAppURLString                            = @"https://docs.alfresco.com/ios/concepts/mobile-profiles.html";

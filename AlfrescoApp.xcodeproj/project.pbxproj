@@ -301,6 +301,8 @@
 		2B482B3C1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B482B3B1CC4CA32003CDEE6 /* SyncCollectionViewDataSource.m */; };
 		2B482B3F1CC523D7003CDEE6 /* RealmSyncViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B482B3E1CC523D7003CDEE6 /* RealmSyncViewController.m */; };
 		2B4E0CAD1D3D19020031FD3A /* AlfrescoNode+Sync.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B4E0CAC1D3D19020031FD3A /* AlfrescoNode+Sync.m */; };
+		2B4F554F2195DA4C00F8559B /* NSMutableAttributedString+URLSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B4F554E2195DA4C00F8559B /* NSMutableAttributedString+URLSupport.m */; };
+		2B4F55502195DA4C00F8559B /* NSMutableAttributedString+URLSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B4F554E2195DA4C00F8559B /* NSMutableAttributedString+URLSupport.m */; };
 		2B512C021CFDD8DF00572FF1 /* SitesCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B512C011CFDD8DF00572FF1 /* SitesCollectionViewDataSource.m */; };
 		2B53B3551C91DA9800D4FD48 /* actionsheet-sync.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B53B34F1C91DA9800D4FD48 /* actionsheet-sync.png */; };
 		2B53B3561C91DA9800D4FD48 /* actionsheet-sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2B53B3501C91DA9800D4FD48 /* actionsheet-sync@2x.png */; };
@@ -1392,6 +1394,8 @@
 		2B482B3E1CC523D7003CDEE6 /* RealmSyncViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RealmSyncViewController.m; path = "Sync View Controller/RealmSyncViewController.m"; sourceTree = "<group>"; };
 		2B4E0CAB1D3D19020031FD3A /* AlfrescoNode+Sync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AlfrescoNode+Sync.h"; sourceTree = "<group>"; };
 		2B4E0CAC1D3D19020031FD3A /* AlfrescoNode+Sync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AlfrescoNode+Sync.m"; sourceTree = "<group>"; };
+		2B4F554D2195DA4C00F8559B /* NSMutableAttributedString+URLSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+URLSupport.h"; sourceTree = "<group>"; };
+		2B4F554E2195DA4C00F8559B /* NSMutableAttributedString+URLSupport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+URLSupport.m"; sourceTree = "<group>"; };
 		2B512C001CFDD8DF00572FF1 /* SitesCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SitesCollectionViewDataSource.h; sourceTree = "<group>"; };
 		2B512C011CFDD8DF00572FF1 /* SitesCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SitesCollectionViewDataSource.m; sourceTree = "<group>"; };
 		2B53B34F1C91DA9800D4FD48 /* actionsheet-sync.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "actionsheet-sync.png"; sourceTree = "<group>"; };
@@ -4172,6 +4176,8 @@
 				2B9D5AD01EF0356A00BB7713 /* UIBarButtonItem+MainMenu.m */,
 				2B9BCEEC1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.h */,
 				2B9BCEED1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m */,
+				2B4F554D2195DA4C00F8559B /* NSMutableAttributedString+URLSupport.h */,
+				2B4F554E2195DA4C00F8559B /* NSMutableAttributedString+URLSupport.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -5365,6 +5371,7 @@
 				13AA76F5216CEEFF00492240 /* AccountManager.m in Sources */,
 				13B88B56216E2FD300093BAA /* Utilities.m in Sources */,
 				13AA76DD216CDCEC00492240 /* AccountCertificate.m in Sources */,
+				2B4F55502195DA4C00F8559B /* NSMutableAttributedString+URLSupport.m in Sources */,
 				13AA76F2216CE81100492240 /* AlfrescoConfigPropertyConstants.m in Sources */,
 				13AA76D0216B6A6F00492240 /* Reachability.m in Sources */,
 				13A73B6D20FDDEE000615049 /* AFPUIInfoViewController.m in Sources */,
@@ -5498,6 +5505,7 @@
 				73922273187C1BF700BFCE21 /* AvatarManager.m in Sources */,
 				23A829241D48C75100A44281 /* NodePickerSyncedContentViewController.m in Sources */,
 				73B9584417A6750F0099FB84 /* LocationManager.m in Sources */,
+				2B4F554F2195DA4C00F8559B /* NSMutableAttributedString+URLSupport.m in Sources */,
 				73697A8318B22D9700021B02 /* UIViewController+Swizzled.m in Sources */,
 				0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */,
 				2308BF8A1DD1CFD7009C3D8B /* AccountConfiguration.m in Sources */,

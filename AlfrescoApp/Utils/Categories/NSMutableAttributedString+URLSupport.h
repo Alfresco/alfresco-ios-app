@@ -18,11 +18,8 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString * const kUIExtentionPinViewControllerSegueIdentifier;
-extern NSString * const kUIExtentionBasicAuthViewControllerSegueIdentifier;
-extern NSString * const kUIExtentionAccountNotActivatedViewControllerSegueIdentifier;
-extern CGFloat const    kUIExtensionToolbarHeight;
+@interface NSMutableAttributedString(URLSupport)
 
-extern NSString * const kUIExtentionMultipleAccountsURLString;
-extern NSString * const kUIExtentionEditMainMenuURLString;
-extern NSString * const kUIExtentionCustomizeAppURLString;
+- (BOOL)setAsLink:(NSString*)textToFind linkURL:(NSString*)linkURL;
+
+@end

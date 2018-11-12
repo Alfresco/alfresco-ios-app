@@ -29,6 +29,8 @@
 "fileproviderui.security.passcode.message" = "Files cannot be used with a passcode. If you would like to use Files, please open Alfresco Content Services and disable Passcode Lock.";
 "fileproviderui.security.credentials.invalid.title" = "Sign in to Alfresco Content Services";
 "fileproviderui.security.credentials.invalid.message" = "Please open the Alfresco Content Services app and sign in to continue.";
-"fileproviderui.security.accountnotactivated.title" = "Account not activated";
-"fileproviderui.security.accountnotactivated.message" = "Please open the Alfresco Content Services app and activate the account.";
-
+"fileproviderui.security.accountnotactivated.title" = "No folders to display";
+"fileproviderui.security.accountnotactivated.message" = "Files App cannot show any folders from Alfresco, please check: \n\n \U2022 the account has been opened - see Multiple accounts \n \U2022 your main menu configuration - see Edit Main Menu \n \U2022 the currently selected profile - see Customize the app";
+"fileproviderui.security.accountnotactivated.multipleaccounts" = "Multiple accounts";
+"fileproviderui.security.accountnotactivated.editmainmenu" = "Edit Main Menu";
+"fileproviderui.security.accountnotactivated.customizeapp" = "Customize the app";
