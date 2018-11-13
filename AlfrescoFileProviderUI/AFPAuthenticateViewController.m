@@ -149,6 +149,12 @@
                                                                   userInfo:nil]];
 }
 
+- (void)userDidTapOnURL:(NSURL *)URL
+{
+    NSExtensionContext *extensionContext = self.extensionContext;
+    [extensionContext openURL:URL completionHandler:nil];
+}
+
 #pragma mark - LoginManagerCoreDelegate
 
 - (void)willBeginVisualAuthenticationProgress
