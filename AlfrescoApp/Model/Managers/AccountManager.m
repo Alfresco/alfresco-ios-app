@@ -241,6 +241,17 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         savedAccounts = [KeychainUtils savedAccountsForListIdentifier:kKeychainAccountListIdentifier
                                                               inGroup:nil
                                                                 error:&keychainRetrieveError];
+        if(savedAccounts.count)
+        {
+            NSError *keychainRemoveError = nil;
+           [KeychainUtils deleteSavedAccountsForListIdentifier:kKeychainAccountListIdentifier
+                                                       inGroup:nil
+                                                         error:&keychainRemoveError];
+            if(keychainRemoveError)
+            {
+                AlfrescoLogDebug(@"Error in removing saved accounts. Error: %@", keychainRemoveError.localizedDescription);
+            }
+        }
     }
     
     self.accountsFromKeychain = [savedAccounts mutableCopy];
