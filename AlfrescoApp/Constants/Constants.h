@@ -109,6 +109,7 @@ extern NSString * const kSearchTypeUsers;
 extern NSString * const kHasCoreDataMigrationOccurred;
 extern NSString * const kWasSyncInfoPanelShown;
 extern NSString * const kVersionOfLastRun;
+extern NSString * const kCloudTerminationAlertShownKey;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;
@@ -332,3 +333,6 @@ extern NSString * const KSkypeAppStoreiPadURL;
 
 extern NSString * const kSyncViewIdentifier;
 extern NSString * const kLocalViewIdentifier;
+
+// Cloud Termination
+extern NSString * const kCloudTerminationURLString;

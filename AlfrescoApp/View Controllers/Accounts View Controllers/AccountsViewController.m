@@ -28,6 +28,7 @@
 #import "RealmSyncManager.h"
 #import "SecurityManager.h"
 #import "AccountDetailsViewController.h"
+#import "NSMutableAttributedString+URLSupport.h"
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -452,6 +453,51 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     [(UIButton *)cell.accessoryView setBackgroundImage:selectionImage forState:UIControlStateNormal];
 }
 
+- (void)authenticateWithAccount:(UserAccount *)account networkId:(NSString *)networkId
+{
+    __weak typeof(self) weakSelf = self;
+    [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!successful)
+        {
+            if (account.password.length > 0)
+            {
+                displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+            }
+            else
+            {
+                // Missing details - possibly first launch of an MDM-configured account
+                if ([account.username length] == 0)
+                {
+                    displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.accountSettings", @"Enter user name and password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                }
+                else
+                {
+                    displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                }
+            }
+        }
+        else
+        {
+            [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
+            [strongSelf.tableView reloadData];
+            
+            NSString *label = account.accountType == UserAccountTypeOnPremise ? ([account.samlData isSamlEnabled] ? kAnalyticsEventLabelOnPremiseSAML : kAnalyticsEventLabelOnPremise) : kAnalyticsEventLabelCloud;
+            [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                              action:kAnalyticsEventActionSwitch
+                                                               label:label
+                                                               value:@1];
+            if (networkId)
+            {
+                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
+                                                                  action:kAnalyticsEventActionSwitch
+                                                                   label:kAnalyticsEventLabelNetwork
+                                                                   value:@1];
+            }
+        }
+    }];
+}
+
 - (void)selectAccountButtonClicked:(UIButton *)sender
 {
     UITableViewCell *selectedCell = (UITableViewCell *)sender.superview;
@@ -486,45 +532,20 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     
     if (account.accountType == UserAccountTypeOnPremise || networkId != nil)
     {
-        [[LoginManager sharedManager] attemptLoginToAccount:account networkId:networkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-            if (!successful)
-            {
-                if (account.password.length > 0)
-                {
-                    displayErrorMessage([ErrorDescriptions descriptionForError:error]);
-                }
-                else
-                {
-                    // Missing details - possibly first launch of an MDM-configured account
-                    if ([account.username length] == 0)
-                    {
-                        displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.accountSettings", @"Enter user name and password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
-                    }
-                    else
-                    {
-                        displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
-                    }
-                }
-            }
-            else
-            {
-                [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
-                [self.tableView reloadData];
-                
-                NSString *label = account.accountType == UserAccountTypeOnPremise ? ([account.samlData isSamlEnabled] ? kAnalyticsEventLabelOnPremiseSAML : kAnalyticsEventLabelOnPremise) : kAnalyticsEventLabelCloud;
-                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
-                                                                  action:kAnalyticsEventActionSwitch
-                                                                   label:label
-                                                                   value:@1];
-                if (networkId)
-                {
-                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategorySession
-                                                                      action:kAnalyticsEventActionSwitch
-                                                                       label:kAnalyticsEventLabelNetwork
-                                                                       value:@1];
-                }
-            }
-        }];
+        if(account.accountType == UserAccountTypeCloud)
+        {
+            __weak typeof(self) weakSelf = self;
+            [[AccountManager sharedManager] presentCloudTerminationAlertControllerOnViewController:self moreInfoBlock:^{
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kCloudTerminationURLString] options:@{} completionHandler:nil];
+            } completionBlock:^{
+                __strong typeof(self) strongSelf = weakSelf;
+                [strongSelf authenticateWithAccount:account networkId:networkId];
+            }];
+        }
+        else
+        {
+            [self authenticateWithAccount:account networkId:networkId];
+        }
     }
 }
 

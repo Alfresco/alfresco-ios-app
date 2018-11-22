@@ -296,6 +296,51 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     }
 }
 
+- (void)presentCloudTerminationAlertControllerOnViewController:(UIViewController *)presentingViewController moreInfoBlock:(void (^)(void))moreInfoBlock completionBlock:(void (^)(void))completionBlock
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BOOL wasCloudTerminationAlertShown = [[NSUserDefaults standardUserDefaults] boolForKey:kCloudTerminationAlertShownKey];
+        if(!wasCloudTerminationAlertShown)
+        {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Alfresco in the Cloud"
+                                                                                     message:NSLocalizedString(@"cloudtermination.message", @"Alfresco in the Cloud termination message")
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *dismissAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * _Nonnull action) {
+                                                                      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCloudTerminationAlertShownKey];
+                                                                      if(completionBlock)
+                                                                      {
+                                                                          completionBlock();
+                                                                      }
+                                                                  }];
+            [alertController addAction:dismissAction];
+            
+            UIAlertAction *moreInfo = [UIAlertAction actionWithTitle:NSLocalizedString(@"cloudtermination.moreinfo", @"More Info")
+                                                               style:UIAlertActionStyleDefault
+                                                             handler:^(UIAlertAction * _Nonnull action) {
+                                                                 if(moreInfoBlock)
+                                                                 {
+                                                                     moreInfoBlock();
+                                                                 }
+                                                                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCloudTerminationAlertShownKey];
+                                                                 if(completionBlock)
+                                                                 {
+                                                                     completionBlock();
+                                                                 }
+                                                             }];
+            [alertController addAction:moreInfo];
+            
+            [presentingViewController presentViewController:alertController animated:YES completion:nil];
+        }
+        else if(completionBlock)
+        {
+            completionBlock();
+        }
+    });
+}
+
 #pragma mark - Notification Methods
 
 - (void)profileChanged:(NSNotification *)notification
