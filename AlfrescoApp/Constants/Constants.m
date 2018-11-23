@@ -63,6 +63,7 @@ NSString * const kSearchTypeUsers = @"ALFSearchTypeUsers";
 NSString * const kHasCoreDataMigrationOccurred = @"hasMigrationOccurred";
 NSString * const kWasSyncInfoPanelShown = @"wasSyncInfoPanelShown";
 NSString * const kVersionOfLastRun = @"kVersionOfLastRun";
+NSString * const kCloudTerminationAlertShownKey = @"CloudTerminationAlertShown";
 
 // Settings Bundle Keys
 NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";
@@ -292,3 +293,6 @@ NSString * const KSkypeAppStoreiPadURL = @"http://itunes.apple.com/app/skype-for
 
 NSString * const kSyncViewIdentifier = @"view-sync-default";
 NSString * const kLocalViewIdentifier = @"view-local-default";
+
+// Cloud Termination
+NSString * const kCloudTerminationURLString = @"https://www.alfresco.com/blogs/announcement-on-alfresco-in-the-cloud/";

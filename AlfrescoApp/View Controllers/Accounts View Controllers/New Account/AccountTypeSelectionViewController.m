@@ -121,51 +121,58 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
 {
     if (indexPath.section == kCloudSectionNumber)
     {
-        UserAccount *account = [[UserAccount alloc] initWithAccountType:UserAccountTypeCloud];
-        account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco in the Cloud");
-        
-        [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationController:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-            if (successful)
-            {
-                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
-                                                                  action:kAnalyticsEventActionCreate
-                                                                   label:kAnalyticsEventLabelCloud
-                                                                   value:@1];
-                
-                AccountManager *accountManager = [AccountManager sharedManager];
-                [[RealmSyncManager sharedManager] realmForAccount:account.accountIdentifier];
-                
-                if (accountManager.totalNumberOfAddedAccounts == 0)
+        __weak typeof(self) weakSelf = self;
+        [[AccountManager sharedManager] presentCloudTerminationAlertControllerOnViewController:self moreInfoBlock:^{
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kCloudTerminationURLString] options:@{} completionHandler:nil];
+        } completionBlock:^{
+            __strong typeof(self) strongSelf = weakSelf;
+            UserAccount *account = [[UserAccount alloc] initWithAccountType:UserAccountTypeCloud];
+            account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco in the Cloud");
+            
+            [[LoginManager sharedManager] authenticateCloudAccount:account networkId:nil navigationController:strongSelf.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                if (successful)
                 {
-                    [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject] alfrescoSession:alfrescoSession];
-                }
-                
-                if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
-                {
-                    [self.delegate accountTypeSelectionViewControllerWillDismiss:self accountAdded:YES];
-                }
-                
-                [self dismissViewControllerAnimated:YES completion:^{
-                    if ([self.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
+                    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                                                      action:kAnalyticsEventActionCreate
+                                                                       label:kAnalyticsEventLabelCloud
+                                                                       value:@1];
+                    
+                    AccountManager *accountManager = [AccountManager sharedManager];
+                    [[RealmSyncManager sharedManager] realmForAccount:account.accountIdentifier];
+                    
+                    if (accountManager.totalNumberOfAddedAccounts == 0)
                     {
-                        [self.delegate accountTypeSelectionViewControllerDidDismiss:self accountAdded:YES];
+                        [accountManager selectAccount:account selectNetwork:[account.accountNetworks firstObject] alfrescoSession:alfrescoSession];
                     }
-                }];
-                
-                [accountManager addAccount:account];
-            }
-            else
-            {
-                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
-                                                                                         message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
-                                                                                  preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", @"Done")
-                                                                     style:UIAlertActionStyleCancel
-                                                                   handler:nil];
-                [alertController addAction:doneAction];
-                [self presentViewController:alertController animated:YES completion:nil];
-            }
+                    
+                    if ([strongSelf.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerWillDismiss:accountAdded:)])
+                    {
+                        [strongSelf.delegate accountTypeSelectionViewControllerWillDismiss:strongSelf accountAdded:YES];
+                    }
+                    
+                    [strongSelf dismissViewControllerAnimated:YES completion:^{
+                        if ([strongSelf.delegate respondsToSelector:@selector(accountTypeSelectionViewControllerDidDismiss:accountAdded:)])
+                        {
+                            [strongSelf.delegate accountTypeSelectionViewControllerDidDismiss:strongSelf accountAdded:YES];
+                        }
+                    }];
+                    
+                    [accountManager addAccount:account];
+                }
+                else
+                {
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"accountdetails.alert.save.title", @"Save Account")
+                                                                                             message:NSLocalizedString(@"accountdetails.alert.save.validationerror", @"Login Failed Message")
+                                                                                      preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", @"Done")
+                                                                         style:UIAlertActionStyleCancel
+                                                                       handler:nil];
+                    [alertController addAction:doneAction];
+                    [strongSelf presentViewController:alertController animated:YES completion:nil];
+                }
+            }];
         }];
+        
     }
     else
     {
