@@ -64,6 +64,7 @@ NSString * const kHasCoreDataMigrationOccurred = @"hasMigrationOccurred";
 NSString * const kWasSyncInfoPanelShown = @"wasSyncInfoPanelShown";
 NSString * const kVersionOfLastRun = @"kVersionOfLastRun";
 NSString * const kCloudTerminationAlertShownKey = @"CloudTerminationAlertShown";
+NSString * const kHasAccountMigrationOccured = @"hasAccountMigrationOccured";
 
 // Settings Bundle Keys
 NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";

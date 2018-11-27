@@ -110,6 +110,7 @@ extern NSString * const kHasCoreDataMigrationOccurred;
 extern NSString * const kWasSyncInfoPanelShown;
 extern NSString * const kVersionOfLastRun;
 extern NSString * const kCloudTerminationAlertShownKey;
+extern NSString * const kHasAccountMigrationOccured;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;
