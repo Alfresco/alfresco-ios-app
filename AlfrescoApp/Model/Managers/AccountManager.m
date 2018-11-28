@@ -51,6 +51,13 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileChanged:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
+        
+        BOOL isMigrationNeededResult = [[NSUserDefaults standardUserDefaults] boolForKey:kHasAccountMigrationOccured];
+        if(!isMigrationNeededResult)
+        {
+            [self performMigration];
+        }
+        
         [self loadAccountsFromKeychain];
     }
     return self;
@@ -236,23 +243,6 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     
     NSArray *savedAccounts = [KeychainUtils savedAccountsForListIdentifier:kKeychainAccountListIdentifier
                                                                      error:&keychainRetrieveError];
-    if (!savedAccounts.count)
-    {
-        savedAccounts = [KeychainUtils savedAccountsForListIdentifier:kKeychainAccountListIdentifier
-                                                              inGroup:nil
-                                                                error:&keychainRetrieveError];
-        if(savedAccounts.count)
-        {
-            NSError *keychainRemoveError = nil;
-           [KeychainUtils deleteSavedAccountsForListIdentifier:kKeychainAccountListIdentifier
-                                                       inGroup:nil
-                                                         error:&keychainRemoveError];
-            if(keychainRemoveError)
-            {
-                AlfrescoLogDebug(@"Error in removing saved accounts. Error: %@", keychainRemoveError.localizedDescription);
-            }
-        }
-    }
     
     self.accountsFromKeychain = [savedAccounts mutableCopy];
     
@@ -470,6 +460,21 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         }
     }];
     return request;
+}
+
+- (void)performMigration
+{
+    NSError *keychainRetrieveError = nil;
+    NSArray *savedAccounts = [KeychainUtils savedAccountsForListIdentifier:kKeychainAccountListIdentifier
+                                                          inGroup:nil
+                                                            error:&keychainRetrieveError];
+    if(savedAccounts.count)
+    {
+        self.accountsFromKeychain = [savedAccounts mutableCopy];
+        [self saveAccountsToKeychain];
+        self.accountsFromKeychain = nil;
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kHasAccountMigrationOccured];
+    }
 }
 
 @end
