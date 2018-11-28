@@ -88,7 +88,7 @@
         [self enablePullToRefresh];
     }
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 }
 
 - (void)viewDidAppear:(BOOL)animated

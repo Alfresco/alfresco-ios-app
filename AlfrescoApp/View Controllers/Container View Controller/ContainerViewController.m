@@ -19,8 +19,6 @@
 #import "ContainerViewController.h"
 #import "FullScreenAnimationController.h"
 
-static NSUInteger const kStatusBarViewHeight = 20.0f;
-
 @interface ContainerViewController ()
 
 @property (nonatomic, weak, readwrite) UIView *statusBarBackgroundView;
