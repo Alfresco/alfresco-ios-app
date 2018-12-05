@@ -925,5 +925,4 @@
 /**
  * Cloud Termination Alert
  */
-"cloudtermination.message" = "Alfresco in the Cloud will be turned off on the 28th March 2019 and you will not be able to access content from that date. Ensure that any files you need to keep are exported. Please contact your IT Administrator for more information.";
-"cloudtermination.moreinfo" = "More info";
+"cloudtermination.message" = "my.alfresco.com will be turned off on March 28, 2019. Please contact your Administrator for guidance on how to export your data from this service.";

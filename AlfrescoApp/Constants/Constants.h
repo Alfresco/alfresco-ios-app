@@ -334,6 +334,3 @@ extern NSString * const KSkypeAppStoreiPadURL;
 
 extern NSString * const kSyncViewIdentifier;
 extern NSString * const kLocalViewIdentifier;
-
-// Cloud Termination
-extern NSString * const kCloudTerminationURLString;

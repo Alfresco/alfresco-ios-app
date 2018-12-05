@@ -53,7 +53,7 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 - (void)deselectSelectedAccount;
 - (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock;
 
-- (void)presentCloudTerminationAlertControllerOnViewController:(UIViewController *)presentingViewController moreInfoBlock:(void (^)(void))moreInfoBlock completionBlock:(void (^)(void))completionBlock;
+- (void)presentCloudTerminationAlertControllerOnViewController:(UIViewController *)presentingViewController completionBlock:(void (^)(void))completionBlock;
 
 /*
  * Account Certificates Methods
