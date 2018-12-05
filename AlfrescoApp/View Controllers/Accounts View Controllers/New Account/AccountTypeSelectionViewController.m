@@ -122,9 +122,7 @@ static CGFloat const kAccountTypeCellRowHeight = 66.0f;
     if (indexPath.section == kCloudSectionNumber)
     {
         __weak typeof(self) weakSelf = self;
-        [[AccountManager sharedManager] presentCloudTerminationAlertControllerOnViewController:self moreInfoBlock:^{
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kCloudTerminationURLString] options:@{} completionHandler:nil];
-        } completionBlock:^{
+        [[AccountManager sharedManager] presentCloudTerminationAlertControllerOnViewController:self completionBlock:^{
             __strong typeof(self) strongSelf = weakSelf;
             UserAccount *account = [[UserAccount alloc] initWithAccountType:UserAccountTypeCloud];
             account.accountDescription = NSLocalizedString(@"accounttype.cloud", @"Alfresco in the Cloud");

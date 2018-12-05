@@ -535,9 +535,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         if(account.accountType == UserAccountTypeCloud)
         {
             __weak typeof(self) weakSelf = self;
-            [[AccountManager sharedManager] presentCloudTerminationAlertControllerOnViewController:self moreInfoBlock:^{
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kCloudTerminationURLString] options:@{} completionHandler:nil];
-            } completionBlock:^{
+            [[AccountManager sharedManager] presentCloudTerminationAlertControllerOnViewController:self completionBlock:^{
                 __strong typeof(self) strongSelf = weakSelf;
                 [strongSelf authenticateWithAccount:account networkId:networkId];
             }];
