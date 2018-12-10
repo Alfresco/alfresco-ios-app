@@ -1122,7 +1122,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage])
     {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        __block NSString *selectedImageExtension = [[[(NSURL *)[info objectForKey:UIImagePickerControllerReferenceURL] path] pathExtension] lowercaseString];
+        __block NSString *selectedImageExtension = [[[(NSURL *)[info objectForKey:UIImagePickerControllerImageURL] path] pathExtension] lowercaseString];
         
         // define an upload block
         void (^displayUploadForm)(NSDictionary *metadata, BOOL addGPSMetadata) = ^(NSDictionary *metadata, BOOL addGPSMetadata){
@@ -1174,8 +1174,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         }
         else
         {
-            PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[info[UIImagePickerControllerReferenceURL]] options:nil];
-            PHAsset *asset = [result firstObject];
+            PHAsset *asset = info[UIImagePickerControllerPHAsset];
             
             [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
                 CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
@@ -1187,7 +1186,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 }
                 else
                 {
-                    AlfrescoLogError(@"Unable to extract metadata from item for URL: %@.", info[UIImagePickerControllerReferenceURL]);
+                    AlfrescoLogError(@"Unable to extract metadata from item for URL: %@.", info[UIImagePickerControllerImageURL]);
                 }
             }];
         }
