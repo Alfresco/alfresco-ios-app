@@ -202,6 +202,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                 variables = @{kAlfrescoWorkflowVariableProcessApprovalRate : @(approvalRate)};
             }
             
+            __weak typeof(self) weakSelf = self;
             [self.workflowService startProcessForProcessDefinition:processDefinition
                                                               name:title
                                                           priority:priority
@@ -211,6 +212,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                                                          variables:variables
                                                        attachments:self.attachments
                                                    completionBlock:^(AlfrescoWorkflowProcess *process, NSError *error) {
+                                                       __strong typeof(self) strongSelf = weakSelf;
                                                        
                                                        [progressHUD hideAnimated:YES];
                                                        if (error)
@@ -224,9 +226,9 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
                                                                displayInformationMessage(NSLocalizedString(@"task.create.created", @"Task Created"));
                                                            }];
                                                            
-                                                           if (_documentReview)
+                                                           if (strongSelf->_documentReview)
                                                            {
-                                                               AlfrescoDocument *document = self.attachments.firstObject;
+                                                               AlfrescoDocument *document = strongSelf.attachments.firstObject;
                                                                NSString *mimeType = document.contentMimeType;
                                                                
                                                                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM

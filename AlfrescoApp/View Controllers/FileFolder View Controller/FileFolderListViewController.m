@@ -32,6 +32,7 @@
 #import "FailedTransferDetailViewController.h"
 #import "AlfrescoNode+Sync.h"
 #import <Photos/Photos.h>
+#import "UIView+Orientation.h"
 
 static CGFloat const kCellHeight = 64.0f;
 
@@ -219,18 +220,22 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     _imagePickerController.delegate = nil;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    CGRect screenRect = [[UIScreen mainScreen] bounds];
-    // if going to landscape, use the screen height as the popover width and screen width as the popover height
-    if (UIInterfaceOrientationIsLandscape(toInterfaceOrientation))
-    {
-        self.popover.preferredContentSize = CGSizeMake(screenRect.size.height, screenRect.size.width);
-    }
-    else
-    {
-        self.popover.preferredContentSize = CGSizeMake(screenRect.size.width, screenRect.size.height);
-    }
+    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        // what ever you want to prepare
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        CGRect screenRect = [[UIScreen mainScreen] bounds];
+        // if going to landscape, use the screen height as the popover width and screen width as the popover height
+        if ([self.view isViewOrientationLandscape])
+        {
+            self.popover.preferredContentSize = CGSizeMake(screenRect.size.height, screenRect.size.width);
+        }
+        else
+        {
+            self.popover.preferredContentSize = CGSizeMake(screenRect.size.width, screenRect.size.height);
+        }
+    }];
 }
 
 #pragma mark - Custom getters and setters

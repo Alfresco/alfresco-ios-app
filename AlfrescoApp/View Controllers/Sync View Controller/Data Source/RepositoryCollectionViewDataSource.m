@@ -449,7 +449,7 @@
 }
 
 #pragma mark - SwipeToDeleteDelegate methods
-- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath completionBlock:(void (^)())completionBlock
+- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath completionBlock:(void (^)(void))completionBlock
 {
     AlfrescoNode *nodeToDelete = self.dataSourceCollection[indexPath.item];
     

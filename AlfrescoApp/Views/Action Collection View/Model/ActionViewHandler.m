@@ -171,7 +171,10 @@
 
 - (AlfrescoRequest *)pressedEmailActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath documentLocation:(InAppDocumentLocation)location
 {
+    __weak typeof(self) weakSelf = self;
     void (^displayEmailBlock)(NSString *filePath) = ^(NSString *filePath) {
+        __strong typeof(self) strongSelf = weakSelf;
+        
         if (filePath && [MFMailComposeViewController canSendMail])
         {
             MFMailComposeViewController *emailController = [[MFMailComposeViewController alloc] init];
@@ -184,7 +187,7 @@
             {
                 mimeType = @"application/octet-stream";
             }
-            _emailedFileMimetype = mimeType;
+            strongSelf->_emailedFileMimetype = mimeType;
             
             NSData *documentData = [[AlfrescoFileManager sharedManager] dataWithContentsOfURL:[NSURL fileURLWithPath:filePath]];
             [emailController addAttachmentData:documentData mimeType:mimeType fileName:filePath.lastPathComponent];
@@ -195,7 +198,7 @@
             [emailController setMessageBody:messageBody isHTML:YES];
             emailController.modalPresentationStyle = UIModalPresentationPageSheet;
             
-            [self.controller presentViewController:emailController animated:YES completion:nil];
+            [strongSelf.controller presentViewController:emailController animated:YES completion:nil];
         }
         else
         {
@@ -490,7 +493,7 @@
 {
     __block AlfrescoRequest *deleteRequest = nil;
     
-    void (^deleteBlock)() = ^void(){
+    void (^deleteBlock)(void) = ^void(){
         if ([self.controller respondsToSelector:@selector(displayProgressIndicator)])
         {
             [self.controller displayProgressIndicator];
@@ -564,7 +567,7 @@
 
 - (void)pressedDeleteLocalFileActionItem:(ActionCollectionItem *)actionItem documentPath:(NSString *)documentPath
 {
-    void (^deleteBlock)() = ^void(){
+    void (^deleteBlock)(void) = ^void(){
         NSString *mimetype = [Utility mimeTypeForFileExtension:documentPath.pathExtension];
         [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
                                                           action:kAnalyticsEventActionDelete

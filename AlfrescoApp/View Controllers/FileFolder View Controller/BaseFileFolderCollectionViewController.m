@@ -21,6 +21,7 @@
 #import "PermissionChecker.h"
 #import <Photos/Photos.h>
 #import "UISearchBar+Paste.h"
+#import "UIView+Orientation.h"
 
 static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
@@ -561,9 +562,9 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     self.retrySyncNode = nil;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    if (self.syncFailedDetailController && UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+    if (self.syncFailedDetailController && [self.view isViewOrientationPortrait])
     {
         [self.syncFailedDetailController dismissViewControllerAnimated:YES completion:nil];
         self.syncFailedDetailController = nil;
