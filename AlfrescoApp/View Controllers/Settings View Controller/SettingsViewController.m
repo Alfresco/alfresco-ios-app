@@ -30,6 +30,7 @@
 #import "UniversalDevice.h"
 #import "SecurityManager.h"
 #import "TouchIDManager.h"
+#import "KeychainUtils.h"
 
 @interface SettingsViewController () <SettingsCellProtocol, MFMailComposeViewControllerDelegate>
 @end
@@ -377,7 +378,11 @@
     
     if (shouldUsePasscodeLock)
     {
+        __weak typeof(self) weakSelf = self;
         pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowSet completionBlock:^(PinFlowCompletionStatus status){
+            __strong typeof(self) strongSelf = weakSelf;
+            [strongSelf notifyFileProviderAboutUpdates];
+            
             if (status == PinFlowCompletionStatusSuccess)
             {
                 [[PreferenceManager sharedManager] updatePreferenceToValue:@(YES) preferenceIdentifier:kSettingsSecurityUsePasscodeLockIdentifier];
@@ -386,8 +391,12 @@
     }
     else
     {
+        __weak typeof(self) weakSelf = self;
         pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowUnset completionBlock:^(PinFlowCompletionStatus status)
         {
+            __strong typeof(self) strongSelf = weakSelf;
+            [strongSelf notifyFileProviderAboutUpdates];
+            
             switch (status)
             {
                 case PinFlowCompletionStatusSuccess:
@@ -413,7 +422,11 @@
 
 - (void)changePasscodeHandler
 {
+    __weak typeof(self) weakSelf = self;
     UINavigationController *pinNavigationViewController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowChange completionBlock:^(PinFlowCompletionStatus status){
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf notifyFileProviderAboutUpdates];
+        
         switch (status) {
             case PinFlowCompletionStatusSuccess:
             {
@@ -431,6 +444,25 @@
         }
     }];
     [self presentViewController:pinNavigationViewController animated:YES completion:nil];
+}
+
+- (void)notifyFileProviderAboutUpdates {
+    if (@available(iOS 11.0, *)) {
+        NSError *error = nil;
+        NSString *itemIdentifier = [KeychainUtils retrieveItemForKey:kFileProviderCurrentItemIdentifier
+                                                             inGroup:kSharedAppGroupIdentifier
+                                                               error:&error];
+        
+        if (error) {
+            AlfrescoLogError(@"An error occured while retrieving the current file provider item identifier. Reason:%@", error.localizedDescription);
+        } else {
+            [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:itemIdentifier
+                                                                             completionHandler:^(NSError * _Nullable error) {}];
+        }
+        
+        [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:NSFileProviderRootContainerItemIdentifier
+                                                                         completionHandler:^(NSError * _Nullable error) {}];
+    }
 }
 
 - (BOOL)cellEnabled:(SettingCell *)cell
@@ -640,7 +672,7 @@
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    void (^completionBlock)() = nil;
+    void (^completionBlock)(void) = nil;
     
     if (result == MFMailComposeResultFailed)
     {

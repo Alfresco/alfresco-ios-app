@@ -17,7 +17,7 @@
  ******************************************************************************/
   
 #import "ParentListViewController.h"
-#import "MultiSelectActionsToolbar.h"
+#import "MultiSelectContainerView.h"
 #import "DocumentFilter.h"
 
 @class DownloadsViewController;

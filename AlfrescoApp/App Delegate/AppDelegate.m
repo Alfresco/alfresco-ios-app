@@ -40,6 +40,8 @@
 #import "UnderlayViewController.h"
 #import "RealmSyncManager+CoreDataMigration.h"
 #import <HockeySDK/HockeySDK.h>
+#import "RealmSyncCore.h"
+#import "AppConfigurationManager.h"
 
 @import MediaPlayer;
 
@@ -120,6 +122,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         [MigrationAssistant runMigrationAssistant];
     }
     
+    AccountManager *accountManager = [AccountManager sharedManager];
+    accountManager.realmManager = [RealmManager sharedManager];
+    accountManager.appConfigurationManager = [AppConfigurationManager sharedManager];
+    accountManager.analyticsManager = [AnalyticsManager sharedManager];
+    
     BOOL isFirstLaunch = [self isAppFirstLaunch];
     if (isFirstLaunch)
     {
@@ -136,6 +143,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     if([[RealmSyncManager sharedManager] isCoreDataMigrationNeeded])
     {
         [[RealmSyncManager sharedManager] initiateMigrationProcess];
+    }
+    
+    if ([[RealmSyncCore sharedSyncCore] isContentMigrationNeeded])
+    {
+        [[RealmSyncCore sharedSyncCore] initiateContentMigrationProcessForAccounts:[AccountManager sharedManager].allAccounts];
     }
 
     // Setup the app and build it's UI
@@ -209,8 +221,10 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
+    NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
+    NSString *annotation = options[UIApplicationOpenURLOptionsAnnotationKey];
     return [[FileHandlerManager sharedManager] handleURL:url sourceApplication:sourceApplication annotation:annotation session:self.session];
 }
 

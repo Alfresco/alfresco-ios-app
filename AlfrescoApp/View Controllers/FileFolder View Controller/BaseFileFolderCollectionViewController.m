@@ -21,6 +21,7 @@
 #import "PermissionChecker.h"
 #import <Photos/Photos.h>
 #import "UISearchBar+Paste.h"
+#import "UIView+Orientation.h"
 
 static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
@@ -139,27 +140,27 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
+{    
     self.searchResults = nil;
     self.isOnSearchResults = NO;
     [self reloadCollectionView];
 }
 
-- (void)didPresentSearchController:(UISearchController *)searchController
-{
-    self.collectionViewTopConstraint.constant = 20;
-    [self.view layoutIfNeeded];
-}
-
-- (void)didDismissSearchController:(UISearchController *)searchController
-{
-    self.collectionViewTopConstraint.constant = 0;
-    [self.view layoutIfNeeded];
+- (void)willDismissSearchController:(UISearchController *)searchController {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [searchController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+            searchController.searchBar.alpha = .0f;
+            [self.collectionView setContentOffset:CGPointMake(0, kCollectionViewHeaderHight)
+                                         animated:YES];
+        } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+            searchController.searchBar.alpha = 1.0f;
+        }];
+    });
 }
 
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    
+    // No customization available for this class
 }
 
 - (BOOL)searchBar:(UISearchBar *)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -561,9 +562,9 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     self.retrySyncNode = nil;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    if (self.syncFailedDetailController && UIInterfaceOrientationIsPortrait(toInterfaceOrientation))
+    if (self.syncFailedDetailController && [self.view isViewOrientationPortrait])
     {
         [self.syncFailedDetailController dismissViewControllerAnimated:YES completion:nil];
         self.syncFailedDetailController = nil;
@@ -713,7 +714,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
             selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
         }
         
-        if([self.multiSelectToolbar.selectedItems containsObject:selectedNode])
+        if([self.multiSelectContainerView.toolbar.selectedItems containsObject:selectedNode])
         {
             return YES;
         }
@@ -995,7 +996,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage])
     {
         UIImage *selectedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        __block NSString *selectedImageExtension = [[[(NSURL *)[info objectForKey:UIImagePickerControllerReferenceURL] path] pathExtension] lowercaseString];
+        __block NSString *selectedImageExtension = [[[(NSURL *)[info objectForKey:UIImagePickerControllerImageURL] path] pathExtension] lowercaseString];
         
         // define an upload block
         void (^displayUploadForm)(NSDictionary *metadata, BOOL addGPSMetadata) = ^(NSDictionary *metadata, BOOL addGPSMetadata){
@@ -1047,8 +1048,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         }
         else
         {
-            PHFetchResult *result = [PHAsset fetchAssetsWithALAssetURLs:@[info[UIImagePickerControllerReferenceURL]] options:nil];
-            PHAsset *asset = [result firstObject];
+            PHAsset *asset = info[UIImagePickerControllerPHAsset];
             
             [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData * _Nullable imageData, NSString * _Nullable dataUTI, UIImageOrientation orientation, NSDictionary * _Nullable info) {
                 CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)imageData, NULL);
@@ -1060,7 +1060,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                 }
                 else
                 {
-                    AlfrescoLogError(@"Unable to extract metadata from item for URL: %@.", info[UIImagePickerControllerReferenceURL]);
+                    AlfrescoLogError(@"Unable to extract metadata from item for URL: %@.", info[UIImagePickerControllerImageURL]);
                 }
             }];
         }

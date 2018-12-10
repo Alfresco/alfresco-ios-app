@@ -19,7 +19,7 @@
 #import "MultiSelectActionsToolbar.h"
 #import "MultiSelectActionItem.h"
 
-static CGFloat const kMultiSelectAnimationDuration = 0.2f;
+static CGFloat const kMultiSelectAnimationDurationLegacy = 0.2f;
 
 static CGFloat const kToolBarMaxHeightConstraintValue = 44.0f;
 static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
@@ -61,7 +61,7 @@ static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
     self.items = [self.actionItems array];
     
     heightConstraint.constant = kToolBarMaxHeightConstraintValue;
-    [UIView animateWithDuration:kMultiSelectAnimationDuration animations:^{
+    [UIView animateWithDuration:kMultiSelectAnimationDurationLegacy animations:^{
         self.alpha = 1.0f;
         [self layoutIfNeeded];
     }];
@@ -71,10 +71,22 @@ static CGFloat const kToolBarMinHeightConstraintValue = 0.0f;
 {
     self.items = nil;
     heightConstraint.constant = kToolBarMinHeightConstraintValue;
-    [UIView animateWithDuration:kMultiSelectAnimationDuration animations:^{
+    [UIView animateWithDuration:kMultiSelectAnimationDurationLegacy animations:^{
         self.alpha = 0.0f;
         [self layoutIfNeeded];
     }];
+}
+
+- (void)enterMultiSelectMode
+{
+    [self.selectedItems removeAllObjects];
+    [self updateToolBarButtonTitles];
+    self.items = [self.actionItems array];
+}
+
+- (void)leaveMultiSelectMode
+{
+    self.items = nil;
 }
 
 #pragma mark - Private instance methods

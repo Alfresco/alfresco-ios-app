@@ -30,7 +30,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-static CGFloat const kCellHeight = 64.0f;
+static CGFloat const kCellHeight = 84.0f;
 
 @interface BaseFileFolderCollectionViewController () <UISearchControllerDelegate, UIPopoverPresentationControllerDelegate, RepositoryCollectionViewDataSourceDelegate, UIImagePickerControllerDelegate, DownloadsPickerDelegate, UINavigationControllerDelegate, UploadFormViewControllerDelegate>
 

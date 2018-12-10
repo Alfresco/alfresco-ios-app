@@ -22,8 +22,6 @@
 #import "Constants.h"
 #import "AccountCertificate.h"
 #import "AlfrescoProfileConfig.h"
-#import "AppConfigurationManager.h"
-#import "RealmManager.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
@@ -53,6 +51,13 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     if (self)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(profileChanged:) name:kAlfrescoConfigProfileDidChangeNotification object:nil];
+        
+        BOOL isMigrationNeededResult = [[NSUserDefaults standardUserDefaults] boolForKey:kHasAccountMigrationOccured];
+        if(!isMigrationNeededResult)
+        {
+            [self performMigration];
+        }
+        
         [self loadAccountsFromKeychain];
     }
     return self;
@@ -109,10 +114,12 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 {
     NSString *labelString = account.accountType == UserAccountTypeOnPremise ? ([account.samlData isSamlEnabled] ? kAnalyticsEventLabelOnPremiseSAML : kAnalyticsEventLabelOnPremise) : kAnalyticsEventLabelCloud;
     
-    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryAccount
-                                                      action:kAnalyticsEventActionDelete
-                                                       label:labelString
-                                                       value:@1];
+    if ([self.analyticsManager respondsToSelector:@selector(trackEventWithCategory:action:label:value:)]) {
+        [self.analyticsManager trackEventWithCategory:kAnalyticsEventCategoryAccount
+                                               action:kAnalyticsEventActionDelete
+                                                label:labelString
+                                                value:@1];
+    }
     
     [self.accountsFromKeychain removeObject:account];
     [self saveAccountsToKeychain];
@@ -169,14 +176,20 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 {
     if (self.selectedAccount == selectedAccount)
     {
-        [[[AppConfigurationManager sharedManager] configurationServiceForAccount:selectedAccount] clear];
+        if ([self.appConfigurationManager respondsToSelector:@selector(configurationServiceForAccount:)]) {
+            [[self.appConfigurationManager configurationServiceForAccount:selectedAccount] clear];
+        }
     }
     
     self.selectedAccount = selectedAccount;
     
     if (selectedAccount)
     {
-        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:selectedAccount completionBlock:nil];
+        if ([self.realmManager respondsToSelector:@selector(changeDefaultConfigurationForAccount:completionBlock:)])
+        {
+            [self.realmManager changeDefaultConfigurationForAccount:selectedAccount
+                                                    completionBlock:nil];
+        }
     }
     
     for (UserAccount *account in self.accountsFromKeychain)
@@ -222,6 +235,85 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         }
     }
     return paidAccounts;
+}
+
+- (void)loadAccountsFromKeychain
+{
+    NSError *keychainRetrieveError = nil;
+    
+    NSArray *savedAccounts = [KeychainUtils savedAccountsForListIdentifier:kKeychainAccountListIdentifier
+                                                                     error:&keychainRetrieveError];
+    
+    self.accountsFromKeychain = [savedAccounts mutableCopy];
+    
+    if (keychainRetrieveError)
+    {
+        AlfrescoLogDebug(@"Error in retrieving saved accounts. Error: %@", keychainRetrieveError.localizedDescription);
+    }
+    
+    if (!self.accountsFromKeychain)
+    {
+        self.accountsFromKeychain = [NSMutableArray array];
+    }
+    
+    NSArray *accounts = [NSArray arrayWithArray:self.accountsFromKeychain];
+    for (UserAccount *account in accounts)
+    {
+        if (account.accountType == UserAccountTypeCloud && account.accountStatus == UserAccountStatusAwaitingVerification)
+        {
+            // Check for bad accounts in "awaiting" status
+            if ([account.cloudAccountId isKindOfClass:[NSNull class]] || [account.cloudAccountKey isKindOfClass:[NSNull class]])
+            {
+                [self.accountsFromKeychain removeObject:account];
+                [self saveAccountsToKeychain];
+                account.isSelectedAccount = NO;
+            }
+            else
+            {
+                [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
+                    if (successful && account.accountStatus != UserAccountStatusAwaitingVerification)
+                    {
+                        [self saveAccountsToKeychain];
+                    }
+                }];
+            }
+        }
+        
+        if (account.isSelectedAccount)
+        {
+            self.selectedAccount = account;
+        }
+    }
+}
+
+- (void)presentCloudTerminationAlertControllerOnViewController:(UIViewController *)presentingViewController completionBlock:(void (^)(void))completionBlock
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BOOL wasCloudTerminationAlertShown = [[NSUserDefaults standardUserDefaults] boolForKey:kCloudTerminationAlertShownKey];
+        if(!wasCloudTerminationAlertShown)
+        {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"my.alfresco.com"
+                                                                                     message:NSLocalizedString(@"cloudtermination.message", @"Alfresco in the Cloud termination message")
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *dismissAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                                    style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * _Nonnull action) {
+                                                                      [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kCloudTerminationAlertShownKey];
+                                                                      if(completionBlock)
+                                                                      {
+                                                                          completionBlock();
+                                                                      }
+                                                                  }];
+            [alertController addAction:dismissAction];
+            
+            [presentingViewController presentViewController:alertController animated:YES completion:nil];
+        }
+        else if(completionBlock)
+        {
+            completionBlock();
+        }
+    });
 }
 
 #pragma mark - Notification Methods
@@ -308,51 +400,6 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
 #pragma mark - Private Functions
 
-- (void)loadAccountsFromKeychain
-{
-    NSError *keychainRetrieveError = nil;
-    self.accountsFromKeychain = [[KeychainUtils savedAccountsForListIdentifier:kKeychainAccountListIdentifier error:&keychainRetrieveError] mutableCopy];
-    
-    if (keychainRetrieveError)
-    {
-        AlfrescoLogDebug(@"Error in retrieving saved accounts. Error: %@", keychainRetrieveError.localizedDescription);
-    }
-    
-    if (!self.accountsFromKeychain)
-    {
-        self.accountsFromKeychain = [NSMutableArray array];
-    }
-
-    NSArray *accounts = [NSArray arrayWithArray:self.accountsFromKeychain];
-    for (UserAccount *account in accounts)
-    {
-        if (account.accountType == UserAccountTypeCloud && account.accountStatus == UserAccountStatusAwaitingVerification)
-        {
-            // Check for bad accounts in "awaiting" status
-            if ([account.cloudAccountId isKindOfClass:[NSNull class]] || [account.cloudAccountKey isKindOfClass:[NSNull class]])
-            {
-                [self.accountsFromKeychain removeObject:account];
-                [self saveAccountsToKeychain];
-                account.isSelectedAccount = NO;
-            }
-            else
-            {
-                [self updateAccountStatusForAccount:account completionBlock:^(BOOL successful, NSError *error) {
-                    if (successful && account.accountStatus != UserAccountStatusAwaitingVerification)
-                    {
-                        [self saveAccountsToKeychain];
-                    }
-                }];
-            }
-        }
-
-        if (account.isSelectedAccount)
-        {
-            self.selectedAccount = account;
-        }
-    }
-}
-
 - (RequestHandler *)updateAccountStatusForAccount:(UserAccount *)account completionBlock:(void (^)(BOOL successful, NSError *error))completionBlock
 {
     NSString *accountStatusUrl = [kAlfrescoCloudAPIAccountStatusUrl stringByReplacingOccurrencesOfString:kAlfrescoCloudAPIAccountID withString:account.cloudAccountId];
@@ -398,6 +445,21 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         }
     }];
     return request;
+}
+
+- (void)performMigration
+{
+    NSError *keychainRetrieveError = nil;
+    NSArray *savedAccounts = [KeychainUtils savedAccountsForListIdentifier:kKeychainAccountListIdentifier
+                                                          inGroup:nil
+                                                            error:&keychainRetrieveError];
+    if(savedAccounts.count)
+    {
+        self.accountsFromKeychain = [savedAccounts mutableCopy];
+        [self saveAccountsToKeychain];
+        self.accountsFromKeychain = nil;
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kHasAccountMigrationOccured];
+    }
 }
 
 @end

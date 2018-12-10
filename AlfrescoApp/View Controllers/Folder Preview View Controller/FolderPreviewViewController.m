@@ -80,7 +80,7 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
     [super viewDidLoad];
     
     [self setAccessibilityIdentifiers];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.pagedScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     [self actionViewHeightFromPreferredLanguage];
     sActionViewHeight = self.actionViewHeightConstraint.constant;

@@ -18,7 +18,7 @@
  
 #import "BaseInboundURLHandler.h"
 #import "DownloadManager.h"
-
+#import "AccountManager.h"
 #import "RealmSyncManager.h"
 
 @interface BaseInboundURLHandler () <NSFileManagerDelegate>

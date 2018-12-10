@@ -5,10 +5,20 @@ target 'AlfrescoApp' do
     pod 'NJKWebViewProgress', '~> 0.2'
     pod 'HockeySDK', '~> 3.8'
     pod 'Google/Analytics', :podspec => 'http://alfresco.github.io/alfresco-ios-app/Google.podspec.json'
-    pod 'Realm', '~>2.9.1'
+    pod 'Realm', '~>3.11'
 end
 
 target 'AlfrescoDocumentPicker' do
     pod 'MBProgressHUD', '~> 1.0'
     pod 'Google/Analytics', :podspec => 'http://alfresco.github.io/alfresco-ios-app/Google.podspec.json'
 end
+
+target 'AlfrescoDocumentPickerFileProvider' do
+    pod 'Realm', '~>3.11'
+end
+
+target 'AlfrescoFileProviderUI' do
+    pod 'Realm', '~>3.11'
+    pod 'MBProgressHUD', '~> 1.0'
+end
+

@@ -67,6 +67,11 @@ static NSString * const kWorkspaceNodePrefix = @"workspace://SpacesStore/";
     return nodeGUID;
 }
 
++ (NSString *)serverURLAddressStringFromAccount:(UserAccount *)account
+{
+    return [Utilities serverURLStringFromAccount:(id<AKUserAccount>)account];
+}
+
 + (NSString *)serverURLStringFromAccount:(id<AKUserAccount>)account
 {
     NSURLComponents *url = [[NSURLComponents alloc] init];

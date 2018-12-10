@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -42,3 +42,77 @@ extern NSString * const kSettingsSecurityUsePasscodeLockIdentifier;
 extern NSString * const kAlfrescoMobileGroup;
 extern NSString * const kShouldResetEntireAppKey;
 extern NSString * const kIsAppFirstLaunch;
+
+extern NSString * const kHasSyncedContentMigrationOccurred;
+
+/// View Types
+extern NSString * const kAlfrescoConfigViewTypeActivities;
+extern NSString * const kAlfrescoConfigViewTypeRepository;
+extern NSString * const kAlfrescoConfigViewTypeSiteBrowser;
+extern NSString * const kAlfrescoConfigViewTypeTasks;
+extern NSString * const kAlfrescoConfigViewTypeFavourites;
+extern NSString * const kAlfrescoConfigViewTypeSync;
+extern NSString * const kAlfrescoConfigViewTypeLocal;
+extern NSString * const kAlfrescoConfigViewTypePersonProfile;
+extern NSString * const kAlfrescoConfigViewTypePeople;
+extern NSString * const kAlfrescoConfigViewTypeGallery;
+extern NSString * const kAlfrescoConfigViewTypeDocumentDetails;
+extern NSString * const kAlfrescoConfigViewTypeSite;
+extern NSString * const kAlfrescoConfigViewTypeSearchRepository;
+extern NSString * const kAlfrescoConfigViewTypeSearch;
+extern NSString * const kAlfrescoConfigViewTypeSearchAdvanced;
+// View Parameter Keys
+extern NSString * const kAlfrescoConfigViewParameterSiteShortNameKey;
+extern NSString * const kAlfrescoConfigViewParameterPathKey;
+extern NSString * const kAlfrescoConfigViewParameterNodeRefKey;
+extern NSString * const kAlfrescoConfigViewParameterShowKey;
+extern NSString * const kAlfrescoConfigViewParameterTypeKey;
+extern NSString * const kAlfrescoConfigViewParameterKeywordsKey;
+extern NSString * const kAlfrescoConfigViewParameterIsExactKey;
+extern NSString * const kAlfrescoConfigViewParameterFullTextKey;
+extern NSString * const kAlfrescoConfigViewParameterSearchFolderOnlyKey;
+extern NSString * const kAlfrescoConfigViewParameterStatementKey;
+extern NSString * const kAlfrescoConfigViewParameterUsernameKey;
+extern NSString * const kAlfrescoConfigViewParameterFolderTypeKey;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersKey;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusKey;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersDueKey;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityKey;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeKey;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersKey;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersModeKey;
+extern NSString * const kAlfrescoConfigViewParameterPaginationKey;
+extern NSString * const kAlfrescoConfigViewParameterPaginationMaxItemsKey;
+extern NSString * const kAlfrescoConfigViewParameterPaginationSkipCountKey;
+
+// View Parameter Values
+extern NSString * const kAlfrescoConfigViewParameterMySitesValue;
+extern NSString * const kAlfrescoConfigViewParameterFavouriteSitesValue;
+extern NSString * const kAlfrescoConfigViewParameterAllSitesValue;
+extern NSString * const kAlfrescoConfigViewParameterAdvancedSearchPerson;
+extern NSString * const kAlfrescoConfigViewParameterAdvancedSearchDocument;
+extern NSString * const kAlfrescoConfigViewParameterAdvancedSearchFolder;
+extern NSString * const kAlfrescoConfigViewParameterFolderTypeMyFiles;
+extern NSString * const kAlfrescoConfigViewParameterFolderTypeShared;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusAny;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusActive;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersStatusComplete;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersDueToday;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersDueTomorrow;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersDueWeek;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersDueOverdue;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersDueNone;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityLow;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityMedium;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersPriorityHigh;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeMe;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeUnassigned;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeAll;
+extern NSString * const kAlfrescoConfigViewParameterTaskFiltersAssigneeNone;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersAll;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersFolders;
+extern NSString * const kAlfrescoConfigViewParameterFavoritesFiltersFiles;
+
+// Realm sync exceptions
+extern NSString * const kFailedToCreateRealmDatabase;
+extern NSString * const kRealmSyncErrorKey;

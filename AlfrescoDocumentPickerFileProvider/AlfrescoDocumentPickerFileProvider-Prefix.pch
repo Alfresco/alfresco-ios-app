@@ -19,3 +19,5 @@
 #import <Foundation/Foundation.h>
 #import <AlfrescoSDK-iOS/AlfrescoSDK.h>
 #import <AlfrescoKit/AlfrescoKit.h>
+#import "AFPConstants.h"
+#import "SharedConstants.h"

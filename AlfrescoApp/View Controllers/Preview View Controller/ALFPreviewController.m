@@ -22,6 +22,8 @@
 @interface ALFPreviewController() <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIButton *goFullScreenButton;
+@property (nonatomic, strong) NSLayoutConstraint *buttonTrailingConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *buttonTopConstraint;
 
 @end
 
@@ -65,10 +67,34 @@
     [self.goFullScreenButton addTarget:self action:@selector(handleTapGesture:) forControlEvents:UIControlEventTouchDown];
     [self.view addSubview:self.goFullScreenButton];
     
-    NSArray *buttonHorizontalContraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[button(40)]-10-|" options:NSLayoutFormatAlignAllCenterX metrics:nil views:views];
-    NSArray *buttonVerticalConstrains = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[button(40)]" options:NSLayoutFormatAlignAllCenterY metrics:nil views:views];
+    NSArray *buttonHorizontalContraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[button(40)]-(right)-|" options:NSLayoutFormatAlignAllCenterX metrics:@{@"right" : @(10)} views:views];
+    for(NSLayoutConstraint *constraint in buttonHorizontalContraints)
+    {
+        if(constraint.firstAttribute == NSLayoutAttributeTrailing)
+        {
+            self.buttonTrailingConstraint = constraint;
+        }
+    }
+    NSArray *buttonVerticalConstrains = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(top)-[button(40)]" options:NSLayoutFormatAlignAllCenterY metrics:@{@"top" : @(10)} views:views];
+    for(NSLayoutConstraint *constraint in buttonVerticalConstrains)
+    {
+        if(constraint.firstAttribute == NSLayoutAttributeTop)
+        {
+            self.buttonTopConstraint = constraint;
+        }
+    }
     [self.view addConstraints:buttonHorizontalContraints];
     [self.view addConstraints:buttonVerticalConstrains];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    if (@available(iOS 11.0, *))
+    {
+        self.buttonTopConstraint.constant = self.view.safeAreaInsets.top + 10;
+        self.buttonTrailingConstraint.constant = self.view.safeAreaInsets.right + 10;
+    }
 }
 
 - (void)handleTapGesture:(id)item

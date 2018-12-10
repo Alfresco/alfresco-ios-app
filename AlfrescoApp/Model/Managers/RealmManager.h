@@ -17,43 +17,10 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import <Realm/Realm.h>
-#import "RealmSyncError.h"
-#import "RealmSyncNodeInfo.h"
+#import "RealmManagerProtocol.h"
 
-typedef NS_ENUM(NSUInteger, NodesType) {
-    NodesTypeDocuments,
-    NodesTypeFolders,
-    NodesTypeDocumentsAndFolders,
-};
-
-@interface RealmManager : NSObject
+@interface RealmManager : NSObject <RealmManagerProtocol>
 
 + (RealmManager *)sharedManager;
-
-- (RLMRealm *)createRealmWithName:(NSString *)realmName;
-- (void)deleteRealmWithName:(NSString *)realmName;
-- (RLMRealm *)realmForCurrentThread;
-
-- (RealmSyncNodeInfo *)syncNodeInfoForObject:(AlfrescoNode *)node ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm;
-- (RealmSyncNodeInfo *)syncNodeInfoForId:(NSString *)nodeId inRealm:(RLMRealm *)realm;
-- (RealmSyncError *)errorObjectForNode:(AlfrescoNode *)node ifNotExistsCreateNew:(BOOL)createNew inRealm:(RLMRealm *)realm;
-- (void)updateSyncNodeInfoForNode:(AlfrescoNode *)node lastDownloadedDate:(NSDate *)downloadedDate syncContentPath:(NSString *)syncContentPath inRealm:(RLMRealm *)realm;
-- (void)savePermissions:(AlfrescoPermissions *)permissions forNode:(AlfrescoNode *)node;
-
-- (RLMRealmConfiguration *)configForName:(NSString *)name;
-- (void)deleteRealmObject:(RLMObject *)objectToDelete inRealm:(RLMRealm *)realm;
-- (void)deleteRealmObjects:(NSArray *)objectsToDelete inRealm:(RLMRealm *)realm;
-
-- (RLMResults *)allSyncNodesInRealm:(RLMRealm *)realm;
-- (RLMResults *)topLevelSyncNodesInRealm:(RLMRealm *)realm;
-- (RLMResults *)topLevelFoldersInRealm:(RLMRealm *)realm;
-- (RLMResults *)allDocumentsInRealm:(RLMRealm *)realm;
-- (NSArray *)allNodesWithType:(NodesType)nodesType inFolder:(AlfrescoFolder *)folder recursive:(BOOL)recursive includeTopLevelNodes:(BOOL)shouldIncludeTopLevelNodes inRealm:(RLMRealm *)realm;
-
-- (void)changeDefaultConfigurationForAccount:(UserAccount *)account completionBlock:(void (^)(void))completionBlock;
-- (void)resetDefaultRealmConfiguration;
-
-- (void)resolvedObstacleForDocument:(AlfrescoDocument *)document inRealm:(RLMRealm *)realm;
 
 @end

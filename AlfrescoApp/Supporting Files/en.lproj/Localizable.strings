@@ -370,7 +370,7 @@
  * About View Controller
  */
 "about.title" = "About";
-"about.content" = "Alfresco Content Services provides open, flexible, highly scalable Enterprise Content Management (ECM) - which makes it easy to access and collaborate on content wherever you are. \n\n The Alfresco Content Services mobile app gives you fast, secure access to your Alfresco content and associated workflow processes. It works with Alfresco Content Services, Alfresco Community Edition (4.2 and above) and Alfresco in the Cloud. \n\n This mobile application connects using your Alfresco Content Services login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
+"about.content" = "Alfresco Content Services provides open, flexible, highly scalable Enterprise Content Management (ECM) - which makes it easy to access and collaborate on content wherever you are. \n\n The Alfresco Content Services mobile app gives you fast, secure access to your Alfresco content and associated workflow processes. It works with Alfresco Content Services, Alfresco Community Edition (4.2 and above) and Alfresco Content Services in the Cloud. \n\n This mobile application connects using your Alfresco Content Services login credentials (over HTTP or HTTPS), and manages access based on your permissions.";
 "about.version.number" = "Version: %@ (%@)";
 "about.build.date.time" = "Build Date: %s %s";
 
@@ -921,3 +921,8 @@
  */
 "sync.info.skip" = "Skip";
 "sync.info.next.laststep" = "Ok, I've got it.";
+
+/**
+ * Cloud Termination Alert
+ */
+"cloudtermination.message" = "my.alfresco.com will be turned off on March 28, 2019. Please contact your Administrator for guidance on how to export your data from this service.";

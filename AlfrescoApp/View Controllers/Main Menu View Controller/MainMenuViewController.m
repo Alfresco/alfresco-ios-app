@@ -21,6 +21,9 @@
 #import "MainMenuHeaderView.h"
 #import "LoginManager.h"
 #import "DownloadsViewController.h"
+#import "MainMenuConfigurationBuilder.h"
+#import "AFPDataManager.h"
+#import "AccountManager.h"
 
 static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
 static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIdentifier";
@@ -550,7 +553,24 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self visibilityForSectionHeadersHidden:YES animated:YES];
     });
-
+    
+    if([self.builder isKindOfClass:[MainMenuConfigurationBuilder class]])
+    {
+        NSMutableArray *visibleMenuItems = [NSMutableArray new];
+        for (MainMenuSection *section in self.tableViewData)
+        {
+            [visibleMenuItems addObjectsFromArray:section.visibleSectionItems];
+        }
+        
+        MainMenuConfigurationBuilder *menuConfigBuilder = (MainMenuConfigurationBuilder *)self.builder;
+        [menuConfigBuilder viewConfigCollectionForMenuItemCollection:visibleMenuItems completionBlock:^(NSArray *configs, NSError *error) {
+            if(configs)
+            {
+                [[AFPDataManager sharedManager] updateMenuItemsWithVisibleCollectionOfViewConfigs:configs forAccount:[AccountManager sharedManager].selectedAccount];
+            }
+        }];
+    }
+    
     // Select the previous selected item identifier. If not found, select the first item.
     NSIndexPath *indexPath = [self indexPathForItemWithIdentifier:self.previouslySelectedIdentifier];
     if (indexPath == nil)

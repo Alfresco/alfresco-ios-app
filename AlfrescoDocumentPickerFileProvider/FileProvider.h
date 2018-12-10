@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #import <UIKit/UIKit.h>
+#import <FileProvider/FileProvider.h>
 
 @interface FileProvider : NSFileProviderExtension
 

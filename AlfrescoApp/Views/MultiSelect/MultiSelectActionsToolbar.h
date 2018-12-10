@@ -33,6 +33,9 @@
 - (void)enterMultiSelectMode:(NSLayoutConstraint *)heightConstraint;
 - (void)leaveMultiSelectMode:(NSLayoutConstraint *)heightConstraint;
 
+- (void)enterMultiSelectMode;
+- (void)leaveMultiSelectMode;
+
 - (void)replaceSelectedItemsWithItems:(NSArray *)items;
 
 - (void)userDidSelectItem:(id)item;

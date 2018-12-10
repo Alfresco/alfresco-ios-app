@@ -99,7 +99,9 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
         self.appResetedView.hidden = YES;
         
         NSError *error;
-        NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey error:&error];
+        NSString *pin = [KeychainUtils retrieveItemForKey:kPinKey
+                                                  inGroup:kSharedAppGroupIdentifier
+                                                    error:&error];
         
         BOOL isPasscodeSet = (pin != nil);
         
@@ -258,7 +260,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     return scopeItems;
 }
 
-- (void)displayScopeViewControllerFromController:(UIViewController *)controller forAccount:(id<AKUserAccount>)account session:(id<AlfrescoSession>)session completionBlock:(void (^)())completionBlock
+- (void)displayScopeViewControllerFromController:(UIViewController *)controller forAccount:(id<AKUserAccount>)account session:(id<AlfrescoSession>)session completionBlock:(void (^)(void))completionBlock
 {
     self.account = account;
     self.session = session;

@@ -17,17 +17,10 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
-#import "AccountConfiguration.h"
-#import "AlfrescoConfigService.h"
+#import "AppConfigurationManagerProtocol.h"
 
-@interface AppConfigurationManager : NSObject
+@interface AppConfigurationManager : NSObject <AppConfigurationManagerProtocol>
 
 + (instancetype)sharedManager;
-
-- (AccountConfiguration *)accountConfigurationForAccount:(UserAccount *)account;
-- (AlfrescoConfigService *)configurationServiceForNoAccountConfiguration;
-- (AlfrescoConfigService *)configurationServiceForCurrentAccount;
-- (AlfrescoConfigService *)configurationServiceForAccount:(UserAccount *)account;
-- (AlfrescoProfileConfig *)selectedProfileForAccount:(UserAccount *)account;
 
 @end

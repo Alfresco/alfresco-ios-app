@@ -92,11 +92,6 @@ static const CGFloat kFailedTransferDetailWidth = 272.;
     [self setView:containerView];
 }
 
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    return YES;
-}
-
 #pragma mark - Button Action
 
 - (void)retryButtonAction:(id)sender

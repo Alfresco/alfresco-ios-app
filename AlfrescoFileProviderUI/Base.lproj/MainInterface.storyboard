@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="xGZ-Gi-TEb">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Info View Controller-->
+        <scene sceneID="Q8I-MS-tKG">
+            <objects>
+                <viewController id="J6p-g8-CHO" customClass="AFPUIInfoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Vdh-Gp-eV6">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="400"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jUD-eO-8v7">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="750" constant="44" id="4sb-7O-V6M"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem title="Cancel" id="Qbe-GG-WJv">
+                                        <connections>
+                                            <action selector="cancelButtonTapped:" destination="J6p-g8-CHO" id="xuB-bx-ZX6"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="alfrescoLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="KtT-DT-e4g">
+                                <rect key="frame" x="15" y="92" width="320" height="102"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="102" id="QTP-JR-eD2"/>
+                                    <constraint firstAttribute="width" constant="320" id="Rhq-br-zCo"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Passcode Lock is enabled" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="snv-Hl-eEC">
+                                <rect key="frame" x="15" y="234" width="320" height="20.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="87P-xs-Yu0">
+                                <rect key="frame" x="15" y="262.5" width="320" height="129.5"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="87P-xs-Yu0" firstAttribute="top" secondItem="snv-Hl-eEC" secondAttribute="bottom" constant="8" id="4Sb-Gq-1qN"/>
+                            <constraint firstItem="zTo-CZ-ppy" firstAttribute="bottom" secondItem="87P-xs-Yu0" secondAttribute="bottom" constant="8" id="7eQ-Ca-1RL"/>
+                            <constraint firstItem="snv-Hl-eEC" firstAttribute="leading" secondItem="KtT-DT-e4g" secondAttribute="leading" id="VtD-A0-wJb"/>
+                            <constraint firstItem="87P-xs-Yu0" firstAttribute="trailing" secondItem="KtT-DT-e4g" secondAttribute="trailing" id="X9C-81-ApR"/>
+                            <constraint firstItem="snv-Hl-eEC" firstAttribute="top" secondItem="KtT-DT-e4g" secondAttribute="bottom" constant="40" id="Ydr-fm-5jE"/>
+                            <constraint firstItem="jUD-eO-8v7" firstAttribute="top" secondItem="Vdh-Gp-eV6" secondAttribute="top" id="eHD-Zf-dhK"/>
+                            <constraint firstAttribute="trailing" secondItem="jUD-eO-8v7" secondAttribute="trailing" id="gHw-eI-oXE"/>
+                            <constraint firstItem="snv-Hl-eEC" firstAttribute="trailing" secondItem="KtT-DT-e4g" secondAttribute="trailing" id="mkh-9F-Td9"/>
+                            <constraint firstItem="jUD-eO-8v7" firstAttribute="leading" secondItem="Vdh-Gp-eV6" secondAttribute="leading" id="phl-AX-jHZ"/>
+                            <constraint firstItem="KtT-DT-e4g" firstAttribute="centerY" secondItem="zTo-CZ-ppy" secondAttribute="centerY" multiplier="1:1.4" id="qEd-KD-b64"/>
+                            <constraint firstItem="87P-xs-Yu0" firstAttribute="leading" secondItem="KtT-DT-e4g" secondAttribute="leading" id="xNu-AC-gWN"/>
+                            <constraint firstItem="KtT-DT-e4g" firstAttribute="centerX" secondItem="zTo-CZ-ppy" secondAttribute="centerX" id="yXR-Sv-vcj"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="zTo-CZ-ppy"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="350" height="400"/>
+                    <connections>
+                        <outlet property="cancelBarButtonItem" destination="Qbe-GG-WJv" id="x7R-Zv-e6G"/>
+                        <outlet property="messageTextView" destination="87P-xs-Yu0" id="14u-32-Khs"/>
+                        <outlet property="titleLabel" destination="snv-Hl-eEC" id="okv-aS-3HD"/>
+                        <outlet property="toolbarHeightConstraint" destination="4sb-7O-V6M" id="NIf-88-8ZC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UoZ-ya-W3e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="468.80000000000001" y="-94.452773613193415"/>
+        </scene>
+        <!--Authenticate View Controller-->
+        <scene sceneID="oqo-S9-bPB">
+            <objects>
+                <viewController id="xGZ-Gi-TEb" customClass="AFPAuthenticateViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1Yo-dd-m9g">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="400"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N1J-Nm-f2f">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="750" constant="44" id="RZ5-C3-tVe"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem title="Cancel" id="lay-77-DcD">
+                                        <connections>
+                                            <action selector="onCancel:" destination="xGZ-Gi-TEb" id="Y2o-h2-CSB"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9by-yO-u1T">
+                                <rect key="frame" x="0.0" y="44" width="350" height="356"/>
+                            </containerView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="N1J-Nm-f2f" firstAttribute="top" secondItem="1Yo-dd-m9g" secondAttribute="top" id="24c-cn-IST"/>
+                            <constraint firstItem="bdd-rZ-C3K" firstAttribute="trailing" secondItem="9by-yO-u1T" secondAttribute="trailing" id="2BH-xX-69r"/>
+                            <constraint firstItem="N1J-Nm-f2f" firstAttribute="leading" secondItem="1Yo-dd-m9g" secondAttribute="leading" id="2Xq-33-kGl"/>
+                            <constraint firstItem="bdd-rZ-C3K" firstAttribute="bottom" secondItem="9by-yO-u1T" secondAttribute="bottom" id="DJq-FV-3bw"/>
+                            <constraint firstItem="9by-yO-u1T" firstAttribute="top" secondItem="N1J-Nm-f2f" secondAttribute="bottom" id="IQh-tW-ZRg"/>
+                            <constraint firstAttribute="trailing" secondItem="N1J-Nm-f2f" secondAttribute="trailing" id="VNP-1d-gdW"/>
+                            <constraint firstItem="9by-yO-u1T" firstAttribute="leading" secondItem="bdd-rZ-C3K" secondAttribute="leading" id="pui-Nz-Izy"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bdd-rZ-C3K"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <size key="freeformSize" width="350" height="400"/>
+                    <connections>
+                        <outlet property="containerView" destination="9by-yO-u1T" id="DwK-0b-Kt6"/>
+                        <outlet property="toolbarHeightConstraint" destination="RZ5-C3-tVe" id="zRm-wu-Qbe"/>
+                        <segue destination="J6p-g8-CHO" kind="showDetail" identifier="PINViewControllerSegueIdentifier" animates="NO" id="veY-9W-Ngn"/>
+                        <segue destination="J6p-g8-CHO" kind="showDetail" identifier="BasicAuthViewControllerSegueIdentifier" animates="NO" id="phG-mV-jh8"/>
+                        <segue destination="J6p-g8-CHO" kind="showDetail" identifier="AccountNotActivatedViewControllerSegueIdentifier" animates="NO" id="Vfz-ug-U8M"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ohM-kk-u37" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-341" y="-94"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="alfrescoLogo.png" width="320" height="102"/>
+    </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="veY-9W-Ngn"/>
+    </inferredMetricsTieBreakers>
+</document>

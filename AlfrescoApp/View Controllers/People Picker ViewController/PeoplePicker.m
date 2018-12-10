@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -25,7 +25,7 @@
 @property (nonatomic, strong) UINavigationController *navigationController;
 @property (nonatomic, strong) UINavigationController *peoplePickerNavigationController;
 @property (nonatomic, strong) id<AlfrescoSession> session;
-@property (nonatomic, strong) MultiSelectActionsToolbar *multiSelectToolbar;
+@property (nonatomic, strong) MultiSelectContainerView *multiSelectContainerView;
 @property (nonatomic, strong) NSMutableArray *peopleAlreadySelected;
 @property (nonatomic, strong) PeoplePickerViewController *peoplePickerViewController;
 @property (nonatomic, assign) BOOL isMultiSelectToolBarVisible;
@@ -67,13 +67,13 @@
     self.mode = mode;
     self.peopleAlreadySelected = [people mutableCopy];
     
-    if (!self.multiSelectToolbar)
+    if (!self.multiSelectContainerView)
     {
-        self.multiSelectToolbar = [[MultiSelectActionsToolbar alloc] initWithFrame:CGRectZero];
-        self.multiSelectToolbar.multiSelectDelegate = self;
+        self.multiSelectContainerView = [[MultiSelectContainerView alloc] initWithFrame:CGRectZero];
+        self.multiSelectContainerView.toolbar.multiSelectDelegate = self;
     }
     
-    [self.multiSelectToolbar enterMultiSelectMode:nil];
+    [self.multiSelectContainerView show];
     [self replaceSelectedPeopleWithPeople:self.peopleAlreadySelected];
     
     self.peoplePickerViewController = [[PeoplePickerViewController alloc] initWithSession:self.session peoplePicker:self];
@@ -125,7 +125,7 @@
 - (BOOL)isPersonSelected:(AlfrescoPerson *)person
 {
     __block BOOL isSelected = NO;
-    [self.multiSelectToolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoPerson *selectedPerson, NSUInteger index, BOOL *stop) {
+    [self.multiSelectContainerView.toolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoPerson *selectedPerson, NSUInteger index, BOOL *stop) {
         
         if ([person.identifier isEqualToString:selectedPerson.identifier])
         {
@@ -139,7 +139,7 @@
 - (void)deselectPerson:(AlfrescoPerson *)person
 {
     __block id existingPerson = nil;
-    [self.multiSelectToolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoPerson *selectedPerson, NSUInteger index, BOOL *stop) {
+    [self.multiSelectContainerView.toolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoPerson *selectedPerson, NSUInteger index, BOOL *stop) {
         
         if ([person.identifier isEqualToString:selectedPerson.identifier])
         {
@@ -147,18 +147,18 @@
             *stop = YES;
         }
     }];
-    [self.multiSelectToolbar userDidDeselectItem:existingPerson];
+    [self.multiSelectContainerView.toolbar userDidDeselectItem:existingPerson];
 }
 
 - (void)deselectAllPeople
 {
-    [self.multiSelectToolbar userDidDeselectAllItems];
+    [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
 }
 
 - (void)selectPerson:(AlfrescoPerson *)person
 {
     __block BOOL personExists = NO;
-    [self.multiSelectToolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoPerson *selectedPerson, NSUInteger index, BOOL *stop) {
+    [self.multiSelectContainerView.toolbar.selectedItems enumerateObjectsUsingBlock:^(AlfrescoPerson *selectedPerson, NSUInteger index, BOOL *stop) {
         
         if ([person.identifier isEqualToString:selectedPerson.identifier])
         {
@@ -169,25 +169,25 @@
     
     if (!personExists)
     {
-        [self.multiSelectToolbar userDidSelectItem:person];
+        [self.multiSelectContainerView.toolbar userDidSelectItem:person];
     }
 }
 
 - (void)replaceSelectedPeopleWithPeople:(NSArray *)people
 {
-    [self.multiSelectToolbar replaceSelectedItemsWithItems:people];
+    [self.multiSelectContainerView.toolbar replaceSelectedItemsWithItems:people];
 }
 
 - (NSArray *)selectedPeople
 {
-    return self.multiSelectToolbar.selectedItems;
+    return self.multiSelectContainerView.toolbar.selectedItems;
 }
 
 - (void)showMultiSelectToolBar
 {
     if (!self.isMultiSelectToolBarVisible)
     {
-        [self.navigationController.view addSubview:self.multiSelectToolbar];
+        [self.navigationController.view addSubview:self.multiSelectContainerView];
         self.isMultiSelectToolBarVisible = YES;
     }
 }
@@ -196,7 +196,7 @@
 {
     if (self.isMultiSelectToolBarVisible)
     {
-        [self.multiSelectToolbar removeFromSuperview];
+        [self.multiSelectContainerView removeFromSuperview];
         self.isMultiSelectToolBarVisible = NO;
     }
 }
@@ -210,7 +210,7 @@
     
     if ([self.delegate respondsToSelector:@selector(peoplePicker:didSelectPeople:)])
     {
-        [self.delegate peoplePicker:self didSelectPeople:self.multiSelectToolbar.selectedItems];
+        [self.delegate peoplePicker:self didSelectPeople:self.multiSelectContainerView.toolbar.selectedItems];
     }
 }
 

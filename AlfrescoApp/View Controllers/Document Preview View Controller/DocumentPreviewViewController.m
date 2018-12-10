@@ -36,6 +36,7 @@
 #import "VersionHistoryViewController.h"
 #import "AccountManager.h"
 #import "RealmSyncManager.h"
+#import "AlfrescoNode+Utilities.h"
 
 static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
 #define kDocumentDetailsAnalyticsNames @[kAnalyticsViewDocumentDetailsPreview,\
@@ -58,7 +59,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     [super viewDidLoad];
     
     self.title = self.document.name;
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.pagingScrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     
     // collection view
     [self actionViewHeightFromPreferredLanguage];
@@ -313,8 +314,8 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
     {
         AlfrescoDocument *updatedDocument = (AlfrescoDocument *)documentNodeObject;
         
-        NSString *cleanExistingNodeRef = [Utility nodeRefWithoutVersionID:self.document.identifier];
-        NSString *cleanUpdatedNodeRef = [Utility nodeRefWithoutVersionID:updatedDocument.identifier];
+        NSString *cleanExistingNodeRef = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:self.document.identifier];
+        NSString *cleanUpdatedNodeRef = [AlfrescoNode nodeRefWithoutVersionIDFromIdentifier:updatedDocument.identifier];
         
         if ([cleanExistingNodeRef isEqualToString:cleanUpdatedNodeRef])
         {
@@ -341,7 +342,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
         
         if ([document.identifier isEqualToString:self.document.identifier])
         {
-            self.documentContentFilePath = [document contentPath];
+            self.documentContentFilePath = [[RealmSyncCore sharedSyncCore] contentPathForNode:document forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];;
         }
     }
 }
@@ -367,7 +368,7 @@ static CGFloat const kActionViewAdditionalTextRowHeight = 15.0f;
         
         if ([document.identifier isEqualToString:self.document.identifier])
         {
-            self.documentContentFilePath = [document contentPath];
+            self.documentContentFilePath = [[RealmSyncCore sharedSyncCore] contentPathForNode:document forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];;
         }
     }
 }

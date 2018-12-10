@@ -265,24 +265,6 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }
 }
 
-- (void)removeFromDownloads:(NSString *)filePath
-{
-    NSString *fileName = [filePath lastPathComponent];
-    NSError *error = nil;
-    NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:fileName];
-    
-    [self.fileManager removeItemAtPath:downloadPath error:&error];
-    
-    if (!error)
-    {
-        [self removeDocumentInfo:fileName];
-    }
-    else
-    {
-        displayErrorMessage(NSLocalizedString(@"download.delete.failure.message", @"Download delete failure"));
-    }
-}
-
 - (BOOL)isDownloadedDocument:(NSString *)filePath
 {
     NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:filePath.lastPathComponent];
@@ -354,6 +336,8 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     return savedFilePath;
 }
 
+#pragma mark - Remove methods
+
 - (void)removeAllDownloads
 {
     NSError *removalError = nil;
@@ -366,7 +350,38 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     else
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoDeletedLocalDocumentsFolderNotification object:nil];
+        [self informLocalFilesEnumerator];
     }
+}
+
+- (void)removeFromDownloads:(NSString *)filePath
+{
+    NSString *fileName = [filePath lastPathComponent];
+    NSError *error = nil;
+    NSString *downloadPath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:fileName];
+    
+    [self.fileManager removeItemAtPath:downloadPath error:&error];
+    
+    if (!error)
+    {
+        [self removeDocumentInfo:fileName];
+        [self informLocalFilesEnumerator];
+    }
+    else
+    {
+        displayErrorMessage(NSLocalizedString(@"download.delete.failure.message", @"Download delete failure"));
+    }
+}
+
+#pragma mark - Remove methods - private
+- (BOOL)removeDocumentInfo:(NSString *)documentName
+{
+    NSString *downloadInfoPath = [[[AlfrescoFileManager sharedManager] downloadsInfoContentPath] stringByAppendingPathComponent:documentName.lastPathComponent];
+    NSError *error = nil;
+    
+    [self.fileManager removeItemAtPath:downloadInfoPath error:&error];
+    
+    return error == nil;
 }
 
 #pragma mark - Private Interface
@@ -396,6 +411,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
             // Note: we're assuming that there will be no problem saving the metadata if the content saves successfully
             [self saveDocumentInfo:document forDocument:destinationFilename error:nil];
             [Notifier postDocumentDownloadedNotificationWithUserInfo:nil];
+            [self informLocalFilesEnumerator];
             copySucceeded = YES;
         }
     }
@@ -430,6 +446,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
             [self saveDocumentInfo:document forDocument:document.name error:nil];
             displayInformationMessage(NSLocalizedString(@"download.success.message", @"download succeeded"));
             [Notifier postDocumentDownloadedNotificationWithUserInfo:nil];
+            [self informLocalFilesEnumerator];
         }
         else
         {
@@ -507,6 +524,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
             }
             destinationFilePath = [[self.fileManager downloadsContentFolderPath] stringByAppendingPathComponent:destinationFilename];
             [Notifier postDocumentDownloadedNotificationWithUserInfo:@{kAlfrescoDocumentDownloadedIdentifierKey : destinationFilePath}];
+            [self informLocalFilesEnumerator];
         }
     }
     
@@ -529,16 +547,6 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }
     
     return (error == NULL || *error == nil);
-}
-
-- (BOOL)removeDocumentInfo:(NSString *)documentName
-{
-    NSString *downloadInfoPath = [[[AlfrescoFileManager sharedManager] downloadsInfoContentPath] stringByAppendingPathComponent:documentName.lastPathComponent];
-    NSError *error = nil;
-
-    [self.fileManager removeItemAtPath:downloadInfoPath error:&error];
-    
-    return error == nil;
 }
 
 // Returns just the filenames of downloaded documents
@@ -592,6 +600,17 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
     }
     
     return safeFilename;
+}
+
+#pragma mark - File Provider support
+- (void)informLocalFilesEnumerator
+{
+    [[NSFileProviderManager defaultManager] signalEnumeratorForContainerItemIdentifier:kFileProviderLocalFilesPrefix completionHandler:^(NSError * _Nullable error) {
+        if (error != NULL)
+        {
+            AlfrescoLogError(@"ERROR: Couldn't signal enumerator for changes %@", error);
+        }
+    }];
 }
 
 @end

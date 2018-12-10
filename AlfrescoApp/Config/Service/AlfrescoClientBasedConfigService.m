@@ -740,6 +740,39 @@
     }];
 }
 
+- (AlfrescoRequest *)retrieveViewConfigsWithIdentifiers:(NSArray *)identifiers
+                                      completionBlock:(AlfrescoViewConfigsCompletionBlock)completionBlock
+{
+    return [self retrieveViewConfigsWithIdentifiers:identifiers scope:self.defaultConfigScope completionBlock:completionBlock];
+}
+
+- (AlfrescoRequest *)retrieveViewConfigsWithIdentifiers:(NSArray *)identifiers
+                                                  scope:(AlfrescoConfigScope *)scope
+                                        completionBlock:(AlfrescoViewConfigsCompletionBlock)completionBlock
+{
+    __weak typeof(self) weakSelf = self;
+    return [self initializeInternalStateWithCompletionBlock:^(BOOL succeeded, NSError *error) {
+        if(succeeded)
+        {
+            __strong typeof(self) strongSelf = weakSelf;
+            NSMutableArray *configs = [NSMutableArray new];
+            for(NSString *identifier in identifiers)
+            {
+                AlfrescoViewConfig *config = [strongSelf.viewConfigHelper viewConfigForIdentifier:identifier];
+                if (config)
+                {
+                    [configs addObject:config];
+                }
+            }
+            completionBlock(configs, nil);
+        }
+        else
+        {
+            completionBlock(nil, error);
+        }
+    }];
+}
+
 
 - (AlfrescoRequest *)retrieveViewGroupConfigWithIdentifier:(NSString *)identifier
                                            completionBlock:(AlfrescoViewGroupConfigCompletionBlock)completionBlock

@@ -116,7 +116,7 @@
 #pragma mark - RealmSyncManagerSyncDisabledDelegate methods
 - (void)syncFeatureStatusChanged:(BOOL)isSyncOn
 {
-    [self.token stop];
+    [self.token invalidate];
     if(!isSyncOn)
     {
         [self setupDataSourceCollection:nil];

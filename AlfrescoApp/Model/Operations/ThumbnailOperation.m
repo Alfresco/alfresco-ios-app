@@ -24,12 +24,10 @@
 @property (nonatomic, strong) NSString *rendition;
 @property (nonatomic, copy) AlfrescoContentFileCompletionBlock contentFileCompletionBlock;
 @property (nonatomic, strong) AlfrescoRequest *renditionRequest;
+@property (nonatomic, assign) BOOL stopRunLoop;
 @end
 
 @implementation ThumbnailOperation
-{
-    BOOL _stopRunLoop;
-}
 
 - (id)initWithDocumentFolderService:(AlfrescoDocumentFolderService *)service document:(AlfrescoDocument *)document renditionName:(NSString *)rendition completionBlock:(AlfrescoContentFileCompletionBlock)completionBlock
 {
@@ -53,14 +51,17 @@
 
 - (void)initiateRenditionRequest
 {
+    __weak typeof(self) weakSelf = self;
     self.renditionRequest = [self.documentFolderService retrieveRenditionOfNode:self.document renditionName:self.rendition completionBlock:^(AlfrescoContentFile *contentFile, NSError *error) {
-        if (self.contentFileCompletionBlock)
+        __strong typeof(self) strongSelf = weakSelf;
+        
+        if (strongSelf.contentFileCompletionBlock)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.contentFileCompletionBlock(contentFile, error);
+                weakSelf.contentFileCompletionBlock(contentFile, error);
             });
         }
-        _stopRunLoop = YES;
+        strongSelf.stopRunLoop = YES;
     }];
 }
 

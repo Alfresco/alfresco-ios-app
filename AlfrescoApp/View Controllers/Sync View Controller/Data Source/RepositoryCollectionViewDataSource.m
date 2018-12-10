@@ -23,6 +23,7 @@
 #import "ThumbnailManager.h"
 #import "FavouriteManager.h"
 #import "RealmSyncManager.h"
+#import "AccountManager.h"
 
 @implementation RepositoryCollectionViewDataSource
 
@@ -135,7 +136,7 @@
     [node retrieveNodePermissionsWithSession:self.session withCompletionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
         if (permissions)
         {
-            [self.nodesPermissions setValue:permissions forKey:[node syncIdentifier]];
+            [self.nodesPermissions setValue:permissions forKey:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
             [[RealmManager sharedManager] savePermissions:permissions forNode:node];
         }
     }];
@@ -239,20 +240,19 @@
     if (kind == UICollectionElementKindSectionHeader)
     {
         SearchCollectionSectionHeader *headerView = (SearchCollectionSectionHeader *)[collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader" forIndexPath:indexPath];
-        
+
         if(!headerView.hasAddedSearchBar)
         {
             UISearchBar *searchBar = [self.delegate searchBarForSupplimentaryHeaderView];
             headerView.searchBar = searchBar;
             [headerView addSubview:searchBar];
             [searchBar sizeToFit];
-            BaseCollectionViewFlowLayout *collectionViewLayout = (BaseCollectionViewFlowLayout *)collectionView.collectionViewLayout;
-            searchBar.frame = CGRectMake(searchBar.frame.origin.x, searchBar.frame.origin.y, searchBar.frame.size.width, collectionViewLayout.headerReferenceSize.height);
+            headerView.hasAddedSearchBar = YES;
         }
-        
+
         reusableview = headerView;
     }
-    
+
     return reusableview;
 }
 
@@ -393,7 +393,7 @@
     AlfrescoPermissions *permissions = nil;
     if(node)
     {
-        NSString *nodeIdentifier = [node syncIdentifier];
+        NSString *nodeIdentifier = [[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node];
         permissions = self.nodesPermissions[nodeIdentifier];
     }
     
@@ -415,7 +415,7 @@
     NSMutableArray *newNodeIndexPaths = [NSMutableArray arrayWithCapacity:alfrescoNodes.count];
     for (AlfrescoNode *node in alfrescoNodes)
     {
-        AlfrescoPermissions *nodePermissions = self.nodesPermissions[[node syncIdentifier]];
+        AlfrescoPermissions *nodePermissions = self.nodesPermissions[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
         if(!nodePermissions)
         {
             [self retrievePermissionsForNode:node];
@@ -449,7 +449,7 @@
 }
 
 #pragma mark - SwipeToDeleteDelegate methods
-- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath completionBlock:(void (^)())completionBlock
+- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath completionBlock:(void (^)(void))completionBlock
 {
     AlfrescoNode *nodeToDelete = self.dataSourceCollection[indexPath.item];
     

@@ -115,6 +115,13 @@
                                                 scope:(AlfrescoConfigScope *)scope
                                       completionBlock:(AlfrescoViewConfigCompletionBlock)completionBlock;
 
+- (AlfrescoRequest *)retrieveViewConfigsWithIdentifiers:(NSArray *)identifiers
+                                      completionBlock:(AlfrescoViewConfigsCompletionBlock)completionBlock;
+
+- (AlfrescoRequest *)retrieveViewConfigsWithIdentifiers:(NSArray *)identifiers
+                                                  scope:(AlfrescoConfigScope *)scope
+                                        completionBlock:(AlfrescoViewConfigsCompletionBlock)completionBlock;
+
 
 - (AlfrescoRequest *)retrieveViewGroupConfigWithIdentifier:(NSString *)identifier
                                            completionBlock:(AlfrescoViewGroupConfigCompletionBlock)completionBlock;

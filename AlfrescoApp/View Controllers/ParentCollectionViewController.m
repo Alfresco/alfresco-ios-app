@@ -88,7 +88,7 @@
         [self enablePullToRefresh];
     }
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -119,11 +119,6 @@
 - (void)reloadCollectionView
 {
     [self.collectionView reloadData];
-    if ((!IS_IPAD) && (self.shouldIncludeSearchBar))
-    {
-        // hide search bar initially
-        self.collectionView.contentOffset = CGPointMake(0., kCollectionViewHeaderHight);
-    }
     [self updateEmptyView];
 }
 
@@ -236,7 +231,8 @@
         refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"ui.refreshcontrol.pulltorefresh", @"Pull To Refresh...")];
         [refreshControl addTarget:self action:@selector(refreshCollectionView:) forControlEvents:UIControlEventValueChanged];
         self.refreshControl = refreshControl;
-        [self.collectionView addSubview:refreshControl];
+        self.collectionView.alwaysBounceVertical = YES;
+        self.collectionView.refreshControl = refreshControl;
     }
 }
 
@@ -301,37 +297,41 @@
 #pragma mark - Empty view message
 - (void)updateEmptyView
 {
-    if (!self.alfEmptyLabel)
-    {
-        UILabel *emptyLabel = [[UILabel alloc] init];
-        emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
-        emptyLabel.numberOfLines = 0;
-        emptyLabel.textAlignment = NSTextAlignmentCenter;
-        emptyLabel.textColor = [UIColor noItemsTextColor];
-        emptyLabel.hidden = YES;
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!strongSelf.alfEmptyLabel)
+        {
+            UILabel *emptyLabel = [[UILabel alloc] init];
+            emptyLabel.font = [UIFont systemFontOfSize:kEmptyListLabelFontSize];
+            emptyLabel.numberOfLines = 0;
+            emptyLabel.textAlignment = NSTextAlignmentCenter;
+            emptyLabel.textColor = [UIColor noItemsTextColor];
+            emptyLabel.hidden = YES;
+            
+            [strongSelf.collectionView addSubview:emptyLabel];
+            strongSelf.alfEmptyLabel = emptyLabel;
+        }
         
-        [self.collectionView addSubview:emptyLabel];
-        self.alfEmptyLabel = emptyLabel;
-    }
-    
-    CGRect frame = self.collectionView.bounds;
-    frame.origin = CGPointMake(0, 0);
-    frame.size.height -= self.collectionView.contentInset.top;
-    
-    self.alfEmptyLabel.frame = frame;
-    self.alfEmptyLabel.text = self.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
-    self.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
-    self.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
-    
-    BOOL shouldShowEmptyLabel = [self isDataSetEmpty];
-    BOOL isShowingEmptyLabel = !self.alfEmptyLabel.hidden;
-    
-    if (shouldShowEmptyLabel == isShowingEmptyLabel)
-    {
-        // Nothing to do
-        return;
-    }
-    self.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
+        CGRect frame = strongSelf.collectionView.bounds;
+        frame.origin = CGPointZero;
+        frame.size.height -= strongSelf.collectionView.contentInset.top;
+        
+        strongSelf.alfEmptyLabel.frame = frame;
+        strongSelf.alfEmptyLabel.text = strongSelf.emptyMessage ?: NSLocalizedString(@"No Files", @"No Files");
+        strongSelf.alfEmptyLabel.insetTop = -(frame.size.height / 3.0);
+        strongSelf.alfEmptyLabel.autoresizingMask = (UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth);
+        
+        BOOL shouldShowEmptyLabel = [strongSelf isDataSetEmpty];
+        BOOL isShowingEmptyLabel = !strongSelf.alfEmptyLabel.hidden;
+        
+        if (shouldShowEmptyLabel == isShowingEmptyLabel)
+        {
+            // Nothing to do
+            return;
+        }
+        strongSelf.alfEmptyLabel.hidden = !shouldShowEmptyLabel;
+    });
 }
 
 - (BOOL)isDataSetEmpty
@@ -344,7 +344,14 @@
 {
     BaseCollectionViewFlowLayout *associatedLayoutForStyle = [self layoutForStyle:style];
     self.style = style;
+    
+    NSArray *visibleIndexPaths = self.collectionView.indexPathsForVisibleItems;
+    if (visibleIndexPaths.count) {
+        [self.collectionView reloadItemsAtIndexPaths:visibleIndexPaths];
+    }
+    
     [self.collectionView setCollectionViewLayout:associatedLayoutForStyle animated:animated];
+    
 }
 
 - (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style

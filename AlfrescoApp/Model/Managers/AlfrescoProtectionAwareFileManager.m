@@ -236,6 +236,7 @@ static BOOL sFileProtectionEnabled = NO;
 - (BOOL)enumerateThroughDirectory:(NSString *)directory includingSubDirectories:(BOOL)includeSubDirectories withBlock:(void (^)(NSString *fullFilePath))block error:(NSError **)error
 {
     __block BOOL completedWithoutError = YES;
+    __block NSError *enumerationError;
     
     NSDirectoryEnumerationOptions options;
     if (!includeSubDirectories)
@@ -255,14 +256,15 @@ static BOOL sFileProtectionEnabled = NO;
                                                                            options:options
                                                                       errorHandler:^BOOL(NSURL *url, NSError *fileError) {
                                                                           AlfrescoLogDebug(@"Error retrieving contents of the URL: %@ with the error: %@", [url absoluteString], [fileError localizedDescription]);
-                                                                          if (error)
+                                                                          if (enumerationError)
                                                                           {
-                                                                              *error = fileError;
+                                                                              enumerationError = fileError;
                                                                           }
                                                                           completedWithoutError = NO;
                                                                           // continue enumeration
                                                                           return YES;
                                                                       }];
+    *error = enumerationError;
     
     for (NSURL *fileURL in folderContents)
     {

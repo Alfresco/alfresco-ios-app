@@ -404,8 +404,17 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
     {
         SyncNodeStatus *nodeStatus = notification.object;
         self.nodeStatus = nodeStatus;
-        self.isTopLevelSyncNode = [self.node isTopLevelSyncNode];
         NSString *propertyChanged = [info objectForKey:kSyncStatusPropertyChangedKey];
+        
+        // Avoid interogating persistence layers while performing progress updates and update the UI every 100 KB
+        if (![kSyncBytesTransfered isEqualToString:propertyChanged]) {
+            self.isTopLevelSyncNode = [self.node isTopLevelSyncNode];
+        } else {
+            if (nodeStatus.bytesTransfered % (100 * 1024)) {
+                return;
+            }
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.isSyncNode && nodeStatus.status != SyncStatusRemoved)
             {
@@ -457,7 +466,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         self.isTopLevelSyncNode = [self.node isTopLevelSyncNode];
         
         //The node could be in another top level folder. In this case, we should only remove the top level and mentain the synced flag.  
-        RealmSyncNodeInfo *realmSyncNodeInfo = [[RealmManager sharedManager] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:[[RealmManager sharedManager] realmForCurrentThread]];
+        RealmSyncNodeInfo *realmSyncNodeInfo = [[RealmSyncCore sharedSyncCore] syncNodeInfoForObject:node ifNotExistsCreateNew:NO inRealm:[[RealmManager sharedManager] realmForCurrentThread]];
         self.isSyncNode = realmSyncNodeInfo != nil;
         
         [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:self.isSyncNode isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
@@ -611,7 +620,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
 
 - (void)updateSyncStatusDetails:(SyncNodeStatus *)nodeStatus
 {
-    self.details.textColor = [UIColor textDefaultColor];
+    self.details.textColor = [UIColor documentDetailsColor];
     
     if (nodeStatus.status == SyncStatusWaiting)
     {

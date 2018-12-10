@@ -35,6 +35,7 @@ typedef void (^AlfrescoFormConfigCompletionBlock)(AlfrescoFormConfig *config, NS
 typedef void (^AlfrescoProfileConfigCompletionBlock)(AlfrescoProfileConfig *config, NSError *error);
 typedef void (^AlfrescoRepositoryConfigCompletionBlock)(AlfrescoRepositoryConfig *config, NSError *error);
 typedef void (^AlfrescoViewConfigCompletionBlock)(AlfrescoViewConfig *config, NSError *error);
+typedef void (^AlfrescoViewConfigsCompletionBlock)(NSArray *configs, NSError *);
 typedef void (^AlfrescoViewGroupConfigCompletionBlock)(AlfrescoViewGroupConfig *config, NSError *error);
 
 /**---------------------------------------------------------------------------------------

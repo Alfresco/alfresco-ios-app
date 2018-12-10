@@ -24,6 +24,7 @@
 #import "UniversalDevice.h"
 #import "LocationManager.h"
 #import "RealmSyncManager.h"
+#import "AccountManager.h"
 
 NS_ENUM(NSUInteger, UploadFormCellTypes)
 {
@@ -935,7 +936,7 @@ static NSString * const kAudioFileName = @"audio.m4a";
 
 - (void)closeUploadForm:(id)sender
 {
-    void (^cancelBlock)() = ^(){
+    void (^cancelBlock)(void) = ^(){
         [self dismissViewControllerAnimated:YES completion:^{
             if ([self.delegate respondsToSelector:@selector(didCancelUpload)])
             {

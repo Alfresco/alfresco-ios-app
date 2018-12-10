@@ -37,6 +37,7 @@
 #import "SearchResultsTableViewController.h"
 #import "AlfrescoListingContext+Dictionary.h"
 #import "RealmSyncViewController.h"
+#import "AFPDataManager.h"
 
 static NSString * const kMenuIconTypeMappingFileName = @"MenuIconTypeMappings";
 static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifierMappings";
@@ -103,8 +104,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         _configService = [[AppConfigurationManager sharedManager] configurationServiceForNoAccountConfiguration];
     }
 
+    __weak typeof(self) weakSelf = self;
     void (^buildItemsForProfile)(AlfrescoProfileConfig *profile) = ^(AlfrescoProfileConfig *profile) {
-        [_configService retrieveViewGroupConfigWithIdentifier:profile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {
+        __strong typeof(self) strongSelf = weakSelf;
+        
+        [strongSelf.configService retrieveViewGroupConfigWithIdentifier:profile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {
             if (rootViewError)
             {
                 AlfrescoLogError(@"Could not retrieve root config for profile %@", profile.rootViewId);
@@ -193,6 +197,12 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
     MainMenuSection *footerSection = [MainMenuSection sectionItemWithTitle:nil sectionItems:@[settingsItem, helpItem]];
     
     completionBlock(@[footerSection]);
+}
+
+- (void)viewConfigCollectionForMenuItemCollection:(NSArray *)menuItemsCollection completionBlock:(void (^)(NSArray *configs, NSError *error))completionBlock
+{
+    NSArray *identifiersCollection = [menuItemsCollection valueForKeyPath:@"itemIdentifier"];
+    [self.configService retrieveViewConfigsWithIdentifiers:identifiersCollection completionBlock:completionBlock];
 }
 
 #pragma mark - Private Methods

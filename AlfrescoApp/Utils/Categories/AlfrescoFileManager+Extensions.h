@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2017 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -39,5 +39,8 @@ extern NSString * const kSyncFolder;
 
 // clear
 - (void)clearTemporaryDirectory;
+
+// file provider
+- (NSString *)fileProviderFolderPath;
 
 @end
