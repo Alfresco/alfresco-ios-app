@@ -375,7 +375,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     UserAccount *account = self.tableViewData[indexPath.section][indexPath.row];
     __weak typeof(self) weakSelf = self;
     
-    void (^removeAccount)() = ^(){
+    void (^removeAccount)(void) = ^(){
 	    [[RealmSyncManager sharedManager] disableSyncForAccount:account fromViewController:weakSelf cancelBlock:^{
 	        [weakSelf performSelector:@selector(hideDeleteButton) withObject:nil afterDelay:0.05];
 	    } completionBlock:^{

@@ -100,7 +100,7 @@
             {
                 [self realmForAccount:changedAccount.accountIdentifier];
 
-                void (^setSyncOnAndSaveAccount)() = ^void()
+                void (^setSyncOnAndSaveAccount)(void) = ^void()
                 {
                     changedAccount.isSyncOn = YES;
                     [[AccountManager sharedManager] saveAccountsToKeychain];
@@ -711,7 +711,7 @@
 - (void)removeNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL))completionBlock
 {
     SyncOperationQueue *syncOpQ = self.currentOperationQueue;
-    void (^deleteNode)() = ^void(){
+    void (^deleteNode)(void) = ^void(){
         DeleteRule rule = (node.isFolder) ? DeleteRuleRootByForceAndKeepTopLevelChildren : DeleteRuleAllNodes;
         [self deleteNodeFromSync:node deleteRule:rule withCompletionBlock:^(BOOL savedLocally){
             if(completionBlock)
@@ -1434,7 +1434,7 @@
     [realm commitWriteTransaction];
 }
 
-- (void)cleanDataBaseOfUnwantedNodesWithCompletionBlock:(void (^)())completionBlock
+- (void)cleanDataBaseOfUnwantedNodesWithCompletionBlock:(void (^)(void))completionBlock
 {
     RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RLMResults *allNodes = [[RealmSyncCore sharedSyncCore] allSyncNodesInRealm:realm];
@@ -1446,7 +1446,7 @@
         return;
     }
     
-    void (^decreaseTotalChecksBlock)() = ^{
+    void (^decreaseTotalChecksBlock)(void) = ^{
         totalChecksForObstacles--;
         
         if (totalChecksForObstacles == 0)

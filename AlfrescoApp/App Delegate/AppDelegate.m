@@ -221,8 +221,10 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
 {
+    NSString *sourceApplication = options[UIApplicationOpenURLOptionsSourceApplicationKey];
+    NSString *annotation = options[UIApplicationOpenURLOptionsAnnotationKey];
     return [[FileHandlerManager sharedManager] handleURL:url sourceApplication:sourceApplication annotation:annotation session:self.session];
 }
 

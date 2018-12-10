@@ -104,8 +104,11 @@ static NSString * const kMenuIconIdentifierMappingFileName = @"MenuIconIdentifie
         _configService = [[AppConfigurationManager sharedManager] configurationServiceForNoAccountConfiguration];
     }
 
+    __weak typeof(self) weakSelf = self;
     void (^buildItemsForProfile)(AlfrescoProfileConfig *profile) = ^(AlfrescoProfileConfig *profile) {
-        [_configService retrieveViewGroupConfigWithIdentifier:profile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {
+        __strong typeof(self) strongSelf = weakSelf;
+        
+        [strongSelf.configService retrieveViewGroupConfigWithIdentifier:profile.rootViewId completionBlock:^(AlfrescoViewGroupConfig *rootViewConfig, NSError *rootViewError) {
             if (rootViewError)
             {
                 AlfrescoLogError(@"Could not retrieve root config for profile %@", profile.rootViewId);

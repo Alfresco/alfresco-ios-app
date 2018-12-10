@@ -114,11 +114,6 @@
 
 #pragma mark - CLLocationManagerDelegate Functions
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation
-{
-    self.latestLocation = newLocation;
-}
-
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
 {
     CLLocation *updatedLocation = [locations lastObject];

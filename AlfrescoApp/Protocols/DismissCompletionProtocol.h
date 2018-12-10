@@ -16,7 +16,7 @@
  *  limitations under the License.
  ******************************************************************************/
   
-typedef void (^DismissCompletionBlock)();
+typedef void (^DismissCompletionBlock)(void);
 
 @protocol DismissCompletionProtocol <NSObject>
 

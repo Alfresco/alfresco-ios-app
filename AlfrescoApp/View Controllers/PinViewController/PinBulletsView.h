@@ -21,6 +21,6 @@
 @interface PinBulletsView : UIView
 
 - (void)fillBullets:(BOOL)fill forPin:(NSString *)pin;
-- (void)shakeWithCompletionBlock:(void (^)())completionBlock;
+- (void)shakeWithCompletionBlock:(void (^)(void))completionBlock;
 
 @end

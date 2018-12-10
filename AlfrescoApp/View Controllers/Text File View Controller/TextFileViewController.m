@@ -305,7 +305,7 @@ static NSString * const kTextFileMimeType = @"text/plain";
                 }
                 else
                 {
-                    void (^saveBlock)() = ^(){
+                    void (^saveBlock)(void) = ^(){
                         [[DownloadManager sharedManager] saveDocument:self.editingDocument contentPath:self.temporaryFilePath showOverrideAlert:false completionBlock:^(NSString *filePath) {
                             [self dismissViewControllerAnimated:YES completion:^{
                                 displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"download.success-as.message", @"Download succeeded"), filePath.lastPathComponent]);

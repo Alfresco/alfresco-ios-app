@@ -27,15 +27,15 @@
 
 - (void)showSAMLLoginViewController:(AlfrescoSAMLUILoginViewController *)viewController
              inNavigationController:(UINavigationController *)navigationController;
-- (void)showOauthLoginController:(AlfrescoOAuthUILoginViewController *)viewController
-          inNavigationController:(UINavigationController *)navigationController;
 
 - (void)showSignInAlertWithSignedInBlock:(void (^)(void))completionBlock;
 - (void)displayLoginViewControllerWithAccount:(UserAccount *)account
                                      username:(NSString *)username;
+    
+@optional
+- (void)showOauthLoginController:(AlfrescoOAuthUILoginViewController *)viewController
+          inNavigationController:(UINavigationController *)navigationController;
 - (void)clearDetailViewController;
-
-
 - (void)trackAnalyticsEventWithCategory:(NSString *)eventCategory
                                  action:(NSString *)eventAction
                                   label:(NSString *)eventLabel
