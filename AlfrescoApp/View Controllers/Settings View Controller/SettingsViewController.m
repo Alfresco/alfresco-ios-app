@@ -672,7 +672,7 @@
 
 - (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {
-    void (^completionBlock)() = nil;
+    void (^completionBlock)(void) = nil;
     
     if (result == MFMailComposeResultFailed)
     {

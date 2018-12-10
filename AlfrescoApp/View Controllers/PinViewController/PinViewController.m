@@ -36,17 +36,17 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
 @property (nonatomic) BOOL animatedDismiss;
 @property (nonatomic) BOOL ownWindow;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *logoTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *logoHeightConstraint;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *subtitleLabel;
+@property (weak, nonatomic) IBOutlet PinBulletsView *bulletsView;
+
 @end
 
 @implementation PinViewController
 {
-    __weak IBOutlet NSLayoutConstraint *_containerHeightConstraint;
-    __weak IBOutlet NSLayoutConstraint *_logoTopConstraint;
-    __weak IBOutlet NSLayoutConstraint *_logoHeightConstraint;
-    __weak IBOutlet UILabel *_titleLabel;
-    __weak IBOutlet UILabel *_subtitleLabel;
-    __weak IBOutlet PinBulletsView *_bulletsView;
-    
     NSMutableString *_oldPin;
     NSMutableString *_enteredPin;
     NSMutableString *_reenteredPin;
@@ -299,9 +299,11 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
             
             // This delay allows the user to see the 4th bullet getting filled.
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                _titleLabel.text = NSLocalizedString(@"settings.security.passcode.enter.new", @"Enter your new Alfresco passcode");
-                [weakSelf fillBullets:NO];
-                _shouldAllowPinEntry = YES;
+                __strong typeof(self) strongSelf = weakSelf;
+                
+                strongSelf.titleLabel.text = NSLocalizedString(@"settings.security.passcode.enter.new", @"Enter your new Alfresco passcode");
+                [strongSelf fillBullets:NO];
+                strongSelf->_shouldAllowPinEntry = YES;
             });
         }
         else
@@ -311,23 +313,24 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
             [KeychainUtils saveItem:@(_remainingAttempts) forKey:kRemainingAttemptsKey error:&error];
             
             __weak typeof(self) weakSelf = self;
-            
             [_bulletsView shakeWithCompletionBlock:^{
-                if (_remainingAttempts == 0)
+                __strong typeof(self) strongSelf = weakSelf;
+                
+                if (strongSelf->_remainingAttempts == 0)
                 {
-                    [weakSelf unsetPinAndDismissWithCompletionBlock:^{
-                        if (weakSelf.completionBlock)
+                    [strongSelf unsetPinAndDismissWithCompletionBlock:^{
+                        if (strongSelf.completionBlock)
                         {
-                            weakSelf.completionBlock(PinFlowCompletionStatusReset);
+                            strongSelf.completionBlock(PinFlowCompletionStatusReset);
                         }
                     }];
                 }
                 else
                 {
-                    _oldPin = [NSMutableString string];
+                    strongSelf->_oldPin = [NSMutableString string];
                     
-                    [weakSelf fillBullets:NO];
-                    [weakSelf showNumberOfAttemptsRemaining];
+                    [strongSelf fillBullets:NO];
+                    [strongSelf showNumberOfAttemptsRemaining];
                 }
             }];
         }
@@ -339,12 +342,13 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         _subtitleLabel.hidden = YES;
         
         __weak typeof(self) weakSelf = self;
-        
         // This delay allows the user to see the 4th bullet getting filled.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _titleLabel.text = NSLocalizedString(@"settings.security.passcode.re-enter.new", @"Re-enter your new passcode");
-            [weakSelf fillBullets:NO];
-            _shouldAllowPinEntry = YES;
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            strongSelf.titleLabel.text = NSLocalizedString(@"settings.security.passcode.re-enter.new", @"Re-enter your new passcode");
+            [strongSelf fillBullets:NO];
+            strongSelf->_shouldAllowPinEntry = YES;
         });
     }
     else if (_step == 3)
@@ -424,25 +428,27 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         [KeychainUtils saveItem:@(_remainingAttempts) forKey:kRemainingAttemptsKey error:&error];
         
         [_bulletsView shakeWithCompletionBlock:^{
-            if (_remainingAttempts == 0)
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            if (strongSelf->_remainingAttempts == 0)
             {
-                if (self.completionBlock)
+                if (strongSelf.completionBlock)
                 {
-                    self.completionBlock(PinFlowCompletionStatusReset);
+                    strongSelf.completionBlock(PinFlowCompletionStatusReset);
                 }
                 
-                [weakSelf unsetPinAndDismissWithCompletionBlock:nil];
+                [strongSelf unsetPinAndDismissWithCompletionBlock:nil];
             }
             else
             {
-                _oldPin = [NSMutableString string];
+                strongSelf->_oldPin = [NSMutableString string];
                 
-                [weakSelf fillBullets:NO];
-                [weakSelf showNumberOfAttemptsRemaining];
+                [strongSelf fillBullets:NO];
+                [strongSelf showNumberOfAttemptsRemaining];
                 
-                if (self.completionBlock)
+                if (strongSelf.completionBlock)
                 {
-                    self.completionBlock(PinFlowCompletionStatusFailure);
+                    strongSelf.completionBlock(PinFlowCompletionStatusFailure);
                 }
             }
         }];
@@ -460,9 +466,11 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         
         // This delay allows the user to see the 4th bullet getting filled.
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeReenterString, @"Re-enter your Alfresco Passcode");
-            [weakSelf fillBullets:NO];
-            _shouldAllowPinEntry = YES;
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            strongSelf.titleLabel.text = NSLocalizedString(kSettingsSecurityPasscodeReenterString, @"Re-enter your Alfresco Passcode");
+            [strongSelf fillBullets:NO];
+            strongSelf->_shouldAllowPinEntry = YES;
         });
     }
     else
@@ -525,21 +533,23 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
         __weak typeof(self) weakSelf = self;
         
         [_bulletsView shakeWithCompletionBlock:^{
-            if (_remainingAttempts == 0)
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            if (strongSelf->_remainingAttempts == 0)
             {
-                [weakSelf unsetPinAndDismissWithCompletionBlock:^{
-                    if (weakSelf.completionBlock)
+                [strongSelf unsetPinAndDismissWithCompletionBlock:^{
+                    if (strongSelf.completionBlock)
                     {
-                        weakSelf.completionBlock(PinFlowCompletionStatusReset);
+                        strongSelf.completionBlock(PinFlowCompletionStatusReset);
                     }
                 }];
             }
             else
             {
-                _oldPin = [NSMutableString string];
+                strongSelf->_oldPin = [NSMutableString string];
                 
-                [weakSelf fillBullets:NO];
-                [weakSelf showNumberOfAttemptsRemaining];
+                [strongSelf fillBullets:NO];
+                [strongSelf showNumberOfAttemptsRemaining];
             }
         }];
     }

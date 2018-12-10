@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2018 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -16,19 +16,22 @@
  *  limitations under the License.
  ******************************************************************************/
 
-#ifndef AlfrescoApp_CollectionViewProtocols_h
-#define AlfrescoApp_CollectionViewProtocols_h
+#import <UIKit/UIKit.h>
 
-@protocol SwipeToDeleteDelegate <NSObject>
+NS_ASSUME_NONNULL_BEGIN
 
-- (void)collectionView:(UICollectionView *)collectionView didSwipeToDeleteItemAtIndex:(NSIndexPath *)indexPath completionBlock:(void (^)(void))completionBlock;
+typedef NS_ENUM(NSInteger, ViewOrientation) {
+    ViewOrientationPortrait,
+    ViewOrientationLandscape
+};
+
+@interface UIView (Orientation)
+
++ (ViewOrientation)viewOrientationForSize:(CGSize)size;
+- (ViewOrientation)viewOrientation;
+- (BOOL)isViewOrientationPortrait;
+- (BOOL)isViewOrientationLandscape;
 
 @end
 
-@protocol CollectionViewCellAccessoryViewDelegate <NSObject>
-
-- (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node;
-
-@end
-
-#endif
+NS_ASSUME_NONNULL_END

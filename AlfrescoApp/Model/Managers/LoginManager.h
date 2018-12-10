@@ -43,6 +43,6 @@
 - (void)showSAMLWebViewForAccount:(UserAccount *)account
              navigationController:(UINavigationController *)navigationController
                   completionBlock:(AlfrescoSAMLAuthCompletionBlock)completionBlock;
-- (void)showSignInAlertWithSignedInBlock:(void (^)())completionBlock;
+- (void)showSignInAlertWithSignedInBlock:(void (^)(void))completionBlock;
 
 @end

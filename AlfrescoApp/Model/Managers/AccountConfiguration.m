@@ -200,7 +200,7 @@
     [[AnalyticsManager sharedManager] checkAnalyticsFeature];
 }
 
-- (void)loadConfigurationFileType:(ConfigurationFileType)configurationFileType completionBlock:(void (^)())completionBlock
+- (void)loadConfigurationFileType:(ConfigurationFileType)configurationFileType completionBlock:(void (^)(void))completionBlock
 {
     AlfrescoConfigService *service = [self configServiceForType:configurationFileType];
     service.shouldIgnoreRequests = [ConfigurationFilesUtils configServiceShouldIgnoreRequestsForType:configurationFileType];
@@ -208,7 +208,7 @@
     
     NSString *selectedProfileIdentifier = self.account.selectedProfileIdentifier;
     
-    void (^loadServerOrLocalDefaultProfile)() = ^void(){
+    void (^loadServerOrLocalDefaultProfile)(void) = ^void(){
         [service retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
             if (error)
             {
@@ -304,7 +304,7 @@
     }
 }
 
-- (void)loadEmbeddedConfigurationWithCompletionBlock:(void (^)())completionBlock
+- (void)loadEmbeddedConfigurationWithCompletionBlock:(void (^)(void))completionBlock
 {
     [self.embeddedConfigService clear];
     [self.embeddedConfigService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *config, NSError *error) {
@@ -324,7 +324,7 @@
     }];
 }
 
-- (void)loadNoAccountsConfigurationWithCompletionBlock:(void (^)())completionBlock
+- (void)loadNoAccountsConfigurationWithCompletionBlock:(void (^)(void))completionBlock
 {
     [self.configService retrieveDefaultProfileWithCompletionBlock:^(AlfrescoProfileConfig *defaultProfile, NSError *defaultProfileError) {
         if (defaultProfileError)

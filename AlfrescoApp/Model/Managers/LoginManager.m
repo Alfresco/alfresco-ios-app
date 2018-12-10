@@ -209,7 +209,7 @@
     }
 }
 
-- (void)showSignInAlertWithSignedInBlock:(void (^)())completionBlock
+- (void)showSignInAlertWithSignedInBlock:(void (^)(void))completionBlock
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"error.host.unreachable.title", @"Connection Error")
                                                                              message:NSLocalizedString(@"error.session.expired", @"Your session has expired. Sign in to continue.")

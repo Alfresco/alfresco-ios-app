@@ -285,7 +285,7 @@
     }
 }
 
-- (void)showPinScreenAnimated:(BOOL)animated inOwnWindow:(BOOL)ownWindow completionBlock:(void (^)())completionBlock
+- (void)showPinScreenAnimated:(BOOL)animated inOwnWindow:(BOOL)ownWindow completionBlock:(void (^)(void))completionBlock
 {
     PinViewController *pvc = [self currentPinScreen];
     
@@ -391,7 +391,7 @@
     return currentPinViewController;
 }
 
-- (void)hideCurrentPinViewScreenWithFlow:(PinFlow)pinFlow animated:(BOOL)animated completionBlock:(void (^)())completionBlock
+- (void)hideCurrentPinViewScreenWithFlow:(PinFlow)pinFlow animated:(BOOL)animated completionBlock:(void (^)(void))completionBlock
 {
     PinViewController *pvc = [self currentPinScreen];
     PinFlow currentPinFlow = [pvc pinFlow];

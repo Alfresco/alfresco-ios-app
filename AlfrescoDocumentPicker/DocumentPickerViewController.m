@@ -260,7 +260,7 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
     return scopeItems;
 }
 
-- (void)displayScopeViewControllerFromController:(UIViewController *)controller forAccount:(id<AKUserAccount>)account session:(id<AlfrescoSession>)session completionBlock:(void (^)())completionBlock
+- (void)displayScopeViewControllerFromController:(UIViewController *)controller forAccount:(id<AKUserAccount>)account session:(id<AlfrescoSession>)session completionBlock:(void (^)(void))completionBlock
 {
     self.account = account;
     self.session = session;
