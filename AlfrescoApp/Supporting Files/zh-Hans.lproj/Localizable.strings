@@ -921,3 +921,8 @@
  */
 "sync.info.skip" = "跳过";
 "sync.info.next.laststep" = "好的，我找到它了。";
+
+/**
+ * Cloud Termination Alert
+ */
+"cloudtermination.message" = "my.alfresco.com 将于 2019 年 3 月 28 日关闭。请联系您的管理员，以获取有关如何从此服务导出数据的指导。";
