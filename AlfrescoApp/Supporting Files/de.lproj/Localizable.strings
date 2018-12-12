@@ -921,3 +921,8 @@
  */
 "sync.info.skip" = "Überspringen";
 "sync.info.next.laststep" = "Verstanden.";
+
+/**
+ * Cloud Termination Alert
+ */
+"cloudtermination.message" = "my.alfresco.com wird am 28. März 2019 abgeschaltet. Bitte kontaktieren Sie Ihren Administrator, um zu erfahren wie Sie Ihre Daten von diesem Service migrieren können.";
