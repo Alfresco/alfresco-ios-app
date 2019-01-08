@@ -291,7 +291,7 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     dispatch_async(dispatch_get_main_queue(), ^{
         BOOL wasCloudTerminationAlertShown = [[NSUserDefaults standardUserDefaults] boolForKey:kCloudTerminationAlertShownKey];
         // Disabling the alert for the time being as part of IOS-1207
-        wasCloudTerminationAlertShown = true;
+        wasCloudTerminationAlertShown = YES;
         if(!wasCloudTerminationAlertShown)
         {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"my.alfresco.com"
