@@ -110,6 +110,8 @@ static CGFloat const kCellHeight = 73.0f;
             break;
         }
     }
+    
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 }
 
 - (void)viewDidAppear:(BOOL)animated

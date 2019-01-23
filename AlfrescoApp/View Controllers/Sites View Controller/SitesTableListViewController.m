@@ -88,6 +88,8 @@
             [self reloadTableViewWithPagingResult:pagingResult error:error];
         }];
     }
+    
+    self.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
 }
 
 - (void)viewDidAppear:(BOOL)animated
