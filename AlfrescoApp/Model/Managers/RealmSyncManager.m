@@ -1463,47 +1463,52 @@
         [self checkForObstaclesInRemovingDownloadForNode:node.alfrescoNode inRealm:realm completionBlock:^(BOOL encounteredObstacle) {
             if (encounteredObstacle)
             {
-                SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:node.syncNodeInfoId];
-                nodeStatus.status = SyncStatusFailed;
-                
-                if (node.alfrescoNode.isDocument)
-                {
-                    NSMutableArray *documentsToBeDeletedLocallyAfterUpload = [self.syncObstacles objectForKey:kDocumentsToBeDeletedLocallyAfterUpload];
+                @try {
+                    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:node.syncNodeInfoId];
+                    nodeStatus.status = SyncStatusFailed;
                     
-                    [documentsToBeDeletedLocallyAfterUpload enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
-                        if ([[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document] isEqualToString:node.syncNodeInfoId])
-                        {
-                            [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:^{
+                    if (node.alfrescoNode.isDocument)
+                    {
+                        NSMutableArray *documentsToBeDeletedLocallyAfterUpload = [self.syncObstacles objectForKey:kDocumentsToBeDeletedLocallyAfterUpload];
+                        
+                        [documentsToBeDeletedLocallyAfterUpload enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
+                            if ([[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document] isEqualToString:node.syncNodeInfoId])
+                            {
+                                [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:^{
+                                    decreaseTotalChecksBlock();
+                                }];
+                                *stop = YES;
+                            }
+                            else
+                            {
                                 decreaseTotalChecksBlock();
-                            }];
-                            *stop = YES;
-                        }
-                        else
-                        {
-                            decreaseTotalChecksBlock();
-                        }
-                    }];
-                    
-                    NSMutableArray *deletedOnServerWithLocalChanges = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
-                    
-                    [deletedOnServerWithLocalChanges enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
-                        if ([[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document] isEqualToString:node.syncNodeInfoId])
-                        {
-                            // Orphan document with new local version => Copy the file into Local Files prior to deletion.
-                            [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];
-                            decreaseTotalChecksBlock();
-                            *stop = YES;
-                        }
-                        else
-                        {
-                            decreaseTotalChecksBlock();
-                        }
-                    }];
-                }
-                else
-                {
+                            }
+                        }];
+                        
+                        NSMutableArray *deletedOnServerWithLocalChanges = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+                        
+                        [deletedOnServerWithLocalChanges enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
+                            if ([[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document] isEqualToString:node.syncNodeInfoId])
+                            {
+                                // Orphan document with new local version => Copy the file into Local Files prior to deletion.
+                                [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];
+                                decreaseTotalChecksBlock();
+                                *stop = YES;
+                            }
+                            else
+                            {
+                                decreaseTotalChecksBlock();
+                            }
+                        }];
+                    }
+                    else
+                    {
+                        decreaseTotalChecksBlock();
+                    }
+                } @catch (NSException *exception) {
                     decreaseTotalChecksBlock();
-                }
+                    AlfrescoLogError(@"Realm object has been deleted or invalidated with exception raised: %@", exception);
+                } @finally {}
             }
             else
             {
