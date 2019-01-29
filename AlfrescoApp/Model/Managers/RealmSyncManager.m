@@ -1463,88 +1463,53 @@
         [self checkForObstaclesInRemovingDownloadForNode:node.alfrescoNode inRealm:realm completionBlock:^(BOOL encounteredObstacle) {
             if (encounteredObstacle)
             {
-                @try {
-                    SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:node.syncNodeInfoId];
-                    nodeStatus.status = SyncStatusFailed;
+                SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:node.syncNodeInfoId];
+                nodeStatus.status = SyncStatusFailed;
+                
+                if (node.alfrescoNode.isDocument)
+                {
+                    NSMutableArray *documentsToBeDeletedLocallyAfterUpload = [self.syncObstacles objectForKey:kDocumentsToBeDeletedLocallyAfterUpload];
                     
-                    if (node.alfrescoNode.isDocument)
-                    {
-                        NSMutableArray *documentsToBeDeletedLocallyAfterUpload = [self.syncObstacles objectForKey:kDocumentsToBeDeletedLocallyAfterUpload];
-                        
-                        [documentsToBeDeletedLocallyAfterUpload enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
-                            if ([[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document] isEqualToString:node.syncNodeInfoId])
-                            {
-                                [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:^{
-                                    decreaseTotalChecksBlock();
-                                }];
-                                *stop = YES;
-                            }
-                            else
-                            {
+                    [documentsToBeDeletedLocallyAfterUpload enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
+                        if ([[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document] isEqualToString:node.syncNodeInfoId])
+                        {
+                            [self retrySyncForDocument:(AlfrescoDocument *)node.alfrescoNode completionBlock:^{
                                 decreaseTotalChecksBlock();
-                            }
-                        }];
-                        
-                        NSMutableArray *deletedOnServerWithLocalChanges = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
-                        
-                        [deletedOnServerWithLocalChanges enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
-                            if ([[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document] isEqualToString:node.syncNodeInfoId])
-                            {
-                                // Orphan document with new local version => Copy the file into Local Files prior to deletion.
-                                [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];
-                                decreaseTotalChecksBlock();
-                                *stop = YES;
-                            }
-                            else
-                            {
-                                decreaseTotalChecksBlock();
-                            }
-                        }];
-                    }
-                    else
-                    {
-                        decreaseTotalChecksBlock();
-                    }
-                } @catch (NSException *exception) {
+                            }];
+                            *stop = YES;
+                        }
+                        else
+                        {
+                            decreaseTotalChecksBlock();
+                        }
+                    }];
+                    
+                    NSMutableArray *deletedOnServerWithLocalChanges = [self.syncObstacles objectForKey:kDocumentsDeletedOnServerWithLocalChanges];
+                    
+                    [deletedOnServerWithLocalChanges enumerateObjectsUsingBlock:^(AlfrescoDocument *document, NSUInteger idx, BOOL * _Nonnull stop) {
+                        if ([[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document] isEqualToString:node.syncNodeInfoId])
+                        {
+                            // Orphan document with new local version => Copy the file into Local Files prior to deletion.
+                            [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];
+                            decreaseTotalChecksBlock();
+                            *stop = YES;
+                        }
+                        else
+                        {
+                            decreaseTotalChecksBlock();
+                        }
+                    }];
+                }
+                else
+                {
                     decreaseTotalChecksBlock();
-                    AlfrescoLogError(@"Realm object has been deleted or invalidated with exception raised: %@", exception);
-                } @finally {}
+                }
             }
             else
             {
                 decreaseTotalChecksBlock();
             }
         }];
-        if (node.parentNode == nil && node.isTopLevelSyncNode == NO)
-        {
-            if (node.isFolder == NO)
-            {
-                
-                if (node.isRemovedFromSyncHasLocalChanges)
-                {
-                    // Orphan document with new local version => Copy the file into Local Files prior to deletion.
-                    [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];
-                }
-                else
-                {
-                    // Remove file.
-                    NSString *filePath = [[RealmSyncCore sharedSyncCore] contentPathForNode:node.alfrescoNode forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];;
-                    NSError *deleteError;
-                    [self.fileManager removeItemAtPath:filePath error:&deleteError];
-                }
-            }
-            
-            // Remove sync status.
-            SyncOperationQueue *syncOpQ = [self currentOperationQueue];
-            [syncOpQ removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
-            
-            // Remove RealmSyncError object if exists.
-            RealmSyncError *syncError = [[RealmSyncCore sharedSyncCore] errorObjectForNode:node.alfrescoNode ifNotExistsCreateNew:NO inRealm:realm];
-            [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:realm];
-            
-            // Remove RealmSyncNodeInfo object.
-            [[RealmManager sharedManager] deleteRealmObject:node inRealm:realm];
-        }
     }
 }
 
