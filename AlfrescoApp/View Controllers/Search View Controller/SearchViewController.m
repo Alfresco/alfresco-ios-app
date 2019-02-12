@@ -446,6 +446,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             if ([self.searchController.searchResultsController isKindOfClass:[SearchResultsTableViewController class]])
             {
                 SearchResultsTableViewController *resultsController = (SearchResultsTableViewController *)self.searchController.searchResultsController;
+                resultsController.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
                 [resultsController search:searchString listingContext:self.listingContext];
             }
             break;
@@ -455,6 +456,7 @@ static CGFloat const kCellHeightPreviousSearches = 44.0f;
             if ([self.searchController.searchResultsController isKindOfClass:[SitesTableListViewController class]])
             {
                 SitesTableListViewController *resultsController = (SitesTableListViewController *)self.searchController.searchResultsController;
+                resultsController.tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
                 [resultsController search:searchString listingContext:self.listingContext];
             }
             break;
