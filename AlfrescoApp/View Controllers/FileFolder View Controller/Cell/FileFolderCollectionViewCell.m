@@ -418,7 +418,7 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         dispatch_async(dispatch_get_main_queue(), ^{
             if (!self.isSyncNode && nodeStatus.status != SyncStatusRemoved)
             {
-                [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:YES isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
+                [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:NO isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
             }
             if (nodeStatus.status == SyncStatusRemoved)
             {
