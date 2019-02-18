@@ -227,7 +227,7 @@ static CGFloat sDownloadProgressHeight;
     
     previewVC.gestureDelegate = self;
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         previewVC.view.hidden = YES;
         previewVC.previewController.currentPreviewItemIndex = 1;
         previewVC.view.frame = self.view.bounds;
