@@ -99,6 +99,10 @@
             {
                 self.dataSourceCollection = [NSMutableArray array];
             }
+            else
+            {
+                 [self.dataSourceCollection removeAllObjects];
+            }
             [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
             
             self.moreItemsAvailable = pagingResult.hasMoreItems;
@@ -129,8 +133,6 @@
 
 - (void)reloadDataSource
 {
-    [self.dataSourceCollection removeAllObjects];
-    
     [self retrieveNextItems:self.defaultListingContext];
 }
 
