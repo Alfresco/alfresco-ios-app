@@ -254,9 +254,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.searchController.searchResultsUpdater = self;
         self.searchController.dimsBackgroundDuringPresentation = NO;
         self.searchController.searchBar.delegate = self;
-        self.searchController.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+        self.searchController.searchBar.searchBarStyle = UISearchBarStyleDefault;
         self.searchController.delegate = self;
+        
         self.definesPresentationContext = YES;
+        
     }
 
     if(!self.dataSource)
@@ -308,6 +310,11 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
+    
+    CGRect searchBarFrame = self.searchController.searchBar.frame;
+    searchBarFrame.size.width = self.view.frame.size.width;
+    self.searchController.searchBar.frame = searchBarFrame;
+    
     if (@available(iOS 11.0, *))
     {
         self.multiSelectContainerViewHeightConstraint.constant = kPickerMultiSelectToolBarHeight + self.view.safeAreaInsets.bottom;
