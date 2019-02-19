@@ -255,6 +255,9 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         self.searchController.dimsBackgroundDuringPresentation = NO;
         self.searchController.searchBar.delegate = self;
         self.searchController.searchBar.searchBarStyle = UISearchBarStyleDefault;
+        //change the style in default because in UISearchBarStyleMinimal the background color is nil
+        //https://developer.apple.com/documentation/uikit/uisearchbar/1624281-searchbarstyle
+        
         self.searchController.delegate = self;
         
         self.definesPresentationContext = YES;
