@@ -256,15 +256,19 @@ static BOOL sFileProtectionEnabled = NO;
                                                                            options:options
                                                                       errorHandler:^BOOL(NSURL *url, NSError *fileError) {
                                                                           AlfrescoLogDebug(@"Error retrieving contents of the URL: %@ with the error: %@", [url absoluteString], [fileError localizedDescription]);
-                                                                          if (enumerationError)
+                                                                          if (fileError)
                                                                           {
                                                                               enumerationError = fileError;
                                                                           }
+                                                                          
                                                                           completedWithoutError = NO;
                                                                           // continue enumeration
                                                                           return YES;
                                                                       }];
-    *error = enumerationError;
+    if (enumerationError)
+    {
+        *error = enumerationError;
+    }
     
     for (NSURL *fileURL in folderContents)
     {
