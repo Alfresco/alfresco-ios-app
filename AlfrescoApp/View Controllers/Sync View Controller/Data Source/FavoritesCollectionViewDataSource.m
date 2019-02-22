@@ -67,8 +67,6 @@
 
 - (void)reloadDataSource
 {
-    [self.dataSourceCollection removeAllObjects];
-    
     [self retrieveNextItems:self.defaultListingContext];
 }
 
@@ -84,6 +82,10 @@
             if (self.dataSourceCollection == nil)
             {
                 self.dataSourceCollection = [NSMutableArray array];
+            }
+            else
+            {
+                [self.dataSourceCollection removeAllObjects];
             }
             [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
             
