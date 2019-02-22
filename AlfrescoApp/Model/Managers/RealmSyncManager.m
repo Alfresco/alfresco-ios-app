@@ -857,33 +857,36 @@
 - (void)sessionReceived:(NSNotification *)notification
 {
     UserAccount *changedAccount = [AccountManager sharedManager].selectedAccount;
-    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount completionBlock:^{
-        AlfrescoProfileConfig *selectedProfileForAccount = [[AppConfigurationManager sharedManager] selectedProfileForAccount:changedAccount];
-        [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
-        
-        id<AlfrescoSession> session = notification.object;
-        self.alfrescoSession = session;
-        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-        
-        self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
-        SyncOperationQueue *syncOperationQueueManager = self.syncQueues[self.selectedAccountSyncIdentifier];
-        
-        if (!syncOperationQueueManager)
-        {
-            syncOperationQueueManager = [[SyncOperationQueue alloc] initWithAccount:changedAccount session:session syncProgressDelegate:nil];
-            self.syncQueues[self.selectedAccountSyncIdentifier] = syncOperationQueueManager;
-        }
-        else
-        {
-            [syncOperationQueueManager updateSession:session];
-        }
-        
-        BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-        if(hasInternetConnection)
-        {
-            [self refreshWithCompletionBlock:nil];
-        }
-    }];
+    if (changedAccount)
+    {
+        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount completionBlock:^{
+            AlfrescoProfileConfig *selectedProfileForAccount = [[AppConfigurationManager sharedManager] selectedProfileForAccount:changedAccount];
+            [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
+            
+            id<AlfrescoSession> session = notification.object;
+            self.alfrescoSession = session;
+            self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+            
+            self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
+            SyncOperationQueue *syncOperationQueueManager = self.syncQueues[self.selectedAccountSyncIdentifier];
+            
+            if (!syncOperationQueueManager)
+            {
+                syncOperationQueueManager = [[SyncOperationQueue alloc] initWithAccount:changedAccount session:session syncProgressDelegate:nil];
+                self.syncQueues[self.selectedAccountSyncIdentifier] = syncOperationQueueManager;
+            }
+            else
+            {
+                [syncOperationQueueManager updateSession:session];
+            }
+            
+            BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+            if(hasInternetConnection)
+            {
+                [self refreshWithCompletionBlock:nil];
+            }
+        }];
+    }
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification
