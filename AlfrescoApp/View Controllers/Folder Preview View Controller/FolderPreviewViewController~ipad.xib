@@ -26,7 +26,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Jt8-G4-GTF">
-                    <rect key="frame" x="284" y="13" width="200" height="29"/>
+                    <rect key="frame" x="284" y="33" width="200" height="29"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="200" id="dv8-0o-XwS"/>
                         <constraint firstAttribute="height" constant="28" id="shd-Iz-4nZ"/>
@@ -40,7 +40,7 @@
                     </connections>
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q3I-ZY-a5T" customClass="PagedScrollView">
-                    <rect key="frame" x="20" y="51" width="728" height="835"/>
+                    <rect key="frame" x="20" y="71" width="728" height="815"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="sE4-9P-fXX"/>
@@ -63,11 +63,11 @@
                 <constraint firstAttribute="centerX" secondItem="Jt8-G4-GTF" secondAttribute="centerX" id="FZS-A8-pSw"/>
                 <constraint firstItem="C3i-o7-NQT" firstAttribute="trailing" secondItem="ncC-Qj-flT" secondAttribute="trailing" id="SGf-Q3-Iou"/>
                 <constraint firstItem="C3i-o7-NQT" firstAttribute="bottom" secondItem="ncC-Qj-flT" secondAttribute="bottom" id="Zpz-DA-wku"/>
-                <constraint firstItem="Jt8-G4-GTF" firstAttribute="top" secondItem="1" secondAttribute="top" constant="13" id="dqr-WK-Azv"/>
+                <constraint firstItem="Jt8-G4-GTF" firstAttribute="top" secondItem="C3i-o7-NQT" secondAttribute="top" constant="13" id="dqr-WK-Azv"/>
                 <constraint firstItem="ncC-Qj-flT" firstAttribute="top" secondItem="q3I-ZY-a5T" secondAttribute="bottom" constant="8" id="fZQ-2l-WcJ"/>
                 <constraint firstItem="ncC-Qj-flT" firstAttribute="leading" secondItem="C3i-o7-NQT" secondAttribute="leading" id="jqx-M1-SnT"/>
-                <constraint firstAttribute="trailing" secondItem="q3I-ZY-a5T" secondAttribute="trailing" constant="20" id="ndf-Kx-9Oi"/>
-                <constraint firstItem="q3I-ZY-a5T" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="qZn-DX-iGg"/>
+                <constraint firstItem="C3i-o7-NQT" firstAttribute="trailing" secondItem="q3I-ZY-a5T" secondAttribute="trailing" constant="20" id="ndf-Kx-9Oi"/>
+                <constraint firstItem="q3I-ZY-a5T" firstAttribute="leading" secondItem="C3i-o7-NQT" secondAttribute="leading" constant="20" id="qZn-DX-iGg"/>
                 <constraint firstItem="q3I-ZY-a5T" firstAttribute="top" secondItem="Jt8-G4-GTF" secondAttribute="bottom" constant="10" id="rCE-1k-JOO"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
