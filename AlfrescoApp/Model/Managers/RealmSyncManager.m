@@ -1300,7 +1300,20 @@
         }
         else
         {
-            [self handleNodeSyncActionAndStatus:node.alfrescoNode parentNode:nil];
+            //document service get node for id
+            [self.documentFolderService retrievePermissionsOfNode:node.alfrescoNode
+                                                  completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
+                                                      if (error)
+                                                      {
+                                                          [self removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore]
+                                                                                                             syncIdentifierForNode:node.alfrescoNode]];
+                                                      }
+                                                      else
+                                                      {
+                                                          [self handleNodeSyncActionAndStatus:node.alfrescoNode
+                                                                                   parentNode:nil];
+                                                      }
+                                                  }];
         }
     }
     
