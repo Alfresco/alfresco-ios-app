@@ -1281,12 +1281,12 @@
     }
     
     self.syncNodesInfo = [NSMutableDictionary new];
-    for(RealmSyncNodeInfo *node in topLevelNodes)
+    for(RealmSyncNodeInfo *rnode in topLevelNodes)
     {
-        if(node.isFolder)
+        if(rnode.isFolder)
         {
             self.nodeChildrenRequestsCount++;
-            [self retrieveNodeHierarchyForNode:node.alfrescoNode withCompletionBlock:^(BOOL completed) {
+            [self retrieveNodeHierarchyForNode:rnode.alfrescoNode withCompletionBlock:^(BOOL completed) {
                 if(self.nodeChildrenRequestsCount == 0)
                 {
                     [self determineSyncActionAndStatusForRefresh];
@@ -1301,19 +1301,19 @@
         else
         {
             //document service get node for id
-            [self.documentFolderService retrievePermissionsOfNode:node.alfrescoNode
-                                                  completionBlock:^(AlfrescoPermissions *permissions, NSError *error) {
-                                                      if (error)
-                                                      {
-                                                          [self removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore]
-                                                                                                             syncIdentifierForNode:node.alfrescoNode]];
-                                                      }
-                                                      else
-                                                      {
-                                                          [self handleNodeSyncActionAndStatus:node.alfrescoNode
-                                                                                   parentNode:nil];
-                                                      }
-                                                  }];
+            [self.documentFolderService retrieveNodeWithIdentifier:rnode.alfrescoNode.identifier
+                                                   completionBlock:^(AlfrescoNode *node, NSError *error) {
+                if (error)
+                {
+                    [self removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore]
+                                                                       syncIdentifierForNode:rnode.alfrescoNode]];
+                }
+                else
+                {
+                    [self handleNodeSyncActionAndStatus:rnode.alfrescoNode
+                                             parentNode:nil];
+                }
+            }];
         }
     }
     
