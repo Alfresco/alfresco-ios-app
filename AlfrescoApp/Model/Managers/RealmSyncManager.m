@@ -1281,12 +1281,12 @@
     }
     
     self.syncNodesInfo = [NSMutableDictionary new];
-    for(RealmSyncNodeInfo *node in topLevelNodes)
+    for(RealmSyncNodeInfo *rnode in topLevelNodes)
     {
-        if(node.isFolder)
+        if(rnode.isFolder)
         {
             self.nodeChildrenRequestsCount++;
-            [self retrieveNodeHierarchyForNode:node.alfrescoNode withCompletionBlock:^(BOOL completed) {
+            [self retrieveNodeHierarchyForNode:rnode.alfrescoNode withCompletionBlock:^(BOOL completed) {
                 if(self.nodeChildrenRequestsCount == 0)
                 {
                     [self determineSyncActionAndStatusForRefresh];
@@ -1300,7 +1300,22 @@
         }
         else
         {
-            [self handleNodeSyncActionAndStatus:node.alfrescoNode parentNode:nil];
+            //document service get node for id
+            __weak typeof(self) weakSelf = self;
+            AlfrescoNode *cAlfrescoNode = rnode.alfrescoNode;
+            [self.documentFolderService retrieveNodeWithIdentifier:cAlfrescoNode.identifier
+                                                   completionBlock:^(AlfrescoNode *node, NSError *error) {
+                if (error)
+                {
+                    [weakSelf removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore]
+                                                                       syncIdentifierForNode:cAlfrescoNode]];
+                }
+                else
+                {
+                    [weakSelf handleNodeSyncActionAndStatus:node
+                                             parentNode:nil];
+                }
+            }];
         }
     }
     
