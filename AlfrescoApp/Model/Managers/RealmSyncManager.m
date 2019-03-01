@@ -1321,7 +1321,7 @@
         {
             [self categorizeChildrenOfFolder:(AlfrescoFolder *)node.alfrescoNode];
         }
-        else
+        else if (!node.isTopLevelSyncNode)
         {
             [self handleNodeSyncActionAndStatus:node.alfrescoNode parentNode:nil];
         }
