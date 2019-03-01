@@ -1301,16 +1301,18 @@
         else
         {
             //document service get node for id
-            [self.documentFolderService retrieveNodeWithIdentifier:rnode.alfrescoNode.identifier
+            __weak typeof(self) weakSelf = self;
+            AlfrescoNode *cAlfrescoNode = rnode.alfrescoNode;
+            [self.documentFolderService retrieveNodeWithIdentifier:cAlfrescoNode.identifier
                                                    completionBlock:^(AlfrescoNode *node, NSError *error) {
                 if (error)
                 {
-                    [self removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore]
-                                                                       syncIdentifierForNode:rnode.alfrescoNode]];
+                    [weakSelf removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore]
+                                                                       syncIdentifierForNode:cAlfrescoNode]];
                 }
                 else
                 {
-                    [self handleNodeSyncActionAndStatus:rnode.alfrescoNode
+                    [weakSelf handleNodeSyncActionAndStatus:node
                                              parentNode:nil];
                 }
             }];
