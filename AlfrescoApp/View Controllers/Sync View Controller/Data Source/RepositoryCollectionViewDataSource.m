@@ -647,7 +647,9 @@
     if ([parentFolder isEqual:self.parentNode])
     {
         AlfrescoNode *subnode = [foldersDictionary objectForKey:kAlfrescoNodeAddedOnServerSubNodeKey];
+        [self retrievePermissionsForNode:subnode];
         [self addAlfrescoNodes:@[subnode]];
+        [[RealmSyncManager sharedManager] didUploadNode:subnode fromPath:nil toFolder:(AlfrescoFolder *)self.parentNode];
     }
 }
 
