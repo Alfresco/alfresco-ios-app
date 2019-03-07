@@ -133,6 +133,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
     BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
     
     AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:[self.dataSource parentFolder] includeDescendants:YES];
@@ -140,7 +141,8 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{    
+{
+    [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
     self.searchResults = nil;
     self.isOnSearchResults = NO;
     [self.dataSource reloadDataSource];

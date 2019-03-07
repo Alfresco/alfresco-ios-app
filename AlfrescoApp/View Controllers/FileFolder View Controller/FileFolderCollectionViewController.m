@@ -583,7 +583,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     if (self.isEditing)
     {
-        AlfrescoNode *selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
+        AlfrescoNode *selectedNode = [self.searchDataSource alfrescoNodeAtIndex:indexPath.item];
         [self.multiSelectContainerView.toolbar userDidDeselectItem:selectedNode];
         FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [cell wasSelectedInEditMode:NO];
