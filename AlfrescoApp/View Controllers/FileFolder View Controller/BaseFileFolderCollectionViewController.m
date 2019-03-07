@@ -143,7 +143,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 {    
     self.searchResults = nil;
     self.isOnSearchResults = NO;
-    [self reloadCollectionView];
+    [self.dataSource reloadDataSource];
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
@@ -344,7 +344,8 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 #pragma mark - Internal methods
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock
 {
-    [self.dataSource deleteNode:nodeToDelete completionBlock:^(BOOL success) {
+    RepositoryCollectionViewDataSource *cDataSource = (self.isOnSearchResults) ? self.searchDataSource : self.dataSource;
+    [cDataSource deleteNode:nodeToDelete completionBlock:^(BOOL success) {
         if(completionBlock != NULL)
         {
             completionBlock(success);
