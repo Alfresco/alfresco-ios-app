@@ -246,7 +246,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     UINib *sectionHeaderNib = [UINib nibWithNibName:NSStringFromClass([SearchCollectionSectionHeader class]) bundle:nil];
     [self.collectionView registerNib:sectionHeaderNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"SectionHeader"];
     
-    self.title = self.dataSource.screenTitle;
+    self.title = self.inUseDataSource.screenTitle;
     
     if(self.shouldIncludeSearchBar)
     {
@@ -436,7 +436,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (session && [self shouldRefresh])
     {
-        [self.dataSource reloadDataSource];
+        [self.inUseDataSource reloadDataSource];
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
@@ -533,7 +533,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNode *selectedNode = self.isOnSearchResults ? [self.searchDataSource alfrescoNodeAtIndex:indexPath.item] : [self.dataSource alfrescoNodeAtIndex:indexPath.item];
+    AlfrescoNode *selectedNode = [self.inUseDataSource alfrescoNodeAtIndex:indexPath.item];
     if(selectedNode)
     {
         if (self.isEditing)
@@ -548,7 +548,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
             if ([selectedNode isKindOfClass:[AlfrescoFolder class]])
             {
-                FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderPermissions:[self.dataSource permissionsForNode:selectedNode] session:self.session];
+                FileFolderCollectionViewController *browserViewController = [[FileFolderCollectionViewController alloc] initWithFolder:(AlfrescoFolder *)selectedNode folderPermissions:[self.inUseDataSource permissionsForNode:selectedNode] session:self.session];
                 browserViewController.style = self.style;
                 [self.navigationController pushViewController:browserViewController animated:YES];
                 
@@ -563,7 +563,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
                 }
                 
                 [UniversalDevice pushToDisplayDocumentPreviewControllerForAlfrescoDocument:(AlfrescoDocument *)selectedNode
-                                                                               permissions:[self.dataSource permissionsForNode:selectedNode]
+                                                                               permissions:[self.inUseDataSource permissionsForNode:selectedNode]
                                                                                contentFile:contentPath
                                                                           documentLocation:InAppDocumentLocationFilesAndFolders
                                                                                    session:self.session
@@ -583,7 +583,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 {
     if (self.isEditing)
     {
-        AlfrescoNode *selectedNode = [self.searchDataSource alfrescoNodeAtIndex:indexPath.item];
+        AlfrescoNode *selectedNode = [self.inUseDataSource alfrescoNodeAtIndex:indexPath.item];
         [self.multiSelectContainerView.toolbar userDidDeselectItem:selectedNode];
         FileFolderCollectionViewCell *cell = (FileFolderCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:indexPath];
         [cell wasSelectedInEditMode:NO];
@@ -597,7 +597,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     if (self.session)
     {
-        [self.dataSource reloadDataSource];
+        [self.inUseDataSource reloadDataSource];
     }
     else
     {
@@ -606,7 +606,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         [[LoginManager sharedManager] attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
             if (successful)
             {
-                [self.dataSource reloadDataSource];
+                [self.inUseDataSource reloadDataSource];
             }
         }];
     }

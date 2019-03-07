@@ -417,4 +417,9 @@
     self.gridLayout.dataSourceInfoDelegate = currentDataSource;
 }
 
+-(RepositoryCollectionViewDataSource *)inUseDataSource
+{
+    return (self.isOnSearchResults) ? self.searchDataSource : self.dataSource;
+}
+
 @end

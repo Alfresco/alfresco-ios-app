@@ -81,5 +81,5 @@ typedef NS_ENUM(NSUInteger, CollectionViewStyle)
 - (BaseCollectionViewFlowLayout *)layoutForStyle:(CollectionViewStyle)style;
 
 - (void)updateEmptyView;
-
+- (RepositoryCollectionViewDataSource *)inUseDataSource;
 @end
