@@ -137,22 +137,6 @@
                     {
                         typeToReturn = SyncActivityTypeUpload;
                     }
-                    else
-                    {
-                        //both modifiedAt dates have the same value - checking for last downloaded date
-                        if(syncNode.lastDownloadedDate)
-                        {
-                            NSComparisonResult downloadCompareResult = [syncNode.lastDownloadedDate compare:self.modifiedAt];
-                            if(downloadCompareResult == NSOrderedAscending)
-                            {
-                                typeToReturn = SyncActivityTypeDownload;
-                            }
-                        }
-                        else
-                        {
-                            typeToReturn = SyncActivityTypeDownload;
-                        }
-                    }
                 }
             }
         }
