@@ -99,10 +99,6 @@
             {
                 self.dataSourceCollection = [NSMutableArray array];
             }
-            else
-            {
-                 [self.dataSourceCollection removeAllObjects];
-            }
             [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
             
             self.moreItemsAvailable = pagingResult.hasMoreItems;
