@@ -116,7 +116,8 @@ static CGFloat const kLineSeparatorThickness = 1.0f;
     __weak typeof(self) weakSelf = self;
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.01 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [weakSelf.collectionView reloadData];
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf.collectionView reloadData];
     });
 }
 
