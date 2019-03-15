@@ -395,7 +395,8 @@
 {
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
     BOOL isMigrationNeededResult = ![defaults boolForKey:kHasSyncedContentMigrationOccurred];
-    
+    //disabling the migration until File Provider support is ready
+    isMigrationNeededResult = NO;
     return isMigrationNeededResult;
 }
 
