@@ -608,6 +608,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     self.isLoadingAnotherPage = NO;
     self.hasRequestFinished = YES;
     self.title = self.inUseDataSource.screenTitle;
+    self.editBarButtonItem.enabled = YES;
 }
 
 - (void)requestFailedWithError:(NSError *)error stringFormat:(NSString *)stringFormat
