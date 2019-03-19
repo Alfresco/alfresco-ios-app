@@ -594,7 +594,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl
 {
     [self showLoadingTextInRefreshControl:refreshControl];
-    
+    self.editBarButtonItem.enabled = NO;
     if (self.session)
     {
         [self.dataSource reloadDataSource];

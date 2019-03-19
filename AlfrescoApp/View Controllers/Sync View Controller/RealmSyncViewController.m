@@ -328,6 +328,7 @@ static NSString * const kVersionSeriesValueKeyPath = @"properties.cmis:versionSe
 
 - (void)refreshCollectionView:(UIRefreshControl *)refreshControl
 {
+    self.editBarButtonItem.enabled = NO;
     [self showLoadingTextInRefreshControl:refreshControl];
     
     // Verify Internet connection.
