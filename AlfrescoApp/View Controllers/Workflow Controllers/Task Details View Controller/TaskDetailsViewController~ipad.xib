@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskDetailsViewController">
             <connections>
                 <outlet property="approveButton" destination="gWH-UH-CWF" id="fCe-z3-IzG"/>
+                <outlet property="bottomSpacingOfTextViewContainerConstraint" destination="WLH-jK-63d" id="3E4-Cw-8xY"/>
                 <outlet property="detailsContainerView" destination="V4E-8E-aDA" id="8sw-yW-Bhs"/>
                 <outlet property="doneButton" destination="gsP-rK-SdK" id="XPa-WR-ZyT"/>
                 <outlet property="horizontalSpaceFromDoneButtonToCommentTextConstraint" destination="yZf-uo-N9I" id="Fcz-xJ-2lI"/>
@@ -123,7 +124,7 @@
                 <constraint firstItem="Eq1-wA-1fn" firstAttribute="leading" secondItem="cZx-40-5NX" secondAttribute="leading" id="Efx-Bk-nAc"/>
                 <constraint firstItem="745-eY-Hok" firstAttribute="top" secondItem="cZx-40-5NX" secondAttribute="top" constant="10" id="Fvd-Wj-JrE"/>
                 <constraint firstItem="745-eY-Hok" firstAttribute="leading" secondItem="cZx-40-5NX" secondAttribute="leading" constant="15" id="UCR-GF-cw8"/>
-                <constraint firstItem="Eq1-wA-1fn" firstAttribute="bottom" secondItem="cZx-40-5NX" secondAttribute="bottom" id="WLH-jK-63d"/>
+                <constraint firstItem="cZx-40-5NX" firstAttribute="bottom" secondItem="Eq1-wA-1fn" secondAttribute="bottom" id="WLH-jK-63d"/>
                 <constraint firstItem="V4E-8E-aDA" firstAttribute="leading" secondItem="cZx-40-5NX" secondAttribute="leading" constant="10" id="XM6-0c-9aB"/>
                 <constraint firstItem="Eq1-wA-1fn" firstAttribute="trailing" secondItem="cZx-40-5NX" secondAttribute="trailing" id="YxO-o7-w0q"/>
                 <constraint firstItem="cZx-40-5NX" firstAttribute="trailing" secondItem="V4E-8E-aDA" secondAttribute="trailing" constant="10" id="gVy-FW-lgg"/>

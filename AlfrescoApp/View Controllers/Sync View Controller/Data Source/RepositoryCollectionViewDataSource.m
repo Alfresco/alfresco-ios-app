@@ -37,6 +37,7 @@
     }
     
     self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
+    self.shouldAllowLayoutChange = YES;
     
     return self;
 }
