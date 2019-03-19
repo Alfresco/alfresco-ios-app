@@ -788,10 +788,6 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         
         [self.actionsAlertController addAction:cancelAction];
     }
-    else
-    {
-        
-    }
 }
 
 - (void)displayActionSheet:(id)sender event:(UIEvent *)event
