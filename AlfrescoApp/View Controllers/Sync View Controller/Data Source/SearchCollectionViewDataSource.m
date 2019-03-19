@@ -41,7 +41,7 @@
     self.session = session;
     self.delegate = delegate;
     self.searchStatement = searchStatement;
-    
+    self.shouldAllowLayoutChange = NO;
     if (listingContext)
     {
         self.defaultListingContext = listingContext;
@@ -65,7 +65,7 @@
     self.delegate = delegate;
     self.searchString = searchString;
     self.searchOptions = options;
-    
+    self.shouldAllowLayoutChange = NO;
     if (listingContext)
     {
         self.defaultListingContext = listingContext;
@@ -98,10 +98,6 @@
             if (self.dataSourceCollection == nil)
             {
                 self.dataSourceCollection = [NSMutableArray array];
-            }
-            else
-            {
-                 [self.dataSourceCollection removeAllObjects];
             }
             [self.dataSourceCollection addObjectsFromArray:pagingResult.objects];
             

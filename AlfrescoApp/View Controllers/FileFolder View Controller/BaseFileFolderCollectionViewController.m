@@ -400,21 +400,24 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 {
     NSMutableArray *rightBarButtonItems = [NSMutableArray array];
     
-    // update the UI based on permissions
-    if (!self.editing)
+    if((self.inUseDataSource.parentFolderPermissions.canEdit && self.inUseDataSource.shouldAllowMultiselect) || self.inUseDataSource.shouldAllowLayoutChange)
     {
-        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dots-A"] style:UIBarButtonItemStylePlain target:self action:@selector(performEditBarButtonItemAction:)];
+        // update the UI based on permissions
+        if (!self.editing)
+        {
+            self.editBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dots-A"] style:UIBarButtonItemStylePlain target:self action:@selector(performEditBarButtonItemAction:)];
+        }
+        else
+        {
+            self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                   target:self
+                                                                                   action:@selector(performEditBarButtonItemAction:)];
+        }
+        
+        self.editButtonItem.accessibilityIdentifier = kBaseCollectionVCDotsBarButtonIdentifier;
+        
+        [rightBarButtonItems addObject:self.editBarButtonItem];
     }
-    else
-    {
-        self.editBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                               target:self
-                                                                               action:@selector(performEditBarButtonItemAction:)];
-    }
-    
-    self.editButtonItem.accessibilityIdentifier = kBaseCollectionVCDotsBarButtonIdentifier;
-    
-    [rightBarButtonItems addObject:self.editBarButtonItem];
     
     if (!self.isEditing && (self.inUseDataSource.parentFolderPermissions.canAddChildren || self.inUseDataSource.parentFolderPermissions.canEdit))
     {
@@ -753,32 +756,42 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         [self.actionsAlertController addAction:editAction];
     }
     
-    NSString *changeLayoutTitle;
-    if(self.style == CollectionViewStyleList)
+    if (self.inUseDataSource.shouldAllowLayoutChange)
     {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Grid View");
-    }
-    else
-    {
-        changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"List View");
-    }
-    UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSString *changeLayoutTitle;
         if(self.style == CollectionViewStyleList)
         {
-            [self changeCollectionViewStyle:CollectionViewStyleGrid animated:YES trackAnalytics:YES];
+            changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.grid", @"Grid View");
         }
         else
         {
-            [self changeCollectionViewStyle:CollectionViewStyleList animated:YES trackAnalytics:YES];
+            changeLayoutTitle = NSLocalizedString(@"browser.actioncontroller.list", @"List View");
         }
-    }];
-    [self.actionsAlertController addAction:changeLayoutAction];
+        UIAlertAction *changeLayoutAction = [UIAlertAction actionWithTitle:changeLayoutTitle style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            if(self.style == CollectionViewStyleList)
+            {
+                [self changeCollectionViewStyle:CollectionViewStyleGrid animated:YES trackAnalytics:YES];
+            }
+            else
+            {
+                [self changeCollectionViewStyle:CollectionViewStyleList animated:YES trackAnalytics:YES];
+            }
+        }];
+        [self.actionsAlertController addAction:changeLayoutAction];
+    }
     
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-        [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
-    }];
-    
-    [self.actionsAlertController addAction:cancelAction];
+    if(self.actionsAlertController.actions.count > 0)
+    {
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+            [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
+        }];
+        
+        [self.actionsAlertController addAction:cancelAction];
+    }
+    else
+    {
+        
+    }
 }
 
 - (void)displayActionSheet:(id)sender event:(UIEvent *)event
