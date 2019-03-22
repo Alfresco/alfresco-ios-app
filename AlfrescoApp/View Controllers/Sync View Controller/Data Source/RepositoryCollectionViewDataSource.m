@@ -686,4 +686,9 @@
     self.session = notification.object;
 }
 
+- (NSString*)getSearchType
+{
+    return kAlfrescoModelTypeContent;
+}
+
 @end
