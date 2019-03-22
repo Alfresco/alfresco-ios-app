@@ -137,6 +137,10 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
     
     AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:[self.inUseDataSource parentFolder] includeDescendants:YES];
+    if ([self.inUseDataSource isKindOfClass:[SearchCollectionViewDataSource class]])
+    {
+        searchOptions.typeName = [self.inUseDataSource getSearchType];
+    }
     [self searchString:searchBar.text isFromSearchBar:YES searchOptions:searchOptions];
 }
 

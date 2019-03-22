@@ -686,4 +686,10 @@
     self.session = notification.object;
 }
 
+- (NSString*)getSearchType
+{
+   return [self getSearchType];
+}
+
+
 @end

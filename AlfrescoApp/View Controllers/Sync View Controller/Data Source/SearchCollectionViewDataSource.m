@@ -133,4 +133,9 @@
     [self retrieveNextItems:self.defaultListingContext];
 }
 
+- (NSString*)getSearchType
+{
+    return self.searchOptions.typeName;
+}
+
 @end
