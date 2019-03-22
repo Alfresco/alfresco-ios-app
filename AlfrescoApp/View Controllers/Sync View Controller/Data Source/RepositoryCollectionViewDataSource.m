@@ -688,8 +688,7 @@
 
 - (NSString*)getSearchType
 {
-   return [self getSearchType];
+    return kAlfrescoModelTypeContent;
 }
-
 
 @end

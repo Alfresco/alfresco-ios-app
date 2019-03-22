@@ -135,7 +135,7 @@
 
 - (NSString*)getSearchType
 {
-    return self.searchOptions.typeName;
+    return (self.searchOptions) ? self.searchOptions.typeName : [super getSearchType];
 }
 
 @end
