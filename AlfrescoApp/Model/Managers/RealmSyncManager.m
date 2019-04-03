@@ -1445,16 +1445,8 @@
     
     if(shouldUpdateStatus)
     {
-//        [realm beginWriteTransaction];
-//        childSyncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:childNode];
-//        [realm commitWriteTransaction];
         SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:childNode]];
         nodeStatus.status = SyncStatusSuccessful;
-        
-//        if (childSyncNodeInfo.isFolder == NO)
-//        {
-//            nodeStatus.totalSize = [(AlfrescoDocument *)childSyncNodeInfo.alfrescoNode contentLength];
-//        }
     }
     else
     {
