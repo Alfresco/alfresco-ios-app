@@ -60,13 +60,20 @@
         
         if ([self hasContentMigrationOccured])
         {
-            // Use the default directory, but replace the filename with the accountId
-            configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+            NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+            configFilePath = [[sharedAppGroupFolderURL.path stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
         }
         else
         {
-            NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
-            configFilePath = [[sharedAppGroupFolderURL.path stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+            // Use the default directory, but replace the filename with the accountId
+            configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+            
+            //check if the file exists in Documents folder, otherwise use the AppGroup path
+            if(![[AlfrescoFileManager sharedManager] fileExistsAtPath:configFilePath])
+            {
+                NSURL *sharedAppGroupFolderURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroupIdentifier];
+                configFilePath = [[sharedAppGroupFolderURL.path stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
+            }
         }
         
         config.fileURL = [NSURL URLWithString:configFilePath];
