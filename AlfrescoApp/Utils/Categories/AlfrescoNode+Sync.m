@@ -137,6 +137,10 @@
                     {
                         typeToReturn = SyncActivityTypeUpload;
                     }
+                    else if(!syncNode.lastDownloadedDate)
+                    {
+                        typeToReturn = SyncActivityTypeDownload;
+                    }
                 }
             }
         }
