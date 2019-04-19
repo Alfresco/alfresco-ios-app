@@ -46,10 +46,10 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     
     self.collectionView.delegate = self;
     self.listLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:1 itemHeight:kCellHeight shouldSwipeToDelete:YES hasHeader:self.shouldIncludeSearchBar];
-    self.listLayout.dataSourceInfoDelegate = self.dataSource;
+    self.listLayout.dataSourceInfoDelegate = self.inUseDataSource;
     self.listLayout.collectionViewMultiSelectDelegate = self;
     self.gridLayout = [[BaseCollectionViewFlowLayout alloc] initWithNumberOfColumns:3 itemHeight:-1 shouldSwipeToDelete:NO hasHeader:self.shouldIncludeSearchBar];
-    self.gridLayout.dataSourceInfoDelegate = self.dataSource;
+    self.gridLayout.dataSourceInfoDelegate = self.inUseDataSource;
     self.gridLayout.collectionViewMultiSelectDelegate = self;
     
     if(!self.hasRequestFinished)
@@ -102,20 +102,20 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     // the last row index of the table data
-    NSUInteger lastSiteRowIndex = [self.dataSource numberOfNodesInCollection] - 1;
+    NSUInteger lastSiteRowIndex = [self.inUseDataSource numberOfNodesInCollection] - 1;
     
     // if the last cell is about to be drawn, check if there are more sites
     if (indexPath.item == lastSiteRowIndex)
     {
-        int maxItems = self.dataSource.defaultListingContext.maxItems;
-        int skipCount = self.dataSource.defaultListingContext.skipCount + (int)self.dataSource.numberOfNodesInCollection;
+        int maxItems = self.inUseDataSource.defaultListingContext.maxItems;
+        int skipCount = self.inUseDataSource.defaultListingContext.skipCount + (int)self.inUseDataSource.numberOfNodesInCollection;
         AlfrescoListingContext *moreListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:maxItems skipCount:skipCount];
 
-        if (self.dataSource.moreItemsAvailable)
+        if (self.inUseDataSource.moreItemsAvailable)
         {
             // show more items are loading ...
             self.isLoadingAnotherPage = YES;
-            [self.dataSource retrieveNextItems:moreListingContext];
+            [self.inUseDataSource retrieveNextItems:moreListingContext];
         }
     }
     
@@ -133,17 +133,20 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
     BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
     
-    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:[self.dataSource parentFolder] includeDescendants:YES];
+    AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:[self.inUseDataSource parentFolder] includeDescendants:YES];
+    searchOptions.typeName = [self.inUseDataSource getSearchType];
     [self searchString:searchBar.text isFromSearchBar:YES searchOptions:searchOptions];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{    
+{
+    [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
     self.searchResults = nil;
     self.isOnSearchResults = NO;
-    [self reloadCollectionView];
+    [self.inUseDataSource reloadDataSource];
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
@@ -176,6 +179,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     [self showHUD];
     self.searchDataSource = [[SearchCollectionViewDataSource alloc] initWithSearchString:stringToSearch searchOptions:options emptyMessage:@"No search results" session:self.session delegate:self listingContext:nil];
     self.isOnSearchResults = isFromSearchBar;
+    
 }
 
 #pragma mark - Gesture Recognizers methods
@@ -202,7 +206,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                 else if(CGRectContainsPoint(properCell.deleteButton.bounds, touchPointInButton))
                 {
                     [self showHUD];
-                    [self.dataSource collectionView:self.collectionView didSwipeToDeleteItemAtIndex:properLayout.selectedIndexPathForSwipeToDelete completionBlock:^{
+                    [self.inUseDataSource collectionView:self.collectionView didSwipeToDeleteItemAtIndex:properLayout.selectedIndexPathForSwipeToDelete completionBlock:^{
                         [self hideHUD];
                     }];
                 }
@@ -235,7 +239,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                 if (CGRectContainsPoint(self.collectionView.bounds, startingPoint))
                 {
                     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:startingPoint];
-                    if(indexPath && indexPath.item < self.dataSource.numberOfNodesInCollection)
+                    if(indexPath && indexPath.item < self.inUseDataSource.numberOfNodesInCollection)
                     {
                         self.initialCellForSwipeToDelete = indexPath;
                     }
@@ -344,7 +348,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 #pragma mark - Internal methods
 - (void)deleteNode:(AlfrescoNode *)nodeToDelete completionBlock:(void (^)(BOOL success))completionBlock
 {
-    [self.dataSource deleteNode:nodeToDelete completionBlock:^(BOOL success) {
+    [self.inUseDataSource deleteNode:nodeToDelete completionBlock:^(BOOL success) {
         if(completionBlock != NULL)
         {
             completionBlock(success);
@@ -397,7 +401,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 {
     NSMutableArray *rightBarButtonItems = [NSMutableArray array];
     
-    if((self.dataSource.parentFolderPermissions.canEdit && self.dataSource.shouldAllowMultiselect) || self.dataSource.shouldAllowLayoutChange)
+    if((self.inUseDataSource.parentFolderPermissions.canEdit && self.inUseDataSource.shouldAllowMultiselect) || self.inUseDataSource.shouldAllowLayoutChange)
     {
         // update the UI based on permissions
         if (!self.editing)
@@ -416,7 +420,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         [rightBarButtonItems addObject:self.editBarButtonItem];
     }
     
-    if (!self.isEditing && (self.dataSource.parentFolderPermissions.canAddChildren || self.dataSource.parentFolderPermissions.canEdit))
+    if (!self.isEditing && (self.inUseDataSource.parentFolderPermissions.canAddChildren || self.inUseDataSource.parentFolderPermissions.canEdit))
     {
         UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                    target:self
@@ -429,7 +433,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
 - (void)selectIndexPathForAlfrescoNodeInDetailView
 {
-    NSArray *collectionViewNodeIdentifiers = [self.dataSource nodeIdentifiersOfCurrentCollection];
+    NSArray *collectionViewNodeIdentifiers = [self.inUseDataSource nodeIdentifiersOfCurrentCollection];
     NSIndexPath *indexPath = [self indexPathForNodeWithIdentifier:[UniversalDevice detailViewItemIdentifier] inNodeIdentifiers:collectionViewNodeIdentifiers];
     
     [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
@@ -467,14 +471,14 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 #pragma mark - CollectionViewCellAccessoryViewDelegate methods
 - (void)didTapCollectionViewCellAccessorryView:(AlfrescoNode *)node
 {
-    NSUInteger item = [self.dataSource indexOfNode:node];
+    NSUInteger item = [self.inUseDataSource indexOfNode:node];
     NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForItem:item inSection:0];
     
     if (node.isFolder)
     {
         [self.collectionView selectItemAtIndexPath:selectedIndexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
         
-        AlfrescoPermissions *nodePermissions = [self.dataSource permissionsForNode:node];
+        AlfrescoPermissions *nodePermissions = [self.inUseDataSource permissionsForNode:node];
         [UniversalDevice pushToDisplayFolderPreviewControllerForAlfrescoDocument:(AlfrescoFolder *)node
                                                                      permissions:nodePermissions
                                                                          session:self.session
@@ -511,7 +515,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
 - (void)showPopoverForFailedSyncNodeAtIndexPath:(NSIndexPath *)indexPath
 {
-    AlfrescoNode *node = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
+    AlfrescoNode *node = [self.inUseDataSource alfrescoNodeAtIndex:indexPath.item];
     NSString *errorDescription = [node syncErrorDescription];
     
     if (IS_IPAD)
@@ -604,7 +608,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     [self updateUIUsingFolderPermissionsWithAnimation:NO];
     self.isLoadingAnotherPage = NO;
     self.hasRequestFinished = YES;
-    self.title = self.dataSource.screenTitle;
+    self.title = self.inUseDataSource.screenTitle;
     self.editBarButtonItem.enabled = YES;
 }
 
@@ -669,7 +673,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 - (void)setNodeDataSource:(RepositoryCollectionViewDataSource *)dataSource
 {
     self.dataSource = dataSource;
-    self.collectionView.dataSource = self.dataSource;
+    self.collectionView.dataSource = dataSource;
     [self setupActionsAlertController];
 }
 
@@ -713,9 +717,9 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     if(self.isEditing)
     {
         AlfrescoNode *selectedNode = nil;
-        if(indexPath.item < [self.dataSource numberOfNodesInCollection])
+        if(indexPath.item < [self.inUseDataSource numberOfNodesInCollection])
         {
-            selectedNode = [self.dataSource alfrescoNodeAtIndex:indexPath.item];
+            selectedNode = [self.inUseDataSource alfrescoNodeAtIndex:indexPath.item];
         }
         
         if([self.multiSelectContainerView.toolbar.selectedItems containsObject:selectedNode])
@@ -744,17 +748,17 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 {
     self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    if (self.dataSource.parentFolderPermissions.canEdit && self.dataSource.shouldAllowMultiselect)
+    if (self.inUseDataSource.parentFolderPermissions.canEdit && self.inUseDataSource.shouldAllowMultiselect)
     {
         UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Multi-Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self setEditing:!self.editing animated:YES];
         }];
-        editAction.enabled = ([self.dataSource numberOfNodesInCollection] > 0);
+        editAction.enabled = ([self.inUseDataSource numberOfNodesInCollection] > 0);
         
         [self.actionsAlertController addAction:editAction];
     }
     
-    if (self.dataSource.shouldAllowLayoutChange)
+    if (self.inUseDataSource.shouldAllowLayoutChange)
     {
         NSString *changeLayoutTitle;
         if(self.style == CollectionViewStyleList)
@@ -786,17 +790,13 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         
         [self.actionsAlertController addAction:cancelAction];
     }
-    else
-    {
-        
-    }
 }
 
 - (void)displayActionSheet:(id)sender event:(UIEvent *)event
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
-    if (self.dataSource.parentFolderPermissions.canAddChildren)
+    if (self.inUseDataSource.parentFolderPermissions.canAddChildren)
     {
         [alertController addAction:[self alertActionCreateFile]];
         [alertController addAction:[self alertActionAddFolder]];
@@ -834,7 +834,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 - (UIAlertAction *)alertActionCreateFile
 {
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.createfile", @"Create File") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:[self.dataSource parentFolder] session:self.session delegate:self];
+        TextFileViewController *textFileViewController = [[TextFileViewController alloc] initWithUploadFileDestinationFolder:[self.inUseDataSource parentFolder] session:self.session delegate:self];
         NavigationViewController *textFileViewNavigationController = [[NavigationViewController alloc] initWithRootViewController:textFileViewController];
         [UniversalDevice displayModalViewController:textFileViewNavigationController onController:[UniversalDevice revealViewController] withCompletionBlock:nil];
         
@@ -867,7 +867,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                     
                     if ([Utility isValidFolderName:desiredFolderName])
                     {
-                        [self.dataSource createFolderWithName:desiredFolderName];
+                        [self.inUseDataSource createFolderWithName:desiredFolderName];
                     }
                     else
                     {
@@ -985,7 +985,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         [PermissionChecker requestPermissionForResourceType:ResourceTypeMicrophone completionBlock:^(BOOL granted) {
             if (granted)
             {
-                UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:[self.dataSource parentFolder] delegate:self];
+                UploadFormViewController *audioRecorderViewController = [[UploadFormViewController alloc] initWithSession:self.session createAndUploadAudioToFolder:[self.inUseDataSource parentFolder] delegate:self];
                 NavigationViewController *audioRecorderNavigationController = [[NavigationViewController alloc] initWithRootViewController:audioRecorderViewController];
                 [UniversalDevice displayModalViewController:audioRecorderNavigationController onController:self.navigationController withCompletionBlock:nil];
                 
@@ -1037,7 +1037,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                 [[LocationManager sharedManager] stopLocationUpdates];
             }
             
-            uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadImage:selectedImage fileExtension:selectedImageExtension metadata:metadata inFolder:[self.dataSource parentFolder] uploadFormType:contentFormType delegate:self];
+            uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadImage:selectedImage fileExtension:selectedImageExtension metadata:metadata inFolder:[self.inUseDataSource parentFolder] uploadFormType:contentFormType delegate:self];
             uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
             
             // display the preview form to upload
@@ -1114,7 +1114,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         }
         
         // create the view controller
-        uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadDocumentPath:renamedFilePath inFolder:[self.dataSource parentFolder] uploadFormType:contentFormType delegate:self];
+        uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session uploadDocumentPath:renamedFilePath inFolder:[self.inUseDataSource parentFolder] uploadFormType:contentFormType delegate:self];
         uploadFormNavigationController = [[NavigationViewController alloc] initWithRootViewController:uploadFormController];
         
         // display the preview form to upload
@@ -1167,7 +1167,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 {
     UploadFormViewController *uploadFormController = [[UploadFormViewController alloc] initWithSession:self.session
                                                                                     uploadDocumentPath:documentPath
-                                                                                              inFolder:[self.dataSource parentFolder]
+                                                                                              inFolder:[self.inUseDataSource parentFolder]
                                                                                         uploadFormType:UploadFormTypeDocument
                                                                                               delegate:self];
     
@@ -1199,7 +1199,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
 - (void)didFinishUploadingNode:(AlfrescoNode *)node fromLocation:(NSURL *)locationURL
 {
-    [self.dataSource addAlfrescoNodes:@[node]];
+    [self.inUseDataSource addAlfrescoNodes:@[node]];
     [self updateUIUsingFolderPermissionsWithAnimation:NO];
     displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"upload.success-as.message", @"Document uplaoded as"), node.name]);
 }

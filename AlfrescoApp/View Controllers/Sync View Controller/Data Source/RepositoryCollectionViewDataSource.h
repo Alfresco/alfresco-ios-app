@@ -71,5 +71,7 @@
 - (void)addAlfrescoNodes:(NSArray *)alfrescoNodes;
 - (void)reloadDataSource;
 - (AlfrescoFolder *)parentFolder;
+- (NSString*)getSearchType;
+
 
 @end

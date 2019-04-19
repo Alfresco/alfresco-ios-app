@@ -925,4 +925,4 @@
 /**
  * Cloud Termination Alert
  */
-"cloudtermination.message" = "my.alfresco.com sera définitivement désactivé le 28 mars 2019. Veuillez contacter votre administrateur système qui vous indiquera comment exporter vos données depuis ce service.";
+"cloudtermination.message" = "my.alfresco.com sera définitivement désactivé le 28 juin 2019. Veuillez contacter votre administrateur système qui vous indiquera comment exporter vos données depuis ce service.";

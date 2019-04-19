@@ -561,9 +561,9 @@
             __block SyncProgressType syncProgressType = [syncOpQ syncProgressTypeForNode:node];
             if(syncProgressType == SyncProgressTypeInProcessing)
             {
-                self.nodeChildrenRequestsCount++;
+                self.nodeRequestsInProgressCount++;
                 [self retrieveNodeHierarchyForNode:node withCompletionBlock:^(BOOL completed) {
-                    if(self.nodeChildrenRequestsCount == 0)
+                    if(self.nodeRequestsInProgressCount == 0)
                     {
                         RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
                         NSArray *documents = [[RealmSyncCore sharedSyncCore] allNodesWithType:NodesTypeDocuments inFolder:(AlfrescoFolder *)node recursive:YES includeTopLevelNodes:YES inRealm:realm];
@@ -629,6 +629,19 @@
     }];
 }
 
+- (NSArray *)removeWorkingCopiesForNodes:(NSArray *)nodes
+{
+    NSMutableArray *resultsArray = [NSMutableArray new];
+    for(AlfrescoNode *node in nodes)
+    {
+        if(![node hasAspectWithName:@"cm:workingcopy"])
+        {
+            [resultsArray addObject:node];
+        }
+    }
+    return resultsArray;
+}
+
 - (void)retrieveNodeHierarchyForNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     NSMutableDictionary *nodesInfoForSelectedAccount = self.syncNodesInfo;
@@ -638,6 +651,7 @@
         [self.documentFolderService retrieveChildrenInFolder:(AlfrescoFolder *)node completionBlock:^(NSArray *array, NSError *error) {
             if (array)
             {
+                array = [self removeWorkingCopiesForNodes:array];
                 // nodes for each folder are held in with keys folder identifiers
                 nodesInfoForSelectedAccount[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]] = array;
                 RLMRealm *realm = [RLMRealm defaultRealm];
@@ -653,7 +667,7 @@
                     
                     if(subNode.isFolder)
                     {
-                        self.nodeChildrenRequestsCount++;
+                        self.nodeRequestsInProgressCount++;
                         // recursive call to retrieve nodes hierarchies
                         [self retrieveNodeHierarchyForNode:subNode withCompletionBlock:^(BOOL completed) {
                             
@@ -669,7 +683,7 @@
             {
                 [self removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
             }
-            self.nodeChildrenRequestsCount--;
+            self.nodeRequestsInProgressCount--;
             
             if (completionBlock != NULL)
             {
@@ -751,9 +765,9 @@
     }
 }
 
-- (NSMutableArray *)documentsToUpload
+- (NSMutableSet *)documentsToUpload
 {
-    NSMutableArray *documentsToUpload = [[NSMutableArray alloc] init];
+    NSMutableSet *documentsToUpload = [NSMutableSet new];
     
     RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RLMResults *allDocuments = [[RealmSyncCore sharedSyncCore] allDocumentsInRealm:realm];
@@ -1212,8 +1226,8 @@
         
          // STEP 4 - Remove any synced content that is no longer within a sync set.
          [self cleanDataBaseOfUnwantedNodesWithCompletionBlock:^() {
-             NSMutableArray *allNodesWithPendingOperations = [NSMutableArray arrayWithArray:self.nodesToDownload];
-             [allNodesWithPendingOperations addObjectsFromArray:self.nodesToUpload];
+             NSMutableArray *allNodesWithPendingOperations = [NSMutableArray arrayWithArray:[self.nodesToDownload allObjects]];
+             [allNodesWithPendingOperations addObjectsFromArray:[self.nodesToUpload allObjects]];
              [self checkNode:allNodesWithPendingOperations forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
                  if (shouldProceed)
                  {
@@ -1264,15 +1278,27 @@
     [realm commitWriteTransaction];
 }
 
+- (void)checkHierarchyStatusAndContinueProcessing:(void (^)(BOOL))completionBlock {
+    if(self.nodeRequestsInProgressCount == 0)
+    {
+        [self determineSyncActionAndStatusForRefresh];
+        
+        if(completionBlock)
+        {
+            completionBlock(YES);
+        }
+    }
+}
+
 - (void)rebuildDataBaseWithCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
     RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RLMResults *topLevelNodes = [[RealmSyncCore sharedSyncCore] topLevelSyncNodesInRealm:realm];
     
-    self.nodeChildrenRequestsCount = 0;
+    self.nodeRequestsInProgressCount = 0;
     
-    self.nodesToDownload = [NSMutableArray new];
-    self.nodesToUpload = [NSMutableArray new];
+    self.nodesToDownload = [NSMutableSet new];
+    self.nodesToUpload = [NSMutableSet new];
     
     if (topLevelNodes.count == 0 && completionBlock)
     {
@@ -1281,26 +1307,36 @@
     }
     
     self.syncNodesInfo = [NSMutableDictionary new];
-    for(RealmSyncNodeInfo *node in topLevelNodes)
+    for(RealmSyncNodeInfo *rnode in topLevelNodes)
     {
-        if(node.isFolder)
+        self.nodeRequestsInProgressCount++;
+        if(rnode.isFolder)
         {
-            self.nodeChildrenRequestsCount++;
-            [self retrieveNodeHierarchyForNode:node.alfrescoNode withCompletionBlock:^(BOOL completed) {
-                if(self.nodeChildrenRequestsCount == 0)
-                {
-                    [self determineSyncActionAndStatusForRefresh];
-                    
-                    if(completionBlock)
-                    {
-                        completionBlock(YES);
-                    }
-                }
+            [self retrieveNodeHierarchyForNode:rnode.alfrescoNode withCompletionBlock:^(BOOL completed) {
+                [self checkHierarchyStatusAndContinueProcessing:completionBlock];
             }];
         }
         else
         {
-            [self handleNodeSyncActionAndStatus:node.alfrescoNode parentNode:nil];
+            //document service get node for id
+            __weak typeof(self) weakSelf = self;
+            AlfrescoNode *cAlfrescoNode = rnode.alfrescoNode;
+            [self.documentFolderService retrieveNodeWithIdentifier:cAlfrescoNode.identifier
+                                                   completionBlock:^(AlfrescoNode *node, NSError *error) {
+                __strong typeof(self) strongSelf = weakSelf;
+                if (error)
+                {
+                    [strongSelf removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore]
+                                                                       syncIdentifierForNode:cAlfrescoNode]];
+                }
+                else
+                {
+                    [strongSelf handleNodeSyncActionAndStatus:node
+                                             parentNode:nil];
+                }
+                strongSelf.nodeRequestsInProgressCount --;
+                [self checkHierarchyStatusAndContinueProcessing:completionBlock];
+            }];
         }
     }
     
@@ -1409,16 +1445,8 @@
     
     if(shouldUpdateStatus)
     {
-        [realm beginWriteTransaction];
-        childSyncNodeInfo.node = [NSKeyedArchiver archivedDataWithRootObject:childNode];
-        [realm commitWriteTransaction];
         SyncNodeStatus *nodeStatus = [self syncStatusForNodeWithId:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:childNode]];
         nodeStatus.status = SyncStatusSuccessful;
-        
-        if (childSyncNodeInfo.isFolder == NO)
-        {
-            nodeStatus.totalSize = [(AlfrescoDocument *)childSyncNodeInfo.alfrescoNode contentLength];
-        }
     }
     else
     {
@@ -1520,10 +1548,10 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
-        [syncOpQ downloadContentsForNodes:self.nodesToDownload withCompletionBlock:nil];
-        [syncOpQ uploadContentsForNodes:self.nodesToUpload withCompletionBlock:nil];
+        [syncOpQ downloadContentsForNodes:[self.nodesToDownload allObjects] withCompletionBlock:nil];
+        [syncOpQ uploadContentsForNodes:[self.nodesToUpload allObjects] withCompletionBlock:nil];
         
-        [self trackSyncRunWithNodesToDownload:self.nodesToDownload nodesToUpload:self.nodesToUpload];
+        [self trackSyncRunWithNodesToDownload:[self.nodesToDownload allObjects] nodesToUpload:[self.nodesToUpload allObjects]];
     });
 }
 

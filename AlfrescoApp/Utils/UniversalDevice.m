@@ -201,6 +201,9 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
 
 + (void)clearDetailViewController
 {
+    folderPreviewController = nil;
+    documentPreviewController = nil;
+    downloadDocumentPreviewController = nil;
     if (IS_IPAD)
     {
         PlaceholderViewController *viewController = [[PlaceholderViewController alloc] init];
