@@ -339,6 +339,7 @@
 "multiselect.delete.completed.message" = "已删除 %@ 个文件。";
 "multiselect.delete.partial.message" = "已删除 %@ 个文件。有些文件无法删除";
 "multiselect.delete.failure.message" = "所有文件都无法删除。";
+"multiselect.search.discard.message" = "Selections will be discarded. Continue?";
 
 /**
  * Node Picker

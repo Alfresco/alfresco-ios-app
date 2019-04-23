@@ -57,6 +57,7 @@
 @property (nonatomic, assign) BOOL moreItemsAvailable;
 @property (nonatomic, strong) AlfrescoPermissions *parentFolderPermissions;
 @property (nonatomic) BOOL shouldAllowMultiselect;
+@property (nonatomic) BOOL onMultiselect;
 @property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
 @property (nonatomic) BOOL shouldAllowLayoutChange;
 
