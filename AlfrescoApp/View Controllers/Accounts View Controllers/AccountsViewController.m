@@ -432,10 +432,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 - (void)addAccount:(id)sender
 {
-    AccountTypeSelectionViewController *accountTypeController = [[AccountTypeSelectionViewController alloc] init];
-    NavigationViewController *addAccountNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountTypeController];
-    addAccountNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:addAccountNavigationController animated:YES completion:nil];
+    AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountServer account:nil configuration:nil session:nil];
+    NavigationViewController *accountDetailsNavController = [[NavigationViewController alloc] initWithRootViewController:accountDetailsViewController];
+    accountDetailsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:accountDetailsNavController animated:YES completion:nil];
 }
 
 #pragma mark - Private Methods

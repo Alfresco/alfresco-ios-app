@@ -102,10 +102,15 @@ static CGFloat const kButtonCornerRadius = 5.0f;
     UIButton *addAccountButton = (UIButton *)sender;
     addAccountButton.enabled = NO;
     
-    AccountTypeSelectionViewController *existingAccountViewController = [[AccountTypeSelectionViewController alloc] initWithDelegate:self];
-    NavigationViewController *existingAccountNavController = [[NavigationViewController alloc] initWithRootViewController:existingAccountViewController];
+    AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountServer account:nil configuration:nil session:nil];
+    accountDetailsViewController.delegate = self;
+    NavigationViewController *accountDetailsNavController = [[NavigationViewController alloc] initWithRootViewController:accountDetailsViewController];
+    [UniversalDevice displayModalViewController:accountDetailsNavController onController:self withCompletionBlock:nil];
+    [Utility zoomAppLevelOutWithCompletionBlock:^{
+        addAccountButton.enabled = YES;
+    }];
 
-    [UniversalDevice displayModalViewController:existingAccountNavController onController:self withCompletionBlock:nil];
+    
     [Utility zoomAppLevelOutWithCompletionBlock:^{
         addAccountButton.enabled = YES;
     }];
