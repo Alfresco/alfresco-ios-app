@@ -22,10 +22,11 @@
 #import "AccountTypeSelectionViewController.h"
 #import "RootRevealViewController.h"
 #import "WebBrowserViewController.h"
+#import "AccountDetailsViewController.h"
 
 static CGFloat const kButtonCornerRadius = 5.0f;
 
-@interface OnboardingViewController () <AccountTypeSelectionViewControllerDelegate>
+@interface OnboardingViewController () <AccountFlowDelegate>
 
 @property (nonatomic, weak) IBOutlet UIButton *useExistingAccountButton;
 @property (nonatomic, weak) IBOutlet UIButton *closeWelcomeScreenButton;
@@ -103,7 +104,7 @@ static CGFloat const kButtonCornerRadius = 5.0f;
     
     AccountTypeSelectionViewController *existingAccountViewController = [[AccountTypeSelectionViewController alloc] initWithDelegate:self];
     NavigationViewController *existingAccountNavController = [[NavigationViewController alloc] initWithRootViewController:existingAccountViewController];
-    
+
     [UniversalDevice displayModalViewController:existingAccountNavController onController:self withCompletionBlock:nil];
     [Utility zoomAppLevelOutWithCompletionBlock:^{
         addAccountButton.enabled = YES;
@@ -128,7 +129,7 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 
 #pragma mark - AccountTypeSelectionViewControllerDelegate Functions
 
-- (void)accountTypeSelectionViewControllerWillDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(BOOL)accountAdded
+- (void)accountFlowWillDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(UserAccount*)accountAdded
 {
     [Utility resetAppZoomLevelWithCompletionBlock:NULL];
     if (accountAdded)
