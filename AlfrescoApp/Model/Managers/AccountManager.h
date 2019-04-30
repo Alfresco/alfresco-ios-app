@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, ImportCertificateStatus)
 
 + (AccountManager *)sharedManager;
 - (NSArray *)allAccounts;
+- (void)removeCloudAccounts;
 - (void)addAccount:(UserAccount *)account;
 - (void)addAccounts:(NSArray *)accounts;
 - (void)removeAccount:(UserAccount *)account;

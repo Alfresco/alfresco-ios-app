@@ -174,6 +174,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     {
         // If there is a selected Account, attempt login
         AccountManager *accountManager = [AccountManager sharedManager];
+        [accountManager removeCloudAccounts];
         if (accountManager.selectedAccount)
         {
             // Delay to allow the UI to update - reachability check can block the main thread
