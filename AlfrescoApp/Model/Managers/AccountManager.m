@@ -137,6 +137,29 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     }
 }
 
+- (void)removeCloudAccounts
+{
+    if (self.selectedAccount.accountType == UserAccountTypeCloud)
+    {
+        self.selectedAccount = nil;
+    }
+    
+    for (UserAccount *account in self.accountsFromKeychain)
+    {
+        if (account.accountType == UserAccountTypeCloud)
+        {
+            [self.accountsFromKeychain removeObject:account];
+            
+        }
+    }
+    [self saveAccountsToKeychain];
+    
+    if (self.accountsFromKeychain.count == 0)
+    {
+        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountsListEmptyNotification object:nil];
+    }
+}
+
 - (void)removeAllAccounts
 {
     NSInteger previousNumberOfPaidAccounts = [self numberOfPaidAccounts];
