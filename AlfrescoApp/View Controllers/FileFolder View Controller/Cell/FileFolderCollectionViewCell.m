@@ -416,16 +416,19 @@ static CGFloat const kStatusViewVerticalDisplacementSideImage = 5.0f;
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (!self.isSyncNode && nodeStatus.status != SyncStatusRemoved)
+            if ([self.node.identifier hasPrefix:nodeStatus.nodeId])
             {
-                [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:NO isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
+                if (!self.isSyncNode && nodeStatus.status != SyncStatusRemoved)
+                {
+                    [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:NO isTopLevelSyncNode:self.isTopLevelSyncNode animate:YES];
+                }
+                if (nodeStatus.status == SyncStatusRemoved)
+                {
+                    self.nodeStatus = nil;
+                    [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:NO isTopLevelSyncNode:NO animate:YES];
+                }
+                [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
             }
-            if (nodeStatus.status == SyncStatusRemoved)
-            {
-                self.nodeStatus = nil;
-                [self updateStatusIconsIsFavoriteNode:self.isFavorite isSyncNode:NO isTopLevelSyncNode:NO animate:YES];
-            }
-            [self updateCellWithNodeStatus:nodeStatus propertyChanged:propertyChanged];
         });
     }
 }
