@@ -58,6 +58,7 @@
 @property (nonatomic, strong) AlfrescoPermissions *parentFolderPermissions;
 @property (nonatomic) BOOL shouldAllowMultiselect;
 @property (nonatomic, strong) AlfrescoListingContext *defaultListingContext;
+@property (nonatomic) BOOL shouldAllowLayoutChange;
 
 - (instancetype)initWithParentNode:(AlfrescoNode *)node session:(id<AlfrescoSession>)session delegate:(id<RepositoryCollectionViewDataSourceDelegate>)delegate;
 - (AlfrescoNode *)alfrescoNodeAtIndex:(NSInteger)index;

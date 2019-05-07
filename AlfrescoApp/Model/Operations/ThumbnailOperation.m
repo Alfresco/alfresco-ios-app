@@ -58,7 +58,7 @@
         if (strongSelf.contentFileCompletionBlock)
         {
             dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.contentFileCompletionBlock(contentFile, error);
+                strongSelf.contentFileCompletionBlock(contentFile, error);
             });
         }
         strongSelf.stopRunLoop = YES;

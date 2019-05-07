@@ -1,7 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FolderPreviewViewController">
@@ -20,8 +26,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Jt8-G4-GTF">
-                    <rect key="frame" x="284" y="13" width="200" height="29"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <rect key="frame" x="284" y="33" width="200" height="29"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="200" id="dv8-0o-XwS"/>
                         <constraint firstAttribute="height" constant="28" id="shd-Iz-4nZ"/>
@@ -35,17 +40,15 @@
                     </connections>
                 </segmentedControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="q3I-ZY-a5T" customClass="PagedScrollView">
-                    <rect key="frame" x="20" y="51" width="728" height="835"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <rect key="frame" x="20" y="71" width="728" height="815"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="sE4-9P-fXX"/>
                     </connections>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ncC-Qj-flT" customClass="ActionCollectionView">
                     <rect key="frame" x="0.0" y="894" width="768" height="110"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="110" id="Fvf-ky-hi9"/>
                     </constraints>
@@ -54,19 +57,23 @@
                     </connections>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="q3I-ZY-a5T" firstAttribute="top" secondItem="Jt8-G4-GTF" secondAttribute="bottom" constant="10" id="0oI-wD-j8i"/>
-                <constraint firstAttribute="trailing" secondItem="ncC-Qj-flT" secondAttribute="trailing" id="1df-rp-kah"/>
                 <constraint firstAttribute="centerX" secondItem="Jt8-G4-GTF" secondAttribute="centerX" id="FZS-A8-pSw"/>
-                <constraint firstItem="Jt8-G4-GTF" firstAttribute="top" secondItem="1" secondAttribute="top" constant="13" id="dqr-WK-Azv"/>
+                <constraint firstItem="C3i-o7-NQT" firstAttribute="trailing" secondItem="ncC-Qj-flT" secondAttribute="trailing" id="SGf-Q3-Iou"/>
+                <constraint firstItem="C3i-o7-NQT" firstAttribute="bottom" secondItem="ncC-Qj-flT" secondAttribute="bottom" id="Zpz-DA-wku"/>
+                <constraint firstItem="Jt8-G4-GTF" firstAttribute="top" secondItem="C3i-o7-NQT" secondAttribute="top" constant="13" id="dqr-WK-Azv"/>
                 <constraint firstItem="ncC-Qj-flT" firstAttribute="top" secondItem="q3I-ZY-a5T" secondAttribute="bottom" constant="8" id="fZQ-2l-WcJ"/>
-                <constraint firstAttribute="bottom" secondItem="ncC-Qj-flT" secondAttribute="bottom" id="jBt-Iy-E8q"/>
-                <constraint firstAttribute="trailing" secondItem="q3I-ZY-a5T" secondAttribute="trailing" constant="20" id="ndf-Kx-9Oi"/>
-                <constraint firstItem="q3I-ZY-a5T" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" id="qZn-DX-iGg"/>
+                <constraint firstItem="ncC-Qj-flT" firstAttribute="leading" secondItem="C3i-o7-NQT" secondAttribute="leading" id="jqx-M1-SnT"/>
+                <constraint firstItem="C3i-o7-NQT" firstAttribute="trailing" secondItem="q3I-ZY-a5T" secondAttribute="trailing" constant="20" id="ndf-Kx-9Oi"/>
+                <constraint firstItem="q3I-ZY-a5T" firstAttribute="leading" secondItem="C3i-o7-NQT" secondAttribute="leading" constant="20" id="qZn-DX-iGg"/>
                 <constraint firstItem="q3I-ZY-a5T" firstAttribute="top" secondItem="Jt8-G4-GTF" secondAttribute="bottom" constant="10" id="rCE-1k-JOO"/>
-                <constraint firstItem="ncC-Qj-flT" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="xLl-TX-pbA"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="C3i-o7-NQT"/>
+            <point key="canvasLocation" x="87.5" y="82.6171875"/>
         </view>
     </objects>
 </document>

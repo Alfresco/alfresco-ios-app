@@ -156,12 +156,14 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         self.favoriteIconWidthConstraint.constant = kFavoriteIconWidth;
         self.favoriteIconRightSpaceConstraint.constant = kFavoriteIconRightSpace;
         self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+        self.favoriteStatusImageView.hidden = NO;
     }
     else
     {
         self.favoriteIconWidthConstraint.constant = 0;
         self.favoriteIconRightSpaceConstraint.constant = 0;
-        self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+        self.favoriteIconTopSpaceConstraint.priority = UILayoutPriorityRequired;
+        self.favoriteStatusImageView.hidden = YES;
     }
 }
 
@@ -175,12 +177,14 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         self.topLevelIconWidthConstraint.constant = kTopLevelIconWidth;
         self.topLevelIconRightSpaceConstraint.constant = kTopLevelIconRightSpace;
         self.topLevelIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+        self.topLevelStatusImageView.hidden = NO;
     }
     else
     {
         self.topLevelIconWidthConstraint.constant = 0;
         self.topLevelIconRightSpaceConstraint.constant = 0;
-        self.topLevelIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+        self.topLevelIconTopSpaceConstraint.priority = UILayoutPriorityRequired;
+        self.topLevelStatusImageView.hidden = YES;
     }
 }
 
@@ -191,12 +195,14 @@ static CGFloat const kStatusIconsAnimationDuration = 0.2f;
         self.syncIconWidthConstraint.constant = kSyncIconWidth;
         self.syncIconRightSpaceConstraint.constant = kSyncIconRightSpace;
         self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultHigh;
+        self.syncStatusImageView.hidden = NO;
     }
     else
     {
         self.syncIconWidthConstraint.constant = 0;
         self.syncIconRightSpaceConstraint.constant = 0;
-        self.syncIconTopSpaceConstraint.priority = UILayoutPriorityDefaultLow;
+        self.syncIconTopSpaceConstraint.priority = UILayoutPriorityRequired;
+        self.syncStatusImageView.hidden = YES;
     }
 }
 

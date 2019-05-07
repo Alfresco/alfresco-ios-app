@@ -68,7 +68,6 @@
 - (void)reloadDataSource
 {
     [self.dataSourceCollection removeAllObjects];
-    
     [self retrieveNextItems:self.defaultListingContext];
 }
 

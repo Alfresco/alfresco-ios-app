@@ -37,6 +37,7 @@
     }
     
     self.defaultListingContext = [[AlfrescoListingContext alloc] initWithMaxItems:kMaxItemsPerListingRetrieve skipCount:0];
+    self.shouldAllowLayoutChange = YES;
     
     return self;
 }
@@ -171,67 +172,72 @@
         LoadingCollectionViewCell *cell = (LoadingCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:[LoadingCollectionViewCell cellIdentifier] forIndexPath:indexPath];
         return cell;
     }
-    
-    FileFolderCollectionViewCell *nodeCell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
-    AlfrescoNode *node = self.dataSourceCollection[indexPath.item];
-    RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
-    
-    SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
-    [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
-    [nodeCell registerForNotifications];
-    
-    [self updateFavoriteStatusIconForNodeCell:nodeCell node:node];
-    
-    BaseCollectionViewFlowLayout *currentLayout = [self.delegate currentSelectedLayout];
-    
-    if (node.isFolder)
+    else
     {
-        if(currentLayout.shouldShowSmallThumbnail)
+        FileFolderCollectionViewCell *nodeCell = [collectionView dequeueReusableCellWithReuseIdentifier:[FileFolderCollectionViewCell cellIdentifier] forIndexPath:indexPath];
+        if(indexPath.item < self.dataSourceCollection.count)
         {
-            [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
-        }
-        else
-        {
-            [nodeCell.image setImage:largeImageForType(@"folder") withFade:NO];
-        }
-    }
-    else if (node.isDocument)
-    {
-        AlfrescoDocument *document = (AlfrescoDocument *)node;
-        ThumbnailManager *thumbnailManager = [ThumbnailManager sharedManager];
-        UIImage *thumbnail = [thumbnailManager thumbnailForDocument:document renditionType:kRenditionImageDocLib];
-        
-        if (thumbnail)
-        {
-            [nodeCell.image setImage:thumbnail withFade:NO];
-        }
-        else
-        {
-            if(currentLayout.shouldShowSmallThumbnail)
+            AlfrescoNode *node = self.dataSourceCollection[indexPath.item];
+            RealmSyncManager *syncManager = [RealmSyncManager sharedManager];
+            
+            SyncNodeStatus *nodeStatus = [syncManager syncStatusForNodeWithId:node.identifier];
+            [nodeCell updateCellInfoWithNode:node nodeStatus:nodeStatus];
+            [nodeCell registerForNotifications];
+            
+            [self updateFavoriteStatusIconForNodeCell:nodeCell node:node];
+            
+            BaseCollectionViewFlowLayout *currentLayout = [self.delegate currentSelectedLayout];
+            
+            if (node.isFolder)
             {
-                [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
-            }
-            else
-            {
-                [nodeCell.image setImage:largeImageForType([document.name pathExtension]) withFade:NO];
-            }
-            [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
-                if (image)
+                if(currentLayout.shouldShowSmallThumbnail)
                 {
-                    // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
-                    // by the time completion block is called the table view could have been unloaded.
-                    if (collectionView && indexPath)
-                    {
-                        FileFolderCollectionViewCell *updateCell = (FileFolderCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-                        [updateCell.image setImage:image withFade:YES];
-                    }
+                    [nodeCell.image setImage:smallImageForType(@"folder") withFade:NO];
                 }
-            }];
+                else
+                {
+                    [nodeCell.image setImage:largeImageForType(@"folder") withFade:NO];
+                }
+            }
+            else if (node.isDocument)
+            {
+                AlfrescoDocument *document = (AlfrescoDocument *)node;
+                ThumbnailManager *thumbnailManager = [ThumbnailManager sharedManager];
+                UIImage *thumbnail = [thumbnailManager thumbnailForDocument:document renditionType:kRenditionImageDocLib];
+                
+                if (thumbnail)
+                {
+                    [nodeCell.image setImage:thumbnail withFade:NO];
+                }
+                else
+                {
+                    if(currentLayout.shouldShowSmallThumbnail)
+                    {
+                        [nodeCell.image setImage:smallImageForType([document.name pathExtension]) withFade:NO];
+                    }
+                    else
+                    {
+                        [nodeCell.image setImage:largeImageForType([document.name pathExtension]) withFade:NO];
+                    }
+                    [thumbnailManager retrieveImageForDocument:document renditionType:kRenditionImageDocLib session:self.session completionBlock:^(UIImage *image, NSError *error) {
+                        if (image)
+                        {
+                            // MOBILE-2991, check the tableView and indexPath objects are still valid as there is a chance
+                            // by the time completion block is called the table view could have been unloaded.
+                            if (collectionView && indexPath)
+                            {
+                                FileFolderCollectionViewCell *updateCell = (FileFolderCollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+                                [updateCell.image setImage:image withFade:YES];
+                            }
+                        }
+                    }];
+                }
+            }
+            
+            nodeCell.accessoryViewDelegate = [self.delegate cellAccessoryViewDelegate];
         }
+        return nodeCell;
     }
-    
-    nodeCell.accessoryViewDelegate = [self.delegate cellAccessoryViewDelegate];
-    return nodeCell;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath

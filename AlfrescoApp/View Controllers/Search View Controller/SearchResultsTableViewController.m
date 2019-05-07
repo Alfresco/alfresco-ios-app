@@ -133,6 +133,11 @@ static CGFloat const kCellHeight = 73.0f;
     return kCellHeight;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return kCellHeight;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if(self.dataSource.searchResultsArray.count)

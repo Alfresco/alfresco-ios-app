@@ -1,14 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TaskDetailsViewController">
             <connections>
                 <outlet property="approveButton" destination="gWH-UH-CWF" id="fCe-z3-IzG"/>
-                <outlet property="bottomSpacingOfTextViewContainerConstraint" destination="fKq-od-NzE" id="ZeT-xh-Ujf"/>
+                <outlet property="bottomSpacingOfTextViewContainerConstraint" destination="WLH-jK-63d" id="3E4-Cw-8xY"/>
                 <outlet property="detailsContainerView" destination="V4E-8E-aDA" id="8sw-yW-Bhs"/>
                 <outlet property="doneButton" destination="gsP-rK-SdK" id="XPa-WR-ZyT"/>
                 <outlet property="horizontalSpaceFromDoneButtonToCommentTextConstraint" destination="yZf-uo-N9I" id="Fcz-xJ-2lI"/>
@@ -25,22 +30,22 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="745-eY-Hok" userLabel="Header Container">
-                    <rect key="frame" x="15" y="10" width="743" height="90"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="15" y="30" width="743" height="90"/>
+                    <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="90" id="B3W-i4-Ust"/>
                     </constraints>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V4E-8E-aDA" userLabel="Main Content Container">
-                    <rect key="frame" x="10" y="108" width="748" height="846"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="10" y="128" width="748" height="826"/>
+                    <color key="backgroundColor" red="0.66666668653488159" green="0.66666668653488159" blue="0.66666668653488159" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Eq1-wA-1fn" userLabel="Comment Container">
                     <rect key="frame" x="0.0" y="954" width="768" height="50"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalCompressionResistancePriority="500" showsHorizontalScrollIndicator="NO" text="ADD COMMENT HERE" translatesAutoresizingMaskIntoConstraints="NO" id="vj1-md-79u" customClass="TextView">
                             <rect key="frame" x="10" y="9" width="476" height="32"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" priority="750" constant="32" id="sBU-r6-68i"/>
                             </constraints>
@@ -60,7 +65,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                             <state key="normal" title="[APPROVE]">
-                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="pressedApproveButton:" destination="-1" eventType="touchUpInside" id="9tD-VN-XdG"/>
@@ -74,7 +79,7 @@
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                             <state key="normal" title="[REJECT]">
-                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="pressedRejectButton:" destination="-1" eventType="touchUpInside" id="0Uw-2W-DF1"/>
@@ -94,7 +99,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="bgJ-Qh-Kgm" secondAttribute="trailing" constant="10" id="0HI-N0-ppb"/>
                         <constraint firstAttribute="centerY" secondItem="gsP-rK-SdK" secondAttribute="centerY" id="Enb-tY-pct"/>
@@ -112,21 +117,22 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="745-eY-Hok" secondAttribute="trailing" constant="10" id="4kw-5L-tge"/>
+                <constraint firstItem="cZx-40-5NX" firstAttribute="trailing" secondItem="745-eY-Hok" secondAttribute="trailing" constant="10" id="4kw-5L-tge"/>
                 <constraint firstItem="Eq1-wA-1fn" firstAttribute="top" secondItem="V4E-8E-aDA" secondAttribute="bottom" id="9LZ-yR-ynr"/>
-                <constraint firstAttribute="trailing" secondItem="Eq1-wA-1fn" secondAttribute="trailing" id="ERU-ga-u7H"/>
-                <constraint firstItem="745-eY-Hok" firstAttribute="top" secondItem="1" secondAttribute="top" constant="10" id="Fvd-Wj-JrE"/>
-                <constraint firstItem="745-eY-Hok" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="15" id="UCR-GF-cw8"/>
-                <constraint firstItem="V4E-8E-aDA" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="10" id="XM6-0c-9aB"/>
-                <constraint firstAttribute="bottom" secondItem="Eq1-wA-1fn" secondAttribute="bottom" id="fKq-od-NzE"/>
-                <constraint firstAttribute="trailing" secondItem="V4E-8E-aDA" secondAttribute="trailing" constant="10" id="gVy-FW-lgg"/>
+                <constraint firstItem="Eq1-wA-1fn" firstAttribute="leading" secondItem="cZx-40-5NX" secondAttribute="leading" id="Efx-Bk-nAc"/>
+                <constraint firstItem="745-eY-Hok" firstAttribute="top" secondItem="cZx-40-5NX" secondAttribute="top" constant="10" id="Fvd-Wj-JrE"/>
+                <constraint firstItem="745-eY-Hok" firstAttribute="leading" secondItem="cZx-40-5NX" secondAttribute="leading" constant="15" id="UCR-GF-cw8"/>
+                <constraint firstItem="cZx-40-5NX" firstAttribute="bottom" secondItem="Eq1-wA-1fn" secondAttribute="bottom" id="WLH-jK-63d"/>
+                <constraint firstItem="V4E-8E-aDA" firstAttribute="leading" secondItem="cZx-40-5NX" secondAttribute="leading" constant="10" id="XM6-0c-9aB"/>
+                <constraint firstItem="Eq1-wA-1fn" firstAttribute="trailing" secondItem="cZx-40-5NX" secondAttribute="trailing" id="YxO-o7-w0q"/>
+                <constraint firstItem="cZx-40-5NX" firstAttribute="trailing" secondItem="V4E-8E-aDA" secondAttribute="trailing" constant="10" id="gVy-FW-lgg"/>
                 <constraint firstItem="V4E-8E-aDA" firstAttribute="top" secondItem="745-eY-Hok" secondAttribute="bottom" constant="8" id="nG5-1U-nTE"/>
-                <constraint firstItem="Eq1-wA-1fn" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="taz-fw-6Vm"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="cZx-40-5NX"/>
         </view>
     </objects>
 </document>

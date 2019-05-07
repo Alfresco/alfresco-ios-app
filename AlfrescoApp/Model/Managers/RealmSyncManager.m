@@ -857,33 +857,36 @@
 - (void)sessionReceived:(NSNotification *)notification
 {
     UserAccount *changedAccount = [AccountManager sharedManager].selectedAccount;
-    [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount completionBlock:^{
-        AlfrescoProfileConfig *selectedProfileForAccount = [[AppConfigurationManager sharedManager] selectedProfileForAccount:changedAccount];
-        [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
-        
-        id<AlfrescoSession> session = notification.object;
-        self.alfrescoSession = session;
-        self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-        
-        self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
-        SyncOperationQueue *syncOperationQueueManager = self.syncQueues[self.selectedAccountSyncIdentifier];
-        
-        if (!syncOperationQueueManager)
-        {
-            syncOperationQueueManager = [[SyncOperationQueue alloc] initWithAccount:changedAccount session:session syncProgressDelegate:nil];
-            self.syncQueues[self.selectedAccountSyncIdentifier] = syncOperationQueueManager;
-        }
-        else
-        {
-            [syncOperationQueueManager updateSession:session];
-        }
-        
-        BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-        if(hasInternetConnection)
-        {
-            [self refreshWithCompletionBlock:nil];
-        }
-    }];
+    if (changedAccount)
+    {
+        [[RealmManager sharedManager] changeDefaultConfigurationForAccount:changedAccount completionBlock:^{
+            AlfrescoProfileConfig *selectedProfileForAccount = [[AppConfigurationManager sharedManager] selectedProfileForAccount:changedAccount];
+            [self determineSyncFeatureStatus:changedAccount selectedProfile:selectedProfileForAccount];
+            
+            id<AlfrescoSession> session = notification.object;
+            self.alfrescoSession = session;
+            self.documentFolderService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+            
+            self.selectedAccountSyncIdentifier = changedAccount.accountIdentifier;
+            SyncOperationQueue *syncOperationQueueManager = self.syncQueues[self.selectedAccountSyncIdentifier];
+            
+            if (!syncOperationQueueManager)
+            {
+                syncOperationQueueManager = [[SyncOperationQueue alloc] initWithAccount:changedAccount session:session syncProgressDelegate:nil];
+                self.syncQueues[self.selectedAccountSyncIdentifier] = syncOperationQueueManager;
+            }
+            else
+            {
+                [syncOperationQueueManager updateSession:session];
+            }
+            
+            BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
+            if(hasInternetConnection)
+            {
+                [self refreshWithCompletionBlock:nil];
+            }
+        }];
+    }
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification
@@ -1510,36 +1513,6 @@
                 decreaseTotalChecksBlock();
             }
         }];
-        if (node.parentNode == nil && node.isTopLevelSyncNode == NO)
-        {
-            if (node.isFolder == NO)
-            {
-                
-                if (node.isRemovedFromSyncHasLocalChanges)
-                {
-                    // Orphan document with new local version => Copy the file into Local Files prior to deletion.
-                    [self saveDeletedFileBeforeRemovingFromSync:(AlfrescoDocument *)node.alfrescoNode];
-                }
-                else
-                {
-                    // Remove file.
-                    NSString *filePath = [[RealmSyncCore sharedSyncCore] contentPathForNode:node.alfrescoNode forAccountIdentifier:[AccountManager sharedManager].selectedAccount.accountIdentifier];;
-                    NSError *deleteError;
-                    [self.fileManager removeItemAtPath:filePath error:&deleteError];
-                }
-            }
-            
-            // Remove sync status.
-            SyncOperationQueue *syncOpQ = [self currentOperationQueue];
-            [syncOpQ removeSyncNodeStatusForNodeWithId:node.syncNodeInfoId];
-            
-            // Remove RealmSyncError object if exists.
-            RealmSyncError *syncError = [[RealmSyncCore sharedSyncCore] errorObjectForNode:node.alfrescoNode ifNotExistsCreateNew:NO inRealm:realm];
-            [[RealmManager sharedManager] deleteRealmObject:syncError inRealm:realm];
-            
-            // Remove RealmSyncNodeInfo object.
-            [[RealmManager sharedManager] deleteRealmObject:node inRealm:realm];
-        }
     }
 }
 

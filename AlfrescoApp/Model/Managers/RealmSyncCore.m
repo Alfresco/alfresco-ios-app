@@ -57,9 +57,8 @@
     if(name.length)
     {
         NSString *configFilePath = nil;
-        BOOL isContentMigrationNeeded = [self isContentMigrationNeeded];
         
-        if (isContentMigrationNeeded)
+        if ([self hasContentMigrationOccured])
         {
             // Use the default directory, but replace the filename with the accountId
             configFilePath = [[[config.fileURL.path stringByDeletingLastPathComponent] stringByAppendingPathComponent:name] stringByAppendingPathExtension:@"realm"];
@@ -395,8 +394,15 @@
 {
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
     BOOL isMigrationNeededResult = ![defaults boolForKey:kHasSyncedContentMigrationOccurred];
-    
+    //disabling the migration until File Provider support is ready
+    isMigrationNeededResult = NO;
     return isMigrationNeededResult;
+}
+
+- (BOOL)hasContentMigrationOccured
+{
+    NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:kAlfrescoMobileGroup];
+    return [defaults boolForKey:kHasSyncedContentMigrationOccurred];
 }
 
 - (void)initiateContentMigrationProcessForAccounts:(NSArray *)accounts
