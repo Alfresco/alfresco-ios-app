@@ -695,29 +695,45 @@
 
 - (void)unsyncNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL))completionBlock
 {
-    SyncOperationQueue *syncOpQ = self.currentOperationQueue;
-    if([syncOpQ isCurrentlySyncingNode:node])
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
+    RealmSyncCore *syncCore = [RealmSyncCore sharedSyncCore];
+    RealmSyncNodeInfo *nodeInfo = [syncCore syncNodeInfoForId:[syncCore syncIdentifierForNode:node] inRealm:realm];
+    if (nodeInfo.isTopLevelSyncNode && nodeInfo.parentNode)
     {
-        [syncOpQ setNodeForRemoval:node];
+        [realm beginWriteTransaction];
+        nodeInfo.isTopLevelSyncNode = NO;
+        [realm commitWriteTransaction];
         if(completionBlock)
         {
-            self.unsyncCompletionBlocks[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]] = completionBlock;
+            completionBlock(YES);
         }
-        [syncOpQ cancelSyncForNode:node completionBlock:^{
-            [self cleanRealmOfNode:node];
-            [syncOpQ removeSyncNodeStatusForNodeWithId:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
-            [syncOpQ resetSyncProgressInformationForNode:node];
-        }];
     }
     else
     {
-        SyncProgressType syncProgressType = [syncOpQ syncProgressTypeForNode:node];
-        if(syncProgressType == SyncProgressTypeNotInProcessing)
+        SyncOperationQueue *syncOpQ = self.currentOperationQueue;
+        if([syncOpQ isCurrentlySyncingNode:node])
         {
-            [self removeNode:node withCompletionBlock:^(BOOL completed) {
+            [syncOpQ setNodeForRemoval:node];
+            if(completionBlock)
+            {
+                self.unsyncCompletionBlocks[[syncCore syncIdentifierForNode:node]] = completionBlock;
+            }
+            [syncOpQ cancelSyncForNode:node completionBlock:^{
+                [self cleanRealmOfNode:node];
                 [syncOpQ removeSyncNodeStatusForNodeWithId:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
-                completionBlock(completed);
+                [syncOpQ resetSyncProgressInformationForNode:node];
             }];
+        }
+        else
+        {
+            SyncProgressType syncProgressType = [syncOpQ syncProgressTypeForNode:node];
+            if(syncProgressType == SyncProgressTypeNotInProcessing)
+            {
+                [self removeNode:node withCompletionBlock:^(BOOL completed) {
+                    [syncOpQ removeSyncNodeStatusForNodeWithId:[syncCore syncIdentifierForNode:node]];
+                    completionBlock(completed);
+                }];
+            }
         }
     }
 }
