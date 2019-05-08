@@ -108,14 +108,28 @@
 
 - (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    [self addNodeToSync:document isTopLevelNode:isTopLevel];
-    [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
+    RealmSyncCore *realmSync = [RealmSyncCore sharedSyncCore];
+    NSString *syncID = [realmSync syncIdentifierForNode:(AlfrescoNode*)document];
+    
+    if (([realmSync isNode:(AlfrescoNode*)document inSyncListInRealm:realm] || [self.syncOperations valueForKey:syncID]))
+    {
+        [self addNodeToSync:document isTopLevelNode:isTopLevel];
         if(isTopLevel)
         {
-            [self.topLevelNodesInSyncProcessing removeObjectForKey:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document]];
+            [self.topLevelNodesInSyncProcessing removeObjectForKey:[realmSync syncIdentifierForNode:document]];
         }
-    }];
-    
+    }
+    else
+    {
+        [self addNodeToSync:document isTopLevelNode:isTopLevel];
+        [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+            if(isTopLevel)
+            {
+                [self.topLevelNodesInSyncProcessing removeObjectForKey:[realmSync syncIdentifierForNode:document]];
+            }
+        }];
+    }
     if (completionBlock)
     {
         completionBlock(YES);
