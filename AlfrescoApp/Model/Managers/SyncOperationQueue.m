@@ -110,12 +110,11 @@
 {
     RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RealmSyncCore *realmSync = [RealmSyncCore sharedSyncCore];
-    NSString *syncID = [[RealmSyncCore sharedSyncCore] syncIdentifierForNode:(AlfrescoNode*)document];
+    NSString *syncID = [realmSync syncIdentifierForNode:(AlfrescoNode*)document];
     
-    [self addNodeToSync:document isTopLevelNode:isTopLevel];
-    
-    if (([realmSync isNode:(AlfrescoNode*)document inSyncListInRealm:realm] && [self.syncOperations valueForKey:syncID]))
+    if (([realmSync isNode:(AlfrescoNode*)document inSyncListInRealm:realm] || [self.syncOperations valueForKey:syncID]))
     {
+        [self addNodeToSync:document isTopLevelNode:isTopLevel];
         if(isTopLevel)
         {
             [self.topLevelNodesInSyncProcessing removeObjectForKey:[realmSync syncIdentifierForNode:document]];
@@ -123,6 +122,7 @@
     }
     else
     {
+        [self addNodeToSync:document isTopLevelNode:isTopLevel];
         [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
             if(isTopLevel)
             {
