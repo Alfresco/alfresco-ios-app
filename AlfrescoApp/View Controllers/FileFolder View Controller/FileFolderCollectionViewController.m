@@ -388,11 +388,13 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
         
         [self.multiSelectContainerView show];
         self.swipeToDeleteGestureRecognizer.enabled = NO;
+        [self searchBarEnable:NO];
     }
     else
     {
         [self enablePullToRefresh];
         [self.multiSelectContainerView hide];
+        [self searchBarEnable:YES];
     }
     
     if ([self.collectionView.collectionViewLayout isKindOfClass:[BaseCollectionViewFlowLayout class]])
@@ -404,6 +406,14 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
             self.swipeToDeleteGestureRecognizer.enabled = properLayout.shouldSwipeToDelete;
         }
     }
+}
+
+- (void)searchBarEnable:(BOOL)enable
+{
+    self.searchController.searchBar.userInteractionEnabled = enable;
+    self.searchController.searchBar.translucent = enable;
+    self.searchController.searchBar.searchBarStyle = (enable) ? UISearchBarStyleDefault : UISearchBarStyleMinimal;
+    self.searchController.searchBar.backgroundColor = (enable) ? [UIColor clearColor] : [UIColor lightGrayColor];
 }
 
 #pragma mark - Private Functions
