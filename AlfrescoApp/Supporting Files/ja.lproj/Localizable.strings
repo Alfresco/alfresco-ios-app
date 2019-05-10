@@ -339,7 +339,6 @@
 "multiselect.delete.completed.message" = "%@ 個のファイルが削除されました。";
 "multiselect.delete.partial.message" = "%@ 個のファイルが削除されました。一部のファイルを削除できませんでした。";
 "multiselect.delete.failure.message" = "どのファイルも削除できませんでした。";
-"multiselect.search.discard.message" = "Selections will be discarded. Continue?";
 
 /**
  * Node Picker
