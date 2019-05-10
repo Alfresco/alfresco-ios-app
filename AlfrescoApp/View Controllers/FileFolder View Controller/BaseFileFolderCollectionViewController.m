@@ -133,41 +133,9 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    if (self.inUseDataSource.onMultiselect && self.multiSelectContainerView.toolbar.selectedItems.count != 0)
-    {
-        NSString *message = NSLocalizedString(@"multiselect.search.discard.message", "Selections will be discarded. Continue?");
-        self.actionsAlertController = [UIAlertController alertControllerWithTitle:nil
-                                                                          message:message
-                                                                   preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Ok", @"Ok")
-                                                               style:UIAlertActionStyleDefault
-                                                             handler:^(UIAlertAction * action) {
-                                                                 [self continueOnSearch:searchBar];
-                                                             }];
-        
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel")
-                                                               style:UIAlertActionStyleCancel
-                                                             handler:^(UIAlertAction * action) {
-                                                                 searchBar.text = @"";
-                                                                 self.isOnSearchResults = NO;
-                                                                 [self.searchController dismissViewControllerAnimated:YES completion:nil];
-                                                                 
-                                                             }];
-        [self.actionsAlertController addAction:okAction];
-        [self.actionsAlertController addAction:cancelAction];
-        [self presentViewController:self.actionsAlertController animated:YES completion:nil];
-    }
-    else
-    {
-        [self continueOnSearch:searchBar];
-    }
-}
-
-- (void)continueOnSearch:(UISearchBar *)searchBar
-{
     [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
     BOOL shouldSearchContent = [[PreferenceManager sharedManager] shouldCarryOutFullSearch];
+    
     AlfrescoKeywordSearchOptions *searchOptions = [[AlfrescoKeywordSearchOptions alloc] initWithExactMatch:NO includeContent:shouldSearchContent folder:[self.inUseDataSource parentFolder] includeDescendants:YES];
     searchOptions.typeName = [self.inUseDataSource getSearchType];
     [self searchString:searchBar.text isFromSearchBar:YES searchOptions:searchOptions];
@@ -175,13 +143,10 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    if (self.isOnSearchResults)
-    {
-        [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
-        self.searchResults = nil;
-        self.isOnSearchResults = NO;
-        [self.inUseDataSource reloadDataSource];
-    }
+    [self.multiSelectContainerView.toolbar userDidDeselectAllItems];
+    self.searchResults = nil;
+    self.isOnSearchResults = NO;
+    [self.inUseDataSource reloadDataSource];
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
@@ -786,7 +751,6 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     if (self.inUseDataSource.parentFolderPermissions.canEdit && self.inUseDataSource.shouldAllowMultiselect)
     {
         UIAlertAction *editAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actioncontroller.select", @"Multi-Select") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            self.inUseDataSource.onMultiselect = YES;
             [self setEditing:!self.editing animated:YES];
         }];
         editAction.enabled = ([self.inUseDataSource numberOfNodesInCollection] > 0);
@@ -821,7 +785,6 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     if(self.actionsAlertController.actions.count > 0)
     {
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
-            self.inUseDataSource.onMultiselect = NO;
             [self.actionsAlertController dismissViewControllerAnimated:YES completion:nil];
         }];
         

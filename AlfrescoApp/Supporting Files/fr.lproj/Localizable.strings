@@ -339,7 +339,6 @@
 "multiselect.delete.completed.message" = "%@ fichiers supprimés.";
 "multiselect.delete.partial.message" = "%@ fichiers supprimés. Certains fichiers n'ont pu être supprimés";
 "multiselect.delete.failure.message" = "Aucun des fichiers n'a pu être supprimé.";
-"multiselect.search.discard.message" = "Selections will be discarded. Continue?";
 
 /**
  * Node Picker
