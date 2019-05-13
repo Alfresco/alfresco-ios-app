@@ -22,6 +22,7 @@
 #import "Constants.h"
 #import "AccountCertificate.h"
 #import "AlfrescoProfileConfig.h"
+#import "RealmSyncManager.h"
 
 static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
 
@@ -148,12 +149,12 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
     {
         if (account.accountType == UserAccountTypeCloud)
         {
+            [[RealmSyncManager sharedManager] cleanUpAccount:account cancelOperationsType:CancelOperationsNone];
             [self.accountsFromKeychain removeObject:account];
-            
+            [self saveAccountsToKeychain];
         }
     }
-    [self saveAccountsToKeychain];
-    
+
     if (self.accountsFromKeychain.count == 0)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountsListEmptyNotification object:nil];

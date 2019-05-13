@@ -80,6 +80,7 @@ typedef NS_ENUM(NSInteger, DeleteRule)
 - (void)deleteRealmForAccount:(UserAccount *)account;
 - (void)disableSyncForAccount:(UserAccount*)account fromViewController:(UIViewController *)presentingViewController cancelBlock:(void (^)(void))cancelBlock completionBlock:(void (^)(void))completionBlock;
 - (void)enableSyncForAccount:(UserAccount *)account;
+- (void)cleanUpAccount:(UserAccount *)account cancelOperationsType:(CancelOperationsType)cancelType;
 
 /**
  * Realm notifications
