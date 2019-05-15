@@ -781,9 +781,9 @@
     }
 }
 
-- (NSMutableSet *)documentsToUpload
+- (NSMutableDictionary *)documentsToUpload
 {
-    NSMutableSet *documentsToUpload = [NSMutableSet new];
+    NSMutableDictionary *documentsToUpload = [NSMutableDictionary new];
     
     RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RLMResults *allDocuments = [[RealmSyncCore sharedSyncCore] allDocumentsInRealm:realm];
@@ -792,7 +792,7 @@
         AlfrescoNode *alfrescoDocument = document.alfrescoNode;
         if([self isNodeModifiedSinceLastDownload:alfrescoDocument inRealm:realm])
         {
-            [documentsToUpload addObject:alfrescoDocument];
+            documentsToUpload[document.syncNodeInfoId] = alfrescoDocument;
         }
     }
     
