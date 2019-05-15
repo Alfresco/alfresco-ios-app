@@ -32,8 +32,8 @@
 @property (nonatomic, strong) NSMutableDictionary *permissions;
 @property (nonatomic, strong) NSString *selectedAccountSyncIdentifier;
 
-@property (nonatomic, strong) NSMutableSet *nodesToDownload;
-@property (nonatomic, strong) NSMutableSet *nodesToUpload;
+@property (nonatomic, strong) NSMutableDictionary *nodesToDownload;
+@property (nonatomic, strong) NSMutableDictionary *nodesToUpload;
 
 @property (nonatomic) BOOL disableSyncInProgress;
 @property (nonatomic) BOOL lastConnectivityFlag;

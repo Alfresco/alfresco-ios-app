@@ -781,9 +781,9 @@
     }
 }
 
-- (NSMutableSet *)documentsToUpload
+- (NSMutableDictionary *)documentsToUpload
 {
-    NSMutableSet *documentsToUpload = [NSMutableSet new];
+    NSMutableDictionary *documentsToUpload = [NSMutableDictionary new];
     
     RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RLMResults *allDocuments = [[RealmSyncCore sharedSyncCore] allDocumentsInRealm:realm];
@@ -792,7 +792,7 @@
         AlfrescoNode *alfrescoDocument = document.alfrescoNode;
         if([self isNodeModifiedSinceLastDownload:alfrescoDocument inRealm:realm])
         {
-            [documentsToUpload addObject:alfrescoDocument];
+            documentsToUpload[document.syncNodeInfoId] = alfrescoDocument;
         }
     }
     
@@ -1242,8 +1242,8 @@
         
          // STEP 4 - Remove any synced content that is no longer within a sync set.
          [self cleanDataBaseOfUnwantedNodesWithCompletionBlock:^() {
-             NSMutableArray *allNodesWithPendingOperations = [NSMutableArray arrayWithArray:[self.nodesToDownload allObjects]];
-             [allNodesWithPendingOperations addObjectsFromArray:[self.nodesToUpload allObjects]];
+             NSMutableArray *allNodesWithPendingOperations = [NSMutableArray arrayWithArray:[self.nodesToDownload allValues]];
+             [allNodesWithPendingOperations addObjectsFromArray:[self.nodesToUpload allValues]];
              [self checkNode:allNodesWithPendingOperations forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
                  if (shouldProceed)
                  {
@@ -1313,8 +1313,8 @@
     
     self.nodeRequestsInProgressCount = 0;
     
-    self.nodesToDownload = [NSMutableSet new];
-    self.nodesToUpload = [NSMutableSet new];
+    self.nodesToDownload = [NSMutableDictionary new];
+    self.nodesToUpload = [NSMutableDictionary new];
     
     if (topLevelNodes.count == 0 && completionBlock)
     {
@@ -1414,12 +1414,12 @@
         }
         case SyncActivityTypeUpload:
         {
-            [self.nodesToUpload addObject:node];
+            self.nodesToUpload[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]] = node;
             break;
         }
         case SyncActivityTypeDownload:
         {
-            [self.nodesToDownload addObject:node];
+            self.nodesToDownload[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]] = node;
             break;
         }
     }
@@ -1564,10 +1564,10 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
-        [syncOpQ downloadContentsForNodes:[self.nodesToDownload allObjects] withCompletionBlock:nil];
-        [syncOpQ uploadContentsForNodes:[self.nodesToUpload allObjects] withCompletionBlock:nil];
+        [syncOpQ downloadContentsForNodes:[self.nodesToDownload allValues] withCompletionBlock:nil];
+        [syncOpQ uploadContentsForNodes:[self.nodesToUpload allValues] withCompletionBlock:nil];
         
-        [self trackSyncRunWithNodesToDownload:[self.nodesToDownload allObjects] nodesToUpload:[self.nodesToUpload allObjects]];
+        [self trackSyncRunWithNodesToDownload:[self.nodesToDownload allValues] nodesToUpload:[self.nodesToUpload allValues]];
     });
 }
 
