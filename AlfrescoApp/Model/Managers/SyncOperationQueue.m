@@ -108,14 +108,23 @@
 
 - (void)addDocumentToSync:(AlfrescoDocument *)document isTopLevelNode:(BOOL)isTopLevel withCompletionBlock:(void (^)(BOOL completed))completionBlock
 {
-    [self addNodeToSync:document isTopLevelNode:isTopLevel];
-    [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
-        if(isTopLevel)
-        {
-            [self.topLevelNodesInSyncProcessing removeObjectForKey:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:document]];
-        }
-    }];
+    RealmSyncCore *realmSync = [RealmSyncCore sharedSyncCore];
+    NSString *syncID = [realmSync syncIdentifierForNode:(AlfrescoNode*)document];
     
+    if ([self.syncOperations valueForKey:syncID])
+    {
+        [self addNodeToSync:document isTopLevelNode:isTopLevel];
+    }
+    else
+    {
+        [self addNodeToSync:document isTopLevelNode:isTopLevel];
+        [self downloadDocument:document withCompletionBlock:^(BOOL completed) {
+            if(isTopLevel)
+            {
+                [self.topLevelNodesInSyncProcessing removeObjectForKey:[realmSync syncIdentifierForNode:document]];
+            }
+        }];
+    }
     if (completionBlock)
     {
         completionBlock(YES);

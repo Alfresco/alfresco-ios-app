@@ -695,29 +695,45 @@
 
 - (void)unsyncNode:(AlfrescoNode *)node withCompletionBlock:(void (^)(BOOL))completionBlock
 {
-    SyncOperationQueue *syncOpQ = self.currentOperationQueue;
-    if([syncOpQ isCurrentlySyncingNode:node])
+    RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
+    RealmSyncCore *syncCore = [RealmSyncCore sharedSyncCore];
+    RealmSyncNodeInfo *nodeInfo = [syncCore syncNodeInfoForId:[syncCore syncIdentifierForNode:node] inRealm:realm];
+    if (nodeInfo.isTopLevelSyncNode && nodeInfo.parentNode)
     {
-        [syncOpQ setNodeForRemoval:node];
+        [realm beginWriteTransaction];
+        nodeInfo.isTopLevelSyncNode = NO;
+        [realm commitWriteTransaction];
         if(completionBlock)
         {
-            self.unsyncCompletionBlocks[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]] = completionBlock;
+            completionBlock(YES);
         }
-        [syncOpQ cancelSyncForNode:node completionBlock:^{
-            [self cleanRealmOfNode:node];
-            [syncOpQ removeSyncNodeStatusForNodeWithId:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
-            [syncOpQ resetSyncProgressInformationForNode:node];
-        }];
     }
     else
     {
-        SyncProgressType syncProgressType = [syncOpQ syncProgressTypeForNode:node];
-        if(syncProgressType == SyncProgressTypeNotInProcessing)
+        SyncOperationQueue *syncOpQ = self.currentOperationQueue;
+        if([syncOpQ isCurrentlySyncingNode:node])
         {
-            [self removeNode:node withCompletionBlock:^(BOOL completed) {
+            [syncOpQ setNodeForRemoval:node];
+            if(completionBlock)
+            {
+                self.unsyncCompletionBlocks[[syncCore syncIdentifierForNode:node]] = completionBlock;
+            }
+            [syncOpQ cancelSyncForNode:node completionBlock:^{
+                [self cleanRealmOfNode:node];
                 [syncOpQ removeSyncNodeStatusForNodeWithId:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
-                completionBlock(completed);
+                [syncOpQ resetSyncProgressInformationForNode:node];
             }];
+        }
+        else
+        {
+            SyncProgressType syncProgressType = [syncOpQ syncProgressTypeForNode:node];
+            if(syncProgressType == SyncProgressTypeNotInProcessing)
+            {
+                [self removeNode:node withCompletionBlock:^(BOOL completed) {
+                    [syncOpQ removeSyncNodeStatusForNodeWithId:[syncCore syncIdentifierForNode:node]];
+                    completionBlock(completed);
+                }];
+            }
         }
     }
 }
@@ -765,9 +781,9 @@
     }
 }
 
-- (NSMutableSet *)documentsToUpload
+- (NSMutableDictionary *)documentsToUpload
 {
-    NSMutableSet *documentsToUpload = [NSMutableSet new];
+    NSMutableDictionary *documentsToUpload = [NSMutableDictionary new];
     
     RLMRealm *realm = [[RealmManager sharedManager] realmForCurrentThread];
     RLMResults *allDocuments = [[RealmSyncCore sharedSyncCore] allDocumentsInRealm:realm];
@@ -776,7 +792,7 @@
         AlfrescoNode *alfrescoDocument = document.alfrescoNode;
         if([self isNodeModifiedSinceLastDownload:alfrescoDocument inRealm:realm])
         {
-            [documentsToUpload addObject:alfrescoDocument];
+            documentsToUpload[document.syncNodeInfoId] = alfrescoDocument;
         }
     }
     
@@ -1226,8 +1242,8 @@
         
          // STEP 4 - Remove any synced content that is no longer within a sync set.
          [self cleanDataBaseOfUnwantedNodesWithCompletionBlock:^() {
-             NSMutableArray *allNodesWithPendingOperations = [NSMutableArray arrayWithArray:[self.nodesToDownload allObjects]];
-             [allNodesWithPendingOperations addObjectsFromArray:[self.nodesToUpload allObjects]];
+             NSMutableArray *allNodesWithPendingOperations = [NSMutableArray arrayWithArray:[self.nodesToDownload allValues]];
+             [allNodesWithPendingOperations addObjectsFromArray:[self.nodesToUpload allValues]];
              [self checkNode:allNodesWithPendingOperations forSizeAndDisplayAlertIfNeededWithProceedBlock:^(BOOL shouldProceed){
                  if (shouldProceed)
                  {
@@ -1297,8 +1313,8 @@
     
     self.nodeRequestsInProgressCount = 0;
     
-    self.nodesToDownload = [NSMutableSet new];
-    self.nodesToUpload = [NSMutableSet new];
+    self.nodesToDownload = [NSMutableDictionary new];
+    self.nodesToUpload = [NSMutableDictionary new];
     
     if (topLevelNodes.count == 0 && completionBlock)
     {
@@ -1398,12 +1414,12 @@
         }
         case SyncActivityTypeUpload:
         {
-            [self.nodesToUpload addObject:node];
+            self.nodesToUpload[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]] = node;
             break;
         }
         case SyncActivityTypeDownload:
         {
-            [self.nodesToDownload addObject:node];
+            self.nodesToDownload[[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]] = node;
             break;
         }
     }
@@ -1548,10 +1564,10 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         SyncOperationQueue *syncOpQ = [self currentOperationQueue];
-        [syncOpQ downloadContentsForNodes:[self.nodesToDownload allObjects] withCompletionBlock:nil];
-        [syncOpQ uploadContentsForNodes:[self.nodesToUpload allObjects] withCompletionBlock:nil];
+        [syncOpQ downloadContentsForNodes:[self.nodesToDownload allValues] withCompletionBlock:nil];
+        [syncOpQ uploadContentsForNodes:[self.nodesToUpload allValues] withCompletionBlock:nil];
         
-        [self trackSyncRunWithNodesToDownload:[self.nodesToDownload allObjects] nodesToUpload:[self.nodesToUpload allObjects]];
+        [self trackSyncRunWithNodesToDownload:[self.nodesToDownload allValues] nodesToUpload:[self.nodesToUpload allValues]];
     });
 }
 
