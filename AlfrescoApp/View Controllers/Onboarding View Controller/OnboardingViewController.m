@@ -22,10 +22,11 @@
 #import "AccountTypeSelectionViewController.h"
 #import "RootRevealViewController.h"
 #import "WebBrowserViewController.h"
+#import "AccountDetailsViewController.h"
 
 static CGFloat const kButtonCornerRadius = 5.0f;
 
-@interface OnboardingViewController () <AccountTypeSelectionViewControllerDelegate>
+@interface OnboardingViewController () <AccountFlowDelegate>
 
 @property (nonatomic, weak) IBOutlet UIButton *useExistingAccountButton;
 @property (nonatomic, weak) IBOutlet UIButton *closeWelcomeScreenButton;
@@ -101,10 +102,15 @@ static CGFloat const kButtonCornerRadius = 5.0f;
     UIButton *addAccountButton = (UIButton *)sender;
     addAccountButton.enabled = NO;
     
-    AccountTypeSelectionViewController *existingAccountViewController = [[AccountTypeSelectionViewController alloc] initWithDelegate:self];
-    NavigationViewController *existingAccountNavController = [[NavigationViewController alloc] initWithRootViewController:existingAccountViewController];
+    AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountServer account:nil configuration:nil session:nil];
+    accountDetailsViewController.delegate = self;
+    NavigationViewController *accountDetailsNavController = [[NavigationViewController alloc] initWithRootViewController:accountDetailsViewController];
+    [UniversalDevice displayModalViewController:accountDetailsNavController onController:self withCompletionBlock:nil];
+    [Utility zoomAppLevelOutWithCompletionBlock:^{
+        addAccountButton.enabled = YES;
+    }];
+
     
-    [UniversalDevice displayModalViewController:existingAccountNavController onController:self withCompletionBlock:nil];
     [Utility zoomAppLevelOutWithCompletionBlock:^{
         addAccountButton.enabled = YES;
     }];
@@ -128,7 +134,7 @@ static CGFloat const kButtonCornerRadius = 5.0f;
 
 #pragma mark - AccountTypeSelectionViewControllerDelegate Functions
 
-- (void)accountTypeSelectionViewControllerWillDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(BOOL)accountAdded
+- (void)accountFlowWillDismiss:(AccountTypeSelectionViewController *)accountTypeSelectionViewController accountAdded:(UserAccount*)accountAdded
 {
     [Utility resetAppZoomLevelWithCompletionBlock:NULL];
     if (accountAdded)

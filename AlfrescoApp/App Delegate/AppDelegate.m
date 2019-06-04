@@ -74,12 +74,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     /**
-     * This version of the app has been coded in such a way to require valid Alfresco in the Cloud OAuth key and secret tokens.
-     * These should be populated in the AlfrescoApp.xcconfig file, either via an environment variable or directly in the file.
-     * - "CLOUD_OAUTH_KEY"
-     * - "CLOUD_OAUTH_SECRET"
-     * If these values are not present, the app will still attempt to present cloud authentication options.
-     *
      * Functionality that won't be available unless you have other valid keys are:
      * - HockeyApp SDK integration. Requires "HOCKEYAPP_APPID"
      * - Flurry Analytics. Requires "FLURRY_API_KEY"
@@ -87,8 +81,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
      * - Google Analytics. Requires "GA_API_KEY"
      *
      */
-    if (CLOUD_OAUTH_KEY.length == 0) AlfrescoLogError(@"CLOUD_OAUTH_KEY must have non-zero length");
-    if (CLOUD_OAUTH_SECRET.length == 0) AlfrescoLogError(@"CLOUD_OAUTH_SECRET must have non-zero length");
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
@@ -174,6 +166,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     {
         // If there is a selected Account, attempt login
         AccountManager *accountManager = [AccountManager sharedManager];
+        [accountManager removeCloudAccounts];
         if (accountManager.selectedAccount)
         {
             // Delay to allow the UI to update - reachability check can block the main thread

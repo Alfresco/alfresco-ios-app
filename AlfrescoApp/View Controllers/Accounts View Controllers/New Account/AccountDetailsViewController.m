@@ -27,7 +27,7 @@
 #import "MainMenuReorderViewController.h"
 #import "ProfileSelectionViewController.h"
 
-@interface AccountDetailsViewController () <AccountDataSourceDelegate, AccountDetailsViewControllerDelegate>
+@interface AccountDetailsViewController () <AccountDataSourceDelegate, AccountFlowDelegate>
 
 @property (nonatomic, strong) UserAccount *account;
 @property (nonatomic, strong) UserAccount *formBackupAccount;
@@ -216,6 +216,10 @@
 
 - (void)cancelButtonPressed:(id)sender
 {
+    if ([self.delegate respondsToSelector:@selector(accountFlowWillDismiss:accountAdded:)])
+    {
+        [self.delegate accountFlowWillDismiss:self accountAdded:nil];
+    }
     switch (self.dataSourcetype)
     {
         case AccountDataSourceTypeAccountSettings:
@@ -224,7 +228,12 @@
             break;
             
         default:
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self dismissViewControllerAnimated:YES completion:^{
+                if ([self.delegate respondsToSelector:@selector(accountFlowDidDismiss:accountAdded:)])
+                {
+                    [self.delegate accountFlowDidDismiss:self accountAdded:nil];
+                }
+            }];
             break;
     }
 }
@@ -581,17 +590,16 @@
 
 - (void)dismiss
 {
-    if ([self.delegate respondsToSelector:@selector(accountDetailsViewController:willDismissAfterAddingAccount:)])
+    if ([self.delegate respondsToSelector:@selector(accountFlowWillDismiss:accountAdded:)])
     {
-        [self.delegate accountDetailsViewController:self willDismissAfterAddingAccount:self.account];
+        [self.delegate accountFlowWillDismiss:self accountAdded:self.account];
     }
     
     [self dismissViewControllerAnimated:YES completion:^{
         [[AccountManager sharedManager] addAccount:self.account];
-        
-        if ([self.delegate respondsToSelector:@selector(accountDetailsViewController:didDismissAfterAddingAccount:)])
+        if ([self.delegate respondsToSelector:@selector(accountFlowDidDismiss:accountAdded:)])
         {
-            [self.delegate accountDetailsViewController:self didDismissAfterAddingAccount:self.account];
+            [self.delegate accountFlowDidDismiss:self accountAdded:self.account];
         }
     }];
 }
