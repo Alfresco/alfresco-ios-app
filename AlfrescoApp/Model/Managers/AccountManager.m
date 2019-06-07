@@ -145,16 +145,17 @@ static NSString * const kKeychainAccountListIdentifier = @"AccountListNew";
         self.selectedAccount = nil;
     }
     
-    for (UserAccount *account in self.accountsFromKeychain)
+    NSMutableArray *tempCopy = [NSMutableArray arrayWithArray:self.accountsFromKeychain];
+    
+    for (UserAccount *account in tempCopy)
     {
         if (account.accountType == UserAccountTypeCloud)
         {
             [[RealmSyncManager sharedManager] cleanUpAccount:account cancelOperationsType:CancelOperationsNone];
             [self.accountsFromKeychain removeObject:account];
-            [self saveAccountsToKeychain];
         }
     }
-
+    [self saveAccountsToKeychain];
     if (self.accountsFromKeychain.count == 0)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountsListEmptyNotification object:nil];
