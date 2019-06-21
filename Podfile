@@ -4,21 +4,15 @@ target 'AlfrescoApp' do
     pod 'MBProgressHUD', '~> 1.0'
     pod 'NJKWebViewProgress', '~> 0.2'
     pod 'HockeySDK', '~> 3.8'
-    pod 'Google/Analytics', :podspec => 'http://alfresco.github.io/alfresco-ios-app/Google.podspec.json'
+    pod 'Google/Analytics'
     pod 'Realm', '~>3.11'
+    pod 'Flurry-iOS-SDK/FlurrySDK' #Analytics Pod
 end
 
-target 'AlfrescoDocumentPicker' do
-    pod 'MBProgressHUD', '~> 1.0'
-    pod 'Google/Analytics', :podspec => 'http://alfresco.github.io/alfresco-ios-app/Google.podspec.json'
-end
-
-target 'AlfrescoDocumentPickerFileProvider' do
-    pod 'Realm', '~>3.11'
-end
-
-target 'AlfrescoFileProviderUI' do
-    pod 'Realm', '~>3.11'
-    pod 'MBProgressHUD', '~> 1.0'
-end
-
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['ENABLE_BITCODE'] = 'YES'
+        end
+    end
+end 
