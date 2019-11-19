@@ -29,7 +29,8 @@
     [super awakeFromNib];
 
     self.valueTextField.textColor = [UIColor textDimmedColor];
-    [self.valueTextField setValue:[UIColor textDimmedColor] forKeyPath:@"_placeholderLabel.textColor"];
+    self.valueTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:self.valueTextField.placeholder
+                                                                                attributes:@{NSForegroundColorAttributeName: [UIColor textDimmedColor]}];
 }
 
 #pragma mark - UITextFieldDelegate
