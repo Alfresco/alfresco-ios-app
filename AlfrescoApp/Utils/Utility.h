@@ -91,5 +91,6 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (NSString *)helpURLLocaleIdentifierForLocale:(NSString *)locale;
 - (NSString *)accountIdentifierForAccount:(UserAccount *)userAccount;
 + (void)showLocalizedAlertWithTitle:(NSString *)title message:(NSString *)message;
-
++ (NSData *)dataFromImage:(UIImage *)image metadata:(NSDictionary *)metadata mimetype:(NSString *)mimetype;
++ (NSDictionary *)metadataByAddingGPSToMetadata:(NSDictionary *)metadata;
 @end
