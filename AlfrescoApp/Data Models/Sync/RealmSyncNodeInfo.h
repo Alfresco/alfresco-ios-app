@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 #import <Realm/Realm.h>
+#import <AlfrescoSDK-iOS/AlfrescoSDK.h>
 
 @class RealmSyncError;
 

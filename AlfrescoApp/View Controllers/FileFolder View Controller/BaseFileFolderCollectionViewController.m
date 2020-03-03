@@ -969,7 +969,10 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                 GalleryPhotosViewController *gpvc = (GalleryPhotosViewController *)[storyboard instantiateViewControllerWithIdentifier:@"GalleryPhotosViewController"];
                 GalleryPhotosModel *model = [[GalleryPhotosModel alloc] initWithSession:self.session folder:[self.inUseDataSource parentFolder]];
                 gpvc.model = model;
-                [self.navigationController presentViewController:gpvc animated:YES completion:nil];
+                
+                [UniversalDevice displayModalViewController:gpvc onController:self.navigationController withCompletionBlock:nil];
+                
+//                [self.navigationController presentViewController:gpvc animated:YES completion:nil];
                 
 //                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
 //                                                                  action:kAnalyticsEventActionQuickAction
