@@ -22,6 +22,8 @@
 #import <Photos/Photos.h>
 #import "UISearchBar+Paste.h"
 #import "UIView+Orientation.h"
+#import "AlfrescoApp-Swift.h"
+
 
 static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
@@ -805,6 +807,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
             [alertController addAction:[self alertActionTakePhotoOrVideo]];
+            [alertController addAction:[self alertActionTakeContinousPhotos]];
         }
         
         [alertController addAction:[self alertActionRecordAudio]];
@@ -956,6 +959,30 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     }];
 }
 
+- (UIAlertAction *)alertActionTakeContinousPhotos
+{
+    return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takecontinuosphotos", @"Take Continous Photos") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [PermissionChecker requestPermissionForResourceType:ResourceTypeCamera completionBlock:^(BOOL granted) {
+            if (granted)
+            {
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Gallery" bundle:nil];
+                GalleryPhotosViewController *gpvc = (GalleryPhotosViewController *)[storyboard instantiateViewControllerWithIdentifier:@"GalleryPhotosViewController"];
+                GalleryPhotosModel *model = [[GalleryPhotosModel alloc] initWithSession:self.session folder:[self.inUseDataSource parentFolder]];
+                gpvc.model = model;
+                
+                [UniversalDevice displayModalViewController:gpvc onController:self.navigationController withCompletionBlock:nil];
+                
+//                [self.navigationController presentViewController:gpvc animated:YES completion:nil];
+                
+//                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
+//                                                                  action:kAnalyticsEventActionQuickAction
+//                                                                   label:kAnalyticsEventLabelTakePhotoOrVideo
+//                                                                   value:@1];
+            }
+        }];
+    }];
+}
+
 - (UIAlertAction *)alertActionTakePhotoOrVideo
 {
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takephotovideo", @"Take Photo or Video") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -1028,7 +1055,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
             // add GPS metadata if Location Services are allowed for this app
             if (addGPSMetadata && [[LocationManager sharedManager] usersLocationAuthorisation])
             {
-                metadata = [self metadataByAddingGPSToMetadata:metadata];
+                metadata = [Utility metadataByAddingGPSToMetadata:metadata];
             }
             
             // location services no longer required

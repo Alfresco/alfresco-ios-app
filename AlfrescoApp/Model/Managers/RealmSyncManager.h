@@ -17,7 +17,9 @@
  ******************************************************************************/
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "RealmSyncCore.h"
+#import "RealmSyncNodeInfo.h"
 #import "SyncConstants.h"
 #import "SyncNodeStatus.h"
 #import "RealmManager.h"

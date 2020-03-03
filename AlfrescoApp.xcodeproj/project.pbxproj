@@ -696,6 +696,13 @@
 		73FF558C18ACE2370009CA56 /* large_xml@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557418ACE2370009CA56 /* large_xml@2x.png */; };
 		73FF558D18ACE2370009CA56 /* large_zip.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557518ACE2370009CA56 /* large_zip.png */; };
 		73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557618ACE2370009CA56 /* large_zip@2x.png */; };
+		E30C322B240CE71D00AE025B /* CameraOpenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */; };
+		E333CA8A2403BD6C0082F15F /* GalleryPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */; };
+		E333CA8C2403BD9A0082F15F /* Gallery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E333CA8B2403BD9A0082F15F /* Gallery.storyboard */; };
+		E333CA902403BF380082F15F /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA8D2403BF380082F15F /* CameraController.swift */; };
+		E333CA912403BF380082F15F /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA8E2403BF380082F15F /* CameraViewController.swift */; };
+		E333CA922403BF380082F15F /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA8F2403BF380082F15F /* PhotoCollectionViewCell.swift */; };
+		E333CA9724041E8F0082F15F /* GalleryPhotosModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA9624041E8F0082F15F /* GalleryPhotosModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1915,6 +1922,14 @@
 		8D3E2C89DABF3FAAC612C429 /* Pods-AlfrescoFileProviderUI.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoFileProviderUI.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoFileProviderUI/Pods-AlfrescoFileProviderUI.adhoc.xcconfig"; sourceTree = "<group>"; };
 		A544CBC5CD8C7DE64C27C0EB /* libPods-AlfrescoDocumentPicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoDocumentPicker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C14CE06656BB504AD3073E14 /* Pods-AlfrescoFileProviderUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoFileProviderUI.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoFileProviderUI/Pods-AlfrescoFileProviderUI.release.xcconfig"; sourceTree = "<group>"; };
+		E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOpenCollectionViewCell.swift; sourceTree = "<group>"; };
+		E333CA882403BD6B0082F15F /* AlfrescoApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotosViewController.swift; sourceTree = "<group>"; };
+		E333CA8B2403BD9A0082F15F /* Gallery.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Gallery.storyboard; sourceTree = "<group>"; };
+		E333CA8D2403BF380082F15F /* CameraController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraController.swift; sourceTree = "<group>"; };
+		E333CA8E2403BF380082F15F /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		E333CA8F2403BF380082F15F /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		E333CA9624041E8F0082F15F /* GalleryPhotosModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotosModel.swift; sourceTree = "<group>"; };
 		E33B032BBD7143C2A720D012 /* libPods-AlfrescoFileProviderUI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoFileProviderUI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3E386882270878C009BEDD8 /* AccountFlowDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountFlowDelegate.h; sourceTree = "<group>"; };
 		E49C6C6B447478825EEDA62B /* Pods-AlfrescoApp.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoApp.adhoc.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoApp/Pods-AlfrescoApp.adhoc.xcconfig"; sourceTree = "<group>"; };
@@ -2913,6 +2928,7 @@
 		7373B4EC17A66E9400869949 = {
 			isa = PBXGroup;
 			children = (
+				E333CA882403BD6B0082F15F /* AlfrescoApp-Bridging-Header.h */,
 				7373B4FE17A66E9400869949 /* AlfrescoApp */,
 				08E89C9E17E7593B006936DF /* AlfrescoApp Tests */,
 				734CC3ED1A700808005D148E /* AlfrescoDocumentPicker */,
@@ -3111,6 +3127,7 @@
 		7384BDEE17F2F86B00C6A54F /* Settings View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				0833244D17F981EC00EE6AA8 /* Sync View Controller */,
 				7384BDF517F330CB00C6A54F /* Cells */,
 				7384BE0617F57FEC00C6A54F /* SettingConstants.h */,
 				7384BE0717F57FEC00C6A54F /* SettingConstants.m */,
@@ -3996,10 +4013,10 @@
 				2B1A05031BB2D24F00EE4AAE /* Site Members View Controller */,
 				738664A31906AD8E0021D1BD /* Sites View Controller */,
 				73632AE61806C2F8007172EE /* Switcher View Controller */,
-				0833244D17F981EC00EE6AA8 /* Sync View Controller */,
 				089FB00118D1C9FA00AB4613 /* SyncNavigationViewController.h */,
 				089FB00218D1C9FA00AB4613 /* SyncNavigationViewController.m */,
 				2BFD96A71C885E0F00FDABA5 /* SyncRefactorInfoPanel */,
+				E333CA872403BD380082F15F /* Take Continous Photos View Controller */,
 				73F628B4185779050050F437 /* Text File View Controller */,
 				73B95AEF17A68DF20099FB84 /* Upload View Controller */,
 				7304DA7B1884348B00229809 /* Version View Controller */,
@@ -4286,6 +4303,20 @@
 			name = "Text File View Controller";
 			sourceTree = "<group>";
 		};
+		E333CA872403BD380082F15F /* Take Continous Photos View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */,
+				E333CA9624041E8F0082F15F /* GalleryPhotosModel.swift */,
+				E333CA8E2403BF380082F15F /* CameraViewController.swift */,
+				E333CA8D2403BF380082F15F /* CameraController.swift */,
+				E333CA8F2403BF380082F15F /* PhotoCollectionViewCell.swift */,
+				E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */,
+				E333CA8B2403BD9A0082F15F /* Gallery.storyboard */,
+			);
+			path = "Take Continous Photos View Controller";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -4347,6 +4378,7 @@
 					};
 					7373B4F417A66E9400869949 = {
 						DevelopmentTeam = W8N95J537P;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -4528,6 +4560,7 @@
 				0808B9DF183BB40B000A8984 /* green_selected_circle.png in Resources */,
 				738664931906AD660021D1BD /* AboutViewController~ipad.xib in Resources */,
 				7390619C189676F600B1920C /* ButtonBarArrowDown@2x.png in Resources */,
+				E333CA8C2403BD9A0082F15F /* Gallery.storyboard in Resources */,
 				73FF558C18ACE2370009CA56 /* large_xml@2x.png in Resources */,
 				271DC77B189C2D250059D1B2 /* status-sync-waiting@2x.png in Resources */,
 				73FF557818ACE2370009CA56 /* large_audio@2x.png in Resources */,
@@ -4920,6 +4953,7 @@
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
 				7390B3741B03681E00E7191F /* AlfrescoViewConfig.m in Sources */,
 				2BFD96B51C889A4C00FDABA5 /* SyncFirstPanel.m in Sources */,
+				E30C322B240CE71D00AE025B /* CameraOpenCollectionViewCell.swift in Sources */,
 				73E9E21517E9AF7A00A198B4 /* KeychainUtils.m in Sources */,
 				2B482B3F1CC523D7003CDEE6 /* RealmSyncViewController.m in Sources */,
 				080FC9CF1886FF4A00485485 /* AppConfigurationManager.m in Sources */,
@@ -4965,6 +4999,7 @@
 				088228641843722B006E58A4 /* RequestHandler.m in Sources */,
 				080A8127185628AE00B79306 /* ClientCertificateImportViewController.m in Sources */,
 				13B88B57216E317500093BAA /* Utilities.m in Sources */,
+				E333CA902403BF380082F15F /* CameraController.swift in Sources */,
 				2BFD96BB1C889A7200FDABA5 /* SyncThirdPanel.m in Sources */,
 				738664D01906B1E50021D1BD /* TextFieldCell.m in Sources */,
 				1D2A52AC1CC7687000991186 /* RepositoryCollectionViewDataSource.m in Sources */,
@@ -5041,6 +5076,7 @@
 				08E1EA3118DB057900F9052F /* TasksAndAttachmentsViewController.m in Sources */,
 				7386650B1906B2D10021D1BD /* VersionHistoryCell.m in Sources */,
 				2BFD96AF1C8864A700FDABA5 /* SyncInfoViewController.m in Sources */,
+				E333CA922403BF380082F15F /* PhotoCollectionViewCell.swift in Sources */,
 				73881F5618883BE10052C75F /* UIColor+Custom.m in Sources */,
 				7390B3591B03681E00E7191F /* AlfrescoConfigConstants.m in Sources */,
 				2350160B1EB86D2B00BE1042 /* AccountServerDataSource.m in Sources */,
@@ -5101,6 +5137,7 @@
 				27C2EC02190A5A71003B09B9 /* ActivityWrapper.m in Sources */,
 				73B9586A17A6750F0099FB84 /* ParentListViewController.m in Sources */,
 				731A8F3E192F528A0099BE7B /* NewVersionViewController.m in Sources */,
+				E333CA912403BF380082F15F /* CameraViewController.swift in Sources */,
 				7366F74A1ACAD8DE008DD92E /* NSDictionary+Extension.m in Sources */,
 				736474E81B175E0C00715B4F /* MainMenuConfigurationBuilder.m in Sources */,
 				7384BDF417F330C600C6A54F /* SettingToggleCell.m in Sources */,
@@ -5165,10 +5202,12 @@
 				089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */,
 				73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */,
 				7390B36D1B03681E00E7191F /* AlfrescoGroupConfig.m in Sources */,
+				E333CA8A2403BD6C0082F15F /* GalleryPhotosViewController.swift in Sources */,
 				0876A04918D99FF60035370A /* NodePickerSitesViewController.m in Sources */,
 				23900A661EB9FB8F00642DE0 /* AccountSettingsDataSource.m in Sources */,
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
 				7333D2EC1B3AC5F300644913 /* ProfileSelectionViewController.m in Sources */,
+				E333CA9724041E8F0082F15F /* GalleryPhotosModel.swift in Sources */,
 				7390B3711B03681E00E7191F /* AlfrescoRepositoryConfig.m in Sources */,
 				08E1EA2A18DB057900F9052F /* TasksCell.m in Sources */,
 				23BE84D61CE9C3B200FA5BCB /* TouchIDManager.m in Sources */,
@@ -5331,6 +5370,7 @@
 		08E89CAA17E7593C006936DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AlfrescoApp.app/AlfrescoApp";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -5358,6 +5398,7 @@
 		08E89CAB17E7593C006936DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AlfrescoApp.app/AlfrescoApp";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -5441,6 +5482,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -5457,6 +5499,7 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",
@@ -5467,6 +5510,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2bafb3cc-3501-4577-9062-cef225d63457";
 				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) Ad Hoc Profile";
+				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5475,6 +5520,7 @@
 		277F715517FEB6FD00B2E958 /* AdHoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/AlfrescoApp.app/AlfrescoApp";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -5612,6 +5658,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -5628,6 +5675,7 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",
@@ -5638,6 +5686,9 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "25ae4d3b-6c1a-4a27-a511-a09146b86f72";
 				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) Development";
+				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5649,6 +5700,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
@@ -5665,6 +5717,7 @@
 					"$(CONFIGURATION_BUILD_DIR)/**",
 				);
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(TARGET_BUILD_DIR)",
@@ -5675,6 +5728,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "da10ba1b-cd14-4657-b520-6d637077845f";
 				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) App Store Profile";
+				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				WARNING_CFLAGS = "";
 				WRAPPER_EXTENSION = app;
 			};

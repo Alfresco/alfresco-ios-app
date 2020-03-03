@@ -17,6 +17,8 @@
  ******************************************************************************/
   
 #import "ErrorDescriptions.h"
+#import "ALFTableView.h"
+#import "MBProgressHUD.h"
 
 @class AlfrescoFolder;
 @class AlfrescoPagingResult;

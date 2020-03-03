@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "RealmSyncCore.h"
+#import "UserAccount.h"
 
 @protocol RealmManagerProtocol <NSObject>
 
