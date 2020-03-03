@@ -233,7 +233,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="8x7-Je-lym" firstAttribute="leading" secondItem="Kr4-KS-Yzl" secondAttribute="leading" constant="30" id="0P9-wc-pT6"/>
                                     <constraint firstAttribute="trailing" secondItem="cwn-s4-wNn" secondAttribute="trailing" constant="30" id="DkV-EM-qbn"/>
