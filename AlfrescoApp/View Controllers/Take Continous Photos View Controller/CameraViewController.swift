@@ -47,6 +47,16 @@ class CameraViewController: UIViewController {
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        coordinator.animate(alongsideTransition: { (context) -> Void in
+            self.cameraController.changeOrientation(on: self.capturePreviewView)
+        }, completion: { (context) -> Void in
+            
+        })
+        super.viewWillTransition(to: size, with: coordinator)
+        
+    }
+    
     override var prefersStatusBarHidden: Bool {
         return true
     }
