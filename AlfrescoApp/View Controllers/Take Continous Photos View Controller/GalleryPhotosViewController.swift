@@ -89,14 +89,14 @@ import AVFoundation
 
 extension GalleryPhotosViewController: CameraDelegate {
     
-    func closeCamera(savePhotos: Bool, photos: [AVCapturePhoto], selectedPhotos: [Bool]) {
+    func closeCamera(savePhotos: Bool, photos: [CameraPhoto]) {
         if savePhotos {
-            model.photos.append(contentsOf: photos)
-            model.selectedPhotos.append(contentsOf: selectedPhotos)
+            model.cameraPhotos.append(contentsOf: photos)
             collectionView.reloadData()
         }
-        make(button: uploadButton, enable: savePhotos)
+        make(button: uploadButton, enable: !model.isAllPhoto(selected: false))
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
+        collectionView.reloadItems(at: [IndexPath(row: 0, section: 0 )])
     }
 }
 
@@ -122,7 +122,7 @@ extension GalleryPhotosViewController: UITextFieldDelegate {
 extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return model.photos.count + 1
+        return model.cameraPhotos.count + 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -133,8 +133,8 @@ extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionV
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell",
                                                           for: indexPath) as! PhotoCollectionViewCell
-            cell.photo.image = model.getImage(from: model.photos[indexPath.row - 1])
-            cell.selectedView.isHidden = !model.selectedPhotos[indexPath.row - 1]
+            cell.photo.image = model.cameraPhotos[indexPath.row - 1].getImage()
+            cell.selectedView.isHidden = !model.cameraPhotos[indexPath.row - 1].selected
             return cell
         }
     }
@@ -143,7 +143,7 @@ extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionV
         if indexPath.row == 0 {
             self.performSegue(withIdentifier: "showCamera", sender: nil)
         } else {
-            model.selectedPhotos[indexPath.row - 1] = !model.selectedPhotos[indexPath.row - 1]
+            model.cameraPhotos[indexPath.row - 1].selected = !model.cameraPhotos[indexPath.row - 1].selected
             collectionView.reloadItems(at: [indexPath])
             make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
             make(button: uploadButton, enable: !model.isAllPhoto(selected: false))
@@ -151,7 +151,7 @@ extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let yourWidth = collectionView.bounds.width/3.0 - 20
+        let yourWidth = (min(self.view.bounds.width, self.view.bounds.height) - 40)/3.0 - 20
         let yourHeight = yourWidth
 
         return CGSize(width: yourWidth, height: yourHeight)
