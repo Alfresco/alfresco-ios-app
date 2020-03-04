@@ -58,14 +58,16 @@ extension CameraController {
         
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        self.previewLayer?.connection?.videoOrientation = self.cameraOrientation()
+        let orientation = UIInterfaceOrientation(rawValue: UIApplication.shared.statusBarOrientation.rawValue)!
+        self.previewLayer?.connection?.videoOrientation = orientation.cameraOrientation()
         
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         self.previewLayer?.frame = view.frame
     }
     
     func changeOrientation(on view: UIView)  {
-        self.previewLayer?.connection?.videoOrientation = self.cameraOrientation()
+        let orientation = UIInterfaceOrientation(rawValue: UIApplication.shared.statusBarOrientation.rawValue)!
+        self.previewLayer?.connection?.videoOrientation = orientation.cameraOrientation()
         self.previewLayer?.frame.size = view.frame.size
     }
     
@@ -95,6 +97,7 @@ extension CameraController {
         }
         
         let settings = AVCapturePhotoSettings()
+        
         settings.flashMode = self.flashMode
         
         self.photoOutput?.capturePhoto(with: settings, delegate: self)
@@ -103,23 +106,6 @@ extension CameraController {
     
     
 //MARK: - Private Utils
-    
-    func cameraOrientation() -> AVCaptureVideoOrientation {
-        let orientation = UIInterfaceOrientation(rawValue: UIApplication.shared.statusBarOrientation.rawValue)!
-        
-        switch orientation {
-        case .landscapeLeft:
-            return AVCaptureVideoOrientation.landscapeLeft
-        case .landscapeRight:
-            return AVCaptureVideoOrientation.landscapeRight
-        case .portrait:
-            return AVCaptureVideoOrientation.portrait
-        case .portraitUpsideDown:
-            return AVCaptureVideoOrientation.portraitUpsideDown
-        default:
-            return AVCaptureVideoOrientation.portrait
-        }
-    }
     
     func createCaptureSession() {
         self.captureSession = AVCaptureSession()
