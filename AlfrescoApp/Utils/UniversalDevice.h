@@ -16,6 +16,8 @@
  *  limitations under the License.
  ******************************************************************************/
   
+#import "Constants.h"
+
 @interface UniversalDevice : NSObject
 
 /*

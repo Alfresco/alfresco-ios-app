@@ -961,23 +961,17 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 
 - (UIAlertAction *)alertActionTakeContinousPhotos
 {
+    __weak typeof(self) weakSelf = self;
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takecontinuosphotos", @"Take Continous Photos") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [PermissionChecker requestPermissionForResourceType:ResourceTypeCamera completionBlock:^(BOOL granted) {
             if (granted)
             {
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Gallery" bundle:nil];
                 GalleryPhotosViewController *gpvc = (GalleryPhotosViewController *)[storyboard instantiateViewControllerWithIdentifier:@"GalleryPhotosViewController"];
-                GalleryPhotosModel *model = [[GalleryPhotosModel alloc] initWithSession:self.session folder:[self.inUseDataSource parentFolder]];
+                GalleryPhotosModel *model = [[GalleryPhotosModel alloc] initWithSession:weakSelf.session folder:[weakSelf.inUseDataSource parentFolder]];
                 gpvc.model = model;
                 
-                [UniversalDevice displayModalViewController:gpvc onController:self.navigationController withCompletionBlock:nil];
-                
-//                [self.navigationController presentViewController:gpvc animated:YES completion:nil];
-                
-//                [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDM
-//                                                                  action:kAnalyticsEventActionQuickAction
-//                                                                   label:kAnalyticsEventLabelTakePhotoOrVideo
-//                                                                   value:@1];
+                [UniversalDevice displayModalViewController:gpvc onController:weakSelf.navigationController withCompletionBlock:nil]; 
             }
         }];
     }];

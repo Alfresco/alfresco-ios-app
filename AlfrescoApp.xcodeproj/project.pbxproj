@@ -697,6 +697,7 @@
 		73FF558D18ACE2370009CA56 /* large_zip.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557518ACE2370009CA56 /* large_zip.png */; };
 		73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557618ACE2370009CA56 /* large_zip@2x.png */; };
 		E30C322B240CE71D00AE025B /* CameraOpenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */; };
+		E32CDDE2240EABBB008BF80D /* CameraPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CDDE1240EABBB008BF80D /* CameraPhoto.swift */; };
 		E333CA8A2403BD6C0082F15F /* GalleryPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */; };
 		E333CA8C2403BD9A0082F15F /* Gallery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E333CA8B2403BD9A0082F15F /* Gallery.storyboard */; };
 		E333CA902403BF380082F15F /* CameraController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA8D2403BF380082F15F /* CameraController.swift */; };
@@ -1923,6 +1924,7 @@
 		A544CBC5CD8C7DE64C27C0EB /* libPods-AlfrescoDocumentPicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AlfrescoDocumentPicker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C14CE06656BB504AD3073E14 /* Pods-AlfrescoFileProviderUI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AlfrescoFileProviderUI.release.xcconfig"; path = "Pods/Target Support Files/Pods-AlfrescoFileProviderUI/Pods-AlfrescoFileProviderUI.release.xcconfig"; sourceTree = "<group>"; };
 		E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOpenCollectionViewCell.swift; sourceTree = "<group>"; };
+		E32CDDE1240EABBB008BF80D /* CameraPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPhoto.swift; sourceTree = "<group>"; };
 		E333CA882403BD6B0082F15F /* AlfrescoApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotosViewController.swift; sourceTree = "<group>"; };
 		E333CA8B2403BD9A0082F15F /* Gallery.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Gallery.storyboard; sourceTree = "<group>"; };
@@ -4312,6 +4314,7 @@
 				E333CA8D2403BF380082F15F /* CameraController.swift */,
 				E333CA8F2403BF380082F15F /* PhotoCollectionViewCell.swift */,
 				E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */,
+				E32CDDE1240EABBB008BF80D /* CameraPhoto.swift */,
 				E333CA8B2403BD9A0082F15F /* Gallery.storyboard */,
 			);
 			path = "Take Continous Photos View Controller";
@@ -5069,6 +5072,7 @@
 				2BFB08181B14BE9F00ED8DFF /* FileFolderCollectionViewCell.m in Sources */,
 				738665231907B9BE0021D1BD /* FileLocationSelectionViewController.m in Sources */,
 				080A813118573CBC00B79306 /* CertificateDocumentFilter.m in Sources */,
+				E32CDDE2240EABBB008BF80D /* CameraPhoto.swift in Sources */,
 				2BA24A691B8C5D470075CA99 /* SearchViewControllerDataSource.m in Sources */,
 				73E9E21217E854ED00A198B4 /* AccountManager.m in Sources */,
 				73B9585817A6750F0099FB84 /* AlfrescoDocument+ALF.m in Sources */,

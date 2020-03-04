@@ -10,7 +10,7 @@ import Foundation
 import Photos
 import UIKit
 
-protocol GalleryPhotosDelegate {
+protocol GalleryPhotosDelegate: class {
     func finishUploadPhotos()
 }
 
@@ -24,23 +24,21 @@ protocol GalleryPhotosDelegate {
     var imagesName: String
     var indexUploadingPhotos: Int
     
-    var photos: [AVCapturePhoto]
-    var selectedPhotos: [Bool]
-    var delegate: GalleryPhotosDelegate!
+    var cameraPhotos: [CameraPhoto]
+    weak var delegate: GalleryPhotosDelegate?
   
     @objc init(session: AlfrescoSession, folder: AlfrescoFolder) {
-        self.photos = []
-        self.selectedPhotos = []
+        self.cameraPhotos = []
         self.imagesName = folder.name
         self.indexUploadingPhotos = -1
         self.documentServices = AlfrescoPlaceholderDocumentFolderService.init(session: session)
         self.uploadToFolder = folder
     }
-    
+
     func uploadPhotosWithContentStream() {
-        for idx in 0..<photos.count {
-            if selectedPhotos[idx] == true {
-                upload(photos[idx])
+        for idx in 0..<cameraPhotos.count {
+            if cameraPhotos[idx].selected == true {
+                upload(cameraPhotos[idx].capturePhoto)
             }
         }
     }
@@ -71,7 +69,7 @@ protocol GalleryPhotosDelegate {
         uploadGroup.enter()
         self.documentServices.createDocument(withName: documentName, inParentFolder: self.uploadToFolder, contentStream: contentStream, properties: nil, aspects: nil, completionBlock: { [weak self] (document, error) in
             
-            guard let sSelf = self else { return }
+            guard let sSelf = self else { return } 
             
             if let document = document {
                 RealmSyncManager.shared()?.didUploadNode(document, fromPath: pathToTempFile, to: sSelf.uploadToFolder)
@@ -82,37 +80,115 @@ protocol GalleryPhotosDelegate {
         }
         uploadGroup.notify(queue: .main)  {  [weak self] in
             guard let sSelf = self else { return }
-            sSelf.delegate.finishUploadPhotos()
+            sSelf.delegate?.finishUploadPhotos()
         }
     }
     
-    func shouldTakeAnyPhotos(_ photos: [AVCapturePhoto]) -> Bool {
-        if (photos.count + self.photos.count) > 100 {
+    func shouldTakeAnyPhotos(_ photos: [CameraPhoto]) -> Bool {
+        if (photos.count + self.cameraPhotos.count) > 100 {
             return false
         }
-        
         return true
     }
     
     func getImage(from photo: AVCapturePhoto) -> UIImage? {
-        if let imageData = photo.fileDataRepresentation() {
-            return UIImage.init(data: imageData)
+        
+        guard let imageData = photo.fileDataRepresentation() else {
+            print("Error while generating image from photo capture data.")
+            return nil
         }
+        
+        guard let uiImage = UIImage(data: imageData) else {
+            print("Unable to generate UIImage from image data.");
+            return nil
+        }
+        
+        guard let cgImage = uiImage.cgImage else {
+            print("Error generating CGImage")
+            return nil
+        }
+        
+        if let deviceOrientationOnCapture = UIInterfaceOrientation.init(rawValue: photo.metadata["UIInterfaceOrientation"] as! Int) {
+            return UIImage(cgImage: cgImage, scale: 1.0, orientation: deviceOrientationOnCapture.getUIImageOrientationFromDevice())
+        }
+        
         return nil
     }
     
     func selectAllPhotos() {
-        for idx in 0..<selectedPhotos.count {
-            selectedPhotos[idx] = true
+        for idx in 0..<cameraPhotos.count {
+            cameraPhotos[idx].selected = true
         }
     }
     
     func isAllPhoto(selected: Bool) -> Bool {
-        for ok in selectedPhotos {
-            if ok != selected {
+        for photo in cameraPhotos {
+            if photo.selected != selected {
                 return false
             }
         }
         return true
     }
 }
+
+extension UIDeviceOrientation {
+    func getUIImageOrientationFromDevice() -> UIImage.Orientation {
+        
+        if UIDevice.current.orientation == .landscapeLeft {
+            print("landscapeLeft")
+        }
+        if UIDevice.current.orientation == .portrait {
+            print("portrait")
+        }
+        
+        if UIDevice.current.orientation.isLandscape {
+                   print("isLandscape")
+               }
+        
+        switch UIDevice.current.orientation {
+        case .portrait:
+            return UIImage.Orientation.right
+        case .portraitUpsideDown:
+            return UIImage.Orientation.left
+        case .landscapeLeft:
+            return UIImage.Orientation.down
+        case .landscapeRight:
+            return UIImage.Orientation.up
+         default:
+            return UIImage.Orientation.right
+        }
+    }
+}
+
+extension UIInterfaceOrientation {
+    func getUIImageOrientationFromDevice() -> UIImage.Orientation {
+        switch self {
+        case .portrait:
+            return UIImage.Orientation.right
+        case .portraitUpsideDown:
+            return UIImage.Orientation.left
+        case .landscapeLeft:
+            return UIImage.Orientation.down
+        case .landscapeRight:
+            return UIImage.Orientation.up
+         default:
+            return UIImage.Orientation.up
+        }
+    }
+    
+    func cameraOrientation() -> AVCaptureVideoOrientation {
+        switch self {
+        case .landscapeLeft:
+            return AVCaptureVideoOrientation.landscapeLeft
+        case .landscapeRight:
+            return AVCaptureVideoOrientation.landscapeRight
+        case .portrait:
+            return AVCaptureVideoOrientation.portrait
+        case .portraitUpsideDown:
+            return AVCaptureVideoOrientation.portraitUpsideDown
+        default:
+            return AVCaptureVideoOrientation.portrait
+        }
+    }
+}
+
