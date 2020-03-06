@@ -283,15 +283,15 @@ extension UIInterfaceOrientation {
     func imagePropertyOrientation() -> Int {
         switch self {
         case .portrait:
-            return 6
+            return 6 // 0th row is on the right, and 0th column is the top.
         case .portraitUpsideDown:
-            return 8
+            return 8 // 0th row is on the left, and 0th column is the bottom.
         case .landscapeLeft:
-            return 3
+            return 3 // 0th row is at the bottom, and 0th column is on the right.
         case .landscapeRight:
-            return 1
+            return 1 // 0th row is at the top, and 0th column is on the left.
         default:
-            return 6
+            return 6 // 0th row is on the right, and 0th column is the top.
         }
     }
 }

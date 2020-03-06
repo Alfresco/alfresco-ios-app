@@ -37,6 +37,10 @@ import AVFoundation
     
     var onlyOnceOpenCamera: Bool = true
     
+    var cancelText = NSLocalizedString("gallery.photos.cancel", comment: "Cancel")
+    var uploadText = NSLocalizedString("gallery.photos.upload", comment: "Upload")
+    var selectAllText = NSLocalizedString("gallery.photos.selectAll", comment: "SelectAll")
+    
     //MARK: - Cycle Life View
     
     override func viewDidLoad() {
@@ -44,6 +48,9 @@ import AVFoundation
         
         nameTextField.text = model.imagesName
         cancelButton.titleLabel?.textColor = UIColor.blue
+        
+        cancelButton.setTitle(cancelText, for: .normal)
+        uploadButton.setTitle(uploadText, for: .normal)
         
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
         make(button: uploadButton, enable: !model.isAllPhoto(selected: false))

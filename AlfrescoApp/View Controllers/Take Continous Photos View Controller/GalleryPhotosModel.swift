@@ -27,7 +27,8 @@ protocol GalleryPhotosDelegate: class {
 @objc class GalleryPhotosModel: NSObject {
 
     var maxiumNumberOfPhotosTaken = 100
-    var warningText = NSLocalizedString("error.camera.to.many.photos", comment: "To many photos!")
+    var tooManyPhotosText = NSLocalizedString("error.camera.to.many.photos", comment: "Too many photos!")
+    var okText = NSLocalizedString("error.camera.to.many.photos", comment: "Too many photos!")
     var kkAlfrescoErrorCodeDocumentFolder = 600
     var kkAlfrescoErrorCodeDocumentFolderNodeAlreadyExists = 601
     

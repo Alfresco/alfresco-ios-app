@@ -123,9 +123,8 @@ class CameraViewController: UIViewController, ModalRotation {
     //MARK: - Utils
     
     func showAlertView() {
-        let alert = UIAlertController(title: "", message: model.warningText, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-//            self.dismiss(animated: true, completion: nil)
+        let alert = UIAlertController(title: "", message: model.tooManyPhotosText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
         }))
         self.present(alert, animated: true, completion: nil)
     }

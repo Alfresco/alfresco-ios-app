@@ -893,10 +893,7 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
 + (NSDictionary *)metadataByAddingOrientation:(NSInteger)orientation toMetadata:(NSDictionary *)metadata
 {
     NSMutableDictionary *returnedMetadata = [metadata mutableCopy];
-    
-//    NSDictionary *orientationDictionary = @{(NSString *)kCGImagePropertyOrientation : [NSNumber numberWithInt:orientation]};
-    
-    [returnedMetadata setValue:[NSNumber numberWithInt:orientation] forKey:@"Orientation"];
+    [returnedMetadata setValue:[NSNumber numberWithInteger:orientation] forKey:(NSString *)kCGImagePropertyOrientation];
     
     return returnedMetadata;
 }
