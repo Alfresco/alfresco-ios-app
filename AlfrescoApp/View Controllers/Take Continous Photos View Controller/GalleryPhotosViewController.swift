@@ -45,16 +45,17 @@ import AVFoundation
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        model.delegate = self
         
         nameTextField.text = model.imagesName
-        cancelButton.titleLabel?.textColor = UIColor.blue
         
         cancelButton.setTitle(cancelText, for: .normal)
         uploadButton.setTitle(uploadText, for: .normal)
+        selectAllButton.setTitle(selectAllText, for: .normal)
         
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
         make(button: uploadButton, enable: !model.isAllPhoto(selected: false))
-        model.delegate = self
+        make(button: cancelButton, enable: true)
         
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
@@ -80,6 +81,7 @@ import AVFoundation
     }
     
     @IBAction func uploadButtonTapped(_ sender: UIButton) {
+        self.view.isUserInteractionEnabled = false
         model.uploadPhotosWithContentStream()
     }
     
@@ -93,7 +95,7 @@ import AVFoundation
     
     func make(button: UIButton, enable: Bool) {
         button.isUserInteractionEnabled = enable
-        button.titleLabel?.textColor = (enable) ? UIColor.blue : UIColor.gray
+        button.setTitleColor((enable) ? UIColor.blue : UIColor.gray, for: .normal)
     }
     
     //MARK: - Navigation

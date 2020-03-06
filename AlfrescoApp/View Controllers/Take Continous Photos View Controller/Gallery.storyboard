@@ -12,7 +12,7 @@
         <!--Gallery Photos View Controller-->
         <scene sceneID="CdT-yP-Atb">
             <objects>
-                <viewController storyboardIdentifier="GalleryPhotosViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KJb-vs-mHK" customClass="GalleryPhotosViewController" customModule="AlfrescoApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GalleryPhotosViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KJb-vs-mHK" customClass="GalleryPhotosViewController" customModule="AlfrescoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="utD-84-s6L">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -108,7 +108,9 @@
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RDS-xo-9xJ">
                                 <rect key="frame" x="345" y="64" width="49" height="30"/>
-                                <state key="normal" title="Upload"/>
+                                <state key="normal" title="Upload">
+                                    <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <state key="disabled" title="Upload">
                                     <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
@@ -119,7 +121,9 @@
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4sv-88-gYt">
                                 <rect key="frame" x="20" y="64" width="48" height="30"/>
-                                <state key="normal" title="Cancel"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="cancelButtonTapped:" destination="KJb-vs-mHK" eventType="touchUpInside" id="VxG-si-uyQ"/>
                                 </connections>
@@ -222,7 +226,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6e-f1-dmT">
-                                        <rect key="frame" x="179.66666666666663" y="791" width="55" height="55"/>
+                                        <rect key="frame" x="179.66666666666666" y="791" width="55" height="55"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="55" id="MLy-gR-wtk"/>
