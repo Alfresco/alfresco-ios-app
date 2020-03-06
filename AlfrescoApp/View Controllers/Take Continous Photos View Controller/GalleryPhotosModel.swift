@@ -1,10 +1,20 @@
-//
-//  GalleryPhotosModel.swift
-//  AlfrescoApp
-//
-//  Created by Florin Baincescu on 24/02/2020.
-//  Copyright © 2020 Alfresco. All rights reserved.
-//
+/*******************************************************************************
+* Copyright (C) 2005-2014 Alfresco Software Limited.
+*
+* This file is part of the Alfresco Mobile iOS App.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*  http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+******************************************************************************/
 
 import Foundation
 import Photos
@@ -16,8 +26,10 @@ protocol GalleryPhotosDelegate: class {
 
 @objc class GalleryPhotosModel: NSObject {
 
-    var numberOfPhotosTaken = 100
-    var warningText = "To many photos!"
+    var maxiumNumberOfPhotosTaken = 100
+    var warningText = NSLocalizedString("error.camera.to.many.photos", comment: "To many photos!")
+    var kkAlfrescoErrorCodeDocumentFolder = 600
+    var kkAlfrescoErrorCodeDocumentFolderNodeAlreadyExists = 601
     
     var documentServices: AlfrescoDocumentFolderService
     var uploadToFolder: AlfrescoFolder
@@ -26,38 +38,41 @@ protocol GalleryPhotosDelegate: class {
     
     var cameraPhotos: [CameraPhoto]
     weak var delegate: GalleryPhotosDelegate?
+    
+    //MARK: Init
   
     @objc init(session: AlfrescoSession, folder: AlfrescoFolder) {
         self.cameraPhotos = []
         self.imagesName = folder.name
-        self.indexUploadingPhotos = -1
+        self.indexUploadingPhotos = 0
         self.documentServices = AlfrescoPlaceholderDocumentFolderService.init(session: session)
         self.uploadToFolder = folder
     }
+    
+    //MARK: Upload
 
     func uploadPhotosWithContentStream() {
-        for idx in 0..<cameraPhotos.count {
-            if cameraPhotos[idx].selected == true {
-                upload(cameraPhotos[idx].capturePhoto)
+        for photo in cameraPhotos {
+            if photo.selected == true {
+                indexUploadingPhotos = indexUploadingPhotos + 1
+                photo.name = imagesName + "-" + String(indexUploadingPhotos)
+                upload(photo)
             }
         }
     }
     
-    func upload(_ photo: AVCapturePhoto) {
+    func upload(_ photo: CameraPhoto) {
         let uploadGroup = DispatchGroup()
-    
-        guard let imageData = photo.fileDataRepresentation() else {
-            return
-        }
-        guard let image = UIImage.init(data: imageData) else {
+        
+        guard let image = photo.getImage() else {
             return
         }
         
-        indexUploadingPhotos = indexUploadingPhotos + 1
-        let documentName = imagesName + "-" + String(indexUploadingPhotos) + ".jpg"
+        let documentName = photo.name + ".jpg"
         let mimetype = "image/jpeg"
-        let metadata = Utility.metadataByAddingGPS(toMetadata: photo.metadata)
-        
+        var metadata = Utility.metadataByAddingGPS(toMetadata: photo.capturePhoto.metadata)
+        metadata = Utility.metadata(byAddingOrientation: photo.orientationMetadata, toMetadata: metadata)
+    
         let contentData = Utility.data(from: image, metadata: metadata, mimetype: mimetype)
         
         let contentFile = AlfrescoContentFile.init(data: contentData, mimeType: mimetype)
@@ -68,11 +83,15 @@ protocol GalleryPhotosDelegate: class {
         
         uploadGroup.enter()
         self.documentServices.createDocument(withName: documentName, inParentFolder: self.uploadToFolder, contentStream: contentStream, properties: nil, aspects: nil, completionBlock: { [weak self] (document, error) in
-            
-            guard let sSelf = self else { return } 
-            
+            guard let sSelf = self else { return }
             if let document = document {
                 RealmSyncManager.shared()?.didUploadNode(document, fromPath: pathToTempFile, to: sSelf.uploadToFolder)
+            } else if let error = error {
+                AlfrescoLog.logError(error.localizedDescription)
+                if sSelf.filenameExistsInParentFolder(error as NSError) {
+                    photo.name = photo.name + "_" + String(photo.capturePhoto.timestamp.value)
+                    sSelf.upload(photo)
+                }
             }
             uploadGroup.leave()
         }) { (bytesTransferred, bytesTotal) in
@@ -84,35 +103,21 @@ protocol GalleryPhotosDelegate: class {
         }
     }
     
+    //MARK: Utils
+    
+    func filenameExistsInParentFolder(_ error: NSError) -> Bool {
+        if error.code == self.kkAlfrescoErrorCodeDocumentFolder
+            || error.code == self.kkAlfrescoErrorCodeDocumentFolderNodeAlreadyExists {
+            return true
+        }
+        return false
+    }
+    
     func shouldTakeAnyPhotos(_ photos: [CameraPhoto]) -> Bool {
-        if (photos.count + self.cameraPhotos.count) > 100 {
+        if (photos.count + self.cameraPhotos.count) >= maxiumNumberOfPhotosTaken {
             return false
         }
         return true
-    }
-    
-    func getImage(from photo: AVCapturePhoto) -> UIImage? {
-        
-        guard let imageData = photo.fileDataRepresentation() else {
-            print("Error while generating image from photo capture data.")
-            return nil
-        }
-        
-        guard let uiImage = UIImage(data: imageData) else {
-            print("Unable to generate UIImage from image data.");
-            return nil
-        }
-        
-        guard let cgImage = uiImage.cgImage else {
-            print("Error generating CGImage")
-            return nil
-        }
-        
-        if let deviceOrientationOnCapture = UIInterfaceOrientation.init(rawValue: photo.metadata["UIInterfaceOrientation"] as! Int) {
-            return UIImage(cgImage: cgImage, scale: 1.0, orientation: deviceOrientationOnCapture.getUIImageOrientationFromDevice())
-        }
-        
-        return nil
     }
     
     func selectAllPhotos() {
@@ -130,65 +135,3 @@ protocol GalleryPhotosDelegate: class {
         return true
     }
 }
-
-extension UIDeviceOrientation {
-    func getUIImageOrientationFromDevice() -> UIImage.Orientation {
-        
-        if UIDevice.current.orientation == .landscapeLeft {
-            print("landscapeLeft")
-        }
-        if UIDevice.current.orientation == .portrait {
-            print("portrait")
-        }
-        
-        if UIDevice.current.orientation.isLandscape {
-                   print("isLandscape")
-               }
-        
-        switch UIDevice.current.orientation {
-        case .portrait:
-            return UIImage.Orientation.right
-        case .portraitUpsideDown:
-            return UIImage.Orientation.left
-        case .landscapeLeft:
-            return UIImage.Orientation.down
-        case .landscapeRight:
-            return UIImage.Orientation.up
-         default:
-            return UIImage.Orientation.right
-        }
-    }
-}
-
-extension UIInterfaceOrientation {
-    func getUIImageOrientationFromDevice() -> UIImage.Orientation {
-        switch self {
-        case .portrait:
-            return UIImage.Orientation.right
-        case .portraitUpsideDown:
-            return UIImage.Orientation.left
-        case .landscapeLeft:
-            return UIImage.Orientation.down
-        case .landscapeRight:
-            return UIImage.Orientation.up
-         default:
-            return UIImage.Orientation.up
-        }
-    }
-    
-    func cameraOrientation() -> AVCaptureVideoOrientation {
-        switch self {
-        case .landscapeLeft:
-            return AVCaptureVideoOrientation.landscapeLeft
-        case .landscapeRight:
-            return AVCaptureVideoOrientation.landscapeRight
-        case .portrait:
-            return AVCaptureVideoOrientation.portrait
-        case .portraitUpsideDown:
-            return AVCaptureVideoOrientation.portraitUpsideDown
-        default:
-            return AVCaptureVideoOrientation.portrait
-        }
-    }
-}
-

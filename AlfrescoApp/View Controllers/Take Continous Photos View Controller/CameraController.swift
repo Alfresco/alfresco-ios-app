@@ -1,10 +1,20 @@
-//
-//  CameraController.swift
-//  AV Foundation
-//
-//  Created by Pranjal Satija on 29/5/2017.
-//  Copyright © 2017 AppCoda. All rights reserved.
-//
+/*******************************************************************************
+* Copyright (C) 2005-2014 Alfresco Software Limited.
+*
+* This file is part of the Alfresco Mobile iOS App.
+*
+* Licensed under the Apache License, Version 2.0 (the "License");
+* you may not use this file except in compliance with the License.
+* You may obtain a copy of the License at
+*
+*  http://www.apache.org/licenses/LICENSE-2.0
+*
+*  Unless required by applicable law or agreed to in writing, software
+*  distributed under the License is distributed on an "AS IS" BASIS,
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*  See the License for the specific language governing permissions and
+*  limitations under the License.
+******************************************************************************/
 
 import AVFoundation
 import UIKit
@@ -31,6 +41,9 @@ class CameraController: NSObject {
 }
 
 extension CameraController {
+    
+    //MARK: - Init
+    
     func prepare(completionHandler: @escaping (Error?) -> Void) {
         DispatchQueue(label: "prepare").async {
             do {
@@ -51,16 +64,14 @@ extension CameraController {
     }
     
     func displayPreview(on view: UIView) throws {
-        guard let captureSession = self.captureSession, captureSession.isRunning
-            else {
-                throw CameraControllerError.captureSessionIsMissing
+        guard let captureSession = self.captureSession,
+            captureSession.isRunning else {
+            throw CameraControllerError.captureSessionIsMissing
         }
-        
+        let orientation = UIInterfaceOrientation(rawValue: UIApplication.shared.statusBarOrientation.rawValue)!
         self.previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         self.previewLayer?.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        let orientation = UIInterfaceOrientation(rawValue: UIApplication.shared.statusBarOrientation.rawValue)!
         self.previewLayer?.connection?.videoOrientation = orientation.cameraOrientation()
-        
         view.layer.insertSublayer(self.previewLayer!, at: 0)
         self.previewLayer?.frame = view.frame
     }
@@ -78,14 +89,12 @@ extension CameraController {
                 throw CameraControllerError.captureSessionIsMissing
         }
         captureSession.beginConfiguration()
-        
         switch currentCameraPosition {
         case .front:
             try switchToRearCamera(captureSession)
         case .rear:
             try switchToFrontCamera(captureSession)
         }
-        
         captureSession.commitConfiguration()
     }
     
@@ -95,11 +104,8 @@ extension CameraController {
                 completion(nil, CameraControllerError.captureSessionIsMissing)
                 return
         }
-        
         let settings = AVCapturePhotoSettings()
-        
         settings.flashMode = self.flashMode
-        
         self.photoOutput?.capturePhoto(with: settings, delegate: self)
         self.photoCaptureCompletionBlock = completion
     }
@@ -113,7 +119,6 @@ extension CameraController {
     
     func configureCaptureDevices() throws {
         let cameras: [AVCaptureDevice]
-        
         if #available(iOS 13.0, *) {
             let session = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInMicrophone, .builtInWideAngleCamera, .builtInTelephotoCamera, .builtInUltraWideCamera, .builtInDualCamera, .builtInDualWideCamera, .builtInTripleCamera, .builtInTrueDepthCamera], mediaType: AVMediaType.video, position: .unspecified)
             cameras = session.devices.compactMap { $0 }
@@ -122,7 +127,9 @@ extension CameraController {
             cameras = session.devices.compactMap { $0 }
         }
 
-        guard !cameras.isEmpty else { throw CameraControllerError.noCamerasAvailable }
+        guard !cameras.isEmpty else {
+            throw CameraControllerError.noCamerasAvailable
+        }
         for camera in cameras {
             if camera.position == .front {
                 self.frontCamera = camera
@@ -131,15 +138,13 @@ extension CameraController {
                 self.rearCamera = camera
                 try camera.lockForConfiguration()
                 camera.focusMode = .continuousAutoFocus
-//                camera.unlockForConfiguration()
-                try camera.lockForConfiguration()
+                camera.unlockForConfiguration()
             }
         }
     }
     
     func configureDeviceInputs() throws {
-        guard let captureSession = self.captureSession
-            else {
+        guard let captureSession = self.captureSession else {
                 throw CameraControllerError.captureSessionIsMissing
         }
         
@@ -163,8 +168,7 @@ extension CameraController {
     }
     
     func configurePhotoOutput() throws {
-        guard let captureSession = self.captureSession
-            else {
+        guard let captureSession = self.captureSession else {
                 throw CameraControllerError.captureSessionIsMissing
         }
         self.photoOutput = AVCapturePhotoOutput()
@@ -179,8 +183,7 @@ extension CameraController {
     
     func switchToFrontCamera(_ captureSession: AVCaptureSession) throws {
         guard let rearCameraInput = self.rearCameraInput, captureSession.inputs.contains(rearCameraInput),
-            let frontCamera = self.frontCamera
-            else {
+            let frontCamera = self.frontCamera else {
                 throw CameraControllerError.invalidOperation
         }
         
@@ -196,8 +199,7 @@ extension CameraController {
     
     func switchToRearCamera(_ captureSession: AVCaptureSession) throws {
         guard let frontCameraInput = self.frontCameraInput, captureSession.inputs.contains(frontCameraInput),
-            let rearCamera = self.rearCamera
-            else {
+            let rearCamera = self.rearCamera else {
                 throw CameraControllerError.invalidOperation
         }
         
@@ -213,6 +215,8 @@ extension CameraController {
     }
 }
 
+//MARK: - AVCapturePhotoCapture Delegate
+
 extension CameraController: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error = error {
@@ -224,6 +228,8 @@ extension CameraController: AVCapturePhotoCaptureDelegate {
         }
     }
 }
+
+//MARK: - CameraController Enums
 
 extension CameraController {
     enum CameraControllerError: Swift.Error {
@@ -238,5 +244,54 @@ extension CameraController {
     public enum CameraPosition {
         case front
         case rear
+    }
+}
+
+//MARK: - UIInterfaceOrientation Extension
+
+extension UIInterfaceOrientation {
+    func imageOrientation() -> UIImage.Orientation {
+        switch self {
+        case .portrait:
+            return UIImage.Orientation.right
+        case .portraitUpsideDown:
+            return UIImage.Orientation.left
+        case .landscapeLeft:
+            return UIImage.Orientation.down
+        case .landscapeRight:
+            return UIImage.Orientation.up
+         default:
+            return UIImage.Orientation.up
+        }
+    }
+    
+    func cameraOrientation() -> AVCaptureVideoOrientation {
+        switch self {
+        case .landscapeLeft:
+            return AVCaptureVideoOrientation.landscapeLeft
+        case .landscapeRight:
+            return AVCaptureVideoOrientation.landscapeRight
+        case .portrait:
+            return AVCaptureVideoOrientation.portrait
+        case .portraitUpsideDown:
+            return AVCaptureVideoOrientation.portraitUpsideDown
+        default:
+            return AVCaptureVideoOrientation.portrait
+        }
+    }
+    
+    func imagePropertyOrientation() -> Int {
+        switch self {
+        case .portrait:
+            return 6
+        case .portraitUpsideDown:
+            return 8
+        case .landscapeLeft:
+            return 3
+        case .landscapeRight:
+            return 1
+        default:
+            return 6
+        }
     }
 }

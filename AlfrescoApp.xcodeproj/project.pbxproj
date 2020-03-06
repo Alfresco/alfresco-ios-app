@@ -4305,15 +4305,23 @@
 			name = "Text File View Controller";
 			sourceTree = "<group>";
 		};
+		E32CDDE72411138C008BF80D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				E333CA8F2403BF380082F15F /* PhotoCollectionViewCell.swift */,
+				E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		E333CA872403BD380082F15F /* Take Continous Photos View Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E32CDDE72411138C008BF80D /* Cells */,
 				E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */,
 				E333CA9624041E8F0082F15F /* GalleryPhotosModel.swift */,
 				E333CA8E2403BF380082F15F /* CameraViewController.swift */,
 				E333CA8D2403BF380082F15F /* CameraController.swift */,
-				E333CA8F2403BF380082F15F /* PhotoCollectionViewCell.swift */,
-				E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */,
 				E32CDDE1240EABBB008BF80D /* CameraPhoto.swift */,
 				E333CA8B2403BD9A0082F15F /* Gallery.storyboard */,
 			);

@@ -172,7 +172,8 @@
 "error.person.profile.no.profile.message" = "Couldn't find user; %@";
 "error.person.profile.email.failed.title" = "Sending Unsuccessful";
 "error.person.profile.email.failed.message" = "Couldn't send the email. Try again later.";
-
+// Camera
+"error.camera.to.many.photos" = "To many photos!";
 /**
  * Permissions
  */
@@ -315,7 +316,7 @@
 "browser.actionsheet.takephoto" = "Take Photo";
 "browser.actionsheet.takephotovideo" = "Take Photo or Video";
 "browser.actionsheet.createfile" = "Create Text File";
-"browser.actionsheet.takecontinuosphotos" = "Take Continous Photos";
+"browser.actionsheet.takecontinuosphotos" = "Take Multiple Photos";
 
 "browser.alertview.addfolder.title" = "Create Folder";
 "browser.alertview.addfolder.message" = "Create folder with the name:";
