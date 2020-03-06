@@ -881,9 +881,19 @@ NSString *filenameAppendedWithDateModified(NSString *filenameOrPath, AlfrescoNod
     NSDictionary *gpsDictionary = @{(NSString *)kCGImagePropertyGPSLatitude : [NSNumber numberWithFloat:fabs(coordinates.latitude)],
                                     (NSString *)kCGImagePropertyGPSLatitudeRef : ((coordinates.latitude >= 0) ? @"N" : @"S"),
                                     (NSString *)kCGImagePropertyGPSLongitude : [NSNumber numberWithFloat:fabs(coordinates.longitude)],
-                                    (NSString *)kCGImagePropertyGPSLongitudeRef : ((coordinates.longitude >= 0) ? @"E" : @"W")};
+                                    (NSString *)kCGImagePropertyGPSLongitudeRef : ((coordinates.longitude >= 0) ? @"E" : @"W")
+    };
     
     [returnedMetadata setValue:gpsDictionary forKey:(NSString *)kCGImagePropertyGPSDictionary];
+    
+    return returnedMetadata;
+}
+
+
++ (NSDictionary *)metadataByAddingOrientation:(NSInteger)orientation toMetadata:(NSDictionary *)metadata
+{
+    NSMutableDictionary *returnedMetadata = [metadata mutableCopy];
+    [returnedMetadata setValue:[NSNumber numberWithInteger:orientation] forKey:(NSString *)kCGImagePropertyOrientation];
     
     return returnedMetadata;
 }

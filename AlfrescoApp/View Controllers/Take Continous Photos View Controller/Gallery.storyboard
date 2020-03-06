@@ -162,6 +162,8 @@
                     <connections>
                         <outlet property="cancelButton" destination="4sv-88-gYt" id="lgS-2f-rXd"/>
                         <outlet property="collectionView" destination="uLa-MY-IIU" id="zk5-rV-zvS"/>
+                        <outlet property="collectionViewLeadingConstraint" destination="TP7-VP-TQq" id="PtZ-Ln-QVs"/>
+                        <outlet property="collectionViewTraillingConstraint" destination="NaH-LZ-7gB" id="hRH-y6-H82"/>
                         <outlet property="nameTextField" destination="W1Z-B4-fYr" id="Dhi-VB-RHE"/>
                         <outlet property="selectAllButton" destination="MwM-lq-sp0" id="3ky-VK-TeC"/>
                         <outlet property="uploadButton" destination="RDS-xo-9xJ" id="FoT-IC-b22"/>
@@ -192,7 +194,7 @@
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="Flash Off Icon"/>
                                         <connections>
-                                            <action selector="toggleFlash:" destination="dS5-7n-x2f" eventType="touchUpInside" id="vdw-Ce-wsZ"/>
+                                            <action selector="toggleFlashButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="vdw-Ce-wsZ"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cwn-s4-wNn">
@@ -204,7 +206,7 @@
                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <state key="normal" image="Rear Camera Icon"/>
                                         <connections>
-                                            <action selector="switchCameras:" destination="dS5-7n-x2f" eventType="touchUpInside" id="1IU-b4-aen"/>
+                                            <action selector="switchCamerasButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="1IU-b4-aen"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8x7-Je-lym">
@@ -227,7 +229,7 @@
                                             <constraint firstAttribute="width" constant="55" id="hIA-E7-V3O"/>
                                         </constraints>
                                         <connections>
-                                            <action selector="captureImage:" destination="dS5-7n-x2f" eventType="touchUpInside" id="YuJ-64-oXp"/>
+                                            <action selector="captureImageButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="YuJ-64-oXp"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i4N-BX-ypW">

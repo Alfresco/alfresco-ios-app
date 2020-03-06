@@ -93,4 +93,5 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (void)showLocalizedAlertWithTitle:(NSString *)title message:(NSString *)message;
 + (NSData *)dataFromImage:(UIImage *)image metadata:(NSDictionary *)metadata mimetype:(NSString *)mimetype;
 + (NSDictionary *)metadataByAddingGPSToMetadata:(NSDictionary *)metadata;
++ (NSDictionary *)metadataByAddingOrientation:(NSInteger)orientation toMetadata:(NSDictionary *)metadata;
 @end

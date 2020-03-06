@@ -27,16 +27,33 @@ import AVFoundation
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var selectAllButton: UIButton!
     
+    @IBOutlet weak var collectionViewTraillingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var collectionViewLeadingConstraint: NSLayoutConstraint!
+    
     @objc var model: GalleryPhotosModel!
+    
+    var distanceBetweenCells: CGFloat = 10.0
+    var cellPerRow: CGFloat = 3.0
+    
+    var onlyOnceOpenCamera: Bool = true
+    
+    var cancelText = NSLocalizedString("gallery.photos.cancel", comment: "Cancel")
+    var uploadText = NSLocalizedString("gallery.photos.upload", comment: "Upload")
+    var selectAllText = NSLocalizedString("gallery.photos.selectAll", comment: "SelectAll")
+    
+    //MARK: - Cycle Life View
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         nameTextField.text = model.imagesName
+        cancelButton.titleLabel?.textColor = UIColor.blue
+        
+        cancelButton.setTitle(cancelText, for: .normal)
+        uploadButton.setTitle(uploadText, for: .normal)
         
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
         make(button: uploadButton, enable: !model.isAllPhoto(selected: false))
-        
         model.delegate = self
         
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
@@ -46,7 +63,10 @@ import AVFoundation
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.performSegue(withIdentifier: "showCamera", sender: nil)
+        if onlyOnceOpenCamera {
+            self.performSegue(withIdentifier: "showCamera", sender: nil)
+            onlyOnceOpenCamera = false
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -73,7 +93,7 @@ import AVFoundation
     
     func make(button: UIButton, enable: Bool) {
         button.isUserInteractionEnabled = enable
-        button.tintColor = (enable) ? UIColor.blue : UIColor.gray
+        button.titleLabel?.textColor = (enable) ? UIColor.blue : UIColor.gray
     }
     
     //MARK: - Navigation
@@ -87,6 +107,8 @@ import AVFoundation
     }
 }
 
+//MARK: - CameraDelegate
+
 extension GalleryPhotosViewController: CameraDelegate {
     
     func closeCamera(savePhotos: Bool, photos: [CameraPhoto]) {
@@ -96,15 +118,18 @@ extension GalleryPhotosViewController: CameraDelegate {
         }
         make(button: uploadButton, enable: !model.isAllPhoto(selected: false))
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
-        collectionView.reloadItems(at: [IndexPath(row: 0, section: 0 )])
     }
 }
+
+//MARK: - GalleryPhotos Delegate
 
 extension GalleryPhotosViewController: GalleryPhotosDelegate {
     func finishUploadPhotos() {
         self.dismiss(animated: true, completion: nil)
     }
 }
+
+//MARK: - UITextField Delegate
 
 extension GalleryPhotosViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -118,6 +143,8 @@ extension GalleryPhotosViewController: UITextFieldDelegate {
         }
     }
 }
+
+//MARK: - UIColectionView Delegates
 
 extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -151,7 +178,9 @@ extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let yourWidth = (min(self.view.bounds.width, self.view.bounds.height) - 40)/3.0 - 20
+        let margin = collectionViewLeadingConstraint.constant + collectionViewTraillingConstraint.constant
+        let minSize = min(self.view.bounds.width, self.view.bounds.height) - margin
+        let yourWidth = minSize / cellPerRow - distanceBetweenCells * cellPerRow - distanceBetweenCells
         let yourHeight = yourWidth
 
         return CGSize(width: yourWidth, height: yourHeight)
@@ -162,10 +191,10 @@ extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionV
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return distanceBetweenCells
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
+        return distanceBetweenCells
     }
 }
