@@ -12,7 +12,7 @@
         <!--Gallery Photos View Controller-->
         <scene sceneID="CdT-yP-Atb">
             <objects>
-                <viewController storyboardIdentifier="GalleryPhotosViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KJb-vs-mHK" customClass="GalleryPhotosViewController" customModule="AlfrescoApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GalleryPhotosViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="KJb-vs-mHK" customClass="GalleryPhotosViewController" customModule="AlfrescoApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="utD-84-s6L">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

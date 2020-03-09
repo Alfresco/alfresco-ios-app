@@ -110,6 +110,13 @@ extension CameraController {
         self.photoCaptureCompletionBlock = completion
     }
     
+    func flashModeDisplay() -> Bool {
+        if let frontCamera = self.frontCamera {
+            return frontCamera.hasFlash
+        }
+        return false
+    }
+    
     
 //MARK: - Private Utils
     
@@ -145,7 +152,7 @@ extension CameraController {
     
     func configureDeviceInputs() throws {
         guard let captureSession = self.captureSession else {
-                throw CameraControllerError.captureSessionIsMissing
+            throw CameraControllerError.captureSessionIsMissing
         }
         
         if let rearCamera = self.rearCamera {
