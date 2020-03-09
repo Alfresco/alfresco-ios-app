@@ -106,6 +106,8 @@ extension CameraController {
         }
         let settings = AVCapturePhotoSettings()
         settings.flashMode = self.flashMode
+//        settings.isHighResolutionPhotoEnabled = true
+//        settings.isAutoStillImageStabilizationEnabled = true
         self.photoOutput?.capturePhoto(with: settings, delegate: self)
         self.photoCaptureCompletionBlock = completion
     }

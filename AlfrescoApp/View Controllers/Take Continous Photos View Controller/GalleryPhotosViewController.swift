@@ -19,6 +19,10 @@
 import UIKit
 import AVFoundation
 
+@objc protocol MultiplePhotosUploadDelegate: class {
+    func finishUploadGallery(documents: [AlfrescoDocument])
+}
+
 @objc class GalleryPhotosViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -30,6 +34,11 @@ import AVFoundation
     @IBOutlet weak var collectionViewTraillingConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewLeadingConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var loadingView: UIView!
+    @IBOutlet weak var progressHUD: MBProgressHUD!
+    @IBOutlet weak var infoLoadingLabel: UILabel!
+    
+    @objc weak var delegate: MultiplePhotosUploadDelegate?
     @objc var model: GalleryPhotosModel!
     
     var distanceBetweenCells: CGFloat = 10.0
@@ -40,6 +49,8 @@ import AVFoundation
     var cancelText = NSLocalizedString("gallery.photos.cancel", comment: "Cancel")
     var uploadText = NSLocalizedString("gallery.photos.upload", comment: "Upload")
     var selectAllText = NSLocalizedString("gallery.photos.selectAll", comment: "SelectAll")
+    
+    var mbprogressHUD: MBProgressHUD!
     
     //MARK: - Cycle Life View
     
@@ -60,6 +71,9 @@ import AVFoundation
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+        
+        loadingView.isHidden = true
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,6 +96,15 @@ import AVFoundation
     
     @IBAction func uploadButtonTapped(_ sender: UIButton) {
         self.view.isUserInteractionEnabled = false
+        mbprogressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+        mbprogressHUD.mode = .annularDeterminate
+        mbprogressHUD.label.text = model.photosRemainingToUploadText()
+//
+//        loadingView.isHidden = false
+//        progressHUD.mode = .determinateHorizontalBar
+//        progressHUD.show(animated: true)
+//        infoLoadingLabel.text = model.photosRemainingToUploadText()
+        
         model.uploadPhotosWithContentStream()
     }
     
@@ -126,8 +149,29 @@ extension GalleryPhotosViewController: CameraDelegate {
 //MARK: - GalleryPhotos Delegate
 
 extension GalleryPhotosViewController: GalleryPhotosDelegate {
+    func uploading(photo: CameraPhoto, with progress: Float) {
+//        progressHUD.progress = progress
+        mbprogressHUD.progress = progress
+    }
+    
+    func errorUploading(photo: CameraPhoto, error: NSError?) {
+//        infoLoadingLabel.text = model.photosRemainingToUploadText()
+        mbprogressHUD.label.text = model.photosRemainingToUploadText()
+    }
+    
+    func successUploading(photo: CameraPhoto) {
+        mbprogressHUD.label.text = model.photosRemainingToUploadText()
+//        infoLoadingLabel.text = model.photosRemainingToUploadText()
+//        progressHUD.progress = 0
+    }
+    
     func finishUploadPhotos() {
-        self.dismiss(animated: true, completion: nil)
+        if model.retryUploadingPhotos().count != 0 {
+            //TODO: Retry Mode
+        } else {
+            self.delegate?.finishUploadGallery(documents: model.alfrescoDocuments())
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 }
 

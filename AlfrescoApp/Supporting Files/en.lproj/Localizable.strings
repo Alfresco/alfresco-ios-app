@@ -934,4 +934,5 @@
 "gallery.photos.upload" = "Upload";
 "gallery.photos.selectAll" = "Select All";
 "gallery.camera.done" = "Done";
+
 "error.camera.to.many.photos" = "Too many photos!";
