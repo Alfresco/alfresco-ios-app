@@ -156,6 +156,7 @@ class CameraViewController: UIViewController, ModalRotation {
     func prepareCamera() {
         cameraController.prepare { [weak self] (error) in
             guard let sSelf = self else { return }
+            sSelf.toggleFlashButton.isHidden = !sSelf.cameraController.flashModeDisplay()
             if let error = error {
                 print(error)
             }
