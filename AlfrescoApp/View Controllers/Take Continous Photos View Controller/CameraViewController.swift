@@ -51,6 +51,8 @@ class CameraViewController: UIViewController, ModalRotation {
         captureButton.layer.borderWidth = 2
         captureButton.layer.cornerRadius = min(captureButton.frame.width, captureButton.frame.height) / 2
         
+        doneButton.isHidden = true
+        
         prepareCamera()
         initializeMotionManager()
     }
@@ -113,8 +115,9 @@ class CameraViewController: UIViewController, ModalRotation {
     }
     
     @IBAction func captureImageButtonPressed(_ sender: UIButton) {
+        doneButton.isHidden = false
         if model.shouldTakeAnyPhotos(cameraPhotos) == false {
-            self.showAlertView()
+            self.showAlertTooManyPhotos()
             return
         }
         captureImage()
@@ -122,7 +125,14 @@ class CameraViewController: UIViewController, ModalRotation {
     
     //MARK: - Utils
     
-    func showAlertView() {
+    func showAlertTooManyPhotos() {
+        let alert = UIAlertController(title: "", message: model.tooManyPhotosText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showAlertCancel() {
         let alert = UIAlertController(title: "", message: model.tooManyPhotosText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
         }))
