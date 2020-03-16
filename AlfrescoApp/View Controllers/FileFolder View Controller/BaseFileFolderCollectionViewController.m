@@ -974,7 +974,8 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                 GalleryPhotosModel *model = [[GalleryPhotosModel alloc] initWithSession:weakSelf.session folder:[weakSelf.inUseDataSource parentFolder]];
                 gpvc.model = model;
                 gpvc.delegate = self;
-                [UniversalDevice displayModalViewController:gpvc onController:weakSelf.navigationController withCompletionBlock:nil]; 
+                NavigationViewController *navGal = [[NavigationViewController alloc] initWithRootViewController:gpvc];
+                [UniversalDevice displayModalViewController:navGal onController:weakSelf.navigationController withCompletionBlock:nil];
             }
         }];
     }];

@@ -937,3 +937,6 @@
 "gallery.photos.remainingPhotos" = "%d photos from %d remaining.";
 "gallery.photos.uploadingPhotosComplete" = "Uploading complete.";
 "error.camera.to.many.photos" = "Too many photos!";
+"gallery.photos.defaultPlaceholderName" = "Default Files Name";
+"gallery.photos.defaultName" = "Default Name";
+"gallery.photos.infoNaming" = "This should be prefixed with a count 1,2,3,4,5,x etc. \nExample My-custom-name-01";

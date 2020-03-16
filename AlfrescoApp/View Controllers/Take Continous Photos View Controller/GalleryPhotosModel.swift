@@ -33,6 +33,13 @@ protocol GalleryPhotosDelegate: class {
     var okText = NSLocalizedString("OK", comment: "OK")
     var remainingPhotosText = NSLocalizedString("gallery.photos.remainingPhotos", comment: "remainingPhotos")
     var uploadingPhotosCompleteText = NSLocalizedString("gallery.photos.uploadingPhotosComplete", comment: "uploadingPhotosComplete")
+    var unsavedContentTitleText = NSLocalizedString("upload.confirm.dismissal.title", comment: "Unsaved Content")
+    var unsavedContentText = NSLocalizedString("upload.confirm.dismissal.message", comment: "Unsaved Content")
+    var dontUploadButtonText = NSLocalizedString("upload.confirm.dismissal.cancel", comment: "Don't Upload")
+    var uploadButtonText = NSLocalizedString("Upload", comment: "Upload")
+    var defaultFilesNameText = NSLocalizedString("gallery.photos.defaultName", comment: "Default Name")
+    var defaultFilesPlaceholderNameText = NSLocalizedString("gallery.photos.defaultPlaceholderName", comment: "Default Name")
+    var infoNamingPhotosText = NSLocalizedString("gallery.photos.infoNaming", comment: "Info Naming")
     
     var maxiumNumberOfPhotosTaken = 100
    

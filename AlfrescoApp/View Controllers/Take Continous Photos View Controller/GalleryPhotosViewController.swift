@@ -26,10 +26,14 @@ import AVFoundation
 @objc class GalleryPhotosViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var uploadButton: UIButton!
+
     @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var nameDefaultFilesLabel: UILabel!
+    @IBOutlet weak var infoButton: UIButton!
+    
     @IBOutlet weak var selectAllButton: UIButton!
+    @IBOutlet weak var takeMorePhotosButton: UIButton!
+    @IBOutlet weak var cameraButton: UIButton!
     
     @IBOutlet weak var collectionViewTraillingConstraint: NSLayoutConstraint!
     @IBOutlet weak var collectionViewLeadingConstraint: NSLayoutConstraint!
@@ -55,18 +59,22 @@ import AVFoundation
         model.delegate = self
         
         nameTextField.text = model.imagesName
-        
-        cancelButton.setTitle(cancelText, for: .normal)
-        uploadButton.setTitle(uploadText, for: .normal)
-        selectAllButton.setTitle(selectAllText, for: .normal)
-        
-        make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
-        make(button: uploadButton, enable: !model.isAllPhoto(selected: false))
-        make(button: cancelButton, enable: true)
-        
+        nameTextField.placeholder = model.defaultFilesPlaceholderNameText
+        nameDefaultFilesLabel.text = model.defaultFilesNameText
+  
         let tap = UITapGestureRecognizer(target: self.view, action: #selector(UIView.endEditing))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
+        
+        self.title = "Upload photos"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: uploadText , style: .done, target: self, action: #selector(uploadButtonTapped))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelText , style: .plain, target: self, action: #selector(cancelButtonTapped))
+        
+        selectAllButton.setTitle(selectAllText, for: .normal)
+        
+        make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
+        make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
+        make(button: navigationItem.leftBarButtonItem, enable: true)
 
     }
     
@@ -83,13 +91,21 @@ import AVFoundation
     }
     
     //MARK: - IBActions
-    
-    @IBAction func cancelButtonTapped(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
+    @IBAction func infoButtonTapped(_ sender: Any) {
+        showAlertInfoNaming()
     }
     
-    @IBAction func uploadButtonTapped(_ sender: UIButton) {
+    @objc func cancelButtonTapped() {
+        if model.cameraPhotos.count == 0 {
+            self.dismiss(animated: true, completion: nil)
+        } else{
+            showAlertCancelUpload()
+        }
+    }
+    
+     @objc func uploadButtonTapped() {
         self.view.isUserInteractionEnabled = false
+        make(button: navigationItem.leftBarButtonItem, enable: false)
         
         mbprogressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
         mbprogressHUD.mode = .annularDeterminate
@@ -102,13 +118,40 @@ import AVFoundation
         model.selectAllPhotos()
         collectionView.reloadData()
         make(button: selectAllButton, enable: false)
+        make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
+    }
+    
+    @IBAction func takeMorePhotosButtonTapped(_ sender: Any) {
+        self.performSegue(withIdentifier: "showCamera", sender: nil)
     }
     
     //MARK: - Utils
     
+    func showAlertCancelUpload() {
+        let alert = UIAlertController(title: model.unsavedContentTitleText, message: model.unsavedContentText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { action in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: model.uploadButtonText, style: .default, handler: { action in
+            self.uploadButtonTapped()
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showAlertInfoNaming() {
+        let alert = UIAlertController(title: "", message: model.infoNamingPhotosText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func make(button: UIButton, enable: Bool) {
         button.isUserInteractionEnabled = enable
         button.setTitleColor((enable) ? UIColor.blue : UIColor.gray, for: .normal)
+    }
+    
+    func make(button: UIBarButtonItem?, enable: Bool) {
+        button?.isEnabled = enable
     }
     
     //MARK: - Navigation
@@ -131,7 +174,7 @@ extension GalleryPhotosViewController: CameraDelegate {
             model.cameraPhotos.append(contentsOf: photos)
             collectionView.reloadData()
         }
-        make(button: uploadButton, enable: !model.isAllPhoto(selected: false))
+        make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
     }
 }
@@ -182,32 +225,22 @@ extension GalleryPhotosViewController: UITextFieldDelegate {
 extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return model.cameraPhotos.count + 1
+        return model.cameraPhotos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cameraCell",
-                                                          for: indexPath) as! CameraOpenCollectionViewCell
-            return cell
-        } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell",
-                                                          for: indexPath) as! PhotoCollectionViewCell
-            cell.photo.image = model.cameraPhotos[indexPath.row - 1].getImage()
-            cell.selectedView.isHidden = !model.cameraPhotos[indexPath.row - 1].selected
-            return cell
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell",
+                                                      for: indexPath) as! PhotoCollectionViewCell
+        cell.photo.image = model.cameraPhotos[indexPath.row].getImage()
+        cell.selectedView.isHidden = !model.cameraPhotos[indexPath.row].selected
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            self.performSegue(withIdentifier: "showCamera", sender: nil)
-        } else {
-            model.cameraPhotos[indexPath.row - 1].selected = !model.cameraPhotos[indexPath.row - 1].selected
-            collectionView.reloadItems(at: [indexPath])
-            make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
-            make(button: uploadButton, enable: !model.isAllPhoto(selected: false))
-        }
+        model.cameraPhotos[indexPath.row].selected = !model.cameraPhotos[indexPath.row].selected
+        collectionView.reloadItems(at: [indexPath])
+        make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
+        make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -220,7 +253,7 @@ extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.zero
+        return UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
