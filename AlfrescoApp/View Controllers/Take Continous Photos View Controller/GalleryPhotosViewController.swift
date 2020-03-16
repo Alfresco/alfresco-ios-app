@@ -44,12 +44,6 @@ import AVFoundation
     var distanceBetweenCells: CGFloat = 10.0
     var cellPerRow: CGFloat = 3.0
     
-    var onlyOnceOpenCamera: Bool = true
-    
-    var cancelText = NSLocalizedString("gallery.photos.cancel", comment: "Cancel")
-    var uploadText = NSLocalizedString("gallery.photos.upload", comment: "Upload")
-    var selectAllText = NSLocalizedString("gallery.photos.selectAll", comment: "SelectAll")
-    
     var mbprogressHUD: MBProgressHUD!
     
     //MARK: - Cycle Life View
@@ -67,23 +61,15 @@ import AVFoundation
         view.addGestureRecognizer(tap)
         
         self.title = "Upload photos"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: uploadText , style: .done, target: self, action: #selector(uploadButtonTapped))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelText , style: .plain, target: self, action: #selector(cancelButtonTapped))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: model.uploadButtonText , style: .done, target: self, action: #selector(uploadButtonTapped))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: model.cancelButtonText , style: .plain, target: self, action: #selector(cancelButtonTapped))
         
-        selectAllButton.setTitle(selectAllText, for: .normal)
+        selectAllButton.setTitle(model.selectAllButtonText, for: .normal)
         
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
         make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
         make(button: navigationItem.leftBarButtonItem, enable: true)
 
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if onlyOnceOpenCamera {
-            self.performSegue(withIdentifier: "showCamera", sender: nil)
-            onlyOnceOpenCamera = false
-        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -168,8 +154,7 @@ import AVFoundation
 //MARK: - CameraDelegate
 
 extension GalleryPhotosViewController: CameraDelegate {
-    
-    func closeCamera(savePhotos: Bool, photos: [CameraPhoto]) {
+    func closeCamera(savePhotos: Bool, photos: [CameraPhoto], model: GalleryPhotosModel) {
         if savePhotos {
             model.cameraPhotos.append(contentsOf: photos)
             collectionView.reloadData()

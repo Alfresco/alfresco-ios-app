@@ -29,14 +29,21 @@ protocol GalleryPhotosDelegate: class {
 
 @objc class GalleryPhotosModel: NSObject {
 
-    var tooManyPhotosText = NSLocalizedString("error.camera.to.many.photos", comment: "Too many photos!")
     var okText = NSLocalizedString("OK", comment: "OK")
+    var yesText = NSLocalizedString("Yes", comment: "YES")
+    var noText = NSLocalizedString("No", comment: "NO")
+    var uploadButtonText = NSLocalizedString("Upload", comment: "Upload")
+    var cancelButtonText = NSLocalizedString("Cancel", comment: "Cancel")
+    var doneButtonText = NSLocalizedString("Done", comment: "Done")
+    var selectAllButtonText = NSLocalizedString("gallery.photos.selectAll", comment: "SelectAll")
+    var dontUploadButtonText = NSLocalizedString("upload.confirm.dismissal.cancel", comment: "Don't Upload")
+    
+    var tooManyPhotosText = NSLocalizedString("gallery.camera.tomanyphotos", comment: "Too many photos!")
+    var cancelCameraText = NSLocalizedString("gallery.camera.cancelCamera", comment: "Cancel Camera")
     var remainingPhotosText = NSLocalizedString("gallery.photos.remainingPhotos", comment: "remainingPhotos")
     var uploadingPhotosCompleteText = NSLocalizedString("gallery.photos.uploadingPhotosComplete", comment: "uploadingPhotosComplete")
     var unsavedContentTitleText = NSLocalizedString("upload.confirm.dismissal.title", comment: "Unsaved Content")
     var unsavedContentText = NSLocalizedString("upload.confirm.dismissal.message", comment: "Unsaved Content")
-    var dontUploadButtonText = NSLocalizedString("upload.confirm.dismissal.cancel", comment: "Don't Upload")
-    var uploadButtonText = NSLocalizedString("Upload", comment: "Upload")
     var defaultFilesNameText = NSLocalizedString("gallery.photos.defaultName", comment: "Default Name")
     var defaultFilesPlaceholderNameText = NSLocalizedString("gallery.photos.defaultPlaceholderName", comment: "Default Name")
     var infoNamingPhotosText = NSLocalizedString("gallery.photos.infoNaming", comment: "Info Naming")
@@ -51,7 +58,7 @@ protocol GalleryPhotosDelegate: class {
     var imagesName: String
     var indexUploadingPhotos: Int
     
-    var cameraPhotos: [CameraPhoto]
+    @objc var cameraPhotos: [CameraPhoto]
     weak var delegate: GalleryPhotosDelegate?
     
     //MARK: Init

@@ -20,11 +20,11 @@ import UIKit
 import Photos
 import CoreMotion
 
-protocol CameraDelegate: class {
-    func closeCamera(savePhotos: Bool, photos: [CameraPhoto])
+@objc protocol CameraDelegate: class {
+    func closeCamera(savePhotos: Bool, photos: [CameraPhoto], model: GalleryPhotosModel)
 }
 
-class CameraViewController: UIViewController, ModalRotation {
+@objc class CameraViewController: UIViewController, ModalRotation {
     
     @IBOutlet fileprivate var captureButton: UIButton!
     @IBOutlet fileprivate var capturePreviewView: UIView!
@@ -37,9 +37,9 @@ class CameraViewController: UIViewController, ModalRotation {
     var motionManager: CMMotionManager?
     
     let cameraController = CameraController()
-    weak var delegate: CameraDelegate?
+    @objc weak var delegate: CameraDelegate?
     var cameraPhotos: [CameraPhoto] = []
-    var model: GalleryPhotosModel!
+    @objc var model: GalleryPhotosModel!
     
     //MARK: - Cycle Life View
     
@@ -51,10 +51,28 @@ class CameraViewController: UIViewController, ModalRotation {
         captureButton.layer.borderWidth = 2
         captureButton.layer.cornerRadius = min(captureButton.frame.width, captureButton.frame.height) / 2
         
+        doneButton.setTitle(model.doneButtonText, for: .normal)
+        closeButton.setTitle(model.cancelButtonText, for: .normal)
+        
         doneButton.isHidden = true
+        
+        makeShadow(button: toggleFlashButton)
+        makeShadow(button: toggleCameraButton)
+        makeShadow(button: doneButton)
+        makeShadow(button: closeButton)
+        
         
         prepareCamera()
         initializeMotionManager()
+    }
+    
+    func makeShadow(button: UIButton) {
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        button.layer.shadowOpacity = 1.0
+        button.layer.shadowRadius = 0.0
+        button.layer.masksToBounds = false
+        button.layer.cornerRadius = 5.0
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -79,13 +97,17 @@ class CameraViewController: UIViewController, ModalRotation {
     //MARK: - IBActions
     
     @IBAction func doneButtonPressed(_ sender: UIButton) {
-        delegate?.closeCamera(savePhotos: true, photos: cameraPhotos)
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+            self.delegate?.closeCamera(savePhotos: true, photos: self.cameraPhotos, model: self.model)
+        }
     }
     
     @IBAction func closeButtonPressed(_ sender: UIButton) {
-        delegate?.closeCamera(savePhotos: false, photos: cameraPhotos)
-        self.dismiss(animated: true, completion: nil)
+        if cameraPhotos.count == 0 {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            showAlertCancel()
+        }
     }
     
     @IBAction func toggleFlashButtonPressed(_ sender: UIButton) {
@@ -133,8 +155,11 @@ class CameraViewController: UIViewController, ModalRotation {
     }
     
     func showAlertCancel() {
-        let alert = UIAlertController(title: "", message: model.tooManyPhotosText, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
+        let alert = UIAlertController(title: "", message: model.cancelCameraText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: model.yesText, style: .default, handler: { action in
+            self.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: model.noText, style: .default, handler: { action in
         }))
         self.present(alert, animated: true, completion: nil)
     }
