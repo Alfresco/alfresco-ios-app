@@ -26,6 +26,9 @@
 
 
 static const CGSize kUploadPopoverPreferedSize = {320, 640};
+@interface BaseFileFolderCollectionViewController() <MultiplePhotosUploadDelegate>
+
+@end
 
 @implementation BaseFileFolderCollectionViewController
 
@@ -970,8 +973,9 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
                 GalleryPhotosViewController *gpvc = (GalleryPhotosViewController *)[storyboard instantiateViewControllerWithIdentifier:@"GalleryPhotosViewController"];
                 GalleryPhotosModel *model = [[GalleryPhotosModel alloc] initWithSession:weakSelf.session folder:[weakSelf.inUseDataSource parentFolder]];
                 gpvc.model = model;
-                
-                [UniversalDevice displayModalViewController:gpvc onController:weakSelf.navigationController withCompletionBlock:nil]; 
+                gpvc.delegate = self;
+                NavigationViewController *navGal = [[NavigationViewController alloc] initWithRootViewController:gpvc];
+                [UniversalDevice displayModalViewController:navGal onController:weakSelf.navigationController withCompletionBlock:nil];
             }
         }];
     }];
@@ -1230,4 +1234,11 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"saveback.failed.message", @"Document saved in Local Files"), name]);
 }
 
+#pragma mark - MultiplePhotosUpload Delegate
+
+- (void)finishUploadGalleryWithDocuments:(NSArray<AlfrescoDocument *> *)documents
+{
+    [self updateUIUsingFolderPermissionsWithAnimation:NO];
+    [self.inUseDataSource addAlfrescoNodes:documents];
+}
 @end

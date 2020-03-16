@@ -24,8 +24,11 @@ class CameraPhoto: NSObject {
     var capturePhoto: AVCapturePhoto
     var selected: Bool = true
     var orientationImage: UIImage.Orientation?
-    var name: String;
+    var name: String
     var orientationMetadata: Int
+    var alfrescoDocument: AlfrescoDocument?
+    var retryUploading: Bool
+    var uploaded: Bool
     
     init(capture: AVCapturePhoto, and orientation: UIInterfaceOrientation) {
         self.capturePhoto = capture
@@ -33,6 +36,8 @@ class CameraPhoto: NSObject {
         self.orientationImage = orientation.imageOrientation()
         self.name = String(capture.timestamp.value)
         self.orientationMetadata = orientation.imagePropertyOrientation()
+        retryUploading = false
+        uploaded = false
     }
     
     func getImage() -> UIImage? {

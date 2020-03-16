@@ -106,6 +106,8 @@ extension CameraController {
         }
         let settings = AVCapturePhotoSettings()
         settings.flashMode = self.flashMode
+        settings.isHighResolutionPhotoEnabled = true
+        settings.isAutoStillImageStabilizationEnabled = true
         self.photoOutput?.capturePhoto(with: settings, delegate: self)
         self.photoCaptureCompletionBlock = completion
     }
@@ -122,6 +124,7 @@ extension CameraController {
     
     func createCaptureSession() {
         self.captureSession = AVCaptureSession()
+        captureSession?.sessionPreset = .photo
     }
     
     func configureCaptureDevices() throws {
@@ -145,6 +148,7 @@ extension CameraController {
                 self.rearCamera = camera
                 try camera.lockForConfiguration()
                 camera.focusMode = .continuousAutoFocus
+                
                 camera.unlockForConfiguration()
             }
         }
@@ -179,6 +183,7 @@ extension CameraController {
                 throw CameraControllerError.captureSessionIsMissing
         }
         self.photoOutput = AVCapturePhotoOutput()
+        photoOutput?.isHighResolutionCaptureEnabled = true
         let capturePhotoSettings = [AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])]
         self.photoOutput!.setPreparedPhotoSettingsArray(capturePhotoSettings, completionHandler: nil)
         

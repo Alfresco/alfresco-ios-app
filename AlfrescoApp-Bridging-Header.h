@@ -9,3 +9,4 @@
 #import <AlfrescoSDK-iOS/AlfrescoSDK.h>
 #import "ModalRotation.h"
 #import "UniversalDevice.h"
+#import "MBProgressHUD.h"
