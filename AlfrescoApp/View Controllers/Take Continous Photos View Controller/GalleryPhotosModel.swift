@@ -49,7 +49,8 @@ protocol GalleryPhotosDelegate: class {
     var defaultFilesNameText = NSLocalizedString("gallery.photos.defaultName", comment: "Default Name")
     var defaultFilesPlaceholderNameText = NSLocalizedString("gallery.photos.defaultPlaceholderName", comment: "Default Name")
     var infoNamingPhotosText = NSLocalizedString("gallery.photos.infoNaming", comment: "Info Naming")
-    
+    var uploadCellularTitleText = NSLocalizedString("gallery.photos.upload.cellular.title", comment: "Cellular Title")
+    var uploadCellularDescriptionText = NSLocalizedString("gallery.photos.upload.cellular.description", comment: "Cellular Description")
     var maxiumNumberOfPhotosTaken = 100
    
     var kkAlfrescoErrorCodeDocumentFolder = 600
@@ -170,7 +171,6 @@ protocol GalleryPhotosDelegate: class {
     func resetForRetryModeUpload() {
         retryMode = true
         indexUploadingPhotos = -1
-        self.imagesName = "retry"
         cameraPhotos = retryUploadingPhotos()
         for camera in cameraPhotos {
             camera.retryUploading = false
@@ -178,6 +178,15 @@ protocol GalleryPhotosDelegate: class {
     }
     
     //MARK: Utils
+    
+    func shouldShowAlertCellularUpload() -> Bool {
+        if let connectivityManager = ConnectivityManager.shared() {
+            if connectivityManager.isOnCellular && selectedPhotos() > 8 {
+                return true
+            }
+        }
+        return false
+    }
     
     func filenameExistsInParentFolder(_ error: NSError) -> Bool {
         if error.code == self.kkAlfrescoErrorCodeDocumentFolder
@@ -254,6 +263,16 @@ protocol GalleryPhotosDelegate: class {
         for photo in cameraPhotos {
             if photo.retryUploading {
                 photos.append(photo)
+            }
+        }
+        return photos
+    }
+    
+    func selectedPhotos() -> Int {
+        var photos = 0
+        for photo in cameraPhotos {
+            if photo.selected {
+                photos = photos + 1
             }
         }
         return photos

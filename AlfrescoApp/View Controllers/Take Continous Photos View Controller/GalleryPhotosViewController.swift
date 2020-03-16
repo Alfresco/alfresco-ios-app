@@ -90,14 +90,11 @@ import AVFoundation
     }
     
      @objc func uploadButtonTapped() {
-        self.view.isUserInteractionEnabled = false
-        make(button: navigationItem.leftBarButtonItem, enable: false)
-        
-        mbprogressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
-        mbprogressHUD.mode = .annularDeterminate
-        mbprogressHUD.label.text = model.photosRemainingToUploadText()
-        
-        model.uploadPhotosWithContentStream()
+        if model.shouldShowAlertCellularUpload() {
+            showAlertCellularUpload()
+        } else {
+            uploadPhotos()
+        }
     }
     
     @IBAction func selectButtonTapped(_ sender: Any) {
@@ -127,6 +124,16 @@ import AVFoundation
         self.present(alert, animated: true, completion: nil)
     }
     
+    func showAlertCellularUpload() {
+        let alert = UIAlertController(title: model.uploadCellularTitleText, message: model.uploadCellularDescriptionText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { action in
+        }))
+        alert.addAction(UIAlertAction(title: model.uploadButtonText, style: .default, handler: { action in
+            self.uploadPhotos()
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func showAlertInfoNaming() {
         let alert = UIAlertController(title: "", message: model.infoNamingPhotosText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
@@ -141,6 +148,15 @@ import AVFoundation
     
     func make(button: UIBarButtonItem?, enable: Bool) {
         button?.isEnabled = enable
+    }
+    
+    func uploadPhotos() {
+        self.view.isUserInteractionEnabled = false
+        make(button: navigationItem.leftBarButtonItem, enable: false)
+        mbprogressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+        mbprogressHUD.mode = .annularDeterminate
+        mbprogressHUD.label.text = model.photosRemainingToUploadText()
+        model.uploadPhotosWithContentStream()
     }
     
     //MARK: - Navigation

@@ -10,3 +10,4 @@
 #import "ModalRotation.h"
 #import "UniversalDevice.h"
 #import "MBProgressHUD.h"
+#import "ConnectivityManager.h"
