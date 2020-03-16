@@ -22,6 +22,7 @@ import UIKit
 
 protocol GalleryPhotosDelegate: class {
     func finishUploadPhotos()
+    func retryMode()
     func uploading(photo: CameraPhoto, with progress: Float)
     func successUploading(photo: CameraPhoto)
     func errorUploading(photo: CameraPhoto, error: NSError?)
@@ -33,6 +34,7 @@ protocol GalleryPhotosDelegate: class {
     var yesText = NSLocalizedString("Yes", comment: "YES")
     var noText = NSLocalizedString("No", comment: "NO")
     var uploadButtonText = NSLocalizedString("Upload", comment: "Upload")
+    var retryButtonText = NSLocalizedString("Retry", comment: "Retry")
     var cancelButtonText = NSLocalizedString("Cancel", comment: "Cancel")
     var doneButtonText = NSLocalizedString("Done", comment: "Done")
     var selectAllButtonText = NSLocalizedString("gallery.photos.selectAll", comment: "SelectAll")
@@ -53,20 +55,20 @@ protocol GalleryPhotosDelegate: class {
     var kkAlfrescoErrorCodeDocumentFolder = 600
     var kkAlfrescoErrorCodeDocumentFolderNodeAlreadyExists = 601
     
+    var retryMode: Bool = false
     var documentServices: AlfrescoDocumentFolderService
     var uploadToFolder: AlfrescoFolder
     var imagesName: String
-    var indexUploadingPhotos: Int
+    var indexUploadingPhotos: Int = -1
     
-    @objc var cameraPhotos: [CameraPhoto]
+    @objc var cameraPhotos: [CameraPhoto] = []
+    var documents: [AlfrescoDocument] = []
     weak var delegate: GalleryPhotosDelegate?
     
     //MARK: Init
   
     @objc init(session: AlfrescoSession, folder: AlfrescoFolder) {
-        self.cameraPhotos = []
         self.imagesName = folder.name
-        self.indexUploadingPhotos = -1
         self.documentServices = AlfrescoPlaceholderDocumentFolderService.init(session: session)
         self.uploadToFolder = folder
     }
@@ -77,13 +79,22 @@ protocol GalleryPhotosDelegate: class {
         indexUploadingPhotos = indexUploadingPhotos + 1
     
         if indexUploadingPhotos == self.cameraPhotos.count {
-            delegate?.finishUploadPhotos()
+            documents.append(contentsOf: alfrescoDocuments())
+            if retryUploadingPhotos().count == 0 {
+                delegate?.finishUploadPhotos()
+            } else {
+                resetForRetryModeUpload()
+                delegate?.retryMode()
+            }
             return
         }
+        
         let photo = cameraPhotos[indexUploadingPhotos]
+        
         if photo.selected {
-            let index = indexOf(cameraPhotoSelected: photo)! + 1
+            let index = indexOf(cameraPhotoSelected: photo) + 1
             photo.name = imagesName + "-" + String(index)
+            
             upload(photo) { [weak self] (completed) in
                 guard let sSelf = self else { return }
                 if !completed {
@@ -96,7 +107,7 @@ protocol GalleryPhotosDelegate: class {
         }
     }
     
-    func upload(_ photo: CameraPhoto, finish: @escaping((Bool) -> Void)) {
+    func upload(_ photo: CameraPhoto, finishUpload: @escaping((Bool) -> Void)) {
         
         guard let image = photo.getImage() else {
             return
@@ -118,39 +129,51 @@ protocol GalleryPhotosDelegate: class {
         self.documentServices.createDocument(withName: documentName, inParentFolder: self.uploadToFolder, contentStream: contentStream, properties: nil, aspects: nil, completionBlock: { [weak self] (document, error) in
             
             guard let sSelf = self else { return }
+            
             if let document = document {
                 
                 RealmSyncManager.shared()?.didUploadNode(document, fromPath: pathToTempFile, to: sSelf.uploadToFolder)
+                
                 photo.uploaded = true
                 photo.alfrescoDocument = document
                 
                 sSelf.delegate?.successUploading(photo: photo)
                 
-                finish(true)
+                finishUpload(true)
+                
             } else if let error = error {
                 AlfrescoLog.logError(error.localizedDescription)
                 
                 if sSelf.filenameExistsInParentFolder(error as NSError) {
                     photo.name = photo.name + "_" + String(photo.capturePhoto.timestamp.value)
-                    
                     sSelf.upload(photo) { (completed) in
                         if !completed {
                             photo.retryUploading = true
                         }
-                        finish(true)
+                        finishUpload(true)
                     }
                 } else {
                     sSelf.delegate?.errorUploading(photo: photo, error: error as NSError)
-                    finish(false)
+                    finishUpload(false)
                 }
             } else {
                 sSelf.delegate?.errorUploading(photo: photo, error: nil)
-                finish(false)
+                finishUpload(false)
             }
         }) { [weak self] (bytesTransferred, bytesTotal)  in
             guard let sSelf = self else { return }
             let progress = (bytesTotal == 0) ? Float(1.0) : Float(bytesTransferred) / Float(bytesTotal)
             sSelf.delegate?.uploading(photo: photo, with: progress)
+        }
+    }
+    
+    func resetForRetryModeUpload() {
+        retryMode = true
+        indexUploadingPhotos = -1
+        self.imagesName = "retry"
+        cameraPhotos = retryUploadingPhotos()
+        for camera in cameraPhotos {
+            camera.retryUploading = false
         }
     }
     
@@ -184,7 +207,7 @@ protocol GalleryPhotosDelegate: class {
                 photos = photos + 1
             }
         }
-        let remainingPhotos = photos - numberOfUploadedPhoto()
+        let remainingPhotos = photos - numberOfUploadedOrRetryPhoto()
         if remainingPhotos == 0 {
             return uploadingPhotosCompleteText
         } else {
@@ -192,10 +215,7 @@ protocol GalleryPhotosDelegate: class {
         }
     }
     
-    func indexOf(cameraPhotoSelected: CameraPhoto) -> Int? {
-        if cameraPhotoSelected.selected == false {
-            return nil
-        }
+    func indexOf(cameraPhotoSelected: CameraPhoto) -> Int {
         var index = -1
         for camera in cameraPhotos {
             if camera.selected {
@@ -209,10 +229,10 @@ protocol GalleryPhotosDelegate: class {
         return index
     }
     
-    func numberOfUploadedPhoto() -> Int {
+    func numberOfUploadedOrRetryPhoto() -> Int {
         var photos = 0
         for photo in cameraPhotos {
-            if photo.uploaded {
+            if photo.uploaded || photo.retryUploading {
                 photos = photos + 1
             }
         }

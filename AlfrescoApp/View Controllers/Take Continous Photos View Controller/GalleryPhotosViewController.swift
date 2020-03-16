@@ -116,6 +116,9 @@ import AVFoundation
     func showAlertCancelUpload() {
         let alert = UIAlertController(title: model.unsavedContentTitleText, message: model.unsavedContentText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { action in
+            if self.model.retryMode == true {
+                self.delegate?.finishUploadGallery(documents: self.model.documents)
+            }
             self.dismiss(animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: model.uploadButtonText, style: .default, handler: { action in
@@ -167,6 +170,7 @@ extension GalleryPhotosViewController: CameraDelegate {
 //MARK: - GalleryPhotos Delegate
 
 extension GalleryPhotosViewController: GalleryPhotosDelegate {
+
     func uploading(photo: CameraPhoto, with progress: Float) {
         mbprogressHUD.progress = progress
     }
@@ -181,12 +185,15 @@ extension GalleryPhotosViewController: GalleryPhotosDelegate {
     }
     
     func finishUploadPhotos() {
-        if model.retryUploadingPhotos().count != 0 {
-            //TODO: Retry Mode
-        } else {
-            self.delegate?.finishUploadGallery(documents: model.alfrescoDocuments())
-            self.dismiss(animated: true, completion: nil)
-        }
+        self.delegate?.finishUploadGallery(documents: model.documents)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func retryMode() {
+        mbprogressHUD.hide(animated: true)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: model.retryButtonText , style: .done, target: self, action: #selector(uploadButtonTapped))
+        make(button: navigationItem.leftBarButtonItem, enable: true)
+        collectionView.reloadData()
     }
 }
 
