@@ -242,20 +242,8 @@
                                             <action selector="switchCamerasButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="1IU-b4-aen"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8x7-Je-lym">
-                                        <rect key="frame" x="30" y="30" width="45" height="45"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="Hv3-Qi-Ft8"/>
-                                            <constraint firstAttribute="width" constant="45" id="bo3-We-lCW"/>
-                                        </constraints>
-                                        <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                        <state key="normal" image="Close Icon"/>
-                                        <connections>
-                                            <action selector="closeButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="Ve0-dB-Xed"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6e-f1-dmT">
-                                        <rect key="frame" x="179.66666666666666" y="791" width="55" height="55"/>
+                                        <rect key="frame" x="179.66666666666663" y="791" width="55" height="55"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="55" id="MLy-gR-wtk"/>
@@ -275,14 +263,28 @@
                                             <action selector="doneButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="Kic-d6-FnZ"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8x7-Je-lym">
+                                        <rect key="frame" x="30" y="796" width="64" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="Hv3-Qi-Ft8"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                        <state key="normal" title="Cancel"/>
+                                        <connections>
+                                            <action selector="closeButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="Ve0-dB-Xed"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="8x7-Je-lym" firstAttribute="leading" secondItem="Kr4-KS-Yzl" secondAttribute="leading" constant="30" id="0P9-wc-pT6"/>
+                                    <constraint firstItem="8x7-Je-lym" firstAttribute="centerY" secondItem="j6e-f1-dmT" secondAttribute="centerY" id="5yR-xv-QHy"/>
                                     <constraint firstItem="j6e-f1-dmT" firstAttribute="centerY" secondItem="Kr4-KS-Yzl" secondAttribute="centerY" id="68P-sI-g3l"/>
                                     <constraint firstAttribute="bottom" secondItem="j6e-f1-dmT" secondAttribute="bottom" constant="50" id="737-8x-IJg"/>
                                     <constraint firstItem="j6e-f1-dmT" firstAttribute="top" secondItem="cwn-s4-wNn" secondAttribute="bottom" constant="80" id="Iag-5r-buP"/>
                                     <constraint firstItem="8js-fb-NFl" firstAttribute="top" secondItem="Kr4-KS-Yzl" secondAttribute="top" constant="30" id="JHD-AH-yGQ"/>
+                                    <constraint firstItem="8x7-Je-lym" firstAttribute="top" secondItem="i4N-BX-ypW" secondAttribute="bottom" constant="80" id="L30-P8-6DX"/>
                                     <constraint firstItem="cwn-s4-wNn" firstAttribute="top" secondItem="8js-fb-NFl" secondAttribute="bottom" id="VMi-DU-GbL">
                                         <variation key="heightClass=regular-widthClass=regular" constant="20"/>
                                     </constraint>
@@ -290,9 +292,9 @@
                                     <constraint firstAttribute="trailing" secondItem="j6e-f1-dmT" secondAttribute="trailing" constant="30" id="ZBt-fj-U7Q"/>
                                     <constraint firstItem="cwn-s4-wNn" firstAttribute="trailing" secondItem="8js-fb-NFl" secondAttribute="trailing" id="dbq-ND-Pqv"/>
                                     <constraint firstItem="j6e-f1-dmT" firstAttribute="centerX" secondItem="Kr4-KS-Yzl" secondAttribute="centerX" id="dfD-a3-UBK"/>
-                                    <constraint firstItem="8x7-Je-lym" firstAttribute="top" secondItem="Kr4-KS-Yzl" secondAttribute="top" constant="30" id="eOA-bh-C6Z"/>
                                     <constraint firstItem="i4N-BX-ypW" firstAttribute="trailing" secondItem="cwn-s4-wNn" secondAttribute="trailing" id="olv-LA-bIA"/>
                                     <constraint firstItem="i4N-BX-ypW" firstAttribute="top" secondItem="j6e-f1-dmT" secondAttribute="bottom" constant="80" id="uij-ws-KUP"/>
+                                    <constraint firstItem="8x7-Je-lym" firstAttribute="trailing" secondItem="i4N-BX-ypW" secondAttribute="trailing" id="xdL-cZ-gbX"/>
                                     <constraint firstItem="i4N-BX-ypW" firstAttribute="centerY" secondItem="j6e-f1-dmT" secondAttribute="centerY" id="zHc-Ma-DZD"/>
                                 </constraints>
                                 <variation key="default">
@@ -301,6 +303,8 @@
                                         <exclude reference="Iag-5r-buP"/>
                                         <exclude reference="ZBt-fj-U7Q"/>
                                         <exclude reference="uij-ws-KUP"/>
+                                        <exclude reference="L30-P8-6DX"/>
+                                        <exclude reference="xdL-cZ-gbX"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=regular">
@@ -313,6 +317,10 @@
                                         <exclude reference="dfD-a3-UBK"/>
                                         <include reference="uij-ws-KUP"/>
                                         <exclude reference="zHc-Ma-DZD"/>
+                                        <exclude reference="0P9-wc-pT6"/>
+                                        <exclude reference="5yR-xv-QHy"/>
+                                        <include reference="L30-P8-6DX"/>
+                                        <include reference="xdL-cZ-gbX"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -344,7 +352,6 @@
     </scenes>
     <resources>
         <image name="Camera Open Icon" width="33.333332061767578" height="33.333332061767578"/>
-        <image name="Close Icon" width="30" height="30"/>
         <image name="Flash Off Icon" width="24" height="24"/>
         <image name="Rear Camera Icon" width="24" height="24"/>
         <image name="Tick Photo Icon" width="26.666666030883789" height="26.666666030883789"/>
