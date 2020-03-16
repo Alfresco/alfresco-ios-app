@@ -29,9 +29,13 @@ protocol GalleryPhotosDelegate: class {
 
 @objc class GalleryPhotosModel: NSObject {
 
-    var maxiumNumberOfPhotosTaken = 100
     var tooManyPhotosText = NSLocalizedString("error.camera.to.many.photos", comment: "Too many photos!")
     var okText = NSLocalizedString("OK", comment: "OK")
+    var remainingPhotosText = NSLocalizedString("gallery.photos.remainingPhotos", comment: "remainingPhotos")
+    var uploadingPhotosCompleteText = NSLocalizedString("gallery.photos.uploadingPhotosComplete", comment: "uploadingPhotosComplete")
+    
+    var maxiumNumberOfPhotosTaken = 100
+   
     var kkAlfrescoErrorCodeDocumentFolder = 600
     var kkAlfrescoErrorCodeDocumentFolderNodeAlreadyExists = 601
     
@@ -48,7 +52,7 @@ protocol GalleryPhotosDelegate: class {
     @objc init(session: AlfrescoSession, folder: AlfrescoFolder) {
         self.cameraPhotos = []
         self.imagesName = folder.name
-        self.indexUploadingPhotos = 0
+        self.indexUploadingPhotos = -1
         self.documentServices = AlfrescoPlaceholderDocumentFolderService.init(session: session)
         self.uploadToFolder = folder
     }
@@ -62,16 +66,19 @@ protocol GalleryPhotosDelegate: class {
             delegate?.finishUploadPhotos()
             return
         }
-        
-        let photo = cameraPhotos[indexUploadingPhotos - 1]
-        photo.name = imagesName + "-" + String(indexUploadingPhotos)
-        
-        upload(photo) { [weak self] (completed) in
-            guard let sSelf = self else { return }
-            if !completed {
-                photo.retryUploading = true
+        let photo = cameraPhotos[indexUploadingPhotos]
+        if photo.selected {
+            let index = indexOf(cameraPhotoSelected: photo)! + 1
+            photo.name = imagesName + "-" + String(index)
+            upload(photo) { [weak self] (completed) in
+                guard let sSelf = self else { return }
+                if !completed {
+                    photo.retryUploading = true
+                }
+                sSelf.uploadPhotosWithContentStream()
             }
-            sSelf.uploadPhotosWithContentStream()
+        } else {
+            self.uploadPhotosWithContentStream()
         }
     }
     
@@ -163,7 +170,29 @@ protocol GalleryPhotosDelegate: class {
                 photos = photos + 1
             }
         }
-        return String(format: "%d photos from %d remaining.", photos - numberOfUploadedPhoto(), photos)
+        let remainingPhotos = photos - numberOfUploadedPhoto()
+        if remainingPhotos == 0 {
+            return uploadingPhotosCompleteText
+        } else {
+            return String(format: remainingPhotosText, remainingPhotos, photos)
+        }
+    }
+    
+    func indexOf(cameraPhotoSelected: CameraPhoto) -> Int? {
+        if cameraPhotoSelected.selected == false {
+            return nil
+        }
+        var index = -1
+        for camera in cameraPhotos {
+            if camera.selected {
+                index = index + 1
+            }
+            if camera == cameraPhotoSelected {
+                return index
+            }
+            
+        }
+        return index
     }
     
     func numberOfUploadedPhoto() -> Int {

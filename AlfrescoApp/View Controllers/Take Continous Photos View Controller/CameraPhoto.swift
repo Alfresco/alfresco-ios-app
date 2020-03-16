@@ -24,7 +24,7 @@ class CameraPhoto: NSObject {
     var capturePhoto: AVCapturePhoto
     var selected: Bool = true
     var orientationImage: UIImage.Orientation?
-    var name: String;
+    var name: String
     var orientationMetadata: Int
     var alfrescoDocument: AlfrescoDocument?
     var retryUploading: Bool

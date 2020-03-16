@@ -143,35 +143,6 @@
                                     <action selector="selectButtonTapped:" destination="KJb-vs-mHK" eventType="touchUpInside" id="Zuv-3m-esa"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qO9-K0-FJY">
-                                <rect key="frame" x="87" y="384" width="240" height="128"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qwm-Pg-2HV" customClass="MBProgressHUD">
-                                        <rect key="frame" x="20" y="20" width="200" height="50"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="50" id="2Rq-WC-RS5"/>
-                                        </constraints>
-                                    </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N0r-wx-mlF">
-                                        <rect key="frame" x="0.0" y="107.66666666666669" width="240" height="20.333333333333343"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="N0r-wx-mlF" secondAttribute="bottom" id="DY0-R5-eXV"/>
-                                    <constraint firstAttribute="height" constant="128" id="ZkC-Pi-lsM"/>
-                                    <constraint firstItem="N0r-wx-mlF" firstAttribute="leading" secondItem="qO9-K0-FJY" secondAttribute="leading" id="dSv-Em-1nH"/>
-                                    <constraint firstItem="Qwm-Pg-2HV" firstAttribute="leading" secondItem="qO9-K0-FJY" secondAttribute="leading" constant="20" symbolic="YES" id="fZ2-id-LYb"/>
-                                    <constraint firstAttribute="trailing" secondItem="Qwm-Pg-2HV" secondAttribute="trailing" constant="20" symbolic="YES" id="iCF-Q5-h8D"/>
-                                    <constraint firstItem="Qwm-Pg-2HV" firstAttribute="top" secondItem="qO9-K0-FJY" secondAttribute="top" constant="20" id="lvP-Ny-Fh8"/>
-                                    <constraint firstAttribute="trailing" secondItem="N0r-wx-mlF" secondAttribute="trailing" id="nrq-EW-MhB"/>
-                                    <constraint firstAttribute="width" constant="240" id="qtb-1C-vju"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <gestureRecognizers/>
@@ -179,14 +150,12 @@
                             <constraint firstItem="eKL-Ih-uWP" firstAttribute="trailing" secondItem="RDS-xo-9xJ" secondAttribute="trailing" constant="20" id="0bm-wG-bzp"/>
                             <constraint firstItem="4sv-88-gYt" firstAttribute="leading" secondItem="eKL-Ih-uWP" secondAttribute="leading" constant="20" id="4kB-IH-Rep"/>
                             <constraint firstItem="RDS-xo-9xJ" firstAttribute="top" secondItem="eKL-Ih-uWP" secondAttribute="top" constant="20" id="6uS-u2-2dv"/>
-                            <constraint firstItem="qO9-K0-FJY" firstAttribute="centerY" secondItem="utD-84-s6L" secondAttribute="centerY" id="7jq-SO-Vi3"/>
                             <constraint firstItem="4sv-88-gYt" firstAttribute="centerY" secondItem="RDS-xo-9xJ" secondAttribute="centerY" id="KQj-ks-EF1"/>
                             <constraint firstItem="eKL-Ih-uWP" firstAttribute="trailing" secondItem="uLa-MY-IIU" secondAttribute="trailing" constant="20" id="NaH-LZ-7gB"/>
                             <constraint firstItem="uLa-MY-IIU" firstAttribute="leading" secondItem="eKL-Ih-uWP" secondAttribute="leading" constant="20" id="TP7-VP-TQq"/>
                             <constraint firstItem="RDS-xo-9xJ" firstAttribute="leading" secondItem="W1Z-B4-fYr" secondAttribute="trailing" constant="15" id="Tcl-w1-6LW"/>
                             <constraint firstItem="W1Z-B4-fYr" firstAttribute="leading" secondItem="4sv-88-gYt" secondAttribute="trailing" constant="15" id="Wrs-RL-AjG"/>
                             <constraint firstItem="eKL-Ih-uWP" firstAttribute="bottom" secondItem="MwM-lq-sp0" secondAttribute="bottom" constant="20" id="aaA-kh-It3"/>
-                            <constraint firstItem="qO9-K0-FJY" firstAttribute="centerX" secondItem="utD-84-s6L" secondAttribute="centerX" id="ecz-m7-VcI"/>
                             <constraint firstItem="eKL-Ih-uWP" firstAttribute="trailing" secondItem="MwM-lq-sp0" secondAttribute="trailing" constant="20" id="n7f-Ff-oTz"/>
                             <constraint firstItem="W1Z-B4-fYr" firstAttribute="centerY" secondItem="RDS-xo-9xJ" secondAttribute="centerY" id="pkI-bX-VIw"/>
                             <constraint firstItem="MwM-lq-sp0" firstAttribute="top" secondItem="uLa-MY-IIU" secondAttribute="bottom" constant="10" id="q0T-cI-MkK"/>
@@ -199,10 +168,7 @@
                         <outlet property="collectionView" destination="uLa-MY-IIU" id="zk5-rV-zvS"/>
                         <outlet property="collectionViewLeadingConstraint" destination="TP7-VP-TQq" id="PtZ-Ln-QVs"/>
                         <outlet property="collectionViewTraillingConstraint" destination="NaH-LZ-7gB" id="hRH-y6-H82"/>
-                        <outlet property="infoLoadingLabel" destination="N0r-wx-mlF" id="6fx-14-OHl"/>
-                        <outlet property="loadingView" destination="qO9-K0-FJY" id="GXD-yS-8dQ"/>
                         <outlet property="nameTextField" destination="W1Z-B4-fYr" id="Dhi-VB-RHE"/>
-                        <outlet property="progressHUD" destination="Qwm-Pg-2HV" id="2AR-bl-P43"/>
                         <outlet property="selectAllButton" destination="MwM-lq-sp0" id="3ky-VK-TeC"/>
                         <outlet property="uploadButton" destination="RDS-xo-9xJ" id="FoT-IC-b22"/>
                         <segue destination="dS5-7n-x2f" kind="presentation" identifier="showCamera" id="wgO-3S-Kxd"/>
