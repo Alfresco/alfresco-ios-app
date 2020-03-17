@@ -24,7 +24,7 @@ import CoreMotion
     func closeCamera(savePhotos: Bool, photos: [CameraPhoto], model: GalleryPhotosModel)
 }
 
-@objc class CameraViewController: UIViewController, ModalRotation {
+@objc class CameraViewController: UIViewController {
     
     @IBOutlet fileprivate var captureButton: UIButton!
     @IBOutlet fileprivate var capturePreviewView: UIView!
