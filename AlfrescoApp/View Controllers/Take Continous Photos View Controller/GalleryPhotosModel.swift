@@ -181,11 +181,21 @@ protocol GalleryPhotosDelegate: class {
     
     func shouldShowAlertCellularUpload() -> Bool {
         if let connectivityManager = ConnectivityManager.shared() {
-            if connectivityManager.isOnCellular && selectedPhotos() > 8 {
+            if connectivityManager.isOnCellular && photosSelectedSizeMB() >= 25.0 {
                 return true
             }
         }
         return false
+    }
+    
+    func photosSelectedSizeMB() -> Double {
+        var size = 0.0
+        for photo in cameraPhotos {
+            if photo.selected {
+                size = size + photo.getSizeMB()
+            }
+        }
+        return size
     }
     
     func filenameExistsInParentFolder(_ error: NSError) -> Bool {

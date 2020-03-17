@@ -40,6 +40,14 @@ class CameraPhoto: NSObject {
         uploaded = false
     }
     
+    func getSizeMB() -> Double {
+        guard let imageData = capturePhoto.fileDataRepresentation() else {
+            AlfrescoLog.logError("Error while generating image from photo capture data.")
+            return 0.0
+        }
+        return Double(imageData.count / 1048576)
+    }
+    
     func getImage() -> UIImage? {
         guard let imageData = capturePhoto.fileDataRepresentation() else {
             AlfrescoLog.logError("Error while generating image from photo capture data.")
