@@ -156,8 +156,9 @@ import CoreMotion
     
     func showAlertCancel() {
         let alert = UIAlertController(title: "", message: model.cancelCameraText, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: model.yesText, style: .default, handler: { action in
-            self.dismiss(animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: model.yesText, style: .default, handler: { [weak self] action in
+            guard let sSelf = self else { return }
+            sSelf.dismiss(animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: model.noText, style: .default, handler: { action in
         }))
