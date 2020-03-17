@@ -112,14 +112,14 @@ import AVFoundation
     
     func showAlertCancelUpload() {
         let alert = UIAlertController(title: model.unsavedContentTitleText, message: model.unsavedContentText, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { action in
-            if self.model.retryMode == true {
-                self.delegate?.finishUploadGallery(documents: self.model.documents)
+        alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { [weak self] action in
+            guard let sSelf = self else { return }
+            if sSelf.model.retryMode == true {
+                sSelf.delegate?.finishUploadGallery(documents: sSelf.model.documents)
             }
-            self.dismiss(animated: true, completion: nil)
+            sSelf.dismiss(animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: model.uploadButtonText, style: .default, handler: { action in
-            self.uploadButtonTapped()
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -128,8 +128,9 @@ import AVFoundation
         let alert = UIAlertController(title: model.uploadCellularTitleText, message: model.uploadCellularDescriptionText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { action in
         }))
-        alert.addAction(UIAlertAction(title: model.uploadButtonText, style: .default, handler: { action in
-            self.uploadPhotos()
+        alert.addAction(UIAlertAction(title: model.uploadButtonText, style: .default, handler: { [weak self] action in
+            guard let sSelf = self else { return }
+            sSelf.uploadPhotos()
         }))
         self.present(alert, animated: true, completion: nil)
     }
