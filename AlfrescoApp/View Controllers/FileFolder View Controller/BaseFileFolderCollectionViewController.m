@@ -26,7 +26,7 @@
 
 
 static const CGSize kUploadPopoverPreferedSize = {320, 640};
-@interface BaseFileFolderCollectionViewController() <MultiplePhotosUploadDelegate>
+@interface BaseFileFolderCollectionViewController() <MultiplePhotosUploadDelegate, CameraDelegate>
 
 @end
 
@@ -970,12 +970,11 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
             if (granted)
             {
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Gallery" bundle:nil];
-                GalleryPhotosViewController *gpvc = (GalleryPhotosViewController *)[storyboard instantiateViewControllerWithIdentifier:@"GalleryPhotosViewController"];
+                CameraViewController *cvc =  (CameraViewController *)[storyboard instantiateViewControllerWithIdentifier:@"CameraViewController"];
                 GalleryPhotosModel *model = [[GalleryPhotosModel alloc] initWithSession:weakSelf.session folder:[weakSelf.inUseDataSource parentFolder]];
-                gpvc.model = model;
-                gpvc.delegate = self;
-                NavigationViewController *navGal = [[NavigationViewController alloc] initWithRootViewController:gpvc];
-                [UniversalDevice displayModalViewController:navGal onController:weakSelf.navigationController withCompletionBlock:nil];
+                cvc.model = model;
+                cvc.delegate = self;
+                [UniversalDevice displayModalViewController:cvc onController:weakSelf.navigationController withCompletionBlock:nil];
             }
         }];
     }];
@@ -1241,4 +1240,21 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     [self updateUIUsingFolderPermissionsWithAnimation:NO];
     [self.inUseDataSource addAlfrescoNodes:documents];
 }
+
+#pragma mark - Camera Delegate
+
+- (void)closeCameraWithSavePhotos:(BOOL)savePhotos photos:(NSArray<CameraPhoto *> *)photos model:(GalleryPhotosModel *)model
+{
+    if (savePhotos == YES)
+    {
+        model.cameraPhotos = photos;
+    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Gallery" bundle:nil];
+    GalleryPhotosViewController *gpvc = (GalleryPhotosViewController *)[storyboard instantiateViewControllerWithIdentifier:@"GalleryPhotosViewController"];
+    gpvc.model = model;
+    gpvc.delegate = self;
+    NavigationViewController *navGal = [[NavigationViewController alloc] initWithRootViewController:gpvc];
+    [UniversalDevice displayModalViewController:navGal onController:self.navigationController withCompletionBlock:nil];
+}
+
 @end

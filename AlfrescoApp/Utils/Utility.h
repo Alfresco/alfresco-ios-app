@@ -94,4 +94,5 @@ NSDictionary *dictionaryOfVariableBindingsWithArray(NSArray *views);
 + (NSData *)dataFromImage:(UIImage *)image metadata:(NSDictionary *)metadata mimetype:(NSString *)mimetype;
 + (NSDictionary *)metadataByAddingGPSToMetadata:(NSDictionary *)metadata;
 + (NSDictionary *)metadataByAddingOrientation:(NSInteger)orientation toMetadata:(NSDictionary *)metadata;
++ (NSDateFormatter *)dateFormatter;
 @end

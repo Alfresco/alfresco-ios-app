@@ -44,12 +44,6 @@ import AVFoundation
     var distanceBetweenCells: CGFloat = 10.0
     var cellPerRow: CGFloat = 3.0
     
-    var onlyOnceOpenCamera: Bool = true
-    
-    var cancelText = NSLocalizedString("gallery.photos.cancel", comment: "Cancel")
-    var uploadText = NSLocalizedString("gallery.photos.upload", comment: "Upload")
-    var selectAllText = NSLocalizedString("gallery.photos.selectAll", comment: "SelectAll")
-    
     var mbprogressHUD: MBProgressHUD!
     
     //MARK: - Cycle Life View
@@ -67,23 +61,15 @@ import AVFoundation
         view.addGestureRecognizer(tap)
         
         self.title = "Upload photos"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: uploadText , style: .done, target: self, action: #selector(uploadButtonTapped))
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: cancelText , style: .plain, target: self, action: #selector(cancelButtonTapped))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: model.uploadButtonText , style: .done, target: self, action: #selector(uploadButtonTapped))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: model.cancelButtonText , style: .plain, target: self, action: #selector(cancelButtonTapped))
         
-        selectAllButton.setTitle(selectAllText, for: .normal)
+        selectAllButton.setTitle(model.selectAllButtonText, for: .normal)
         
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
         make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
         make(button: navigationItem.leftBarButtonItem, enable: true)
 
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if onlyOnceOpenCamera {
-            self.performSegue(withIdentifier: "showCamera", sender: nil)
-            onlyOnceOpenCamera = false
-        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -104,14 +90,11 @@ import AVFoundation
     }
     
      @objc func uploadButtonTapped() {
-        self.view.isUserInteractionEnabled = false
-        make(button: navigationItem.leftBarButtonItem, enable: false)
-        
-        mbprogressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
-        mbprogressHUD.mode = .annularDeterminate
-        mbprogressHUD.label.text = model.photosRemainingToUploadText()
-        
-        model.uploadPhotosWithContentStream()
+        if model.shouldShowAlertCellularUpload() {
+            showAlertCellularUpload()
+        } else {
+            uploadPhotos()
+        }
     }
     
     @IBAction func selectButtonTapped(_ sender: Any) {
@@ -129,11 +112,25 @@ import AVFoundation
     
     func showAlertCancelUpload() {
         let alert = UIAlertController(title: model.unsavedContentTitleText, message: model.unsavedContentText, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { action in
-            self.dismiss(animated: true, completion: nil)
+        alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { [weak self] action in
+            guard let sSelf = self else { return }
+            if sSelf.model.retryMode == true {
+                sSelf.delegate?.finishUploadGallery(documents: sSelf.model.documents)
+            }
+            sSelf.dismiss(animated: true, completion: nil)
         }))
         alert.addAction(UIAlertAction(title: model.uploadButtonText, style: .default, handler: { action in
-            self.uploadButtonTapped()
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func showAlertCellularUpload() {
+        let alert = UIAlertController(title: model.uploadCellularTitleText, message: model.uploadCellularDescriptionText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { action in
+        }))
+        alert.addAction(UIAlertAction(title: model.uploadButtonText, style: .default, handler: { [weak self] action in
+            guard let sSelf = self else { return }
+            sSelf.uploadPhotos()
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -154,6 +151,15 @@ import AVFoundation
         button?.isEnabled = enable
     }
     
+    func uploadPhotos() {
+        self.view.isUserInteractionEnabled = false
+        make(button: navigationItem.leftBarButtonItem, enable: false)
+        mbprogressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+        mbprogressHUD.mode = .annularDeterminate
+        mbprogressHUD.label.text = model.photosRemainingToUploadText()
+        model.uploadPhotosWithContentStream()
+    }
+    
     //MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -168,8 +174,7 @@ import AVFoundation
 //MARK: - CameraDelegate
 
 extension GalleryPhotosViewController: CameraDelegate {
-    
-    func closeCamera(savePhotos: Bool, photos: [CameraPhoto]) {
+    func closeCamera(savePhotos: Bool, photos: [CameraPhoto], model: GalleryPhotosModel) {
         if savePhotos {
             model.cameraPhotos.append(contentsOf: photos)
             collectionView.reloadData()
@@ -182,6 +187,7 @@ extension GalleryPhotosViewController: CameraDelegate {
 //MARK: - GalleryPhotos Delegate
 
 extension GalleryPhotosViewController: GalleryPhotosDelegate {
+
     func uploading(photo: CameraPhoto, with progress: Float) {
         mbprogressHUD.progress = progress
     }
@@ -196,12 +202,15 @@ extension GalleryPhotosViewController: GalleryPhotosDelegate {
     }
     
     func finishUploadPhotos() {
-        if model.retryUploadingPhotos().count != 0 {
-            //TODO: Retry Mode
-        } else {
-            self.delegate?.finishUploadGallery(documents: model.alfrescoDocuments())
-            self.dismiss(animated: true, completion: nil)
-        }
+        self.delegate?.finishUploadGallery(documents: model.documents)
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func retryMode() {
+        mbprogressHUD.hide(animated: true)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: model.retryButtonText , style: .done, target: self, action: #selector(uploadButtonTapped))
+        make(button: navigationItem.leftBarButtonItem, enable: true)
+        collectionView.reloadData()
     }
 }
 
