@@ -93,8 +93,8 @@ protocol GalleryPhotosDelegate: class {
         let photo = cameraPhotos[indexUploadingPhotos]
         
         if photo.selected {
-            let index = indexOf(cameraPhotoSelected: photo) + 1
-            photo.name = imagesName + "-" + String(index)
+            let index = indexOf(cameraPhotoSelected: photo)
+            photo.name = defaultNameWithDate(photo: photo, index: index)
             
             upload(photo) { [weak self] (completed) in
                 guard let sSelf = self else { return }
@@ -144,19 +144,8 @@ protocol GalleryPhotosDelegate: class {
                 
             } else if let error = error {
                 AlfrescoLog.logError(error.localizedDescription)
-                
-                if sSelf.filenameExistsInParentFolder(error as NSError) {
-                    photo.name = photo.name + "_" + String(photo.capturePhoto.timestamp.value)
-                    sSelf.upload(photo) { (completed) in
-                        if !completed {
-                            photo.retryUploading = true
-                        }
-                        finishUpload(true)
-                    }
-                } else {
-                    sSelf.delegate?.errorUploading(photo: photo, error: error as NSError)
-                    finishUpload(false)
-                }
+                sSelf.delegate?.errorUploading(photo: photo, error: error as NSError)
+                finishUpload(false)
             } else {
                 sSelf.delegate?.errorUploading(photo: photo, error: nil)
                 finishUpload(false)
@@ -178,6 +167,11 @@ protocol GalleryPhotosDelegate: class {
     }
     
     //MARK: Utils
+    
+    func defaultNameWithDate(photo: CameraPhoto, index: Int) -> String {
+        let stringIndex = String(index + 1)
+        return imagesName + "_" + Utility.dateFormatter().string(from: Date()) + "_" + stringIndex
+    }
     
     func shouldShowAlertCellularUpload() -> Bool {
         if let connectivityManager = ConnectivityManager.shared() {
