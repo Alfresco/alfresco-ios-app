@@ -55,6 +55,7 @@ protocol GalleryPhotosDelegate: class {
    
     var kkAlfrescoErrorCodeDocumentFolder = 600
     var kkAlfrescoErrorCodeDocumentFolderNodeAlreadyExists = 601
+    var kkCellularMBSizePermit = 25.0
     
     var retryMode: Bool = false
     var documentServices: AlfrescoDocumentFolderService
@@ -175,7 +176,7 @@ protocol GalleryPhotosDelegate: class {
     
     func shouldShowAlertCellularUpload() -> Bool {
         if let connectivityManager = ConnectivityManager.shared() {
-            if connectivityManager.isOnCellular && photosSelectedSizeMB() >= 25.0 {
+            if connectivityManager.isOnCellular && photosSelectedSizeMB() >= kkCellularMBSizePermit {
                 return true
             }
         }
