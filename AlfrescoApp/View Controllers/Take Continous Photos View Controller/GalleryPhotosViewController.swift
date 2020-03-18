@@ -144,7 +144,7 @@ import AVFoundation
     
     func make(button: UIButton, enable: Bool) {
         button.isUserInteractionEnabled = enable
-        button.setTitleColor((enable) ? UIColor.blue : UIColor.gray, for: .normal)
+        button.setTitleColor((enable) ? takeMorePhotosButton.tintColor : UIColor.gray, for: .normal)
     }
     
     func make(button: UIBarButtonItem?, enable: Bool) {
@@ -152,12 +152,16 @@ import AVFoundation
     }
     
     func uploadPhotos() {
-        self.view.isUserInteractionEnabled = false
-        make(button: navigationItem.leftBarButtonItem, enable: false)
-        mbprogressHUD = MBProgressHUD.showAdded(to: self.view, animated: true)
+        userInteraction(enable: false)
+        mbprogressHUD = MBProgressHUD.showAdded(to: view, animated: true)
         mbprogressHUD.mode = .annularDeterminate
         mbprogressHUD.label.text = model.photosRemainingToUploadText()
         model.uploadPhotosWithContentStream()
+    }
+    
+    func userInteraction(enable: Bool) {
+        view.isUserInteractionEnabled = enable
+        make(button: navigationItem.rightBarButtonItem, enable: enable)
     }
     
     //MARK: - Navigation
@@ -207,9 +211,9 @@ extension GalleryPhotosViewController: GalleryPhotosDelegate {
     }
     
     func retryMode() {
+        userInteraction(enable: true)
         mbprogressHUD.hide(animated: true)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: model.retryButtonText , style: .done, target: self, action: #selector(uploadButtonTapped))
-        make(button: navigationItem.leftBarButtonItem, enable: true)
         collectionView.reloadData()
     }
 }
