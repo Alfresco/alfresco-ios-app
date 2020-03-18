@@ -161,7 +161,6 @@ import AVFoundation
     
     func userInteraction(enable: Bool) {
         view.isUserInteractionEnabled = enable
-        make(button: navigationItem.leftBarButtonItem, enable: enable)
         make(button: navigationItem.rightBarButtonItem, enable: enable)
     }
     
