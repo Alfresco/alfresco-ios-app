@@ -139,16 +139,16 @@ import CoreMotion
     @IBAction func captureImageButtonPressed(_ sender: UIButton) {
         doneButton.isHidden = false
         if model.shouldTakeAnyPhotos(cameraPhotos) == false {
-            self.showAlertTooManyPhotos()
-            return
+            showAlertTooManyPhotos()
+        } else {
+            captureImage()
         }
-        captureImage()
     }
     
     //MARK: - Utils
     
     func showAlertTooManyPhotos() {
-        let alert = UIAlertController(title: "", message: model.tooManyPhotosText, preferredStyle: .alert)
+        let alert = UIAlertController(title: "", message: String(format: model.tooManyPhotosText, model.maxiumNumberOfPhotosTaken), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
         }))
         self.present(alert, animated: true, completion: nil)
@@ -169,11 +169,14 @@ import CoreMotion
         self.capturePreviewView.alpha = 0.4
         cameraController.captureImage { [weak self] (photo, error) in
             guard let sSelf = self else { return }
+            sSelf.capturePreviewView.alpha = 1.0
             guard let photo = photo else {
-                print(error ?? "Image capture error")
+                AlfrescoLog.logError(error?.localizedDescription ?? "Image capture error")
                 return
             }
-            sSelf.capturePreviewView.alpha = 1.0
+            if sSelf.model.shouldTakeAnyPhotos(sSelf.cameraPhotos) == false {
+                return
+            }
             
             if sSelf.cameraController.currentCameraPosition == .front {
                 if sSelf.orientationLast == .landscapeRight {

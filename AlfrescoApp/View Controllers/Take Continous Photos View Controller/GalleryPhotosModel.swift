@@ -49,9 +49,10 @@ protocol GalleryPhotosDelegate: class {
     var defaultFilesNameText = NSLocalizedString("gallery.photos.defaultName", comment: "Default Name")
     var defaultFilesPlaceholderNameText = NSLocalizedString("gallery.photos.defaultPlaceholderName", comment: "Default Name")
     var infoNamingPhotosText = NSLocalizedString("gallery.photos.infoNaming", comment: "Info Naming")
+    var retryModeText = NSLocalizedString("gallery.photos.retryMode", comment: "Retry Mode")
     var uploadCellularTitleText = NSLocalizedString("gallery.photos.upload.cellular.title", comment: "Cellular Title")
     var uploadCellularDescriptionText = NSLocalizedString("gallery.photos.upload.cellular.description", comment: "Cellular Description")
-    var maxiumNumberOfPhotosTaken = 100
+    var maxiumNumberOfPhotosTaken = 3
    
     var kkAlfrescoErrorCodeDocumentFolder = 600
     var kkAlfrescoErrorCodeDocumentFolderNodeAlreadyExists = 601
