@@ -57,3 +57,5 @@ steps:
   inputs:
     script: 'curl -sSL https://download.sourceclear.com/ci.sh | sh'
   displayName: 'Performing Source Clear checks'
+  env:
+    SRCCLR_API_TOKEN: $(SOURCE_CLEAR_API_TOKEN)
