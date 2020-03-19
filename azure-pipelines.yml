@@ -22,7 +22,7 @@ steps:
 - task: InstallAppleProvisioningProfile@1
   inputs:
    provisioningProfileLocation: 'secureFiles'
-   provProfileSecureFile: '$(csReleaseProvisioningProfile)'
+   provProfileSecureFile: 'b0061641-8728-4e91-b284-3af96d850ec5.mobileprovision'
    removeProfile: true 
 
 - task: Xcode@5
