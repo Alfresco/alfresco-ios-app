@@ -5,7 +5,7 @@ pool:
   vmImage: 'macos-latest'
 
 variables:
-  - group: ios-pipeline
+  - group: cs-ios-signing
   - name: configuration
     value: 'Release'
   - name: sdk
