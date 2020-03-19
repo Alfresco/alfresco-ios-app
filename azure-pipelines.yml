@@ -6,6 +6,10 @@ pool:
 
 variables:
   - group: ios-pipeline
+  - name: configuration
+    value: 'Release'
+  - name: sdk
+    value: 'iphoneos'
 
 steps:
 - task: InstallAppleCertificate@2
@@ -20,3 +24,28 @@ steps:
    provisioningProfileLocation: 'secureFiles'
    provProfileSecureFile: '$(provisioningProfile)'
    removeProfile: true 
+
+- task: Xcode@5
+  inputs:
+    actions: 'build'
+    scheme: 'AlfrescoApp'
+    sdk: '$(sdk)'
+    configuration: '$(configuration)'
+    xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
+    xcodeVersion: 'default'
+    packageApp: true
+    signingOption: 'manual'
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**/*.ipa'
+    targetFolder: '$(build.artifactStagingDirectory)'
+    overWrite: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(build.artifactStagingDirectory)/output/$(sdk)/$(configuration)' 
+    artifactName: 'ACS-iOS' 
+    publishLocation: 'Container'
