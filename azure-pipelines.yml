@@ -25,12 +25,6 @@ steps:
    provProfileSecureFile: '$(csReleaseProvisioningProfile)'
    removeProfile: true 
 
-- task: InstallAppleProvisioningProfile@1
-  inputs:
-   provisioningProfileLocation: 'secureFiles'
-   provProfileSecureFile: '$(csAdhocProvisioningProfile)'
-   removeProfile: true 
-
 - task: Xcode@5
   inputs:
     actions: 'build'
