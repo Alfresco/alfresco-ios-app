@@ -30,7 +30,7 @@ steps:
 
 - task: Xcode@5
   inputs:
-    actions: 'build'
+    actions: 'build archive'
     scheme: 'AlfrescoApp'
     sdk: '$(sdk)'
     configuration: '$(configuration)'
