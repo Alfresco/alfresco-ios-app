@@ -110,6 +110,13 @@ import AVFoundation
     
     //MARK: - Utils
     
+    func showAlertRetryMode() {
+        let alert = UIAlertController(title: "", message: model.retryModeText, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func showAlertCancelUpload() {
         let alert = UIAlertController(title: model.unsavedContentTitleText, message: model.unsavedContentText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: model.dontUploadButtonText, style: .cancel, handler: { [weak self] action in
@@ -211,6 +218,7 @@ extension GalleryPhotosViewController: GalleryPhotosDelegate {
     }
     
     func retryMode() {
+        showAlertRetryMode()
         userInteraction(enable: true)
         mbprogressHUD.hide(animated: true)
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: model.retryButtonText , style: .done, target: self, action: #selector(uploadButtonTapped))
