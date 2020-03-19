@@ -52,3 +52,8 @@ steps:
     pathtoPublish: '$(build.artifactStagingDirectory)/output/$(sdk)/$(configuration)' 
     artifactName: 'ACS-iOS' 
     publishLocation: 'Container'
+
+- task: CmdLine@2
+  inputs:
+    script: 'curl -sSL https://download.sourceclear.com/ci.sh | sh'
+  displayName: 'Performing Source Clear checks'
