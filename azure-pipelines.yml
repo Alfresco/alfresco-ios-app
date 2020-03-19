@@ -43,7 +43,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    contents: '**/*.ipa'
+    contents: '**/*.*'
     targetFolder: '$(build.artifactStagingDirectory)'
     overWrite: true
 
