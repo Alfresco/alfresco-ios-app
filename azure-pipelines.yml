@@ -42,6 +42,20 @@ steps:
     signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
     provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
 
+- task: Xcode@5
+  inputs:
+    actions: 'archive'
+    scheme: 'AlfrescoApp'
+    sdk: '$(sdk)'
+    configuration: '$(configuration)'
+    xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
+    xcodeVersion: 'default'
+    packageApp: false
+    archivePath: 'archive/'
+    signingOption: 'manual'
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+
 - task: CopyFiles@2
   inputs:
     contents: '**/*.*'
