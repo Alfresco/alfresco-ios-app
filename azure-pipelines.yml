@@ -1,0 +1,85 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'macos-latest'
+
+variables:
+  - group: cs-ios-signing
+  - name: configuration
+    value: 'Release'
+  - name: sdk
+    value: 'iphoneos'
+
+steps:
+- checkout: self
+  submodules: true
+
+- task: InstallAppleCertificate@2
+  inputs:
+   certSecureFile: '$(p12FileName)'
+   certPwd: '$(p12Password)'
+   keychain: 'temp'
+   deleteCert: true 
+  
+- task: InstallAppleProvisioningProfile@1
+  inputs:
+   provisioningProfileLocation: 'secureFiles'
+   provProfileSecureFile: '$(csReleaseProvisioningProfile)'
+   removeProfile: true 
+
+- task: Xcode@5
+  displayName: 'Generate Content Services IPA'
+  inputs:
+    actions: 'build'
+    scheme: 'AlfrescoApp'
+    sdk: '$(sdk)'
+    configuration: '$(configuration)'
+    xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
+    xcodeVersion: 'default'
+    packageApp: true
+    signingOption: 'manual'
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+
+- task: Xcode@5
+  displayName: 'Archive Content Services App'
+  inputs:
+    actions: 'build archive'
+    sdk: '$(sdk)'
+    scheme: 'AlfrescoApp'
+    configuration: '$(configuration)'
+    xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
+    useXcpretty: 'false'
+    args: '-archivePath $(agent.buildDirectory)/AlfrescoApp'
+
+- task: ArchiveFiles@2
+  displayName: 'Package .xcarchive into a zip file'
+  inputs:
+    rootFolderOrFile: '$(agent.buildDirectory)/AlfrescoApp.xcarchive/'
+    archiveFile: '$(build.artifactStagingDirectory)/AlfrescoApp.xcarchive.zip'
+
+- task: CopyFiles@2
+  inputs:
+    contents: '**/*.ipa'
+    targetFolder: '$(build.artifactStagingDirectory)'
+    overWrite: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(build.artifactStagingDirectory)/AlfrescoApp.xcarchive.zip'
+    artifactName: 'xcarchive-files'
+    artifactType: 'container'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(build.artifactStagingDirectory)' 
+    artifactName: 'ACS-iOS' 
+    publishLocation: 'Container'
+
+- task: CmdLine@2
+  inputs:
+    script: 'curl -sSL https://download.sourceclear.com/ci.sh | sh'
+  displayName: 'Performing Source Clear checks'
+  env:
+    SRCCLR_API_TOKEN: $(SOURCE_CLEAR_API_TOKEN)
