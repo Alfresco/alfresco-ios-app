@@ -61,7 +61,6 @@ import CoreMotion
         makeShadow(button: doneButton)
         makeShadow(button: closeButton)
         
-        
         prepareCamera()
         initializeMotionManager()
     }
