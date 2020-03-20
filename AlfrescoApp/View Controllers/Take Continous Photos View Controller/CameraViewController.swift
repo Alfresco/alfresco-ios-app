@@ -138,6 +138,7 @@ import CoreMotion
     
     @IBAction func captureImageButtonPressed(_ sender: UIButton) {
         doneButton.isHidden = false
+        captureButton.isUserInteractionEnabled = false
         if model.shouldTakeAnyPhotos(cameraPhotos) == false {
             showAlertTooManyPhotos()
         } else {
@@ -149,7 +150,9 @@ import CoreMotion
     
     func showAlertTooManyPhotos() {
         let alert = UIAlertController(title: "", message: String(format: model.tooManyPhotosText, model.maxiumNumberOfPhotosTaken), preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { [weak self] action in
+            guard let sSelf = self else { return }
+            sSelf.captureButton.isUserInteractionEnabled = true
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -170,6 +173,7 @@ import CoreMotion
         cameraController.captureImage { [weak self] (photo, error) in
             guard let sSelf = self else { return }
             sSelf.capturePreviewView.alpha = 1.0
+            sSelf.captureButton.isUserInteractionEnabled = true
             guard let photo = photo else {
                 AlfrescoLog.logError(error?.localizedDescription ?? "Image capture error")
                 return

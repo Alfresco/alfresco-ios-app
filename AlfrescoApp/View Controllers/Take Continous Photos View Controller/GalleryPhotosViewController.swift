@@ -161,7 +161,7 @@ import AVFoundation
     func uploadPhotos() {
         userInteraction(enable: false)
         mbprogressHUD = MBProgressHUD.showAdded(to: view, animated: true)
-        mbprogressHUD.mode = .annularDeterminate
+        mbprogressHUD.mode = .indeterminate
         mbprogressHUD.label.text = model.photosRemainingToUploadText()
         model.uploadPhotosWithContentStream()
     }
