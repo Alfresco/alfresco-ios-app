@@ -266,7 +266,7 @@ extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let minSize = min(self.collectionView.bounds.width, self.collectionView.bounds.height) - distanceBetweenCells * 4
+        let minSize = min(collectionView.bounds.width, collectionView.bounds.height) - distanceBetweenCells * (cellPerRow + 1)
         let newSize = minSize / cellPerRow
 
         return CGSize(width: newSize , height: newSize)

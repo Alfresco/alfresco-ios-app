@@ -61,7 +61,6 @@ import CoreMotion
         makeShadow(button: doneButton)
         makeShadow(button: closeButton)
         
-        
         prepareCamera()
         initializeMotionManager()
     }
@@ -138,7 +137,7 @@ import CoreMotion
     
     @IBAction func captureImageButtonPressed(_ sender: UIButton) {
         doneButton.isHidden = false
-        captureButton.isUserInteractionEnabled = false
+        userInteraction(enable: false)
         if model.shouldTakeAnyPhotos(cameraPhotos) == false {
             showAlertTooManyPhotos()
         } else {
@@ -148,11 +147,18 @@ import CoreMotion
     
     //MARK: - Utils
     
+    func userInteraction(enable: Bool) {
+        captureButton.isUserInteractionEnabled = enable
+        toggleFlashButton.isUserInteractionEnabled = enable
+        toggleCameraButton.isUserInteractionEnabled = enable
+        doneButton.isUserInteractionEnabled = enable
+    }
+    
     func showAlertTooManyPhotos() {
         let alert = UIAlertController(title: "", message: String(format: model.tooManyPhotosText, model.maxiumNumberOfPhotosTaken), preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { [weak self] action in
             guard let sSelf = self else { return }
-            sSelf.captureButton.isUserInteractionEnabled = true
+            sSelf.userInteraction(enable: true)
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -173,7 +179,7 @@ import CoreMotion
         cameraController.captureImage { [weak self] (photo, error) in
             guard let sSelf = self else { return }
             sSelf.capturePreviewView.alpha = 1.0
-            sSelf.captureButton.isUserInteractionEnabled = true
+            sSelf.userInteraction(enable: true)
             guard let photo = photo else {
                 AlfrescoLog.logError(error?.localizedDescription ?? "Image capture error")
                 return
@@ -201,12 +207,12 @@ import CoreMotion
             guard let sSelf = self else { return }
             sSelf.toggleFlashButton.isHidden = !sSelf.cameraController.flashModeDisplay()
             if let error = error {
-                print(error)
+                AlfrescoLog.logError(error.localizedDescription)
             }
             do {
                 try sSelf.cameraController.displayPreview(on: sSelf.capturePreviewView)
             } catch {
-                print(error)
+                AlfrescoLog.logError(error.localizedDescription)
             }
         }
     }
@@ -220,9 +226,8 @@ import CoreMotion
             guard let sSelf = self else { return }
             if error == nil {
                 sSelf.outputAccelertionData((accelerometerData?.acceleration)!)
-            }
-            else {
-                print("\(error!)")
+            } else {
+                AlfrescoLog.logError(error?.localizedDescription ?? "CMMotionManager fail.")
             }
         })
     }
