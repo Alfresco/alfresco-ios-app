@@ -41,8 +41,8 @@ import AVFoundation
     @objc weak var delegate: MultiplePhotosUploadDelegate?
     @objc var model: GalleryPhotosModel!
     
-    var distanceBetweenCells: CGFloat = 10.0
-    var cellPerRow: CGFloat = 3.0
+    var distanceBetweenCells: CGFloat = 20.0
+    var cellPerRow: CGFloat = (UIDevice.current.userInterfaceIdiom == .pad) ? 4.0 : 3.0
     
     var mbprogressHUD: MBProgressHUD!
     
@@ -65,6 +65,7 @@ import AVFoundation
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: model.cancelButtonText , style: .plain, target: self, action: #selector(cancelButtonTapped))
         
         selectAllButton.setTitle(model.selectAllButtonText, for: .normal)
+        takeMorePhotosButton.setTitle(model.takeMoreButtonText, for: .normal)
         
         make(button: selectAllButton, enable: !model.isAllPhoto(selected: true))
         make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
@@ -265,16 +266,14 @@ extension GalleryPhotosViewController: UICollectionViewDataSource, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let margin = collectionViewLeadingConstraint.constant + collectionViewTraillingConstraint.constant
-        let minSize = min(self.view.bounds.width, self.view.bounds.height) - margin
-        let yourWidth = minSize / cellPerRow - distanceBetweenCells * cellPerRow - distanceBetweenCells
-        let yourHeight = yourWidth
+        let minSize = min(self.collectionView.bounds.width, self.collectionView.bounds.height) - distanceBetweenCells * 4
+        let newSize = minSize / cellPerRow
 
-        return CGSize(width: yourWidth, height: yourHeight)
+        return CGSize(width: newSize , height: newSize)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+        return UIEdgeInsets(top: distanceBetweenCells, left: distanceBetweenCells, bottom: distanceBetweenCells, right: distanceBetweenCells)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

@@ -931,6 +931,7 @@
 * Multiple photos Upload Views
 */
 "gallery.photos.selectAll" = "Select All";
+"gallery.photos.takeMore" = "Take More";
 "gallery.photos.remainingPhotos" = "%d/%d remaining";
 "gallery.photos.uploadingPhotosComplete" = "Uploading complete.";
 "gallery.camera.tomanyphotos" = "You can upload a maximum of %d photos at a time.";

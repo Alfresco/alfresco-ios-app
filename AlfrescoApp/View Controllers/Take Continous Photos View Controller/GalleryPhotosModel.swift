@@ -39,6 +39,7 @@ protocol GalleryPhotosDelegate: class {
     var doneButtonText = NSLocalizedString("Done", comment: "Done")
     var selectAllButtonText = NSLocalizedString("gallery.photos.selectAll", comment: "SelectAll")
     var dontUploadButtonText = NSLocalizedString("upload.confirm.dismissal.cancel", comment: "Don't Upload")
+    var takeMoreButtonText = NSLocalizedString("gallery.photos.takeMore", comment: "Take more")
     
     var tooManyPhotosText = NSLocalizedString("gallery.camera.tomanyphotos", comment: "Too many photos!")
     var cancelCameraText = NSLocalizedString("gallery.camera.cancelCamera", comment: "Cancel Camera")
