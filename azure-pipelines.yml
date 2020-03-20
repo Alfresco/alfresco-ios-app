@@ -29,32 +29,35 @@ steps:
    removeProfile: true 
 
 - task: Xcode@5
+  displayName: 'Generate Content Services IPA'
   inputs:
-    actions: 'build archive'
+    actions: 'build'
     scheme: 'AlfrescoApp'
     sdk: '$(sdk)'
     configuration: '$(configuration)'
     xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
     xcodeVersion: 'default'
     packageApp: true
-    archivePath: '$(build.artifactStagingDirectory)'
     signingOption: 'manual'
     signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
     provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
 
 - task: Xcode@5
+  displayName: 'Archive Content Services App'
   inputs:
-    actions: 'archive'
-    scheme: 'AlfrescoApp'
+    actions: 'build archive'
     sdk: '$(sdk)'
+    scheme: 'AlfrescoApp'
     configuration: '$(configuration)'
     xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
-    xcodeVersion: 'default'
-    packageApp: false
-    archivePath: 'archive/'
-    signingOption: 'manual'
-    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
-    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+    useXcpretty: 'false'
+    args: '-archivePath $(agent.buildDirectory)/AlfrescoApp'
+
+- task: ArchiveFiles@2
+  displayName: 'Package .xcarchive into a zip file'
+  inputs:
+    rootFolderOrFile: '$(agent.buildDirectory)/AlfrescoApp.xcarchive/'
+    archiveFile: '$(build.artifactStagingDirectory)/AlfrescoApp.xcarchive.zip'
 
 - task: CopyFiles@2
   inputs:
@@ -64,7 +67,13 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(build.artifactStagingDirectory)/output/$(sdk)/$(configuration)' 
+    pathToPublish: '$(build.artifactStagingDirectory)/AlfrescoApp.xcarchive.zip'
+    artifactName: 'xcarchive-files'
+    artifactType: 'container'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(build.artifactStagingDirectory)' 
     artifactName: 'ACS-iOS' 
     publishLocation: 'Container'
 
