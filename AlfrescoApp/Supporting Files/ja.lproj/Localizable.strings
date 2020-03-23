@@ -930,6 +930,7 @@
 /**
 * Multiple photos Upload Views
 */
+"browser.actionsheet.takecontinuosphotos" = "Take Multiple Photos";
 "gallery.photos.selectAll" = "Select All";
 "gallery.photos.takeMore" = "Take More";
 "gallery.photos.remainingPhotos" = "%d/%d remaining";
