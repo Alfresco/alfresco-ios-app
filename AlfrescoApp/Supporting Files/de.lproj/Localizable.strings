@@ -926,3 +926,19 @@
  * Cloud Termination Alert
  */
 "cloudtermination.message" = "my.alfresco.com wird am 28. Juni 2019 abgeschaltet. Bitte kontaktieren Sie Ihren Administrator, um zu erfahren wie Sie Ihre Daten von diesem Service migrieren können.";
+
+/**
+* Multiple photos Upload Views
+*/
+"gallery.photos.selectAll" = "Select All";
+"gallery.photos.takeMore" = "Take More";
+"gallery.photos.remainingPhotos" = "%d/%d remaining";
+"gallery.photos.uploadingPhotosComplete" = "Uploading complete.";
+"gallery.camera.tomanyphotos" = "You can upload a maximum of %d photos at a time.";
+"gallery.camera.cancelCamera" = "Are you sure you want to cancel? You will lose the photos that you've just captured.";
+"gallery.photos.defaultPlaceholderName" = "Default Files Name";
+"gallery.photos.defaultName" = "Default Name";
+"gallery.photos.infoNaming" = "The name supplied here will be prefixed to all of the photos that are uploaded";
+"gallery.photos.retryMode" = "Some of your photos did not upload to Alfresco. Press retry to prevent losing them.";
+"gallery.photos.upload.cellular.title" = "Use data for upload multiple photo";
+"gallery.photos.upload.cellular.description" = "Do you want to switch to WI-FI connection to upload these photos?";
