@@ -216,122 +216,130 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kr4-KS-Yzl">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8js-fb-NFl">
-                                        <rect key="frame" x="340" y="30" width="44" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="IHs-KG-9Wj"/>
-                                            <constraint firstAttribute="height" constant="44" id="R0r-xS-r8g"/>
-                                        </constraints>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" image="Flash Off Icon"/>
-                                        <connections>
-                                            <action selector="toggleFlashButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="vdw-Ce-wsZ"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cwn-s4-wNn">
-                                        <rect key="frame" x="340" y="74" width="44" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="1kb-X2-YLm"/>
-                                            <constraint firstAttribute="height" constant="44" id="U3w-O9-xGh"/>
-                                        </constraints>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <state key="normal" image="Rear Camera Icon"/>
-                                        <connections>
-                                            <action selector="switchCamerasButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="1IU-b4-aen"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6e-f1-dmT">
-                                        <rect key="frame" x="179.66666666666666" y="791" width="55" height="55"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="55" id="MLy-gR-wtk"/>
-                                            <constraint firstAttribute="width" constant="55" id="hIA-E7-V3O"/>
-                                        </constraints>
-                                        <connections>
-                                            <action selector="captureImageButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="YuJ-64-oXp"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i4N-BX-ypW">
-                                        <rect key="frame" x="332" y="799.66666666666663" width="52" height="38"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
-                                        <state key="normal" title="Done">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="doneButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="Kic-d6-FnZ"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8x7-Je-lym">
-                                        <rect key="frame" x="30" y="796" width="64" height="45"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="45" id="Hv3-Qi-Ft8"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
-                                        <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                        <state key="normal" title="Cancel"/>
-                                        <connections>
-                                            <action selector="closeButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="Ve0-dB-Xed"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="8x7-Je-lym" firstAttribute="leading" secondItem="Kr4-KS-Yzl" secondAttribute="leading" constant="30" id="0P9-wc-pT6"/>
-                                    <constraint firstItem="8x7-Je-lym" firstAttribute="centerY" secondItem="j6e-f1-dmT" secondAttribute="centerY" id="5yR-xv-QHy"/>
-                                    <constraint firstItem="j6e-f1-dmT" firstAttribute="centerY" secondItem="Kr4-KS-Yzl" secondAttribute="centerY" id="68P-sI-g3l"/>
-                                    <constraint firstAttribute="bottom" secondItem="j6e-f1-dmT" secondAttribute="bottom" constant="50" id="737-8x-IJg"/>
-                                    <constraint firstItem="j6e-f1-dmT" firstAttribute="top" secondItem="cwn-s4-wNn" secondAttribute="bottom" constant="80" id="Iag-5r-buP"/>
-                                    <constraint firstItem="8js-fb-NFl" firstAttribute="top" secondItem="Kr4-KS-Yzl" secondAttribute="top" constant="30" id="JHD-AH-yGQ"/>
-                                    <constraint firstItem="8x7-Je-lym" firstAttribute="top" secondItem="i4N-BX-ypW" secondAttribute="bottom" constant="80" id="L30-P8-6DX"/>
-                                    <constraint firstItem="cwn-s4-wNn" firstAttribute="top" secondItem="8js-fb-NFl" secondAttribute="bottom" id="VMi-DU-GbL">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="20"/>
-                                    </constraint>
-                                    <constraint firstAttribute="trailing" secondItem="8js-fb-NFl" secondAttribute="trailing" constant="30" id="YiP-Gw-a6b"/>
-                                    <constraint firstAttribute="trailing" secondItem="j6e-f1-dmT" secondAttribute="trailing" constant="30" id="ZBt-fj-U7Q"/>
-                                    <constraint firstItem="cwn-s4-wNn" firstAttribute="trailing" secondItem="8js-fb-NFl" secondAttribute="trailing" id="dbq-ND-Pqv"/>
-                                    <constraint firstItem="j6e-f1-dmT" firstAttribute="centerX" secondItem="Kr4-KS-Yzl" secondAttribute="centerX" id="dfD-a3-UBK"/>
-                                    <constraint firstItem="i4N-BX-ypW" firstAttribute="trailing" secondItem="cwn-s4-wNn" secondAttribute="trailing" id="olv-LA-bIA"/>
-                                    <constraint firstItem="i4N-BX-ypW" firstAttribute="top" secondItem="j6e-f1-dmT" secondAttribute="bottom" constant="80" id="uij-ws-KUP"/>
-                                    <constraint firstItem="8x7-Je-lym" firstAttribute="trailing" secondItem="i4N-BX-ypW" secondAttribute="trailing" id="xdL-cZ-gbX"/>
-                                    <constraint firstItem="i4N-BX-ypW" firstAttribute="centerY" secondItem="j6e-f1-dmT" secondAttribute="centerY" id="zHc-Ma-DZD"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="L30-P8-6DX"/>
-                                        <exclude reference="xdL-cZ-gbX"/>
-                                        <exclude reference="68P-sI-g3l"/>
-                                        <exclude reference="Iag-5r-buP"/>
-                                        <exclude reference="ZBt-fj-U7Q"/>
-                                        <exclude reference="uij-ws-KUP"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <exclude reference="JHD-AH-yGQ"/>
-                                        <exclude reference="0P9-wc-pT6"/>
-                                        <exclude reference="5yR-xv-QHy"/>
-                                        <include reference="L30-P8-6DX"/>
-                                        <include reference="xdL-cZ-gbX"/>
-                                        <include reference="68P-sI-g3l"/>
-                                        <exclude reference="737-8x-IJg"/>
-                                        <include reference="Iag-5r-buP"/>
-                                        <include reference="ZBt-fj-U7Q"/>
-                                        <exclude reference="dfD-a3-UBK"/>
-                                        <include reference="uij-ws-KUP"/>
-                                        <exclude reference="zHc-Ma-DZD"/>
-                                    </mask>
-                                </variation>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8js-fb-NFl">
+                                <rect key="frame" x="340" y="74" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="IHs-KG-9Wj"/>
+                                    <constraint firstAttribute="height" constant="44" id="R0r-xS-r8g"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="Flash Off Icon"/>
+                                <connections>
+                                    <action selector="toggleFlashButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="vdw-Ce-wsZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cwn-s4-wNn">
+                                <rect key="frame" x="340" y="128" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="1kb-X2-YLm"/>
+                                    <constraint firstAttribute="height" constant="44" id="U3w-O9-xGh"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" image="Rear Camera Icon"/>
+                                <connections>
+                                    <action selector="switchCamerasButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="1IU-b4-aen"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j6e-f1-dmT">
+                                <rect key="frame" x="179.66666666666663" y="757" width="55" height="55"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="55" id="MLy-gR-wtk"/>
+                                    <constraint firstAttribute="width" constant="55" id="hIA-E7-V3O"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="captureImageButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="YuJ-64-oXp"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i4N-BX-ypW">
+                                <rect key="frame" x="332" y="774" width="52" height="38"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="Kic-d6-FnZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8x7-Je-lym">
+                                <rect key="frame" x="30" y="767" width="64" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="Hv3-Qi-Ft8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <state key="normal" title="Cancel"/>
+                                <connections>
+                                    <action selector="closeButtonPressed:" destination="dS5-7n-x2f" eventType="touchUpInside" id="Ve0-dB-Xed"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="j6e-f1-dmT" firstAttribute="bottom" secondItem="i4N-BX-ypW" secondAttribute="bottom" id="116-do-bV7"/>
                             <constraint firstItem="Kr4-KS-Yzl" firstAttribute="top" secondItem="j1m-2T-Yj2" secondAttribute="top" id="2cQ-8Z-ZQy"/>
+                            <constraint firstItem="cwn-s4-wNn" firstAttribute="trailing" secondItem="8js-fb-NFl" secondAttribute="trailing" id="33r-P1-heH"/>
                             <constraint firstItem="Kr4-KS-Yzl" firstAttribute="leading" secondItem="vjJ-n4-6mP" secondAttribute="leading" id="3Jo-cM-XVk"/>
+                            <constraint firstItem="i4N-BX-ypW" firstAttribute="trailing" secondItem="8js-fb-NFl" secondAttribute="trailing" id="7fI-zs-Ex2"/>
+                            <constraint firstItem="i4N-BX-ypW" firstAttribute="centerX" secondItem="j6e-f1-dmT" secondAttribute="centerX" id="7kh-5Y-gM1"/>
+                            <constraint firstItem="j6e-f1-dmT" firstAttribute="top" secondItem="cwn-s4-wNn" secondAttribute="bottom" constant="80" id="Fq7-ng-bdv"/>
+                            <constraint firstItem="cwn-s4-wNn" firstAttribute="top" secondItem="8js-fb-NFl" secondAttribute="bottom" constant="10" id="GXD-ov-jf5">
+                                <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                            </constraint>
+                            <constraint firstItem="j6e-f1-dmT" firstAttribute="centerY" secondItem="j1m-2T-Yj2" secondAttribute="centerY" id="N78-pj-qqg"/>
+                            <constraint firstItem="8x7-Je-lym" firstAttribute="centerX" secondItem="j6e-f1-dmT" secondAttribute="centerX" id="NNE-ST-27s"/>
+                            <constraint firstItem="8js-fb-NFl" firstAttribute="top" secondItem="vjJ-n4-6mP" secondAttribute="top" constant="30" id="Z2W-Fa-CaO"/>
+                            <constraint firstItem="8x7-Je-lym" firstAttribute="top" secondItem="i4N-BX-ypW" secondAttribute="bottom" constant="20" id="av9-Gs-1rw"/>
+                            <constraint firstItem="vjJ-n4-6mP" firstAttribute="bottom" secondItem="j6e-f1-dmT" secondAttribute="bottom" constant="50" id="bN9-sQ-YaX"/>
+                            <constraint firstItem="j6e-f1-dmT" firstAttribute="bottom" secondItem="8x7-Je-lym" secondAttribute="bottom" id="hhD-Dh-Jbf"/>
+                            <constraint firstItem="8js-fb-NFl" firstAttribute="centerX" secondItem="j6e-f1-dmT" secondAttribute="centerX" id="iNQ-YP-wLO"/>
+                            <constraint firstItem="vjJ-n4-6mP" firstAttribute="trailing" secondItem="j6e-f1-dmT" secondAttribute="trailing" constant="30" id="ibb-4j-1Vm"/>
                             <constraint firstItem="vjJ-n4-6mP" firstAttribute="trailing" secondItem="Kr4-KS-Yzl" secondAttribute="trailing" id="jXq-cj-dcY"/>
                             <constraint firstAttribute="bottom" secondItem="Kr4-KS-Yzl" secondAttribute="bottom" id="p8H-EL-i7x"/>
+                            <constraint firstItem="8x7-Je-lym" firstAttribute="leading" secondItem="vjJ-n4-6mP" secondAttribute="leading" constant="30" id="q9L-XL-bl6"/>
+                            <constraint firstItem="j6e-f1-dmT" firstAttribute="centerX" secondItem="j1m-2T-Yj2" secondAttribute="centerX" id="ry2-in-gn9"/>
+                            <constraint firstAttribute="trailing" secondItem="8js-fb-NFl" secondAttribute="trailing" constant="30" id="sz2-wi-G57"/>
+                            <constraint firstItem="j6e-f1-dmT" firstAttribute="centerX" secondItem="j1m-2T-Yj2" secondAttribute="centerX" id="vO8-ZC-Wnh"/>
+                            <constraint firstItem="i4N-BX-ypW" firstAttribute="top" secondItem="j6e-f1-dmT" secondAttribute="bottom" constant="80" id="wRN-Mb-LGg"/>
+                            <constraint firstItem="i4N-BX-ypW" firstAttribute="trailing" secondItem="8js-fb-NFl" secondAttribute="trailing" id="yuf-m3-jAz"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="vjJ-n4-6mP"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="ibb-4j-1Vm"/>
+                                <exclude reference="iNQ-YP-wLO"/>
+                                <exclude reference="NNE-ST-27s"/>
+                                <exclude reference="av9-Gs-1rw"/>
+                                <exclude reference="Fq7-ng-bdv"/>
+                                <exclude reference="N78-pj-qqg"/>
+                                <exclude reference="vO8-ZC-Wnh"/>
+                                <exclude reference="7fI-zs-Ex2"/>
+                                <exclude reference="7kh-5Y-gM1"/>
+                                <exclude reference="wRN-Mb-LGg"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <exclude reference="bN9-sQ-YaX"/>
+                                <include reference="ibb-4j-1Vm"/>
+                                <exclude reference="Z2W-Fa-CaO"/>
+                                <include reference="iNQ-YP-wLO"/>
+                                <exclude reference="sz2-wi-G57"/>
+                                <include reference="NNE-ST-27s"/>
+                                <include reference="av9-Gs-1rw"/>
+                                <exclude reference="q9L-XL-bl6"/>
+                                <exclude reference="116-do-bV7"/>
+                                <include reference="Fq7-ng-bdv"/>
+                                <include reference="N78-pj-qqg"/>
+                                <exclude reference="hhD-Dh-Jbf"/>
+                                <exclude reference="ry2-in-gn9"/>
+                                <include reference="7kh-5Y-gM1"/>
+                                <include reference="wRN-Mb-LGg"/>
+                                <exclude reference="yuf-m3-jAz"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="va0-Eu-7EV"/>
                     <nil key="simulatedStatusBarMetrics"/>

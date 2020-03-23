@@ -54,6 +54,7 @@ import CoreMotion
         doneButton.setTitle(model.doneButtonText, for: .normal)
         closeButton.setTitle(model.cancelButtonText, for: .normal)
         
+        toggleFlashButton.isHidden = true
         doneButton.isHidden = true
         
         makeShadow(button: toggleFlashButton)
