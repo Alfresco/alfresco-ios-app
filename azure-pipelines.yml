@@ -17,12 +17,13 @@ variables:
 steps:
 - checkout: self
   submodules: true
-
-- task: FileTransform@2
-  displayName: 'Variable substitution for GoogleAnalytics'
+  
+- task: FileTransform@1
+  displayName: Variable substitution for GoogleAnalytics
   inputs:
     folderPath: '$(System.DefaultWorkingDirectory)/AlfrescoApp/Supporting Files/'
-    xmlTargetFiles: '**/GoogleService-Info.plist'
+    fileType: 'xml'
+    targetFiles: '**/GoogleService-Info.plist'
 
 - task: InstallAppleCertificate@2
   inputs:
