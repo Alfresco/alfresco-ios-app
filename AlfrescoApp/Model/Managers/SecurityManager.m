@@ -335,7 +335,17 @@
     }
     else
     {
-        [[UniversalDevice topPresentedViewController] presentViewController:navController animated:animated completion:completionBlock];
+        if (self.pinScreenWindow == nil)
+        {
+            [[UniversalDevice topPresentedViewController] presentViewController:navController animated:animated completion:completionBlock];
+        }
+        else
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.pinScreenWindow.rootViewController = navController;
+                [self.pinScreenWindow makeKeyAndVisible];
+            });
+        }
     }
 }
 
