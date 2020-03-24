@@ -328,14 +328,28 @@
     
     if (ownWindow)
     {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.pinScreenWindow.rootViewController = navController;
-            [self.pinScreenWindow makeKeyAndVisible];
+            __strong typeof(self) strongSelf = weakSelf;
+            strongSelf.pinScreenWindow.rootViewController = navController;
+            [strongSelf.pinScreenWindow makeKeyAndVisible];
         });
     }
     else
     {
-        [[UniversalDevice topPresentedViewController] presentViewController:navController animated:animated completion:completionBlock];
+        if (self.pinScreenWindow == nil)
+        {
+            [[UniversalDevice topPresentedViewController] presentViewController:navController animated:animated completion:completionBlock];
+        }
+        else
+        {
+            __weak typeof(self) weakSelf = self;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                __strong typeof(self) strongSelf = weakSelf;
+                strongSelf.pinScreenWindow.rootViewController = navController;
+                [strongSelf.pinScreenWindow makeKeyAndVisible];
+            });
+        }
     }
 }
 
