@@ -39,9 +39,9 @@
 #import "SecurityManager.h"
 #import "UnderlayViewController.h"
 #import "RealmSyncManager+CoreDataMigration.h"
-#import <HockeySDK/HockeySDK.h>
 #import "RealmSyncCore.h"
 #import "AppConfigurationManager.h"
+@import Firebase;
 
 @import MediaPlayer;
 
@@ -92,17 +92,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     NSString *bundleVersion = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     if (![bundleVersion isEqualToString:@"dev"])
     {
-        // HockeyApp SDK
-        if (HOCKEYAPP_APPID.length > 0)
-        {
-            BITHockeyManager *hockeyManager = [BITHockeyManager sharedHockeyManager];
-            [hockeyManager configureWithIdentifier:HOCKEYAPP_APPID];
-            // Disable HockeyApp auto-update manager unless the HOCKEYAPP_UPDATES preprocessor variable contains a non zero-length string
-            hockeyManager.disableUpdateManager = (HOCKEYAPP_UPDATES.length == 0);
-            [hockeyManager startManager];
-            [hockeyManager.authenticator authenticateInstallation];
-        }
-        
         [[AnalyticsManager sharedManager] startAnalytics];
     }
     
