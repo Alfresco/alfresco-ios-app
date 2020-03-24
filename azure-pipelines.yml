@@ -94,5 +94,6 @@ steps:
     appType: 'iOS'
     ipaPath: '**/*.ipa'
     releaseTrack: 'TestFlight'
+    shouldSkipWaitingForProcessing: true
     teamId: 'W8N95J537P'
     teamName: 'Alfresco Software, Inc.'
