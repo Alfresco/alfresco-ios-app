@@ -18,6 +18,12 @@ steps:
 - checkout: self
   submodules: true
 
+- task: FileTransform@2
+  displayName: 'Variable substitution for GoogleAnalytics'
+  inputs:
+    folderPath: '$(System.DefaultWorkingDirectory)/AlfrescoApp/Supporting Files/'
+    xmlTargetFiles: '**/GoogleService-Info.plist'
+
 - task: InstallAppleCertificate@2
   inputs:
    certSecureFile: '$(p12FileName)'
@@ -86,3 +92,14 @@ steps:
   displayName: 'Performing Source Clear checks'
   env:
     SRCCLR_API_TOKEN: $(SOURCE_CLEAR_API_TOKEN)
+
+- task: AppStoreRelease@1
+  inputs:
+    serviceEndpoint: 'AppleStore Publisher'
+    appIdentifier: 'com.alfresco.mobile'
+    appType: 'iOS'
+    ipaPath: '**/*.ipa'
+    releaseTrack: 'TestFlight'
+    shouldSkipWaitingForProcessing: true
+    teamId: 'W8N95J537P'
+    teamName: 'Alfresco Software, Inc.'
