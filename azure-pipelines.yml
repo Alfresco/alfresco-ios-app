@@ -86,3 +86,13 @@ steps:
   displayName: 'Performing Source Clear checks'
   env:
     SRCCLR_API_TOKEN: $(SOURCE_CLEAR_API_TOKEN)
+
+- task: AppStoreRelease@1
+  inputs:
+    serviceEndpoint: 'AppleStore Publisher'
+    appIdentifier: 'com.alfresco.mobile'
+    appType: 'iOS'
+    ipaPath: '**/*.ipa'
+    releaseTrack: 'TestFlight'
+    teamId: 'W8N95J537P'
+    teamName: 'Alfresco Software, Inc.'
