@@ -328,9 +328,10 @@
     
     if (ownWindow)
     {
+        __weak typeof(self) weakSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.pinScreenWindow.rootViewController = navController;
-            [self.pinScreenWindow makeKeyAndVisible];
+            weakSelf.pinScreenWindow.rootViewController = navController;
+            [weakSelf.pinScreenWindow makeKeyAndVisible];
         });
     }
     else
@@ -341,9 +342,10 @@
         }
         else
         {
+            __weak typeof(self) weakSelf = self;
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.pinScreenWindow.rootViewController = navController;
-                [self.pinScreenWindow makeKeyAndVisible];
+                weakSelf.pinScreenWindow.rootViewController = navController;
+                [weakSelf.pinScreenWindow makeKeyAndVisible];
             });
         }
     }
