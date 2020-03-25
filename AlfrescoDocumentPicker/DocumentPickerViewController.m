@@ -889,20 +889,15 @@ static NSString * const kAccountsListIdentifier = @"AccountListNew";
 
 + (void)trackEventWithAction:(NSString *)action label:(NSString *)label
 {
-    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:kAnalyticsEventCategoryDocumentProvider
-                                                                           action:action
-                                                                            label:label
-                                                                            value:@1];
-    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:GA_API_KEY];
-    NSDictionary *dictionary = [builder build];
-    [tracker send:dictionary];
+    [[AnalyticsManager sharedManager] trackEventWithCategory:kAnalyticsEventCategoryDocumentProvider
+                                                         action:action
+                                                          label:label
+                                                          value:@1];
 }
 
 + (void)trackScreenWithName:(NSString *)screenName
 {
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    [tracker set:kGAIScreenName value:screenName];
-    [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+    [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
 }
 
 // This method is a clone of Utility class's method mimeTypeForFileExtension:

@@ -23,7 +23,7 @@
 #import "KeychainUtils.h"
 #import "SharedConstants.h"
 #import "PreferenceManager.h"
-#import <Google/Analytics.h>
+
 #import "AnalyticsConstants.h"
 
 NSString * const kShowKeyboardInPinScreenNotification = @"ShowKeyboardInPinScreenNotification";
@@ -117,9 +117,7 @@ NSString * const kAppResetedNotification = @"AppResetedNotification";
     
     if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
     {
-        id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-        [tracker set:kGAIScreenName value:kAnalyticsViewSettingsPasscode];
-        [tracker send:[[GAIDictionaryBuilder createScreenView] build]];
+        [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewSettingsPasscode];
     }
 }
 
