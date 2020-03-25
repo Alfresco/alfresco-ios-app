@@ -17,7 +17,12 @@ variables:
 steps:
 - checkout: self
   submodules: true
-  
+
+- task: CmdLine@2
+  inputs:
+    script: 'plutil -replace API_KEY -string $(GA_API_KEY) GoogleService-Info.plist'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/AlfrescoApp/Supporting Files/'
+
 - task: FileTransform@1
   displayName: Variable substitution for GoogleAnalytics
   inputs:
