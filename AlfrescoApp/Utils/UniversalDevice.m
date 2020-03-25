@@ -190,13 +190,15 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
     {
         viewController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    
-    [controller presentViewController:viewController animated:YES completion:^{
-        if (completionBlock != NULL)
-        {
-            completionBlock();
-        }
-    }];
+    if(controller.presentedViewController == nil)
+    {
+        [controller presentViewController:viewController animated:YES completion:^{
+            if (completionBlock != NULL)
+            {
+                completionBlock();
+            }
+        }];
+    }
 }
 
 + (void)clearDetailViewController
