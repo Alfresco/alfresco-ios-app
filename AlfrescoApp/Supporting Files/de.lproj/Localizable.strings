@@ -172,7 +172,6 @@
 "error.person.profile.no.profile.message" = "Benutzer nicht gefunden; %@";
 "error.person.profile.email.failed.title" = "Senden fehlgeschlagen";
 "error.person.profile.email.failed.message" = "Die E-Mail konnte nicht gesendet werden. Versuchen Sie es später noch einmal.";
-
 /**
  * Permissions
  */
@@ -930,16 +929,16 @@
 /**
 * Multiple photos Upload Views
 */
-"browser.actionsheet.takecontinuosphotos" = "Take Multiple Photos";
-"gallery.photos.selectAll" = "Select All";
-"gallery.photos.takeMore" = "Take More";
-"gallery.photos.remainingPhotos" = "%d/%d remaining";
-"gallery.photos.uploadingPhotosComplete" = "Uploading complete.";
-"gallery.camera.tomanyphotos" = "You can upload a maximum of %d photos at a time.";
-"gallery.camera.cancelCamera" = "Are you sure you want to cancel? You will lose the photos that you've just captured.";
-"gallery.photos.defaultPlaceholderName" = "Default Files Name";
-"gallery.photos.defaultName" = "Default Name";
-"gallery.photos.infoNaming" = "The name supplied here will be prefixed to all of the photos that are uploaded";
-"gallery.photos.retryMode" = "Some of your photos did not upload to Alfresco. Press retry to prevent losing them.";
-"gallery.photos.upload.cellular.title" = "Use data for upload multiple photo";
-"gallery.photos.upload.cellular.description" = "Do you want to switch to WI-FI connection to upload these photos?";
+"browser.actionsheet.takecontinuosphotos" = "Mehrere Fotos machen";
+"gallery.photos.selectAll" = "Alle auswählen";
+"gallery.photos.takeMore" = "Weitere machen";
+"gallery.photos.remainingPhotos" = "%d/%d verbleibend";
+"gallery.photos.uploadingPhotosComplete" = "Upload abgeschlossen.";
+"gallery.camera.tomanyphotos" = "Sie können maximal %d Fotos gleichzeitig hochladen.";
+"gallery.camera.cancelCamera" = "Möchten Sie wirklich abbrechen? Dabei gehen die Fotos, die Sie gerade gemacht haben, verloren.";
+"gallery.photos.defaultPlaceholderName" = "Standard-Dateinamen";
+"gallery.photos.defaultName" = "Standardname";
+"gallery.photos.infoNaming" = "Der hier angegebene Name wird dem Dateinamen aller hochgeladenen Fotos vorangestellt";
+"gallery.photos.retryMode" = "Einige Ihrer Fotos wurden nicht zu Alfresco hochgeladen. Versuchen Sie es noch einmal, damit sie nicht verloren gehen.";
+"gallery.photos.upload.cellular.title" = "Mehrere Fotos über Datenverbindung hochladen";
+"gallery.photos.upload.cellular.description" = "Möchten Sie zum Hochladen dieser Fotos zu einer WLAN-Verbindung wechseln?";

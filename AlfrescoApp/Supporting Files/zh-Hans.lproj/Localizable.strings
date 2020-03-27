@@ -172,7 +172,6 @@
 "error.person.profile.no.profile.message" = "找不到用户；%@";
 "error.person.profile.email.failed.title" = "发送失败";
 "error.person.profile.email.failed.message" = "无法发送电子邮件。请稍后再试。";
-
 /**
  * Permissions
  */
@@ -930,16 +929,16 @@
 /**
 * Multiple photos Upload Views
 */
-"browser.actionsheet.takecontinuosphotos" = "Take Multiple Photos";
-"gallery.photos.selectAll" = "Select All";
-"gallery.photos.takeMore" = "Take More";
-"gallery.photos.remainingPhotos" = "%d/%d remaining";
-"gallery.photos.uploadingPhotosComplete" = "Uploading complete.";
-"gallery.camera.tomanyphotos" = "You can upload a maximum of %d photos at a time.";
-"gallery.camera.cancelCamera" = "Are you sure you want to cancel? You will lose the photos that you've just captured.";
-"gallery.photos.defaultPlaceholderName" = "Default Files Name";
-"gallery.photos.defaultName" = "Default Name";
-"gallery.photos.infoNaming" = "The name supplied here will be prefixed to all of the photos that are uploaded";
-"gallery.photos.retryMode" = "Some of your photos did not upload to Alfresco. Press retry to prevent losing them.";
-"gallery.photos.upload.cellular.title" = "Use data for upload multiple photo";
-"gallery.photos.upload.cellular.description" = "Do you want to switch to WI-FI connection to upload these photos?";
+"browser.actionsheet.takecontinuosphotos" = "拍摄多张照片";
+"gallery.photos.selectAll" = "全选";
+"gallery.photos.takeMore" = "拍摄更多";
+"gallery.photos.remainingPhotos" = "剩余 %d/%d";
+"gallery.photos.uploadingPhotosComplete" = "完成上传。";
+"gallery.camera.tomanyphotos" = "您一次最多可以上传 %d 张照片。";
+"gallery.camera.cancelCamera" = "您确定要取消？您将丢失刚刚抓取的照片。";
+"gallery.photos.defaultPlaceholderName" = "默认文件名";
+"gallery.photos.defaultName" = "默认名称";
+"gallery.photos.infoNaming" = "此处提供的名称将作为所有上传的照片的名称前缀";
+"gallery.photos.retryMode" = "您的部分照片没有上传到 Alfresco。请按重试以防止照片丢失。";
+"gallery.photos.upload.cellular.title" = "使用数据流量上传多张照片";
+"gallery.photos.upload.cellular.description" = "您要切换到 WI-FI 连接来上传这些照片吗？";
