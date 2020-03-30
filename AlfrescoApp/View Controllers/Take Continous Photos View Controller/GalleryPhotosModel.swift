@@ -119,8 +119,11 @@ protocol GalleryPhotosDelegate: class {
         
         let documentName = photo.name + ".jpg"
         let mimetype = "image/jpeg"
-        var metadata = Utility.metadataByAddingGPS(toMetadata: photo.capturePhoto.metadata)
-        metadata = Utility.metadata(byAddingOrientation: photo.orientationMetadata, toMetadata: metadata)
+        
+        var metadata = Utility.metadata(byAddingOrientation: photo.orientationMetadata, toMetadata: photo.capturePhoto.metadata)
+        if LocationManager.shared()?.usersLocationAuthorisation() == true {
+            metadata = Utility.metadataByAddingGPS(toMetadata: metadata)
+        }
         
         let contentData = Utility.data(from: image, metadata: metadata, mimetype: mimetype)
         

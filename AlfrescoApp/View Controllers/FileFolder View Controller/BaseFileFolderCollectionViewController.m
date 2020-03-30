@@ -967,6 +967,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
     __weak typeof(self) weakSelf = self;
     return [UIAlertAction actionWithTitle:NSLocalizedString(@"browser.actionsheet.takecontinuosphotos", @"Take Continous Photos") style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [PermissionChecker requestPermissionForResourceType:ResourceTypeCamera completionBlock:^(BOOL granted) {
+            [PermissionChecker requestPermissionForResourceType:ResourceTypeLocation completionBlock:nil];
             if (granted)
             {
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Gallery" bundle:nil];

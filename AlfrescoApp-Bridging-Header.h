@@ -11,3 +11,4 @@
 #import "UniversalDevice.h"
 #import "MBProgressHUD.h"
 #import "ConnectivityManager.h"
+#import "LocationManager.h"
