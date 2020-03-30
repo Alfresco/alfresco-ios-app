@@ -172,7 +172,6 @@
 "error.person.profile.no.profile.message" = "Impossibile trovare utente; %@";
 "error.person.profile.email.failed.title" = "Invio non riuscito";
 "error.person.profile.email.failed.message" = "Impossibile inviare e-mail. Riprova più tardi.";
-
 /**
  * Permissions
  */
@@ -930,16 +929,16 @@
 /**
 * Multiple photos Upload Views
 */
-"browser.actionsheet.takecontinuosphotos" = "Take Multiple Photos";
-"gallery.photos.selectAll" = "Select All";
-"gallery.photos.takeMore" = "Take More";
-"gallery.photos.remainingPhotos" = "%d/%d remaining";
-"gallery.photos.uploadingPhotosComplete" = "Uploading complete.";
-"gallery.camera.tomanyphotos" = "You can upload a maximum of %d photos at a time.";
-"gallery.camera.cancelCamera" = "Are you sure you want to cancel? You will lose the photos that you've just captured.";
-"gallery.photos.defaultPlaceholderName" = "Default Files Name";
-"gallery.photos.defaultName" = "Default Name";
-"gallery.photos.infoNaming" = "The name supplied here will be prefixed to all of the photos that are uploaded";
-"gallery.photos.retryMode" = "Some of your photos did not upload to Alfresco. Press retry to prevent losing them.";
-"gallery.photos.upload.cellular.title" = "Use data for upload multiple photo";
-"gallery.photos.upload.cellular.description" = "Do you want to switch to WI-FI connection to upload these photos?";
+"browser.actionsheet.takecontinuosphotos" = "Scatta foto multiple";
+"gallery.photos.selectAll" = "Seleziona tutto";
+"gallery.photos.takeMore" = "Scatta ancora";
+"gallery.photos.remainingPhotos" = "%d/%d rimanenti";
+"gallery.photos.uploadingPhotosComplete" = "Caricamento completato.";
+"gallery.camera.tomanyphotos" = "Puoi caricare un massimo di %d foto alla volta.";
+"gallery.camera.cancelCamera" = "Annullare? Le foto appena scattate andranno perse.";
+"gallery.photos.defaultPlaceholderName" = "Nome predefinito dei file";
+"gallery.photos.defaultName" = "Nome predefinito";
+"gallery.photos.infoNaming" = "Il nome indicato qui verrà anteposto a tutte le foto caricate";
+"gallery.photos.retryMode" = "Alcune foto non sono state caricate su Alfresco. Premi Riprova per non perderle.";
+"gallery.photos.upload.cellular.title" = "Usa i dati per caricare le foto multiple";
+"gallery.photos.upload.cellular.description" = "Passare alla connessione WI-FI per caricare queste foto?";
