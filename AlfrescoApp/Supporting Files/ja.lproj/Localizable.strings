@@ -942,3 +942,4 @@
 "gallery.photos.retryMode" = "一部の写真が Alfresco にアップロードされませんでした。写真が失われないようにするには、再試行ボタンを押してください。";
 "gallery.photos.upload.cellular.title" = "複数の写真のアップロードにモバイルデータ通信を使用";
 "gallery.photos.upload.cellular.description" = "これらの写真をアップロードするために、Wi-Fi 接続に切り替えますか?";
+"gallery.photos.uploadTitleScreen" = "Upload Photos";

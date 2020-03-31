@@ -942,3 +942,4 @@
 "gallery.photos.retryMode" = "Certaines de vos photos n'ont pas pu être importées dans Alfresco. Appuyez sur réessayer pour éviter de les perdre.";
 "gallery.photos.upload.cellular.title" = "Utiliser les données pour importer plusieurs photos";
 "gallery.photos.upload.cellular.description" = "Voulez-vous basculer vers la connexion Wi-Fi pour importer ces photos ?";
+"gallery.photos.uploadTitleScreen" = "Upload Photos";

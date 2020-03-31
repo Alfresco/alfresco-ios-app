@@ -60,7 +60,7 @@ import AVFoundation
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
         
-        self.title = "Upload photos"
+        self.title = NSLocalizedString("gallery.photos.uploadTitleScreen", comment: "Upload photos")
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: model.uploadButtonText , style: .done, target: self, action: #selector(uploadButtonTapped))
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: model.cancelButtonText , style: .plain, target: self, action: #selector(cancelButtonTapped))
         
