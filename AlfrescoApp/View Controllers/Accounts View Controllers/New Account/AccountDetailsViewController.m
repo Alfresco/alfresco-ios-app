@@ -66,6 +66,7 @@
     {
         case AccountDataSourceTypeNewAccountServer:
         case AccountDataSourceTypeNewAccountCredentials:
+        case AccountDataSourceTypeNewAccountAIMS:
         {
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             
@@ -99,6 +100,7 @@
     switch (self.dataSourcetype)
     {
         case AccountDataSourceTypeNewAccountServer:
+        case AccountDataSourceTypeNewAccountAIMS:
         {
             NSString *rightBarButtonTitle =  NSLocalizedString(@"Next", @"Next");
             self.saveButton = [[UIBarButtonItem alloc] initWithTitle:rightBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(saveButtonPressed:)];
@@ -150,7 +152,10 @@
                 self.formBackupAccount = account;
                 self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
                 break;
-                
+            case AccountDataSourceTypeNewAccountAIMS:
+                self.formBackupAccount = account;
+                self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeAIMS];
+                break;
             default:
                 self.account = account;
                 self.formBackupAccount = [self.account copy];
@@ -285,10 +290,23 @@
     }
     else if (cell.tag == kTagAccountDetailsCell)
     {
-        AccountDataSourceType type = [self.account.samlData isSamlEnabled] ? AccountDataSourceTypeAccountSettingSAML : AccountDataSourceTypeAccountSettings;
+        AccountDataSourceType type = AccountDataSourceTypeAccountSettings;
+        if ([self.account.samlData isSamlEnabled])
+        {
+            type  = AccountDataSourceTypeAccountSettingSAML;
+        }
+        //TODO: Aims enable?
+//        else if ([self.account.aims isAimsEnable])
+//        {
+//            type  = AccountDataSourceTypeAccountSettingAIMS;
+//        }
         AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:type account:self.account configuration:self.configuration session:self.session];
         accountDetailsViewController.delegate = self;
         [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+    }
+    else if (cell.tag == kTagLogOutCell)
+    {
+        //TODO: Logout
     }
 }
 
@@ -360,7 +378,7 @@
         
         if (error || [samlData isSamlEnabled] == NO)
         {
-            [self goToEnterCredentialsScreen];
+            [self checkIfAIMSEnabled];
         }
         else
         {
@@ -370,9 +388,24 @@
     }];
 }
 
+- (void)checkIfAIMSEnabled
+{
+    [self showHUD];
+//    [self goToEnterAIMSCredentialsScreen];
+    [self goToEnterCredentialsScreen];
+    [self hideHUD];
+}
+
 - (void)goToEnterCredentialsScreen
 {
     AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountCredentials account:self.formBackupAccount configuration:nil session:nil];
+    accountDetailsViewController.delegate = self.delegate;
+    [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+}
+
+- (void)goToEnterAIMSCredentialsScreen
+{
+    AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountAIMS account:self.formBackupAccount configuration:nil session:nil];
     accountDetailsViewController.delegate = self.delegate;
     [self.navigationController pushViewController:accountDetailsViewController animated:YES];
 }

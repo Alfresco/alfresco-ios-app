@@ -26,5 +26,6 @@
 + (NSString *)nodeGUIDFromNodeIdentifierWithVersion:(NSString *)nodeIdentifier;
 + (NSString *)serverURLAddressStringFromAccount:(UserAccount *)account;
 + (NSString *)serverURLStringFromAccount:(id<AKUserAccount>)account;
++ (NSString *)serverURLStringFromAccountAIMS:(UserAccount *)account;
 
 @end

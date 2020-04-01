@@ -696,6 +696,8 @@
 		73FF558D18ACE2370009CA56 /* large_zip.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557518ACE2370009CA56 /* large_zip.png */; };
 		73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557618ACE2370009CA56 /* large_zip@2x.png */; };
 		E30C322B240CE71D00AE025B /* CameraOpenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */; };
+		E326AD4924335CF3006C7040 /* AccountAIMSDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E326AD4824335CF3006C7040 /* AccountAIMSDataSource.m */; };
+		E326AD5024337BBC006C7040 /* AccountSettingsAIMSDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E326AD4F24337BBC006C7040 /* AccountSettingsAIMSDataSource.m */; };
 		E32CDDE2240EABBB008BF80D /* CameraPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CDDE1240EABBB008BF80D /* CameraPhoto.swift */; };
 		E333CA8A2403BD6C0082F15F /* GalleryPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */; };
 		E333CA8C2403BD9A0082F15F /* Gallery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E333CA8B2403BD9A0082F15F /* Gallery.storyboard */; };
@@ -1911,6 +1913,10 @@
 		73FF557518ACE2370009CA56 /* large_zip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_zip.png; sourceTree = "<group>"; };
 		73FF557618ACE2370009CA56 /* large_zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_zip@2x.png"; sourceTree = "<group>"; };
 		E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOpenCollectionViewCell.swift; sourceTree = "<group>"; };
+		E326AD4724335CF3006C7040 /* AccountAIMSDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AccountAIMSDataSource.h; path = "New Account/AccountAIMSDataSource.h"; sourceTree = "<group>"; };
+		E326AD4824335CF3006C7040 /* AccountAIMSDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AccountAIMSDataSource.m; path = "New Account/AccountAIMSDataSource.m"; sourceTree = "<group>"; };
+		E326AD4E24337BBC006C7040 /* AccountSettingsAIMSDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AccountSettingsAIMSDataSource.h; path = "New Account/AccountSettingsAIMSDataSource.h"; sourceTree = "<group>"; };
+		E326AD4F24337BBC006C7040 /* AccountSettingsAIMSDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AccountSettingsAIMSDataSource.m; path = "New Account/AccountSettingsAIMSDataSource.m"; sourceTree = "<group>"; };
 		E32CDDE1240EABBB008BF80D /* CameraPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPhoto.swift; sourceTree = "<group>"; };
 		E333CA882403BD6B0082F15F /* AlfrescoApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotosViewController.swift; sourceTree = "<group>"; };
@@ -2295,10 +2301,14 @@
 				231C3E5D1EB0EBA500940F6E /* AccountDataSource.m */,
 				235016091EB86D2B00BE1042 /* AccountServerDataSource.h */,
 				2350160A1EB86D2B00BE1042 /* AccountServerDataSource.m */,
+				E326AD4724335CF3006C7040 /* AccountAIMSDataSource.h */,
+				E326AD4824335CF3006C7040 /* AccountAIMSDataSource.m */,
 				2350160C1EB8AEE000BE1042 /* AccountCredentialsDataSource.h */,
 				2350160D1EB8AEE000BE1042 /* AccountCredentialsDataSource.m */,
 				23900A641EB9FB8F00642DE0 /* AccountSettingsDataSource.h */,
 				23900A651EB9FB8F00642DE0 /* AccountSettingsDataSource.m */,
+				E326AD4E24337BBC006C7040 /* AccountSettingsAIMSDataSource.h */,
+				E326AD4F24337BBC006C7040 /* AccountSettingsAIMSDataSource.m */,
 				235AC4341EBB34D30079C061 /* AccountSettingsSAMLDataSource.h */,
 				235AC4351EBB34D30079C061 /* AccountSettingsSAMLDataSource.m */,
 				23F36F511EC09C1700F961F5 /* AccountCloudSettingsDataSource.h */,
@@ -5155,6 +5165,7 @@
 				73B95AF617A68DF20099FB84 /* DownloadsViewController.m in Sources */,
 				089FB00318D1C9FA00AB4613 /* SyncNavigationViewController.m in Sources */,
 				73B95AF817A68DF20099FB84 /* LoginViewController.m in Sources */,
+				E326AD4924335CF3006C7040 /* AccountAIMSDataSource.m in Sources */,
 				7390B36D1B03681E00E7191F /* AlfrescoGroupConfig.m in Sources */,
 				E333CA8A2403BD6C0082F15F /* GalleryPhotosViewController.swift in Sources */,
 				0876A04918D99FF60035370A /* NodePickerSitesViewController.m in Sources */,
@@ -5172,6 +5183,7 @@
 				231C3E5E1EB0EBA500940F6E /* AccountDataSource.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
 				2BFB080F1B14B7BB00ED8DFF /* BaseLayoutAttributes.m in Sources */,
+				E326AD5024337BBC006C7040 /* AccountSettingsAIMSDataSource.m in Sources */,
 				2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */,
 				2B9BCEEE1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m in Sources */,
 				1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */,

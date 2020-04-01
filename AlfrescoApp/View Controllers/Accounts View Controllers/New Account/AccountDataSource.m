@@ -25,9 +25,13 @@
 #import "AccountSettingsSAMLDataSource.h"
 #import "AccountCloudSettingsDataSource.h"
 #import "AccountDetailsDataSource.h"
+#import "AccountAIMSDataSource.h"
+#import "AccountSettingsAIMSDataSource.h"
 #import "UserAccount+FileHandling.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
+static NSString * const kRealmDocument = @"alfresco";
+static NSString * const kClientIDDocument = @"alfresco-ios-aps-app";
 static NSString * const kServerPlaceholder = @"www.example.com";
 
 @interface AccountDataSource () <UITextFieldDelegate>
@@ -70,6 +74,13 @@ static NSString * const kServerPlaceholder = @"www.example.com";
         case AccountDataSourceTypeAccountDetails:
             class = [AccountDetailsDataSource class];
             break;
+        
+        case AccountDataSourceTypeNewAccountAIMS:
+            class = [AccountAIMSDataSource class];
+            break;
+        
+        case AccountDataSourceTypeAccountSettingAIMS:
+            class = [AccountSettingsAIMSDataSource class];
             
         default:
             break;
@@ -281,6 +292,49 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     return descriptionCell;
 }
 
+- (TextFieldCell *)contentAdressCell
+{
+    TextFieldCell *contentAdressCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    contentAdressCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    contentAdressCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.contentAdress", @"Content URL");
+    contentAdressCell.valueTextField.placeholder = kServerPlaceholder;
+    contentAdressCell.valueTextField.returnKeyType = UIReturnKeyNext;
+    contentAdressCell.valueTextField.delegate = self;
+    contentAdressCell.valueTextField.keyboardType = UIKeyboardTypeURL;
+    self.contentAddressTextField = contentAdressCell.valueTextField;
+    self.contentAddressTextField.text = self.formBackupAccount.contentAddress;
+    
+    return contentAdressCell;
+}
+
+- (TextFieldCell *)clientIDCell
+{
+    TextFieldCell *clientIDCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    clientIDCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    clientIDCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.clientID", @"Client ID");
+    clientIDCell.valueTextField.text = kClientIDDocument;
+    clientIDCell.valueTextField.returnKeyType = UIReturnKeyDone;
+    clientIDCell.valueTextField.delegate = self;
+    self.clientIDTextField = clientIDCell.valueTextField;
+    self.clientIDTextField.text = self.formBackupAccount.clientID ? self.formBackupAccount.clientID : kClientIDDocument;
+    
+    return clientIDCell;
+}
+
+- (TextFieldCell *)realmCell
+{
+    TextFieldCell *realmCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
+    realmCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    realmCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.realm", @"Realm");
+    realmCell.valueTextField.text = kRealmDocument;
+    realmCell.valueTextField.returnKeyType = UIReturnKeyDone;
+    realmCell.valueTextField.delegate = self;
+    self.realmTextField = realmCell.valueTextField;
+    self.realmTextField.text = self.formBackupAccount.realm ? self.formBackupAccount.realm : kRealmDocument;
+    
+    return realmCell;
+}
+
 - (LabelCell *)profileCell
 {
     LabelCell *profileCell = (LabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([LabelCell class]) owner:self options:nil] lastObject];
@@ -323,6 +377,18 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     accountDetailsCell.valueLabel.textColor = [UIColor lightGrayColor];
     
     return accountDetailsCell;
+}
+
+- (ButtonCell *)logoutCell
+{
+    ButtonCell *logoutCell = (ButtonCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([ButtonCell class]) owner:self options:nil] lastObject];
+    logoutCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    logoutCell.accessoryType = UITableViewCellAccessoryNone;
+    logoutCell.tag = kTagLogOutCell;
+    [logoutCell.button setTitle: NSLocalizedString(@"accountdetails.buttons.logout", @"Log out") forState: UIControlStateNormal];
+    [logoutCell.button setTitleColor:UIColor.redColor forState:UIControlStateNormal];
+    
+    return logoutCell;
 }
 
 #pragma mark - UITableViewDataSource Methods
@@ -496,6 +562,67 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     if (serviceDoc.length)
     {
         if ([self.formBackupAccount.serviceDocument isEqualToString:self.serviceDocumentTextField.text])
+        {
+            validation = AccountFormFieldValidWithoutChanges;
+        }
+        else
+        {
+            validation = AccountFormFieldValidWithChanges;
+        }
+    }
+    
+    return validation;
+}
+
+- (AccountFormFieldValidation)validateContent
+{
+    AccountFormFieldValidation validation = AccountFormFieldInvalid;
+    NSString *hostname = self.contentAddressTextField.text;
+    NSRange hostnameRange = [hostname rangeOfString:@"^[a-zA-Z0-9_\\-\\.]+$" options:NSRegularExpressionSearch];
+    
+    if (hostname && hostnameRange.location != NSNotFound)
+    {
+        if ([self.formBackupAccount.contentAddress isEqualToString:self.contentAddressTextField.text])
+        {
+            validation = AccountFormFieldValidWithoutChanges;
+        }
+        else
+        {
+            validation = AccountFormFieldValidWithChanges;
+        }
+    }
+    
+    return validation;
+}
+
+- (AccountFormFieldValidation)validateRealm
+{
+    AccountFormFieldValidation validation = AccountFormFieldInvalid;
+    NSString *serviceDoc = [self.realmTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (serviceDoc.length)
+    {
+        if ([self.formBackupAccount.realm isEqualToString:self.realmTextField.text])
+        {
+            validation = AccountFormFieldValidWithoutChanges;
+        }
+        else
+        {
+            validation = AccountFormFieldValidWithChanges;
+        }
+    }
+    
+    return validation;
+}
+
+- (AccountFormFieldValidation)validateClientID
+{
+    AccountFormFieldValidation validation = AccountFormFieldInvalid;
+    NSString *serviceDoc = [self.clientIDTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (serviceDoc.length)
+    {
+        if ([self.formBackupAccount.clientID isEqualToString:self.clientIDTextField.text])
         {
             validation = AccountFormFieldValidWithoutChanges;
         }

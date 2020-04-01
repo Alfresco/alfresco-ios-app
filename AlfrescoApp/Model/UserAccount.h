@@ -24,7 +24,8 @@
 typedef NS_ENUM(NSInteger, UserAccountType)
 {
     UserAccountTypeOnPremise = 0,
-    UserAccountTypeCloud
+    UserAccountTypeCloud,
+    UserAccountTypeAIMS
 };
 
 typedef NS_ENUM(NSInteger, UserAccountStatus)
@@ -45,6 +46,9 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 @property (nonatomic, strong) NSString *serverPort;
 @property (nonatomic, strong) NSString *protocol;
 @property (nonatomic, strong) NSString *serviceDocument;
+@property (nonatomic, strong) NSString *contentAddress;
+@property (nonatomic, strong) NSString *realm;
+@property (nonatomic, strong) NSString *clientID;
 @property (nonatomic, assign) UserAccountType accountType;
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
 @property (nonatomic, strong) AccountCertificate *accountCertificate;
