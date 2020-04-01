@@ -19,7 +19,7 @@
 #import "ParentListViewController.h"
 #import "SitesCell.h"
 
-@interface SitesListViewController : ParentListViewController <UISearchBarDelegate, UISearchDisplayDelegate, SiteCellDelegate>
+@interface SitesListViewController : ParentListViewController <UISearchBarDelegate, UISearchControllerDelegate, SiteCellDelegate>
 
 @property (nonatomic, strong) AlfrescoSiteService *siteService;
 @property (nonatomic, strong) UISearchController *searchController;
