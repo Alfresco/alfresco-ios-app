@@ -942,4 +942,4 @@
 "gallery.photos.retryMode" = "您的部分照片没有上传到 Alfresco。请按重试以防止照片丢失。";
 "gallery.photos.upload.cellular.title" = "使用数据流量上传多张照片";
 "gallery.photos.upload.cellular.description" = "您要切换到 WI-FI 连接来上传这些照片吗？";
-"gallery.photos.uploadTitleScreen" = "Upload Photos";
+"gallery.photos.uploadTitleScreen" = "上传照片";
