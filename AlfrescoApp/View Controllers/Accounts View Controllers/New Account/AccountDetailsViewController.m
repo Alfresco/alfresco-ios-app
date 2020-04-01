@@ -213,7 +213,11 @@
             [self cancelButtonPressed:nil];
         }
             break;
-            
+        case AccountDataSourceTypeNewAccountAIMS:
+        {
+            [self goToLoginWithAIMSScreen];
+        }
+            break;
         default:
             break;
     }
@@ -391,6 +395,7 @@
 - (void)checkIfAIMSEnabled
 {
     [self showHUD];
+    //TODO: check AIMS request on server address
 //    [self goToEnterAIMSCredentialsScreen];
     [self goToEnterCredentialsScreen];
     [self hideHUD];
@@ -408,6 +413,12 @@
     AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountAIMS account:self.formBackupAccount configuration:nil session:nil];
     accountDetailsViewController.delegate = self.delegate;
     [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+}
+
+
+- (void)goToLoginWithAIMSScreen
+{
+    //TODO: open webview AIMS
 }
 
 - (void)goToLoginWithSamlScreen
