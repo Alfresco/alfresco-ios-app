@@ -21,10 +21,12 @@ steps:
     script: |
       pod repo add AlfrescoPodspec https://$(gitUser):$(gitPAT)@github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git
       
-- task: CocoaPods@0
+- task: CmdLine@2
+  displayName: Installing pods
   inputs:
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-    forceRepoUpdate: true
+    script: |
+      pod repo update
+      pod install
 
 - task: CmdLine@2
   displayName: Variable substitution for GoogleAnalytics
