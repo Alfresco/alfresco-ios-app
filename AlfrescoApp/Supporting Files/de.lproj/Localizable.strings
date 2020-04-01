@@ -942,4 +942,4 @@
 "gallery.photos.retryMode" = "Einige Ihrer Fotos wurden nicht zu Alfresco hochgeladen. Versuchen Sie es noch einmal, damit sie nicht verloren gehen.";
 "gallery.photos.upload.cellular.title" = "Mehrere Fotos über Datenverbindung hochladen";
 "gallery.photos.upload.cellular.description" = "Möchten Sie zum Hochladen dieser Fotos zu einer WLAN-Verbindung wechseln?";
-"gallery.photos.uploadTitleScreen" = "Upload Photos";
+"gallery.photos.uploadTitleScreen" = "Fotos hochladen";
