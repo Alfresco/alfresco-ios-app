@@ -40,6 +40,9 @@ extern NSString * const kNewAccountVCHostnameTextfieldIdentifier;
 extern NSString * const kNewAccountVCDescriptionTextfieldIdentifier;
 extern NSString * const kNewAccountVCHTTPSSwitchIdentifier;
 extern NSString * const kNewAccountVCPortTextfieldIdentifier;
+extern NSString * const kNewAccountVCContentTextfieldIdentifier;
+extern NSString * const kNewAccountVCRealmTextfieldIdentifier;
+extern NSString * const kNewAccountVCClientIDTextfieldIdentifier;
 extern NSString * const kNewAccountVCServiceTextfieldIdentifier;
 extern NSString * const kNewAccountVCClientCetificateCellIdentifier;
 
