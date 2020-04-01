@@ -10,7 +10,6 @@ target 'AlfrescoApp' do
     pod 'Realm', '~>3.11'
     pod 'Firebase/Analytics'
     pod 'Firebase/Crashlytics'
-    pod 'AlfrescoAuth'
 end
 
 post_install do |installer|
