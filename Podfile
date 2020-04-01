@@ -2,7 +2,7 @@ source 'https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '12.0'
-use_frameworks!
+use_modular_headers!
 
 target 'AlfrescoApp' do
     pod 'MBProgressHUD', '~> 1.0'
@@ -10,6 +10,7 @@ target 'AlfrescoApp' do
     pod 'Realm', '~>3.11'
     pod 'Firebase/Analytics'
     pod 'Firebase/Crashlytics'
+    pod 'AlfrescoAuth'
 end
 
 post_install do |installer|
