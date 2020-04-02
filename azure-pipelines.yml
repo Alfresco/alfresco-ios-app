@@ -1,7 +1,7 @@
-pr:
-  branches:  
-    include: 
-      - master
+trigger:
+  - master
+
+pr: none
 
 pool:
   vmImage: 'macos-latest'
