@@ -26,6 +26,7 @@ class AIMSLoginService: NSObject {
         self.account = account
     }
     
+    
 //    private (set) lazy var alfrescoAuth: AlfrescoAuth = {
 //        let authConfig = authConfiguration()
 //        return AlfrescoAuth.init(configuration: authConfig)
