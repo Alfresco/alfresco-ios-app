@@ -23,6 +23,7 @@
 #import "UISearchBar+Paste.h"
 #import "UIView+Orientation.h"
 #import "AlfrescoApp-Swift.h"
+#import "AccountManager.h"
 
 
 static const CGSize kUploadPopoverPreferedSize = {320, 640};
@@ -810,7 +811,9 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
         if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
             [alertController addAction:[self alertActionTakePhotoOrVideo]];
-            [alertController addAction:[self alertActionTakeContinousPhotos]];
+            if ([[AccountManager sharedManager] selectedAccount].paidAccount) {
+                [alertController addAction:[self alertActionTakeContinousPhotos]];
+            }
         }
         
         [alertController addAction:[self alertActionRecordAudio]];
