@@ -19,30 +19,57 @@
 import Foundation
 import AlfrescoAuth
 
+public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
+
 class AIMSLoginService: NSObject {
     private (set) var account: UserAccount?
+    private (set) lazy var alfrescoAuth: AlfrescoAuth = {
+        let authConfig = authConfiguration()
+        return AlfrescoAuth.init(configuration: authConfig)
+    }()
+    var session: AlfrescoAuthSession?
     
-    init(with account: UserAccount) {
+    override init() {
+    }
+    
+    @objc init(with account: UserAccount?) {
         self.account = account
     }
     
+    @objc func update(with newAccount: UserAccount?) {
+        self.account = newAccount;
+    }
     
-//    private (set) lazy var alfrescoAuth: AlfrescoAuth = {
-//        let authConfig = authConfiguration()
-//        return AlfrescoAuth.init(configuration: authConfig)
-//    }()
+    @objc func availableAuthType(completionBlock: @escaping AvailableAuthenticationTypeCompletionBlock) {
+        let authConfig = authConfiguration()
+        alfrescoAuth.update(configuration: authConfig)
+        alfrescoAuth.availableAuthType(handler: { (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let authType):
+                    if authType == .aimsAuth {
+                        completionBlock(.AIMS, nil)
+                    } else {
+                        completionBlock(.basic, nil)
+                    }
+                case .failure(let error):
+                    completionBlock(.undefined, error)
+                }
+            }
+        })
+    }
     
     // MARK: - Private
     
     private func authConfiguration() -> AuthConfiguration {
         guard let account = self.account else { return AuthConfiguration(baseUrl: "",
-                                                                         clientID: "alfresco-ios-acs-app",
-                                                                         realm: "alfresco",
-                                                                         redirectURI: "iosapsapp://aims/auth") }
+                                                                         clientID: kAlfrescoDefaultAIMSClientIDString,
+                                                                         realm: kAlfrescoDefaultAIMSRealmString,
+                                                                         redirectURI: kAlfrescoDefaultAIMSRedirectURI) }
         
         let authConfig = AuthConfiguration(baseUrl: fullFormatURL(for: account),
-                                           clientID: account.clientID ?? "alfresco-ios-acs-app",
-                                           realm: account.realm ?? "alfresco",
+                                           clientID: account.clientID,
+                                           realm: account.realm,
                                            redirectURI: account.redirectURI.encoding())
         
         return authConfig

@@ -696,6 +696,7 @@
 		73FF558D18ACE2370009CA56 /* large_zip.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557518ACE2370009CA56 /* large_zip.png */; };
 		73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557618ACE2370009CA56 /* large_zip@2x.png */; };
 		B9818DD32434CD6E00E0020A /* AIMSLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9818DD22434CD6E00E0020A /* AIMSLoginService.swift */; };
+		B9818DE82435C97300E0020A /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9818DE72435C97300E0020A /* String+Helpers.swift */; };
 		E30C322B240CE71D00AE025B /* CameraOpenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */; };
 		E326AD4924335CF3006C7040 /* AccountAIMSDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E326AD4824335CF3006C7040 /* AccountAIMSDataSource.m */; };
 		E326AD5024337BBC006C7040 /* AccountSettingsAIMSDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E326AD4F24337BBC006C7040 /* AccountSettingsAIMSDataSource.m */; };
@@ -1914,6 +1915,7 @@
 		73FF557518ACE2370009CA56 /* large_zip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = large_zip.png; sourceTree = "<group>"; };
 		73FF557618ACE2370009CA56 /* large_zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_zip@2x.png"; sourceTree = "<group>"; };
 		B9818DD22434CD6E00E0020A /* AIMSLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMSLoginService.swift; sourceTree = "<group>"; };
+		B9818DE72435C97300E0020A /* String+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOpenCollectionViewCell.swift; sourceTree = "<group>"; };
 		E326AD4724335CF3006C7040 /* AccountAIMSDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AccountAIMSDataSource.h; path = "New Account/AccountAIMSDataSource.h"; sourceTree = "<group>"; };
 		E326AD4824335CF3006C7040 /* AccountAIMSDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AccountAIMSDataSource.m; path = "New Account/AccountAIMSDataSource.m"; sourceTree = "<group>"; };
@@ -3884,6 +3886,7 @@
 				73B9580017A6750E0099FB84 /* UniversalDevice.m */,
 				73B9580217A6750E0099FB84 /* Utility.m */,
 				73B9580317A6750E0099FB84 /* Categories */,
+				B9818DED2435CE3F00E0020A /* Extensions */,
 				2711979A1912AD860073C3EC /* Subclasses */,
 				73B9580817A6750E0099FB84 /* System Notice */,
 			);
@@ -4278,6 +4281,14 @@
 				73F628B6185779440050F437 /* TextFileViewController.m */,
 			);
 			name = "Text File View Controller";
+			sourceTree = "<group>";
+		};
+		B9818DED2435CE3F00E0020A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B9818DE72435C97300E0020A /* String+Helpers.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C9653B877CC25ED7B10E83D4 /* Pods */ = {
@@ -5198,6 +5209,7 @@
 				E326AD5024337BBC006C7040 /* AccountSettingsAIMSDataSource.m in Sources */,
 				2B8CF81A1C7C58700079BB99 /* RealmSyncManager+CoreDataMigration.m in Sources */,
 				2B9BCEEE1F8D0DAD00F3B94F /* AlfrescoNode+Utilities.m in Sources */,
+				B9818DE82435C97300E0020A /* String+Helpers.swift in Sources */,
 				1DE9507D1CAE6D09009299C8 /* SyncConstants.m in Sources */,
 				7379733418AA8E9B007613B2 /* DocLibImageCache.m in Sources */,
 				2308BF901DD1DC55009C3D8B /* ConfigurationFilesUtils.m in Sources */,

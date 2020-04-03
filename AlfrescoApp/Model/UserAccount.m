@@ -73,8 +73,11 @@ static NSString * const kAlfrescoSAMLData = @"kAlfrescoSAMLData";
     self = [self init];
     if (self)
     {
-        self.accountType = accountType;
-        self.isSyncOn = YES;
+        _accountType = accountType;
+        _isSyncOn = YES;
+        _realm = kAlfrescoDefaultAIMSRealmString;
+        _clientID = kAlfrescoDefaultAIMSClientIDString;
+        _redirectURI = kAlfrescoDefaultAIMSRedirectURI;
     }
     return self;
 }

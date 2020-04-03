@@ -45,4 +45,7 @@
                   completionBlock:(AlfrescoSAMLAuthCompletionBlock)completionBlock;
 - (void)showSignInAlertWithSignedInBlock:(void (^)(void))completionBlock;
 
+- (void)availableAuthTypeForAccount:(UserAccount *)account
+                    completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock;
+
 @end
