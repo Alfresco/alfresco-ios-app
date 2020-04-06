@@ -213,7 +213,11 @@
             [self cancelButtonPressed:nil];
         }
             break;
-            
+        case AccountDataSourceTypeNewAccountAIMS:
+        {
+            [self goToLoginWithAIMSScreen];
+        }
+            break;
         default:
             break;
     }
@@ -391,9 +395,20 @@
 - (void)checkIfAIMSEnabled
 {
     [self showHUD];
-//    [self goToEnterAIMSCredentialsScreen];
-    [self goToEnterCredentialsScreen];
-    [self hideHUD];
+    
+    __weak typeof(self) weakSelf = self;
+    [[LoginManager sharedManager] availableAuthTypeForAccount:self.formBackupAccount
+                                              completionBlock:^(AvailableAuthenticationType authType, NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        
+        if (AvailableAuthenticationTypeAIMS == authType) {
+            [strongSelf goToEnterAIMSCredentialsScreen];
+        } else {
+            [strongSelf goToEnterCredentialsScreen];
+        }
+
+        [self hideHUD];
+    }];
 }
 
 - (void)goToEnterCredentialsScreen
@@ -408,6 +423,16 @@
     AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountAIMS account:self.formBackupAccount configuration:nil session:nil];
     accountDetailsViewController.delegate = self.delegate;
     [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+}
+
+
+- (void)goToLoginWithAIMSScreen
+{
+    [[LoginManager sharedManager] showAIMSWebviewForAccount:self.formBackupAccount
+                                       navigationController:self.navigationController
+                                            completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        //TODO: handle response
+    }];
 }
 
 - (void)goToLoginWithSamlScreen
