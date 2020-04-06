@@ -26,10 +26,12 @@
 #import "AccountManager.h"
 #import "NavigationViewController.h"
 #import "LoginManagerCore.h"
+#import "AlfrescoApp-Swift.h"
 
 @interface LoginManager()
 @property (nonatomic, strong) MBProgressHUD     *progressHUD;
 @property (nonatomic, strong) LoginManagerCore  *loginCore;
+@property (nonatomic, strong) AIMSLoginService  *aimsLoginService;
 
 @property (nonatomic, strong) AlfrescoOAuthUILoginViewController *loginController;
 @property (nonatomic, strong) AlfrescoSAMLUILoginViewController *samlLoginController;
@@ -57,6 +59,7 @@
     {
         _loginCore = [LoginManagerCore new];
         _loginCore.delegate = self;
+        _aimsLoginService = [AIMSLoginService new];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoAccessDeniedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
@@ -111,6 +114,20 @@
     [self.loginCore showSAMLWebViewForAccount:account
                          navigationController:navigationController
                               completionBlock:completionBlock];
+}
+
+- (void)showAIMSWebviewForAccount:(UserAccount *)account
+navigationController:(UINavigationController *)navigationController
+                  completionBlock:(LoginAuthenticationCompletionBlock)completionBlock {
+    [self.aimsLoginService updateWith:account];
+    [self.aimsLoginService loginOnViewController:navigationController
+                                 completionBlock:completionBlock];
+}
+
+- (void)availableAuthTypeForAccount:(UserAccount *)account
+                    completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock {
+    [self.aimsLoginService updateWith:account];
+    [self.aimsLoginService availableAuthTypeWithCompletionBlock:completionBlock];
 }
 
 #pragma mark - LoginViewControllerDelegate Functions

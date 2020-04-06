@@ -57,8 +57,15 @@ typedef NS_ENUM(NSUInteger, SitesListViewFilter)
     SitesListViewFilterAllSites
 };
 
+typedef NS_ENUM(NSUInteger, AvailableAuthenticationType) {
+    AvailableAuthenticationTypeUndefined = -1,
+    AvailableAuthenticationTypeBasic = 0,
+    AvailableAuthenticationTypeAIMS
+};
+
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
+typedef void (^AvailableAuthenticationTypeCompletionBlock)(AvailableAuthenticationType authType, NSError *error);
 
 extern NSTimeInterval const kRateLimitForRequestsOnCloud;
 
@@ -155,6 +162,10 @@ extern NSString * const kAlfrescoAccountUpdatedNotification;
 extern NSString * const kAlfrescoAccountsListEmptyNotification;
 extern NSString * const kAlfrescoFirstPaidAccountAddedNotification;
 extern NSString * const kAlfrescoLastPaidAccountRemovedNotification;
+extern NSString * const kAlfrescoDefaultAIMSClientIDString;
+extern NSString * const kAlfrescoDefaultAIMSRealmString;
+extern NSString * const kAlfrescoDefaultAIMSRedirectURI;
+
 
 // Application policy constants
 extern NSString * const kApplicationPolicySettings;

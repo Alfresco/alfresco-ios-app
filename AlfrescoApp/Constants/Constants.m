@@ -115,6 +115,9 @@ NSString * const kAlfrescoAccountUpdatedNotification = @"AlfrescoAccountUpdatedN
 NSString * const kAlfrescoAccountsListEmptyNotification = @"AlfrescoAccountsListEmptyNotification";
 NSString * const kAlfrescoFirstPaidAccountAddedNotification = @"AlfrescoFirstPaidAccountAddedNotification";
 NSString * const kAlfrescoLastPaidAccountRemovedNotification = @"AlfrescoLastPaidAccountRemovedNotification";
+NSString * const kAlfrescoDefaultAIMSClientIDString = @"alfresco-ios-acs-app";
+NSString * const kAlfrescoDefaultAIMSRealmString = @"alfresco";
+NSString * const kAlfrescoDefaultAIMSRedirectURI = @"iosacsapp://aims/auth";
 
 // Application policy constants
 NSString * const kApplicationPolicySettings = @"ApplicationPolicySettings";

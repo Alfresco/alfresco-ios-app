@@ -67,6 +67,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>alfresco</string>
+				<string>iosacsapp</string>
 			</array>
 		</dict>
 	</array>
