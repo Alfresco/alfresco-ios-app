@@ -116,6 +116,14 @@
                               completionBlock:completionBlock];
 }
 
+- (void)showAIMSWebviewForAccount:(UserAccount *)account
+navigationController:(UINavigationController *)navigationController
+                  completionBlock:(LoginAuthenticationCompletionBlock)completionBlock {
+    [self.aimsLoginService updateWith:account];
+    [self.aimsLoginService loginOnViewController:navigationController
+                                 completionBlock:completionBlock];
+}
+
 - (void)availableAuthTypeForAccount:(UserAccount *)account
                     completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock {
     [self.aimsLoginService updateWith:account];

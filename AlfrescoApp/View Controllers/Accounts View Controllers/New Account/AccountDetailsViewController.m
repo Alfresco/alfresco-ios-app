@@ -428,7 +428,11 @@
 
 - (void)goToLoginWithAIMSScreen
 {
-    //TODO: open webview AIMS
+    [[LoginManager sharedManager] showAIMSWebviewForAccount:self.formBackupAccount
+                                       navigationController:self.navigationController
+                                            completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        //TODO: handle response
+    }];
 }
 
 - (void)goToLoginWithSamlScreen

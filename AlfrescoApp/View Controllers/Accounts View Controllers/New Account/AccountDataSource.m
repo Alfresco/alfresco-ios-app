@@ -30,8 +30,6 @@
 #import "UserAccount+FileHandling.h"
 
 static NSString * const kServiceDocument = @"/alfresco";
-static NSString * const kRealmDocument = @"alfresco";
-static NSString * const kClientIDDocument = @"alfresco-ios-aps-app";
 static NSString * const kServerPlaceholder = @"www.example.com";
 
 @interface AccountDataSource () <UITextFieldDelegate>
@@ -312,11 +310,11 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     TextFieldCell *clientIDCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
     clientIDCell.selectionStyle = UITableViewCellSelectionStyleNone;
     clientIDCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.clientID", @"Client ID");
-    clientIDCell.valueTextField.text = kClientIDDocument;
+    clientIDCell.valueTextField.text = self.formBackupAccount.clientID;
     clientIDCell.valueTextField.returnKeyType = UIReturnKeyDone;
     clientIDCell.valueTextField.delegate = self;
     self.clientIDTextField = clientIDCell.valueTextField;
-    self.clientIDTextField.text = self.formBackupAccount.clientID ? self.formBackupAccount.clientID : kClientIDDocument;
+    self.clientIDTextField.text = self.formBackupAccount.clientID;
     
     return clientIDCell;
 }
@@ -326,11 +324,11 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     TextFieldCell *realmCell = (TextFieldCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([TextFieldCell class]) owner:self options:nil] lastObject];
     realmCell.selectionStyle = UITableViewCellSelectionStyleNone;
     realmCell.titleLabel.text = NSLocalizedString(@"accountdetails.fields.realm", @"Realm");
-    realmCell.valueTextField.text = kRealmDocument;
+    realmCell.valueTextField.text = self.formBackupAccount.realm;
     realmCell.valueTextField.returnKeyType = UIReturnKeyDone;
     realmCell.valueTextField.delegate = self;
     self.realmTextField = realmCell.valueTextField;
-    self.realmTextField.text = self.formBackupAccount.realm ? self.formBackupAccount.realm : kRealmDocument;
+    self.realmTextField.text = self.formBackupAccount.realm;
     
     return realmCell;
 }
@@ -481,6 +479,18 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     if (self.serviceDocumentTextField)
     {
         self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
+    
+    if (self.contentAddressTextField) {
+        self.formBackupAccount.contentAddress = [self.contentAddressTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
+    
+    if (self.realmTextField) {
+        self.formBackupAccount.realm = [self.realmTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    }
+    
+    if (self.clientIDTextField) {
+        self.formBackupAccount.clientID = [self.clientIDTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     }
 }
 
