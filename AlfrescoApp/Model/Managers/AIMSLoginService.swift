@@ -71,6 +71,20 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         alfrescoAuth.pkceAuth(onViewController: onViewController, delegate: self)
     }
     
+    @objc func logout(onViewController viewController: UIViewController, completionBlock: @escaping LogoutAIMSCompletionBlock) {
+        logoutCompletionBlock = completionBlock
+        self.session = nil
+        let authConfig = authConfiguration()
+        alfrescoAuth.update(configuration: authConfig)
+        if let credential = obtainAlfrescoCredential() {
+            alfrescoAuth.logout(onViewController: viewController, delegate: self, forCredential: credential)
+        } else {
+            if let logouCompletionBlock = self.logoutCompletionBlock {
+                logouCompletionBlock(false, nil)
+            }
+        }
+    }
+    
     // MARK: - AlfrescoAuthDelegate
     
     func didReceive(result: Result<AlfrescoCredential, APIError>, session: AlfrescoAuthSession?) {
