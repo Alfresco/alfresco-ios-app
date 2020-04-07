@@ -65,6 +65,7 @@ typedef NS_ENUM(NSUInteger, AvailableAuthenticationType) {
 
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
+typedef void (^LogoutAIMSCompletionBlock)(BOOL successful, NSError *error);
 typedef void (^AvailableAuthenticationTypeCompletionBlock)(AvailableAuthenticationType authType, NSError *error);
 
 extern NSTimeInterval const kRateLimitForRequestsOnCloud;

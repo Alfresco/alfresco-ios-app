@@ -49,6 +49,7 @@
 - (void)showLogOutAIMSWebviewForAccount:(UserAccount *)account
                    navigationController:(UINavigationController *)navigationController
                         completionBlock:(LogoutAIMSCompletionBlock)completionBlock;
+- (void)saveInKeychainAIMSDataForAccount:(UserAccount *)account;
 - (void)showSignInAlertWithSignedInBlock:(void (^)(void))completionBlock;
 - (void)availableAuthTypeForAccount:(UserAccount *)account
                     completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock;

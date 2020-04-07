@@ -21,6 +21,8 @@
 
 @interface KeychainUtils : NSObject
 
++ (BOOL)createKeychainData:(NSData *)data forIdentifier:(NSString *)identifier;
++ (NSData *)dataForMatchingIdentifier:(NSString *)identifier;
 + (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error;
 + (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error;
 + (BOOL)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError;
