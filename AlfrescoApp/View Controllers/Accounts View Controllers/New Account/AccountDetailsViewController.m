@@ -299,11 +299,10 @@
         {
             type  = AccountDataSourceTypeAccountSettingSAML;
         }
-        //TODO: Aims enable?
-//        else if ([self.account.aims isAimsEnable])
-//        {
-//            type  = AccountDataSourceTypeAccountSettingAIMS;
-//        }
+        else if (self.account.accountType == UserAccountTypeAIMS)
+        {
+            type  = AccountDataSourceTypeAccountSettingAIMS;
+        }
         AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:type account:self.account configuration:self.configuration session:self.session];
         accountDetailsViewController.delegate = self;
         [self.navigationController pushViewController:accountDetailsViewController animated:YES];
@@ -428,10 +427,30 @@
 
 - (void)goToLoginWithAIMSScreen
 {
+    __weak typeof(self) weakSelf = self;
     [[LoginManager sharedManager] showAIMSWebviewForAccount:self.formBackupAccount
                                        navigationController:self.navigationController
                                             completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-        //TODO: handle response
+        __strong typeof(self) strongSelf = weakSelf;
+        if (alfrescoSession) {
+            [strongSelf updateAccountInfoFromAccount:strongSelf.formBackupAccount];
+            
+            AccountManager *accountManager = [AccountManager sharedManager];
+            [[RealmSyncManager sharedManager] realmForAccount:strongSelf.account.accountIdentifier];
+            
+            if (accountManager.totalNumberOfAddedAccounts == 0)
+            {
+                [accountManager selectAccount:strongSelf.account selectNetwork:nil alfrescoSession:alfrescoSession];
+            }
+            else if (accountManager.selectedAccount == strongSelf.account)
+            {
+                [[RealmManager sharedManager] changeDefaultConfigurationForAccount:strongSelf.account completionBlock:^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+                }];
+            }
+            
+            [strongSelf dismiss];
+        }
     }];
 }
 
@@ -639,6 +658,11 @@
     self.account.accountCertificate = temporaryAccount.accountCertificate;
     self.account.paidAccount = temporaryAccount.isPaidAccount;
     self.account.samlData = temporaryAccount.samlData;
+    self.account.clientID = temporaryAccount.clientID;
+    self.account.realm = temporaryAccount.realm;
+    self.account.contentAddress = temporaryAccount.contentAddress;
+    self.account.redirectURI = temporaryAccount.redirectURI;
+    self.account.oauthData = temporaryAccount.oauthData;
     
     if ([self.delegate respondsToSelector:@selector(accountInfoChanged:)])
     {

@@ -78,6 +78,15 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         case .success(let alfrescoCredential):
             self.session = session
             self.alfrescoCredential = alfrescoCredential
+            self.account?.oauthData = AlfrescoOAuthData(tokenType: alfrescoCredential.tokenType,
+                                                        accessToken: alfrescoCredential.accessToken,
+                                                        accessTokenExpiresIn: alfrescoCredential.accessTokenExpiresIn as NSNumber?,
+                                                        refreshToken: alfrescoCredential.refreshToken,
+                                                        refreshTokenExpiresIn: alfrescoCredential.refreshTokenExpiresIn as NSNumber?,
+                                                        sessionState: alfrescoCredential.sessionState)
+            if let loginCompletionBlock = self.loginCompletionBlock {
+                loginCompletionBlock(true, nil, nil)
+            }
         case .failure(let error):
             if let loginCompletionBlock = self.loginCompletionBlock {
                 loginCompletionBlock(false, nil, error)
