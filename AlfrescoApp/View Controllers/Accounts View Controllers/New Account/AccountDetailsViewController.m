@@ -447,7 +447,7 @@
                     [[AccountManager sharedManager] removeAccount:strongSelf.account];
                     [strongSelf dismissViewControllerAnimated:YES completion:nil];
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                       [strongSelf dismissViewControllerAnimated:YES completion:nil];
+                       [weakSelf dismissViewControllerAnimated:YES completion:nil];
                     });
                 }];
             }
@@ -752,12 +752,14 @@
     {
         [self.delegate accountFlowWillDismiss:self accountAdded:self.account];
     }
+    __weak typeof(self) weakSelf = self;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-       [self dismissViewControllerAnimated:YES completion:^{
-           [[AccountManager sharedManager] addAccount:self.account];
-           if ([self.delegate respondsToSelector:@selector(accountFlowDidDismiss:accountAdded:)])
+        __strong typeof(self) strongSelf = weakSelf;
+       [strongSelf dismissViewControllerAnimated:YES completion:^{
+           [[AccountManager sharedManager] addAccount:weakSelf.account];
+           if ([weakSelf.delegate respondsToSelector:@selector(accountFlowDidDismiss:accountAdded:)])
            {
-               [self.delegate accountFlowDidDismiss:self accountAdded:self.account];
+               [weakSelf.delegate accountFlowDidDismiss:weakSelf accountAdded:weakSelf.account];
            }
        }];
     });

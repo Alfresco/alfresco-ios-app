@@ -119,6 +119,11 @@ extern NSString * const kWasSyncInfoPanelShown;
 extern NSString * const kVersionOfLastRun;
 extern NSString * const kCloudTerminationAlertShownKey;
 extern NSString * const kHasAccountMigrationOccured;
+extern NSString * const kPersistenceStackSessionParameter;
+extern NSString * const kPersistenceStackCredentialParameter;
+
+// errors
+extern int const kAFALoginSSOViewModelCancelErrorCode;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;

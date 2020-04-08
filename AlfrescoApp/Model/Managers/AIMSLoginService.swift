@@ -21,11 +21,7 @@ import AlfrescoAuth
 
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
-class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
-    private let kPersistenceStackSessionParameter = "AlfrescoSession"
-    private let kPersistenceStackCredentialParameter = "AlfrescoCredential"
-    private let kAFALoginSSOViewModelCancelErrorCode = -3
-    
+class AIMSLoginService: NSObject, AlfrescoAuthDelegate {    
     // Public variables
     var session: AlfrescoAuthSession?
     private (set) var account: UserAccount?
