@@ -64,7 +64,7 @@
     
     if (self.account.accountType == UserAccountTypeAIMS)
     {
-        ButtonCell *logout = [self logoutCell];
+        CenterLabelCell *logout = [self logoutCell];
         self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[logout]];
     }
     else

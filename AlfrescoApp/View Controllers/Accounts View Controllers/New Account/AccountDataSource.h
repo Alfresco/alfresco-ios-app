@@ -41,7 +41,7 @@ static NSInteger const kTagCertificateCell = 1;
 static NSInteger const kTagReorderCell = 2;
 static NSInteger const kTagProfileCell = 3;
 static NSInteger const kTagAccountDetailsCell = 4;
-static NSInteger const kTagLogOutCell = 4;
+static NSInteger const kTagLogOutCell = 5;
 
 @protocol AccountDataSourceDelegate <NSObject>
 

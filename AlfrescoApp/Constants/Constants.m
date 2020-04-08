@@ -65,6 +65,11 @@ NSString * const kWasSyncInfoPanelShown = @"wasSyncInfoPanelShown";
 NSString * const kVersionOfLastRun = @"kVersionOfLastRun";
 NSString * const kCloudTerminationAlertShownKey = @"CloudTerminationAlertShown";
 NSString * const kHasAccountMigrationOccured = @"hasAccountMigrationOccured";
+NSString * const kPersistenceStackSessionParameter = @"AlfrescoSession";
+NSString * const kPersistenceStackCredentialParameter = @"AlfrescoCredential";
+
+// errors
+int const kAFALoginSSOViewModelCancelErrorCode = -3;
 
 // Settings Bundle Keys
 NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";

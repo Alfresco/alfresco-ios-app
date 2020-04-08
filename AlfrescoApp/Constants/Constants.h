@@ -65,6 +65,7 @@ typedef NS_ENUM(NSUInteger, AvailableAuthenticationType) {
 
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
+typedef void (^LogoutAIMSCompletionBlock)(BOOL successful, NSError *error);
 typedef void (^AvailableAuthenticationTypeCompletionBlock)(AvailableAuthenticationType authType, NSError *error);
 
 extern NSTimeInterval const kRateLimitForRequestsOnCloud;
@@ -118,6 +119,11 @@ extern NSString * const kWasSyncInfoPanelShown;
 extern NSString * const kVersionOfLastRun;
 extern NSString * const kCloudTerminationAlertShownKey;
 extern NSString * const kHasAccountMigrationOccured;
+extern NSString * const kPersistenceStackSessionParameter;
+extern NSString * const kPersistenceStackCredentialParameter;
+
+// errors
+extern int const kAFALoginSSOViewModelCancelErrorCode;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;
