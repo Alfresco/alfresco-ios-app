@@ -190,7 +190,7 @@
     {
         case AccountDataSourceTypeNewAccountServer:
         {
-            [self checkIfSamlIsEnabled];
+            [self checkIfAIMSEnabled];
         }
             break;
             
@@ -385,7 +385,7 @@
         
         if (error || [samlData isSamlEnabled] == NO)
         {
-            [self checkIfAIMSEnabled];
+            [self goToEnterCredentialsScreen];
         }
         else
         {
@@ -407,7 +407,7 @@
         if (AvailableAuthenticationTypeAIMS == authType) {
             [strongSelf goToEnterAIMSCredentialsScreen];
         } else {
-            [strongSelf goToEnterCredentialsScreen];
+            [strongSelf checkIfSamlIsEnabled];
         }
 
         [self hideHUD];
