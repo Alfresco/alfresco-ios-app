@@ -36,18 +36,19 @@
     TextFieldCell *realmCell = [self realmCell];
     TextFieldCell *clientID = [self clientIDCell];
     TextFieldCell *descriptionCell = [self descriptionCell];
+    CenterLabelCell *needHelpCell = [self needHelpCell];
     
-    self.tableViewData = @[@[contentCell, descriptionCell], @[realmCell, clientID]];
+    self.tableViewData = @[@[contentCell, descriptionCell], @[realmCell, clientID], @[needHelpCell]];
 }
 
 - (void)setupHeaders
 {
-    self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced"];
+    self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced", @""];
 }
 
 - (void)setupFooters
 {
-    self.tableGroupFooters = @[@"", @""];
+    self.tableGroupFooters = @[@"", @"", @""];
 }
 
 - (void)setAccessibilityIdentifiers

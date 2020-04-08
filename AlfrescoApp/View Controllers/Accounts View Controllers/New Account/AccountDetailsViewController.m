@@ -315,6 +315,10 @@
     {
         [self goToLogoutWithAIMS];
     }
+    else if (cell.tag == kTagNeedHelpCell)
+    {
+        [self goToNeedHelpAlert];
+    }
 }
 
 #pragma mark - Private Methods
@@ -428,6 +432,18 @@
     [self.navigationController pushViewController:accountDetailsViewController animated:YES];
 }
 
+- (void)goToNeedHelpAlert
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"accountdetails.needHelp.title", @"Need help")
+                                                                   message:NSLocalizedString(@"accountdetails.needHelp.text", @"Need help")
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                       style: UIAlertActionStyleCancel
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alert addAction:okButton];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+}
 
 - (void)goToLogoutWithAIMS
 {
