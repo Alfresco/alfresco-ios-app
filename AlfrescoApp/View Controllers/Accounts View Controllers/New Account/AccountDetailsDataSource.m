@@ -61,41 +61,19 @@
     LabelCell *profileCell = [self profileCell];
     LabelCell *editMainMenuCell = [self editMainMenuCell];
     LabelCell *accountDetailsCell = [self accountDetailsCell];
+    CenterLabelCell *logout = [self logoutCell];
     
-    if (self.account.accountType == UserAccountTypeAIMS)
-    {
-        CenterLabelCell *logout = [self logoutCell];
-        self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[logout]];
-    }
-    else
-    {
-        self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell]];
-    }
+    self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[logout]];
 }
 
 - (void)setupHeaders
 {
-    if (self.account.accountType == UserAccountTypeAIMS)
-    {
-        self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"", @""];
-    }
-    else
-    {
-        self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication"];
-    }
+    self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"", @""];
 }
 
 - (void)setupFooters
 {
-    if (self.account.accountType == UserAccountTypeAIMS)
-    {
-        self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"", @""];
-    }
-    else
-    {
-        self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @""];
-    }
-    
+    self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"", @""];
 }
 
 - (void)setAccessibilityIdentifiers

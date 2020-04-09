@@ -313,7 +313,7 @@
     }
     else if (cell.tag == kTagLogOutCell)
     {
-        [self goToLogoutWithAIMS];
+        [self goToLogout];
     }
     else if (cell.tag == kTagNeedHelpCell)
     {
@@ -456,29 +456,42 @@
     [self.navigationController presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)goToLogoutWithAIMS
+- (void)goToLogout
 {
     __weak typeof(self) weakSelf = self;
+    
     void (^removeAccount)(void) = ^(){
         __strong typeof(self) strongSelf = weakSelf;
-        [[LoginManager sharedManager] showLogOutAIMSWebviewForAccount:strongSelf.formBackupAccount
-                                                 navigationController:strongSelf.navigationController
-                                                      completionBlock:^(BOOL successful, NSError *error) {
-            
-            if (successful) {
-                [[RealmSyncManager sharedManager] disableSyncForAccount:strongSelf.formBackupAccount
-                                                     fromViewController:strongSelf.navigationController
-                                                            cancelBlock:^{
-                } completionBlock:^{
-                    [strongSelf updateAccountInfoFromAccount:strongSelf.formBackupAccount];
-                    [[AccountManager sharedManager] removeAccount:strongSelf.account];
-                    [strongSelf dismissViewControllerAnimated:YES completion:nil];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                       [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                    });
-                }];
-            }
+        
+        [[RealmSyncManager sharedManager] disableSyncForAccount:strongSelf.formBackupAccount
+                                             fromViewController:strongSelf.navigationController
+                                                    cancelBlock:^{
+        } completionBlock:^{
+            [strongSelf updateAccountInfoFromAccount:strongSelf.formBackupAccount];
+            [[AccountManager sharedManager] removeAccount:strongSelf.account];
+            [strongSelf dismissViewControllerAnimated:YES completion:nil];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+               [weakSelf dismissViewControllerAnimated:YES completion:nil];
+            });
         }];
+    };
+    
+    void (^removeAccountAndCheckAIMS)(void) = ^(){
+        __strong typeof(self) strongSelf = weakSelf;
+        if (strongSelf.formBackupAccount.accountType == UserAccountTypeAIMS) {
+            [[LoginManager sharedManager] showLogOutAIMSWebviewForAccount:strongSelf.formBackupAccount
+                                                     navigationController:strongSelf.navigationController
+                                                          completionBlock:^(BOOL successful, NSError *error) {
+                
+                if (successful) {
+                    removeAccount();
+                }
+            }];
+        }
+        else
+        {
+            removeAccount();
+        }
     };
     
     // If this is the last paid account and passcode is enabled, authenticate via passcode before deleting the account.
@@ -490,7 +503,7 @@
             switch (status)
             {
                 case PinFlowCompletionStatusSuccess:
-                    removeAccount();
+                    removeAccountAndCheckAIMS();
                     break;
                     
                 case PinFlowCompletionStatusCancel:
@@ -515,7 +528,7 @@
                     [navController dismissViewControllerAnimated:NO completion:nil];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        removeAccount();
+                        removeAccountAndCheckAIMS();
                     });
                 }
             }];
@@ -523,7 +536,7 @@
     }
     else
     {
-        removeAccount();
+        removeAccountAndCheckAIMS();
     }
 }
 
