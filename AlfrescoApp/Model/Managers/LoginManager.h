@@ -43,6 +43,8 @@
 - (void)showSAMLWebViewForAccount:(UserAccount *)account
              navigationController:(UINavigationController *)navigationController
                   completionBlock:(AlfrescoSAMLAuthCompletionBlock)completionBlock;
+- (void)authenticateWithAIMSOnPremiseAccount:(UserAccount *)account
+                             completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
 - (void)showAIMSWebviewForAccount:(UserAccount *)account
              navigationController:(UINavigationController *)navigationController
                   completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
