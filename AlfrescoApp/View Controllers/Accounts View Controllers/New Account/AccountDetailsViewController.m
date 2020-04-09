@@ -441,6 +441,17 @@
                                                        style: UIAlertActionStyleCancel
                                                      handler:^(UIAlertAction * _Nonnull action) {
     }];
+    
+    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
+    paraStyle.alignment = NSTextAlignmentLeft;
+
+    NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc]
+                                         initWithString: NSLocalizedString(@"accountdetails.needHelp.text", @"Need help")
+                                         attributes: @{NSParagraphStyleAttributeName: paraStyle,
+                                                       NSFontAttributeName:[UIFont systemFontOfSize:13.0]}];
+
+    [alert setValue:atrStr forKey:@"attributedMessage"];
+    
     [alert addAction:okButton];
     [self.navigationController presentViewController:alert animated:YES completion:nil];
 }

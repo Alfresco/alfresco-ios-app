@@ -952,5 +952,5 @@
 "accountdetails.fields.clientID" = "ClientID";
 "accountdetails.buttons.logout" = "Log out";
 "accountdetails.buttons.needHelp" = "Need Help";
-"accountdetails.needHelp.title" = "Help";
-"accountdetails.needHelp.text" = "You can enter the URL of your Alfresco Content Services instance. This will require you to enter your username and password to authenticate.\nYou can enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider.\nYou will have to provide the URL of your Alfresco Content Services instance afterwards.\nTalk to your Alfresco administrator if you require help.";
+"accountdetails.needHelp.title" = "How to sign in";
+"accountdetails.needHelp.text" = "You can enter the URL of your Alfresco Content Services instance. \n\n • This will require you to enter your username and password to authenticate.\n\n • You can also enter the URL of your Alfresco Identity Management Service in order to authenticate with your organisations identity provider (SSO). You will have to provide the URL of your Alfresco Content Services instance afterwards.\n\n • Talk to your Alfresco administrator if you require help.";
