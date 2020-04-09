@@ -71,7 +71,8 @@
 - (LabelCell *)profileCell;
 - (LabelCell *)editMainMenuCell;
 - (LabelCell *)accountDetailsCell;
-- (ButtonCell *)logoutCell;
+- (CenterLabelCell *)logoutCell;
+- (CenterLabelCell *)needHelpCell;
 
 - (BOOL)validateAccountFieldsValues;
 - (AccountFormFieldValidation)validateDescription;

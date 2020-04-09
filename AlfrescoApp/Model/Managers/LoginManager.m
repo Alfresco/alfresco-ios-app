@@ -132,6 +132,19 @@ navigationController:(UINavigationController *)navigationController
                                  completionBlock:completionBlock];
 }
 
+- (void)showLogOutAIMSWebviewForAccount:(UserAccount *)account
+navigationController:(UINavigationController *)navigationController
+                        completionBlock:(LogoutAIMSCompletionBlock)completionBlock {
+    [self.aimsLoginService updateWith:account];
+    [self.aimsLoginService logoutOnViewController:navigationController
+                                  completionBlock:completionBlock];
+}
+
+- (void)saveInKeychainAIMSDataForAccount:(UserAccount *)account {
+    [self.aimsLoginService updateWith:account];
+    [self.aimsLoginService saveInKeychain];
+}
+
 - (void)availableAuthTypeForAccount:(UserAccount *)account
                     completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock
 {

@@ -21,7 +21,7 @@ import AlfrescoAuth
 
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
-class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
+class AIMSLoginService: NSObject, AlfrescoAuthDelegate {    
     // Public variables
     var session: AlfrescoAuthSession?
     private (set) var account: UserAccount?
@@ -33,6 +33,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     
     // Private variables
     private var loginCompletionBlock: LoginAuthenticationCompletionBlock?
+    private var logoutCompletionBlock: LogoutAIMSCompletionBlock?
     
     override init() {
     }
@@ -64,11 +65,66 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         })
     }
     
+    @objc func saveInKeychain() {
+        if let credential = self.alfrescoCredential, let session = self.session {
+            self.saveToKeychain(session: session, credential: credential)
+        }
+    }
+    
     @objc func login(onViewController: UIViewController, completionBlock: @escaping LoginAuthenticationCompletionBlock) {
         loginCompletionBlock = completionBlock
         let authConfig = authConfiguration()
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.pkceAuth(onViewController: onViewController, delegate: self)
+    }
+    
+    @objc func logout(onViewController viewController: UIViewController, completionBlock: @escaping LogoutAIMSCompletionBlock) {
+        logoutCompletionBlock = completionBlock
+        self.session = nil
+        let authConfig = authConfiguration()
+        alfrescoAuth.update(configuration: authConfig)
+        if let credential = obtainAlfrescoCredential() {
+            alfrescoAuth.logout(onViewController: viewController, delegate: self, forCredential: credential)
+        } else {
+            if let logouCompletionBlock = self.logoutCompletionBlock {
+                logouCompletionBlock(false, nil)
+            }
+        }
+    }
+    
+    func obtainAlfrescoCredential() -> AlfrescoCredential? {
+        if let account = self.account {
+            let credentialIdentifier = String(format: "%@-%@", account.accountIdentifier, kPersistenceStackCredentialParameter)
+            if let data =  KeychainUtils.dataFor(matchingIdentifier: credentialIdentifier) {
+                do {
+                    return try JSONDecoder().decode(AlfrescoCredential.self, from: data)
+                } catch {
+                    AlfrescoLog.logError("Unable to restore last valid aims data.")
+                }
+            }
+        }
+        return nil
+    }
+    
+    private func saveToKeychain(session: AlfrescoAuthSession?, credential: AlfrescoCredential) {
+        let encoder = JSONEncoder()
+         var credentialData: Data?
+         var sessionData: Data?
+        
+         do {
+             credentialData = try encoder.encode(credential)
+             
+             if let authSession = session {
+                 sessionData = try NSKeyedArchiver.archivedData(withRootObject: authSession, requiringSecureCoding: true)
+             }
+         } catch {
+             AlfrescoLog.logError("Unable to persist credentials to Keychain.")
+         }
+         
+        if let cData = credentialData, let sData = sessionData, let account = self.account {
+            KeychainUtils.createKeychainData(cData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackCredentialParameter))
+             KeychainUtils.createKeychainData(sData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackSessionParameter))
+         }
     }
     
     // MARK: - AlfrescoAuthDelegate
@@ -84,6 +140,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
                                                         refreshToken: alfrescoCredential.refreshToken,
                                                         refreshTokenExpiresIn: alfrescoCredential.refreshTokenExpiresIn as NSNumber?,
                                                         sessionState: alfrescoCredential.sessionState)
+            self.saveToKeychain(session: session, credential: alfrescoCredential)
             if let loginCompletionBlock = self.loginCompletionBlock {
                 loginCompletionBlock(true, nil, nil)
             }
@@ -95,7 +152,25 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     }
     
     func didLogOut(result: Result<Int, APIError>) {
-        
+        switch result {
+        case .success(_):
+            AlfrescoLog.logInfo("AIMS session terminated successfully.")
+            if let logoutCompletionBlock = self.logoutCompletionBlock {
+                logoutCompletionBlock(true, nil)
+            }
+        case .failure(let error):
+            if error.responseCode == kAFALoginSSOViewModelCancelErrorCode {
+                if let logouCompletionBlock = self.logoutCompletionBlock {
+                    logouCompletionBlock(false, nil)
+                }
+            } else {
+                if let logouCompletionBlock = self.logoutCompletionBlock {
+                    logouCompletionBlock(false, error)
+                }
+                let errorMessage = String(format: "AIMS session failed to be terminated succesfully. Reason:%@", error.localizedDescription)
+                AlfrescoLog.logError(errorMessage)
+            }
+        }
     }
     
     // MARK: - Private

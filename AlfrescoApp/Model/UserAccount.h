@@ -52,6 +52,7 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 @property (nonatomic, strong) NSString *redirectURI;
 @property (nonatomic, assign) UserAccountType accountType;
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
+
 @property (nonatomic, strong) AccountCertificate *accountCertificate;
 @property (nonatomic, assign) BOOL isSelectedAccount;
 @property (nonatomic, assign) BOOL isSyncOn;
@@ -59,6 +60,7 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 @property (nonatomic, strong) NSString *selectedNetworkId;
 @property (nonatomic, strong) NSArray *accountNetworks;
 @property (nonatomic, assign) UserAccountStatus accountStatus;
+
 
 // Cloud sign-up properties, needed for refreshing Account Statuses and resending sign-up request
 @property (nonatomic, strong) NSString *firstName;
