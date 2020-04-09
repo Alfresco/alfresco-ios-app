@@ -72,6 +72,7 @@
 - (LabelCell *)editMainMenuCell;
 - (LabelCell *)accountDetailsCell;
 - (CenterLabelCell *)logoutCell;
+- (CenterLabelCell *)needHelpCell;
 
 - (BOOL)validateAccountFieldsValues;
 - (AccountFormFieldValidation)validateDescription;

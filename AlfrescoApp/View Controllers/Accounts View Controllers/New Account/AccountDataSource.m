@@ -380,13 +380,24 @@ static NSString * const kServerPlaceholder = @"www.example.com";
 - (CenterLabelCell *)logoutCell
 {
     CenterLabelCell *logoutCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
-    logoutCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    logoutCell.selectionStyle = UITableViewCellSelectionStyleNone;
     logoutCell.accessoryType = UITableViewCellAccessoryNone;
     logoutCell.tag = kTagLogOutCell;
     logoutCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.logout", @"Log out");
     [logoutCell.titleLabel setTextColor:UIColor.redColor];
     
     return logoutCell;
+}
+
+- (CenterLabelCell *)needHelpCell
+{
+    CenterLabelCell *needHelpCell = (CenterLabelCell *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([CenterLabelCell class]) owner:self options:nil] lastObject];
+    needHelpCell.selectionStyle = UITableViewCellSelectionStyleNone;
+    needHelpCell.accessoryType = UITableViewCellAccessoryNone;
+    needHelpCell.tag = kTagNeedHelpCell;
+    needHelpCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.needHelp", @"Need help");
+    [needHelpCell.titleLabel setTextColor:[UIColor colorWithRed:0.22 green:0.67 blue:0.85 alpha:1]];
+    return needHelpCell;
 }
 
 #pragma mark - UITableViewDataSource Methods
