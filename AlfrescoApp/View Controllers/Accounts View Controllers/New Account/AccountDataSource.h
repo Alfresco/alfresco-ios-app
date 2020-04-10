@@ -60,5 +60,6 @@ static NSInteger const kTagNeedHelpCell = 6;
 
 - (void)updateFormBackupAccount;
 - (void)reloadWithAccount:(UserAccount *)account;
+- (BOOL)validateAccountFieldsValues;
 
 @end
