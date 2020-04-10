@@ -557,11 +557,10 @@
 - (void)goToLoginWithAIMSScreen
 {
     __weak typeof(self) weakSelf = self;
-    [[LoginManager sharedManager] showAIMSWebviewForAccount:self.formBackupAccount
-                                       navigationController:self.navigationController
-                                            completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+    
+    void (^receivedSessionBlock)(BOOL, id<AlfrescoSession>, NSError *) = ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
-        if (successful) {
+        if (alfrescoSession) {
             [strongSelf updateAccountInfoFromAccount:strongSelf.formBackupAccount];
             
             [[LoginManager sharedManager] saveInKeychainAIMSDataForAccount: strongSelf.account];
@@ -581,7 +580,18 @@
             
             [strongSelf dismiss];
         }
-    }];
+    };
+
+    void (^obtainedAIMSCredentialBlock)(UserAccount *, NSError *) = ^void(UserAccount *account, NSError *error){
+        if (!error) {
+            [[LoginManager sharedManager] authenticateWithAIMSOnPremiseAccount:account
+                                                               completionBlock:receivedSessionBlock];
+        }
+    };
+    
+    [[LoginManager sharedManager] showAIMSWebviewForAccount:self.formBackupAccount
+                                       navigationController:self.navigationController
+                                            completionBlock:obtainedAIMSCredentialBlock];
 }
 
 - (void)goToLoginWithSamlScreen

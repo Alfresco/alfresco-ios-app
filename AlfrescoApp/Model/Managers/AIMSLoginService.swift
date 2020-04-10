@@ -32,7 +32,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     private (set) var alfrescoCredential: AlfrescoCredential?
     
     // Private variables
-    private var loginCompletionBlock: LoginAuthenticationCompletionBlock?
+    private var loginCompletionBlock: LoginAIMSCompletionBlock?
     private var logoutCompletionBlock: LogoutAIMSCompletionBlock?
     
     override init() {
@@ -71,7 +71,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         }
     }
     
-    @objc func login(onViewController: UIViewController, completionBlock: @escaping LoginAuthenticationCompletionBlock) {
+    @objc func login(onViewController: UIViewController, completionBlock: @escaping LoginAIMSCompletionBlock) {
         loginCompletionBlock = completionBlock
         let authConfig = authConfiguration()
         alfrescoAuth.update(configuration: authConfig)
@@ -142,11 +142,11 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
                                                         sessionState: alfrescoCredential.sessionState)
             self.saveToKeychain(session: session, credential: alfrescoCredential)
             if let loginCompletionBlock = self.loginCompletionBlock {
-                loginCompletionBlock(true, nil, nil)
+                loginCompletionBlock(self.account, nil)
             }
         case .failure(let error):
             if let loginCompletionBlock = self.loginCompletionBlock {
-                loginCompletionBlock(false, nil, error)
+                loginCompletionBlock(nil, error)
             }
         }
     }

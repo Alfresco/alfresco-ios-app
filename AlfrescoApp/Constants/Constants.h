@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SharedConstants.h"
+#import "UserAccount.h"
 
 typedef NS_ENUM(NSInteger, InAppDocumentLocation)
 {
@@ -65,6 +66,7 @@ typedef NS_ENUM(NSUInteger, AvailableAuthenticationType) {
 
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
+typedef void (^LoginAIMSCompletionBlock)(UserAccount *account, NSError *error);
 typedef void (^LogoutAIMSCompletionBlock)(BOOL successful, NSError *error);
 typedef void (^AvailableAuthenticationTypeCompletionBlock)(AvailableAuthenticationType authType, NSError *error);
 
