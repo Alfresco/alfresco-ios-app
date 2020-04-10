@@ -87,6 +87,20 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if(self.navigationController.viewControllers.count == 1)
+    {
+        self.navigationItem.hidesBackButton = YES;
+    }
+    else
+    {
+        self.navigationItem.hidesBackButton = NO;
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -108,7 +122,7 @@
         {
             NSString *rightBarButtonTitle =  NSLocalizedString(@"Next", @"Next");
             self.saveButton = [[UIBarButtonItem alloc] initWithTitle:rightBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(saveButtonPressed:)];
-            self.saveButton.enabled = NO;
+            self.saveButton.enabled = [self.dataSource validateAccountFieldsValues];
         }
             break;
             
@@ -121,14 +135,14 @@
         default:
         {
             self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButtonPressed:)];
-            self.saveButton.enabled = NO;
+            self.saveButton.enabled = [self.dataSource validateAccountFieldsValues];
         }
             break;
     }
     
     [self.navigationItem setRightBarButtonItem:self.saveButton];
     
-    if (self.dataSourcetype != AccountDataSourceTypeAccountDetails)
+    if (self.dataSourcetype != AccountDataSourceTypeAccountDetails && self.navigationController.viewControllers.count == 1)
     {
         self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
         self.navigationItem.leftBarButtonItem = self.cancelButton;
