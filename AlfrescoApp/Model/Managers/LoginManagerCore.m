@@ -659,32 +659,30 @@
     NSString *urlString = [Utilities serverURLAddressStringFromAccount:account];
     NSURL *url = [NSURL URLWithString:urlString];
     
-    
-    
-    if (account.samlData.samlTicket)
-       {
-           [AlfrescoRepositorySession connectWithUrl:url
-                                           oauthData:account.oauthData
-                                     completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-                                         if (authenticationCompletionBlock)
-                                         {
-                                             account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
-                                             
-                                             if (session)
-                                             {
-                                                 authenticationCompletionBlock(YES, session, nil);
-                                             }
-                                             else
-                                             {
-                                                 authenticationCompletionBlock(NO, nil, error);
-                                             }
-                                         }
-                                     }];
-       }
-       else
-       {
-           authenticationCompletionBlock(NO, nil, nil);
-       }
+    if (account.oauthData)
+    {
+        [AlfrescoRepositorySession connectWithUrl:url
+                                        oauthData:account.oauthData
+                                  completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+            if (authenticationCompletionBlock)
+            {
+                account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
+                
+                if (session)
+                {
+                    authenticationCompletionBlock(YES, session, nil);
+                }
+                else
+                {
+                    authenticationCompletionBlock(NO, nil, error);
+                }
+            }
+        }];
+    }
+    else
+    {
+        authenticationCompletionBlock(NO, nil, nil);
+    }
 }
 
 #pragma mark - OAuth delegate

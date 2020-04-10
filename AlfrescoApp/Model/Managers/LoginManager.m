@@ -125,7 +125,7 @@
 
 - (void)showAIMSWebviewForAccount:(UserAccount *)account
 navigationController:(UINavigationController *)navigationController
-                  completionBlock:(LoginAuthenticationCompletionBlock)completionBlock
+                  completionBlock:(LoginAIMSCompletionBlock)completionBlock
 {
     [self.aimsLoginService updateWith:account];
     [self.aimsLoginService loginOnViewController:navigationController
