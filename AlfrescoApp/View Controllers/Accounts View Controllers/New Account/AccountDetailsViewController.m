@@ -533,7 +533,7 @@
     
     void (^receivedSessionBlock)(BOOL, id<AlfrescoSession>, NSError *) = ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
-        if (successful) {
+        if (alfrescoSession) {
             [strongSelf updateAccountInfoFromAccount:strongSelf.formBackupAccount];
             
             [[LoginManager sharedManager] saveInKeychainAIMSDataForAccount: strongSelf.account];
