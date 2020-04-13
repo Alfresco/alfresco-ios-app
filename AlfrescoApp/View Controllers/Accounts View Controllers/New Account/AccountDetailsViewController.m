@@ -171,8 +171,9 @@
                 self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
                 break;
             case AccountDataSourceTypeNewAccountAIMS:
+                self.account.accountType = UserAccountTypeAIMS;
                 self.formBackupAccount = account;
-                self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeAIMS];
+                self.formBackupAccount.accountType = UserAccountTypeAIMS;
                 break;
             default:
                 self.account = account;
@@ -561,6 +562,7 @@
     void (^receivedSessionBlock)(BOOL, id<AlfrescoSession>, NSError *) = ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
         if (alfrescoSession) {
+            strongSelf.account = [strongSelf.formBackupAccount copy];
             [strongSelf updateAccountInfoFromAccount:strongSelf.formBackupAccount];
             
             [[LoginManager sharedManager] saveInKeychainAIMSDataForAccount: strongSelf.account];
