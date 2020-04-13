@@ -18,11 +18,13 @@
   
 #import "NavigationViewController.h"
 #import "MainMenuConfigurationViewController.h"
+#import "AccountsViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong, readonly) MainMenuConfigurationViewController *mainMenuViewController;
+@property (nonatomic, strong, readonly) AccountsViewController *accountsController;
 
 - (void)updateAppFirstLaunchFlag;
 

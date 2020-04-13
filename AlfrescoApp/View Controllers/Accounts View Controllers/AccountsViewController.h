@@ -21,5 +21,6 @@
 @interface AccountsViewController : ParentListViewController
 
 - (instancetype)initWithConfiguration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session;
+- (void)showPickerAccounts;
 
 @end

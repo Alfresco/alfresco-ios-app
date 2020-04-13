@@ -29,6 +29,9 @@
 #import "SecurityManager.h"
 #import "AccountDetailsViewController.h"
 #import "NSMutableAttributedString+URLSupport.h"
+#import "AlfrescoApp-Swift.h"
+#import "AppDelegate.h"
+
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -41,7 +44,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
 static CGFloat const kAccountCellHeight = 60.0f;
 static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
-@interface AccountsViewController ()
+@interface AccountsViewController () <AccountPickerDelegate>
 @property (nonatomic, assign) NSInteger expandedSection;
 @property (nonatomic, strong) NSMutableDictionary *configuration;
 @property (nonatomic, assign) BOOL canAddAccounts;
@@ -77,6 +80,15 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         self.canRemoveAccounts = (canRemoveAccounts) ? canRemoveAccounts.boolValue : YES;
     }
     return self;
+}
+
+- (void)showPickerAccounts
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    AccountPickerViewController *accountPickerViewContoller = [[AccountPickerViewController alloc] init];
+    accountPickerViewContoller.delegate = self;
+    accountPickerViewContoller.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    [appDelegate.window.rootViewController presentViewController:accountPickerViewContoller animated:NO completion:nil];
 }
 
 - (void)viewDidLoad
@@ -328,7 +340,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     }
     else
     {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES;
     }
 }
 
@@ -551,5 +563,28 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     self.addAccountsButton.accessibilityIdentifier = kAccountVCAddAccountButtonIdentifier;
     self.tableView.accessibilityIdentifier = KAccountVCTableViewIdentifier;
 }
+
+#pragma mark - AccountPicker Delegate
+
+- (void)addAccount
+{
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountServer account:nil configuration:nil session:nil];
+    NavigationViewController *accountDetailsNavController = [[NavigationViewController alloc] initWithRootViewController:accountDetailsViewController];
+    accountDetailsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [appDelegate.window.rootViewController presentViewController:accountDetailsNavController animated:YES completion:nil];
+}
+
+- (void)resigninWithCurrentUser:(UserAccount * _Nullable)currentUser
+{
+    
+}
+
+- (void)signInUserAccount:(UserAccount * _Nullable)userAccount
+{
+        
+}
+
 
 @end

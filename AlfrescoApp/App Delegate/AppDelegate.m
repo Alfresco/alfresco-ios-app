@@ -22,7 +22,6 @@
 #import "AccountManager.h"
 #import "RootRevealViewController.h"
 #import "SwitchViewController.h"
-#import "AccountsViewController.h"
 #import "OnboardingViewController.h"
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
@@ -53,6 +52,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 @property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) MainMenuConfigurationViewController *mainMenuViewController;
+@property (nonatomic, strong, readwrite) AccountsViewController *accountsController;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *appleConfigurationHelper;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *mobileIronConfigurationHelper;
 
@@ -273,6 +273,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithConfiguration:initialConfiguration session:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
+    self.accountsController = accountsViewController;
     
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:accountsNavigationController];
     
