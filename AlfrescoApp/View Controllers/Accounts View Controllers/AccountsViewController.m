@@ -82,10 +82,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     return self;
 }
 
-- (void)showPickerAccounts
+- (void)showPickerAccountsWithCurrentAccount:(UserAccount*) currentUser
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     AccountPickerViewController *accountPickerViewContoller = [[AccountPickerViewController alloc] init];
+    accountPickerViewContoller.currentAccount = currentUser;
     accountPickerViewContoller.delegate = self;
     accountPickerViewContoller.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [appDelegate.window.rootViewController presentViewController:accountPickerViewContoller animated:NO completion:nil];
@@ -112,7 +113,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+    [self.tableView reloadData];
     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuAccounts];
 }
 
@@ -340,7 +341,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     }
     else
     {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES;
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
 }
 
@@ -535,6 +536,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         account = (UserAccount *)item;
     }
     
+    [self selectAccount:account andNetworkId:networkId];
+}
+
+- (void)selectAccount:(UserAccount*)account andNetworkId:(NSString*)networkId
+{
     if (account.accountType == UserAccountTypeOnPremise || networkId != nil)
     {
         if(account.accountType == UserAccountTypeCloud)
@@ -561,6 +567,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                 [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
                 [strongSelf.tableView reloadData];
             }
+            else
+            {
+                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [appDelegate.accountsController showPickerAccountsWithCurrentAccount: account];
+            }
 
         }];
     }
@@ -578,6 +589,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     self.tableView.accessibilityIdentifier = KAccountVCTableViewIdentifier;
 }
 
+- (void)goToLoginWithAIMSScreen
+{
+    
+}
+
 #pragma mark - AccountPicker Delegate
 
 - (void)addAccount
@@ -592,12 +608,37 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 - (void)resigninWithCurrentUser:(UserAccount * _Nullable)currentUser
 {
-    
+    if(currentUser.accountType == UserAccountTypeAIMS)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        void (^obtainedAIMSCredentialBlock)(UserAccount *, NSError *) = ^void(UserAccount *account, NSError *error){
+            if (!error) {
+                [[LoginManager sharedManager] authenticateWithAIMSOnPremiseAccount:account
+                                                                   completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                    if (alfrescoSession)
+                    {
+                        [[AccountManager sharedManager] selectAccount:currentUser selectNetwork:nil alfrescoSession:alfrescoSession];
+                        [weakSelf.tableView reloadData];
+                    }
+                }];
+            }
+        };
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        
+        [[LoginManager sharedManager] showAIMSWebviewForAccount:currentUser
+                                           navigationController:appDelegate.window.rootViewController
+                                                completionBlock:obtainedAIMSCredentialBlock];
+    }
+    else
+    {
+        [self selectAccount:currentUser andNetworkId:nil];
+    }
 }
 
 - (void)signInUserAccount:(UserAccount * _Nullable)userAccount
 {
-        
+    [self selectAccount:userAccount andNetworkId:nil];
 }
 
 

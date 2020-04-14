@@ -17,11 +17,13 @@ import UIKit
 @objc class AccountPickerViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    var model = AccountPickerModel()
+    var model: AccountPickerModel!
     @objc weak var delegate: AccountPickerDelegate?
+    @objc var currentAccount: UserAccount?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        model = AccountPickerModel(with: currentAccount!)
     }
 }
 

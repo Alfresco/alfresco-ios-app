@@ -16,8 +16,9 @@ class AccountPickerModel: NSObject {
     var currentAccount: UserAccount?
     private var accounts: [UserAccount]
     
-    override init() {
-        accounts = AccountManager.shared()?.allAccounts() as! [UserAccount]
+    init(with currentAccount: UserAccount?) {
+        self.currentAccount = currentAccount
+        self.accounts = AccountManager.shared()?.allAccounts() as! [UserAccount]
         super.init()
         removeCurrentAccountFromDataSource()
         let currentAccountName = self.currentAccount?.accountDescription ?? ""
@@ -32,8 +33,7 @@ class AccountPickerModel: NSObject {
     private func removeCurrentAccountFromDataSource() {
         for idx in 0...accounts.count {
             let account = accounts[idx]
-            if account.isSelectedAccount {
-                currentAccount = account
+            if account == currentAccount {
                 accounts.remove(at: idx)
                 return
             }
