@@ -550,6 +550,20 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             [self authenticateWithAccount:account networkId:networkId];
         }
     }
+    else if (account.accountType == UserAccountTypeAIMS)
+    {
+        __weak typeof(self) weakSelf = self;
+        [[LoginManager sharedManager] authenticateWithAIMSOnPremiseAccount:account
+                                                           completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+            __strong typeof(self) strongSelf = weakSelf;
+            if (alfrescoSession)
+            {
+                [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
+                [strongSelf.tableView reloadData];
+            }
+
+        }];
+    }
 }
 
 - (void)hideDeleteButton
