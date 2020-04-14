@@ -13,15 +13,15 @@ class AccountPickerModel: NSObject {
     let kButtonFontSize: CGFloat = 25.0
 
     var dataSource: [[Any]] = []
-    var currentAccount: UserAccount?
+    var currentAccount: UserAccount
     private var accounts: [UserAccount]
     
-    init(with currentAccount: UserAccount?) {
+    init(with currentAccount: UserAccount) {
         self.currentAccount = currentAccount
         self.accounts = AccountManager.shared()?.allAccounts() as! [UserAccount]
         super.init()
         removeCurrentAccountFromDataSource()
-        let currentAccountName = self.currentAccount?.accountDescription ?? ""
+        let currentAccountName = self.currentAccount.accountDescription as String
         let array = [String(format: NSLocalizedString("accountpicker.label.notAuth", comment: "No Auth"), currentAccountName),
                      NSLocalizedString("login.sign.in", comment: "Sign in"), 
                      NSLocalizedString("accountpicker.label.other", comment: "OR")]

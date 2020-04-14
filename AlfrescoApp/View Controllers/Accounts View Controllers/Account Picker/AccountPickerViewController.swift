@@ -19,11 +19,18 @@ import UIKit
     @IBOutlet weak var tableView: UITableView!
     var model: AccountPickerModel!
     @objc weak var delegate: AccountPickerDelegate?
-    @objc var currentAccount: UserAccount?
+    var currentAccount: UserAccount!
+
+    @objc convenience init(withAccount currentAccount: UserAccount, withDelegate delegate: AccountPickerDelegate) {
+        self.init()
+        self.modalPresentationStyle = .overFullScreen
+        self.currentAccount = currentAccount
+        self.model = AccountPickerModel(with: currentAccount)
+        self.delegate = delegate
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        model = AccountPickerModel(with: currentAccount!)
     }
 }
 

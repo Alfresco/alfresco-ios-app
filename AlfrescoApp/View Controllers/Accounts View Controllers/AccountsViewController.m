@@ -82,14 +82,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     return self;
 }
 
-- (void)showPickerAccountsWithCurrentAccount:(UserAccount*) currentUser
+- (void)showPickerAccountsWithCurrentAccount:(UserAccount*)currentUser onViewController:(UIViewController*)viewController
 {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    AccountPickerViewController *accountPickerViewContoller = [[AccountPickerViewController alloc] init];
-    accountPickerViewContoller.currentAccount = currentUser;
-    accountPickerViewContoller.delegate = self;
-    accountPickerViewContoller.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    [appDelegate.window.rootViewController presentViewController:accountPickerViewContoller animated:NO completion:nil];
+    AccountPickerViewController *accountPickerViewContoller = [[AccountPickerViewController alloc] initWithAccount:currentUser withDelegate:self];
+    [viewController presentViewController:accountPickerViewContoller animated:NO completion:nil];
 }
 
 - (void)viewDidLoad
@@ -570,7 +566,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             else
             {
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [appDelegate.accountsController showPickerAccountsWithCurrentAccount: account];
+                [appDelegate.accountsController showPickerAccountsWithCurrentAccount:account onViewController:appDelegate.window.rootViewController];
             }
 
         }];
