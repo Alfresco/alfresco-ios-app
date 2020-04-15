@@ -30,7 +30,6 @@
 #import "AccountDetailsViewController.h"
 #import "NSMutableAttributedString+URLSupport.h"
 #import "AlfrescoApp-Swift.h"
-#import "AppDelegate.h"
 
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
@@ -565,8 +564,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             }
             else
             {
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                [appDelegate.accountsController showPickerAccountsWithCurrentAccount:account onViewController:appDelegate.window.rootViewController];
+                if ([strongSelf.presentationPickerDelegate respondsToSelector:@selector(accountPickerPresentationViewController)])
+                {
+                    [strongSelf showPickerAccountsWithCurrentAccount:account onViewController:strongSelf.presentationPickerDelegate.accountPickerPresentationViewController];
+                }
             }
 
         }];
@@ -594,12 +595,16 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 - (void)addAccount
 {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    
     AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountServer account:nil configuration:nil session:nil];
     NavigationViewController *accountDetailsNavController = [[NavigationViewController alloc] initWithRootViewController:accountDetailsViewController];
     accountDetailsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [appDelegate.window.rootViewController presentViewController:accountDetailsNavController animated:YES completion:nil];
+    
+    if ([self.presentationPickerDelegate respondsToSelector:@selector(accountPickerPresentationViewController)])
+    {
+        [self.presentationPickerDelegate.accountPickerPresentationViewController presentViewController:accountDetailsNavController animated:YES completion:nil];
+    }
+    
+    
 }
 
 - (void)resigninWithCurrentUser:(UserAccount * _Nullable)currentUser
@@ -620,11 +625,15 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                 }];
             }
         };
-        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
         
-        [[LoginManager sharedManager] showAIMSWebviewForAccount:currentUser
-                                           navigationController:appDelegate.window.rootViewController
-                                                completionBlock:obtainedAIMSCredentialBlock];
+        if ([self.presentationPickerDelegate respondsToSelector:@selector(accountPickerPresentationViewController)])
+        {
+            [[LoginManager sharedManager] showAIMSWebviewForAccount:currentUser
+                                               navigationController:self.presentationPickerDelegate.accountPickerPresentationViewController
+                                                    completionBlock:obtainedAIMSCredentialBlock];
+        }
+        
+        
     }
     else
     {

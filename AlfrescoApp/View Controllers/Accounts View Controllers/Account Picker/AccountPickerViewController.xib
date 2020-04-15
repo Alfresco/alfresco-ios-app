@@ -28,6 +28,7 @@
                     <subviews>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="45" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="X3O-nt-fFT">
                             <rect key="frame" x="0.0" y="0.0" width="345" height="350"/>
+                            <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="350" id="Hkr-dM-eKl"/>
                             </constraints>
@@ -38,7 +39,7 @@
                             </connections>
                         </tableView>
                     </subviews>
-                    <color key="backgroundColor" red="1" green="0.93996420253489987" blue="0.9400893769289439" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="X3O-nt-fFT" secondAttribute="bottom" id="I0Q-9c-yBt"/>
                         <constraint firstItem="X3O-nt-fFT" firstAttribute="top" secondItem="la7-vx-QG3" secondAttribute="top" id="NBy-uF-8zV"/>

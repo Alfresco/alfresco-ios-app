@@ -24,7 +24,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong, readonly) MainMenuConfigurationViewController *mainMenuViewController;
-@property (nonatomic, strong, readonly) AccountsViewController *accountsController;
 
 - (void)updateAppFirstLaunchFlag;
 

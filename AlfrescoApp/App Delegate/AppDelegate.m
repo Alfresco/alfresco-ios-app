@@ -46,13 +46,12 @@
 
 static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 
-@interface AppDelegate()
+@interface AppDelegate() <AccountPickerPresentationDelegate>
 
 @property (nonatomic, strong) UIViewController *appRootViewController;
 @property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) MainMenuConfigurationViewController *mainMenuViewController;
-@property (nonatomic, strong, readwrite) AccountsViewController *accountsController;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *appleConfigurationHelper;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *mobileIronConfigurationHelper;
 
@@ -273,7 +272,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithConfiguration:initialConfiguration session:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
-    self.accountsController = accountsViewController;
+    accountsViewController.presentationPickerDelegate = self;
     
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:accountsNavigationController];
     
@@ -522,6 +521,13 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     }];
     
     return configurationErrorString;
+}
+
+#pragma mark - AccountPickerPresentation Delegate
+
+- (UIViewController *)accountPickerPresentationViewController
+{
+    return self.window.rootViewController;
 }
 
 @end
