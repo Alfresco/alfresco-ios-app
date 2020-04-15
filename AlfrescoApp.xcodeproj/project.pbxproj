@@ -697,9 +697,12 @@
 		73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557618ACE2370009CA56 /* large_zip@2x.png */; };
 		B9818DD32434CD6E00E0020A /* AIMSLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9818DD22434CD6E00E0020A /* AIMSLoginService.swift */; };
 		B9818DE82435C97300E0020A /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9818DE72435C97300E0020A /* String+Helpers.swift */; };
+		E306DBDC2440A862002DB2EE /* AccountPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E306DBDA2440A862002DB2EE /* AccountPickerViewController.swift */; };
+		E306DBDD2440A862002DB2EE /* AccountPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E306DBDB2440A862002DB2EE /* AccountPickerViewController.xib */; };
 		E30C322B240CE71D00AE025B /* CameraOpenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */; };
 		E326AD4924335CF3006C7040 /* AccountAIMSDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E326AD4824335CF3006C7040 /* AccountAIMSDataSource.m */; };
 		E326AD5024337BBC006C7040 /* AccountSettingsAIMSDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = E326AD4F24337BBC006C7040 /* AccountSettingsAIMSDataSource.m */; };
+		E32BD9FE2444739600AEE7EB /* AccountPickerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32BD9FD2444739600AEE7EB /* AccountPickerModel.swift */; };
 		E32CDDE2240EABBB008BF80D /* CameraPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32CDDE1240EABBB008BF80D /* CameraPhoto.swift */; };
 		E333CA8A2403BD6C0082F15F /* GalleryPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */; };
 		E333CA8C2403BD9A0082F15F /* Gallery.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E333CA8B2403BD9A0082F15F /* Gallery.storyboard */; };
@@ -1916,11 +1919,14 @@
 		73FF557618ACE2370009CA56 /* large_zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_zip@2x.png"; sourceTree = "<group>"; };
 		B9818DD22434CD6E00E0020A /* AIMSLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMSLoginService.swift; sourceTree = "<group>"; };
 		B9818DE72435C97300E0020A /* String+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
+		E306DBDA2440A862002DB2EE /* AccountPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerViewController.swift; sourceTree = "<group>"; };
+		E306DBDB2440A862002DB2EE /* AccountPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountPickerViewController.xib; sourceTree = "<group>"; };
 		E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOpenCollectionViewCell.swift; sourceTree = "<group>"; };
 		E326AD4724335CF3006C7040 /* AccountAIMSDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AccountAIMSDataSource.h; path = "New Account/AccountAIMSDataSource.h"; sourceTree = "<group>"; };
 		E326AD4824335CF3006C7040 /* AccountAIMSDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AccountAIMSDataSource.m; path = "New Account/AccountAIMSDataSource.m"; sourceTree = "<group>"; };
 		E326AD4E24337BBC006C7040 /* AccountSettingsAIMSDataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AccountSettingsAIMSDataSource.h; path = "New Account/AccountSettingsAIMSDataSource.h"; sourceTree = "<group>"; };
 		E326AD4F24337BBC006C7040 /* AccountSettingsAIMSDataSource.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AccountSettingsAIMSDataSource.m; path = "New Account/AccountSettingsAIMSDataSource.m"; sourceTree = "<group>"; };
+		E32BD9FD2444739600AEE7EB /* AccountPickerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerModel.swift; sourceTree = "<group>"; };
 		E32CDDE1240EABBB008BF80D /* CameraPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPhoto.swift; sourceTree = "<group>"; };
 		E333CA882403BD6B0082F15F /* AlfrescoApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlfrescoApp-Bridging-Header.h"; sourceTree = "<group>"; };
 		E333CA892403BD6C0082F15F /* GalleryPhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotosViewController.swift; sourceTree = "<group>"; };
@@ -1955,6 +1961,7 @@
 		0804DCA5181962A400E3ACC2 /* Accounts View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E306DBD92440A805002DB2EE /* Account Picker */,
 				738664C71906B1E50021D1BD /* Cell */,
 				080A81191855FE4C00B79306 /* Certificate */,
 				0804DCB818197F0C00E3ACC2 /* New Account */,
@@ -4298,6 +4305,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E306DBD92440A805002DB2EE /* Account Picker */ = {
+			isa = PBXGroup;
+			children = (
+				E306DBDA2440A862002DB2EE /* AccountPickerViewController.swift */,
+				E306DBDB2440A862002DB2EE /* AccountPickerViewController.xib */,
+				E32BD9FD2444739600AEE7EB /* AccountPickerModel.swift */,
+			);
+			path = "Account Picker";
+			sourceTree = "<group>";
+		};
 		E32CDDE72411138C008BF80D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -4632,6 +4649,7 @@
 				73881FCE188FF6B00052C75F /* actionsheet-delete.png in Resources */,
 				0804DCBE1819806000E3ACC2 /* AccountTypeSelectionViewController.xib in Resources */,
 				738664BA1906B13D0021D1BD /* FileFolderCell.xib in Resources */,
+				E306DBDD2440A862002DB2EE /* AccountPickerViewController.xib in Resources */,
 				73881F8E188D8AF20052C75F /* browser_close@2x.png in Resources */,
 				738664921906AD660021D1BD /* AboutViewController.xib in Resources */,
 				739B0A2F18CF7C9B00239584 /* TableviewUnderlinedHeaderView.xib in Resources */,
@@ -5191,6 +5209,7 @@
 				E326AD4924335CF3006C7040 /* AccountAIMSDataSource.m in Sources */,
 				7390B36D1B03681E00E7191F /* AlfrescoGroupConfig.m in Sources */,
 				E333CA8A2403BD6C0082F15F /* GalleryPhotosViewController.swift in Sources */,
+				E32BD9FE2444739600AEE7EB /* AccountPickerModel.swift in Sources */,
 				0876A04918D99FF60035370A /* NodePickerSitesViewController.m in Sources */,
 				23900A661EB9FB8F00642DE0 /* AccountSettingsDataSource.m in Sources */,
 				73B95AF917A68DF20099FB84 /* MetaDataViewController.m in Sources */,
@@ -5221,6 +5240,7 @@
 				73B95AFB17A68DF20099FB84 /* PlaceholderViewController.m in Sources */,
 				73632AEC1806F5D2007172EE /* SwitchViewController.m in Sources */,
 				275D6AD01BDEDB2E00FC5B60 /* FilteredTaskViewController.m in Sources */,
+				E306DBDC2440A862002DB2EE /* AccountPickerViewController.swift in Sources */,
 				080675EB17EC44AA004AF3A2 /* CoreDataHelper.m in Sources */,
 				0833248517FEB9C400EE6AA8 /* SyncObstacleTableViewCell.m in Sources */,
 				2BA7FA011B419B11002CCB33 /* ALFSwipeToDeleteGestureRecognizer.m in Sources */,

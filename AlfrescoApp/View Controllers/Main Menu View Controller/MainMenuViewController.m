@@ -24,12 +24,13 @@
 #import "MainMenuConfigurationBuilder.h"
 #import "AFPDataManager.h"
 #import "AccountManager.h"
+#import "AccountsViewController.h"
 
 static NSString * const kMainMenuCellIdentifier = @"MainMenuCellIdentifier";
 static NSString * const kMainMenuHeaderViewIdentifier = @"MainMenuHeaderViewIdentifier";
 static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
 
-@interface MainMenuViewController () <UITableViewDataSource, UITableViewDelegate, MainMenuGroupDelegate>
+@interface MainMenuViewController () <UITableViewDataSource, UITableViewDelegate, MainMenuGroupDelegate, AccountPickerPresentationDelegate>
 @property (nonatomic, strong, readwrite) MainMenuBuilder *builder;
 @property (nonatomic, strong, readwrite) NSArray *tableViewData;
 @property (nonatomic, strong, readwrite) MainMenuGroup *headerGroup;
@@ -303,6 +304,10 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
         if (sections)
         {
             [self addSectionsFromArray:sections toGroupType:groupType];
+            if (groupType == MainMenuGroupTypeHeader)
+            {
+                [self setPresentationDeleateOnAccountsViewControllerFromArray:sections];
+            }
         }
         
         if (completionBlock != NULL)
@@ -319,6 +324,10 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
         {
             [self clearGroupType:groupType];
             [self addSectionsFromArray:sections toGroupType:groupType];
+            if (groupType == MainMenuGroupTypeHeader)
+            {
+                [self setPresentationDeleateOnAccountsViewControllerFromArray:sections];
+            }
         }
         
         if (completionBlock != NULL)
@@ -326,6 +335,31 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
             completionBlock();
         }
     }];
+}
+
+
+- (void)setPresentationDeleateOnAccountsViewControllerFromArray:(NSArray *)array
+{
+    for (MainMenuSection *section in array)
+    {
+        for (MainMenuItem *item in section.allSectionItems)
+        {
+            id object = item.associatedObject;
+            if ([object isKindOfClass:[AccountsViewController class]])
+            {
+                ((AccountsViewController*)object).presentationPickerDelegate = self;
+            }
+            if ([object isKindOfClass:[UINavigationController class]])
+            {
+                for (UIViewController* viewController in ((UINavigationController*)object).viewControllers) {
+                    if ([viewController isKindOfClass:[AccountsViewController class]])
+                    {
+                        ((AccountsViewController*)viewController).presentationPickerDelegate = self;
+                    }
+                }
+            }
+        }
+    }
 }
 
 - (void)sectionsForGroupType:(MainMenuGroupType)groupType completionBlock:(void (^)(NSArray *sections))completionBlock
@@ -580,5 +614,13 @@ static NSTimeInterval const kHeaderFadeSpeed = 0.3f;
     
     [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
 }
+
+#pragma mark - AccountPickerPresentation Delegate
+
+- (UIViewController *)accountPickerPresentationViewController
+{
+    return self;
+}
+
 
 @end
