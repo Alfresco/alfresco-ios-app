@@ -78,6 +78,16 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         alfrescoAuth.pkceAuth(onViewController: onViewController, delegate: self)
     }
     
+    @objc func refreshSession(for account: UserAccount, completionBlock: @escaping LoginAIMSCompletionBlock) {
+        loginCompletionBlock = completionBlock
+        session = obtainAlfrescoAuthSession(for: account)
+        guard let activeSession = session else { return }
+        
+        let authConfig = authConfiguration()
+        alfrescoAuth.update(configuration: authConfig)
+        alfrescoAuth.pkceRefresh(session: activeSession, delegate: self)
+    }
+    
     @objc func logout(onViewController viewController: UIViewController, completionBlock: @escaping LogoutAIMSCompletionBlock) {
         logoutCompletionBlock = completionBlock
         self.session = nil
@@ -106,25 +116,41 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         return nil
     }
     
+    func obtainAlfrescoAuthSession(for account: UserAccount) -> AlfrescoAuthSession? {
+        let credentialIdentifier = String(format: "%@-%@", account.accountIdentifier, kPersistenceStackSessionParameter)
+        
+        if let data = KeychainUtils.dataFor(matchingIdentifier: credentialIdentifier) {
+            do {
+                if let session = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? AlfrescoAuthSession {
+                    return session
+                }
+            } catch {
+                AlfrescoLog.logError("Unable to restore last valid aims data.")
+            }
+        }
+        
+        return nil
+    }
+    
     private func saveToKeychain(session: AlfrescoAuthSession?, credential: AlfrescoCredential) {
         let encoder = JSONEncoder()
-         var credentialData: Data?
-         var sessionData: Data?
+        var credentialData: Data?
+        var sessionData: Data?
         
-         do {
-             credentialData = try encoder.encode(credential)
-             
-             if let authSession = session {
-                 sessionData = try NSKeyedArchiver.archivedData(withRootObject: authSession, requiringSecureCoding: true)
-             }
-         } catch {
-             AlfrescoLog.logError("Unable to persist credentials to Keychain.")
-         }
-         
+        do {
+            credentialData = try encoder.encode(credential)
+            
+            if let authSession = session {
+                sessionData = try NSKeyedArchiver.archivedData(withRootObject: authSession, requiringSecureCoding: true)
+            }
+        } catch {
+            AlfrescoLog.logError("Unable to persist credentials to Keychain.")
+        }
+        
         if let cData = credentialData, let sData = sessionData, let account = self.account {
             KeychainUtils.createKeychainData(cData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackCredentialParameter))
-             KeychainUtils.createKeychainData(sData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackSessionParameter))
-         }
+            KeychainUtils.createKeychainData(sData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackSessionParameter))
+        }
     }
     
     // MARK: - AlfrescoAuthDelegate

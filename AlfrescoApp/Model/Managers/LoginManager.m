@@ -62,8 +62,8 @@
         _aimsLoginService = [AIMSLoginService new];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoAccessDeniedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoTokenExpiredNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tokenExpired:) name:kAlfrescoTokenExpiredNotification object:nil];
     }
     return self;
 }
@@ -321,6 +321,13 @@ navigationController:(UINavigationController *)navigationController
     [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
 }
 
+- (void)refreshSessionForAccount:(UserAccount *)account
+                 completionBlock:(LoginAIMSCompletionBlock)completionBlock
+{
+    [self.aimsLoginService refreshSessionFor:account
+                             completionBlock:completionBlock];
+}
+
 #pragma mark - Private Functions
 
 - (void)showHUDOnView:(UIView *)view
@@ -362,13 +369,8 @@ navigationController:(UINavigationController *)navigationController
 - (void)unauthorizedAccessNotificationReceived:(NSNotification *)notification
 {
     // try logging again
-    NSError *error = (NSError *)notification.object;
-    
-    if (error.code == kAlfrescoErrorCodeUnauthorisedAccess)
-    {
-        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
-        [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
-    }
+    UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+    [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification
@@ -390,14 +392,6 @@ navigationController:(UINavigationController *)navigationController
                 self.completionBlockCalledFromLoginViewController = NO;
             }
         }];
-    }
-}
-
-- (void)tokenExpired:(NSNotification *)notification
-{
-    if([AccountManager sharedManager].selectedAccount)
-    {
-        [[LoginManager sharedManager] attemptLoginToAccount:[AccountManager sharedManager].selectedAccount networkId:[AccountManager sharedManager].selectedAccount.selectedNetworkId completionBlock:nil];
     }
 }
 

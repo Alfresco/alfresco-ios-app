@@ -20,6 +20,7 @@
 
 @interface AccountsViewController : ParentListViewController
 
+
 - (instancetype)initWithConfiguration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session;
 
 @end
