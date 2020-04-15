@@ -27,16 +27,20 @@ import UIKit
 @objc class AccountPickerViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-    var model: AccountPickerModel!
+    var model: AccountPickerModel
     @objc weak var delegate: AccountPickerDelegate?
     var currentAccount: UserAccount!
 
-    @objc convenience init(withAccount currentAccount: UserAccount, withDelegate delegate: AccountPickerDelegate) {
-        self.init()
-        self.modalPresentationStyle = .overFullScreen
+    @objc init(withAccount currentAccount: UserAccount, withDelegate delegate: AccountPickerDelegate) {
         self.currentAccount = currentAccount
         self.model = AccountPickerModel(with: currentAccount)
         self.delegate = delegate
+        super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .overFullScreen
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
