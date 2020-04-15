@@ -29,6 +29,8 @@
 #import "SecurityManager.h"
 #import "AccountDetailsViewController.h"
 #import "NSMutableAttributedString+URLSupport.h"
+#import "AlfrescoApp-Swift.h"
+
 
 static NSInteger const kAccountSelectionButtonWidth = 32;
 static NSInteger const kAccountSelectionButtongHeight = 32;
@@ -41,7 +43,7 @@ static CGFloat const kDefaultFontSize = 18.0f;
 static CGFloat const kAccountCellHeight = 60.0f;
 static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
-@interface AccountsViewController ()
+@interface AccountsViewController () <AccountPickerDelegate>
 @property (nonatomic, assign) NSInteger expandedSection;
 @property (nonatomic, strong) NSMutableDictionary *configuration;
 @property (nonatomic, assign) BOOL canAddAccounts;
@@ -79,6 +81,12 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     return self;
 }
 
+- (void)showPickerAccountsWithCurrentAccount:(UserAccount*)currentUser onViewController:(UIViewController*)viewController
+{
+    AccountPickerViewController *accountPickerViewContoller = [[AccountPickerViewController alloc] initWithAccount:currentUser withDelegate:self];
+    [viewController presentViewController:accountPickerViewContoller animated:NO completion:nil];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -100,7 +108,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+    [self.tableView reloadData];
     [[AnalyticsManager sharedManager] trackScreenWithName:kAnalyticsViewMenuAccounts];
 }
 
@@ -523,6 +531,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         account = (UserAccount *)item;
     }
     
+    [self selectAccount:account andNetworkId:networkId];
+}
+
+- (void)selectAccount:(UserAccount*)account andNetworkId:(NSString*)networkId
+{
     if (account.accountType == UserAccountTypeOnPremise || networkId != nil)
     {
         if(account.accountType == UserAccountTypeCloud)
@@ -549,6 +562,13 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                 [[AccountManager sharedManager] selectAccount:account selectNetwork:networkId alfrescoSession:alfrescoSession];
                 [strongSelf.tableView reloadData];
             }
+            else
+            {
+                if ([strongSelf.presentationPickerDelegate respondsToSelector:@selector(accountPickerPresentationViewController)])
+                {
+                    [strongSelf showPickerAccountsWithCurrentAccount:account onViewController:strongSelf.presentationPickerDelegate.accountPickerPresentationViewController];
+                }
+            }
 
         }];
     }
@@ -565,5 +585,66 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     self.addAccountsButton.accessibilityIdentifier = kAccountVCAddAccountButtonIdentifier;
     self.tableView.accessibilityIdentifier = KAccountVCTableViewIdentifier;
 }
+
+- (void)goToLoginWithAIMSScreen
+{
+    
+}
+
+#pragma mark - AccountPicker Delegate
+
+- (void)addAccount
+{
+    AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountServer account:nil configuration:nil session:nil];
+    NavigationViewController *accountDetailsNavController = [[NavigationViewController alloc] initWithRootViewController:accountDetailsViewController];
+    accountDetailsNavController.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    if ([self.presentationPickerDelegate respondsToSelector:@selector(accountPickerPresentationViewController)])
+    {
+        [self.presentationPickerDelegate.accountPickerPresentationViewController presentViewController:accountDetailsNavController animated:YES completion:nil];
+    }
+    
+    
+}
+
+- (void)resigninWithCurrentUser:(UserAccount * _Nullable)currentUser
+{
+    if(currentUser.accountType == UserAccountTypeAIMS)
+    {
+        __weak typeof(self) weakSelf = self;
+        
+        void (^obtainedAIMSCredentialBlock)(UserAccount *, NSError *) = ^void(UserAccount *account, NSError *error){
+            if (!error) {
+                [[LoginManager sharedManager] authenticateWithAIMSOnPremiseAccount:account
+                                                                   completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                    if (alfrescoSession)
+                    {
+                        [[AccountManager sharedManager] selectAccount:currentUser selectNetwork:nil alfrescoSession:alfrescoSession];
+                        [weakSelf.tableView reloadData];
+                    }
+                }];
+            }
+        };
+        
+        if ([self.presentationPickerDelegate respondsToSelector:@selector(accountPickerPresentationViewController)])
+        {
+            [[LoginManager sharedManager] showAIMSWebviewForAccount:currentUser
+                                               navigationController:self.presentationPickerDelegate.accountPickerPresentationViewController
+                                                    completionBlock:obtainedAIMSCredentialBlock];
+        }
+        
+        
+    }
+    else
+    {
+        [self selectAccount:currentUser andNetworkId:nil];
+    }
+}
+
+- (void)signInUserAccount:(UserAccount * _Nullable)userAccount
+{
+    [self selectAccount:userAccount andNetworkId:nil];
+}
+
 
 @end

@@ -22,7 +22,6 @@
 #import "AccountManager.h"
 #import "RootRevealViewController.h"
 #import "SwitchViewController.h"
-#import "AccountsViewController.h"
 #import "OnboardingViewController.h"
 #import "ContainerViewController.h"
 #import "MigrationAssistant.h"
@@ -47,7 +46,7 @@
 
 static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 
-@interface AppDelegate()
+@interface AppDelegate() <AccountPickerPresentationDelegate>
 
 @property (nonatomic, strong) UIViewController *appRootViewController;
 @property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
@@ -273,6 +272,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     
     AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithConfiguration:initialConfiguration session:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
+    accountsViewController.presentationPickerDelegate = self;
     
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:accountsNavigationController];
     
@@ -521,6 +521,13 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     }];
     
     return configurationErrorString;
+}
+
+#pragma mark - AccountPickerPresentation Delegate
+
+- (UIViewController *)accountPickerPresentationViewController
+{
+    return self.window.rootViewController;
 }
 
 @end

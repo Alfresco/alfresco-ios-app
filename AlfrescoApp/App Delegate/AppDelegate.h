@@ -18,6 +18,7 @@
   
 #import "NavigationViewController.h"
 #import "MainMenuConfigurationViewController.h"
+#import "AccountsViewController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate>
 

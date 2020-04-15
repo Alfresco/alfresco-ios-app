@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountPickerViewController" customModule="AlfrescoApp" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="X3O-nt-fFT" id="yzm-dG-lI0"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dif-UD-jP2" userLabel="BackgroundView">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                </view>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="la7-vx-QG3">
+                    <rect key="frame" x="34.5" y="273" width="345" height="350"/>
+                    <subviews>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="45" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="X3O-nt-fFT">
+                            <rect key="frame" x="0.0" y="0.0" width="345" height="350"/>
+                            <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="350" id="Hkr-dM-eKl"/>
+                            </constraints>
+                            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="5LN-t3-ved"/>
+                                <outlet property="delegate" destination="-1" id="xQo-Xu-8bn"/>
+                            </connections>
+                        </tableView>
+                    </subviews>
+                    <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="X3O-nt-fFT" secondAttribute="bottom" id="I0Q-9c-yBt"/>
+                        <constraint firstItem="X3O-nt-fFT" firstAttribute="top" secondItem="la7-vx-QG3" secondAttribute="top" id="NBy-uF-8zV"/>
+                        <constraint firstItem="X3O-nt-fFT" firstAttribute="leading" secondItem="la7-vx-QG3" secondAttribute="leading" id="c4R-6s-tli"/>
+                        <constraint firstAttribute="trailing" secondItem="X3O-nt-fFT" secondAttribute="trailing" id="vdo-iS-58v"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Dif-UD-jP2" secondAttribute="trailing" id="5lo-pY-vAZ"/>
+                <constraint firstItem="la7-vx-QG3" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="JwZ-pN-ZhU"/>
+                <constraint firstAttribute="bottom" secondItem="Dif-UD-jP2" secondAttribute="bottom" id="Rad-Sm-QCp"/>
+                <constraint firstItem="la7-vx-QG3" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="byk-OK-Hla"/>
+                <constraint firstItem="la7-vx-QG3" firstAttribute="height" relation="lessThanOrEqual" secondItem="i5M-Pr-FkT" secondAttribute="height" multiplier="1/2" id="cBR-Nn-YPT"/>
+                <constraint firstItem="Dif-UD-jP2" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fJm-7K-KHb"/>
+                <constraint firstItem="la7-vx-QG3" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" multiplier="5/6" id="qB7-tX-mjS"/>
+                <constraint firstItem="Dif-UD-jP2" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="reG-lV-MfY"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="139" y="153"/>
+        </view>
+    </objects>
+</document>
