@@ -107,6 +107,8 @@ NSString * const kAlfrescoNodeAddedOnServerContentLocationLocally = @"AlfrescoNo
 NSString * const kAlfrescoWorkflowTaskListDidChangeNotification = @"AlfrescoWorkflowTaskListDidChange";
 NSString * const kAlfrescoDocumentEditedNotification = @"AlfrescoDocumentEditedNotification";
 NSString * const kAlfrescoEnableMainMenuAutoItemSelection = @"AlfrescoEnableMainMenuAutoItemSelection";
+NSString * const kAlfrescoShowAccountPickerNotification = @"AlfrescoShowAccountPickerNotification";
+
 // Saveback
 NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplete";
 NSString * const kAlfrescoSaveBackRemoteComplete = @"AlfrescoSaveBackRemoteComplete";

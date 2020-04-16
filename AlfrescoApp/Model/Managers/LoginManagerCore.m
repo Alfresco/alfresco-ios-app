@@ -75,7 +75,11 @@
         {
             [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification
                                                                 object:alfrescoSession];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoShowAccountPickerNotification
+                                                                object:account];
         }
+        
         if (loginCompletionBlock)
         {
             loginCompletionBlock(successful, alfrescoSession, error);
@@ -700,18 +704,18 @@
                 {
                     [strongSelf.delegate refreshSessionForAccount:account
                                                   completionBlock:^(UserAccount *refreshedAccount, NSError *error) {
-                        if (error) {
-                            //TODO: show account picker
-                        } else {
+                        if (!error) {
                             [AlfrescoRepositorySession connectWithUrl:url
                                                             oauthData:refreshedAccount.oauthData
                                                       completionBlock:handleAuthenticationResponse];
-                        }
+                        } else {
+                            handleAuthenticationResponse(session, error);
+                        };
                     }];
                 }
+            } else {
+                handleAuthenticationResponse(session, error);
             }
-            
-            handleAuthenticationResponse(session, error);
         }];
     }
     else

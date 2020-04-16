@@ -164,6 +164,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountListUpdated:) name:kAlfrescoAccountsListEmptyNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(accountConfigurationUpdated:) name:kAppConfigurationAccountsConfigurationUpdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(mainMenuConfigurationChanged:) name:kAlfrescoConfigFileDidUpdateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showAccountPicker:) name:kAlfrescoShowAccountPickerNotification object:nil];
 }
 
 - (void)dealloc
@@ -198,6 +199,12 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 {
     NSDictionary *configuration = notification.userInfo;
     [self configureViewForConfiguration:configuration];
+}
+
+- (void)showAccountPicker:(NSNotification *)notification
+{
+    [self showPickerAccountsWithCurrentAccount:(UserAccount *)notification.object
+                              onViewController:self.presentationPickerDelegate.accountPickerPresentationViewController];
 }
 
 #pragma mark - UIRefreshControl Functions
@@ -461,20 +468,22 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         __strong typeof(self) strongSelf = weakSelf;
         if (!successful)
         {
-            if (account.password.length > 0)
-            {
-                displayErrorMessage([ErrorDescriptions descriptionForError:error]);
-            }
-            else
-            {
-                // Missing details - possibly first launch of an MDM-configured account
-                if ([account.username length] == 0)
+            if (UserAccountTypeAIMS != account.accountType) {
+                if (account.password.length > 0)
                 {
-                    displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.accountSettings", @"Enter user name and password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                    displayErrorMessage([ErrorDescriptions descriptionForError:error]);
                 }
                 else
                 {
-                    displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                    // Missing details - possibly first launch of an MDM-configured account
+                    if ([account.username length] == 0)
+                    {
+                        displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.accountSettings", @"Enter user name and password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                    }
+                    else
+                    {
+                        displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                    }
                 }
             }
         }
@@ -566,7 +575,8 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             {
                 if ([strongSelf.presentationPickerDelegate respondsToSelector:@selector(accountPickerPresentationViewController)])
                 {
-                    [strongSelf showPickerAccountsWithCurrentAccount:account onViewController:strongSelf.presentationPickerDelegate.accountPickerPresentationViewController];
+                    [strongSelf showPickerAccountsWithCurrentAccount:account
+                                                    onViewController:strongSelf.presentationPickerDelegate.accountPickerPresentationViewController];
                 }
             }
 
