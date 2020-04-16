@@ -267,6 +267,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             accountTypeImage = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             cell.imageView.tintColor = [UIColor redColor];
         }
+        else if (account.accountType == UserAccountTypeAIMS)
+        {
+            accountTypeImage = [UIImage imageNamed:@"aims-account"];
+        }
         
         cell.imageView.image = accountTypeImage;
         

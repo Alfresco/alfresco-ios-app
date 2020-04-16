@@ -1,12 +1,12 @@
 {
   "images" : [
     {
-      "filename" : "icons8-plus-math-51.png",
+      "filename" : "ic-user@1.5x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "icons8-plus-math-50.png",
+      "filename" : "ic-user@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
