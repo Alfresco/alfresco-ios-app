@@ -27,9 +27,8 @@ import UIKit
 @objc class AccountPickerViewController: UIViewController {
     
     let kDefaultFontSize: CGFloat = 20.0
-    let kButtonFontSize: CGFloat = 25.0
     let kCellHeight: CGFloat = 65.0
-    let kMinimViewTopSize: CGFloat = 94.0
+    let kMinimView: CGFloat = 250
     
     @IBOutlet weak var titlePickerLabel: UILabel!
     @IBOutlet weak var subtitlePickerLabel: UILabel!
@@ -42,7 +41,6 @@ import UIKit
     @IBOutlet weak var contraintView: UIView!
     
     @IBOutlet weak var bottomInfoLabelConstraint: NSLayoutConstraint!
-    @IBOutlet weak var heightTableViewConstraint: NSLayoutConstraint!
     
     var model: AccountPickerModel
     @objc weak var delegate: AccountPickerDelegate?
@@ -51,7 +49,8 @@ import UIKit
         self.model = AccountPickerModel(with: currentAccount)
         self.delegate = delegate
         super.init(nibName: nil, bundle: nil)
-        self.modalPresentationStyle = .overFullScreen
+        self.preferredContentSize = CGSize(width: self.view.bounds.size.width/2,
+                                           height: kMinimView + CGFloat(self.model.accounts.count + 1) * kCellHeight)
     }
     
     required init?(coder: NSCoder) {
@@ -61,10 +60,13 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.titlePickerLabel.text = NSLocalizedString("accountpicker.title", comment: "Expired Session")
+        self.titlePickerLabel.text = ""
         self.subtitlePickerLabel.text = NSLocalizedString("accountpicker.subtitle", comment: "Expired Session")
         self.infoLabel.text = NSLocalizedString("accountpicker.info.other", comment: "Expired Session")
         self.signInButton.setTitle(NSLocalizedString("login.sign.in", comment: "Sign in"), for: .normal)
+        self.title = NSLocalizedString("accountpicker.title", comment: "Expired Session")
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .cancel,
+                                                                     target: self, action: #selector(cancelButtonPressed))
         
         if self.model.accounts.count == 0 {
             self.separatorSmall1.isHidden = true
@@ -73,25 +75,14 @@ import UIKit
             self.infoLabel.text = ""
             self.bottomInfoLabelConstraint.constant = 0
         }
-        
-        self.heightTableViewConstraint.constant = kCellHeight * CGFloat((self.model.accounts.count + 1))
-        self.tableView.isScrollEnabled = false
-        self.view.layoutSubviews()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.view.layoutSubviews()
-        if self.contraintView.frame.origin.y == kMinimViewTopSize {
-            self.tableView.isScrollEnabled = true
-        }
+    @objc func cancelButtonPressed() {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func signInButtonPressed(_ sender: Any) {
-        self.dismiss(animated: false) { [weak self] in
-            guard let sSelf = self else { return }
-            sSelf.delegate?.resignin(currentUser: sSelf.model.currentAccount)
-        }
+        self.delegate?.resignin(currentUser: self.model.currentAccount)
     }
     
 }
@@ -112,7 +103,7 @@ extension AccountPickerViewController: UITableViewDelegate, UITableViewDataSourc
         guard let cell = celll else { return UITableViewCell() }
         let cellHeight = kCellHeight
         let cellWidth = tableView.bounds.size.width
-        let colorGrayish = UIColor(red: 36.0/255, green: 36.0/255, blue: 36.0/255, alpha: 1.0)
+        let colorGrayish = UIColor(red: 36.0/255, green: 36.0/255, blue: 36.0/255, alpha: 0.75)
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: cellHeight, height: cellHeight))
         let label = UILabel(frame: CGRect(x: cellHeight, y: 0, width: cellWidth - 2 * cellHeight, height: cellHeight))
         
@@ -133,6 +124,7 @@ extension AccountPickerViewController: UITableViewDelegate, UITableViewDataSourc
         label.font = UIFont.systemFont(ofSize: kDefaultFontSize)
         
         cell.accessoryView = UIImageView(image: UIImage(named: "ButtonBarArrowRight"))
+        cell.accessoryView?.tintColor = colorGrayish
         
         cell.addSubview(imageView)
         cell.addSubview(label)
@@ -153,5 +145,9 @@ extension AccountPickerViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return kCellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
     }
 }
