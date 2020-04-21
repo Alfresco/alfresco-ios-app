@@ -19,7 +19,7 @@
 import UIKit
 
 @objc protocol AccountPickerDelegate: class {
-    func resignin(currentUser: UserAccount?)
+    func resignin(currentUser: UserAccount?, viewcontroller: UIViewController)
     func addAccount()
     func signIn(userAccount: UserAccount?)
 }
@@ -82,7 +82,7 @@ import UIKit
     }
     
     @IBAction func signInButtonPressed(_ sender: Any) {
-        self.delegate?.resignin(currentUser: self.model.currentAccount)
+        self.delegate?.resignin(currentUser: self.model.currentAccount, viewcontroller: self)
     }
     
 }
