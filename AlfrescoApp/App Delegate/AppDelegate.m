@@ -52,6 +52,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 @property (nonatomic, strong) CoreDataCacheHelper *cacheHelper;
 @property (nonatomic, strong) id<AlfrescoSession> session;
 @property (nonatomic, strong, readwrite) MainMenuConfigurationViewController *mainMenuViewController;
+@property (nonatomic, strong, readwrite) AccountsViewController *accountsController;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *appleConfigurationHelper;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *mobileIronConfigurationHelper;
 
@@ -159,8 +160,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         {
             // Delay to allow the UI to update - reachability check can block the main thread
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                    if (!successful)
+                __weak typeof(self) weakSelf = self;
+                void (^loginCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) =
+                ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                    __strong typeof(self) strongSelf = weakSelf;
+                    if (!successful && accountManager.selectedAccount.accountType != UserAccountTypeAIMS)
                     {
                         if (accountManager.selectedAccount.password.length > 0)
                         {
@@ -179,6 +183,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                             }
                         }
                     }
+                    else if (accountManager.selectedAccount.accountType == UserAccountTypeAIMS)
+                    {
+                        [strongSelf.accountsController showPickerAccountsWithCurrentAccount:accountManager.selectedAccount
+                                                                           onViewController:strongSelf.window.rootViewController];
+                    }
                     
                     if ([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
                     {
@@ -188,7 +197,17 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                     }
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
-                }];
+                };
+                
+                if (accountManager.selectedAccount.accountType == UserAccountTypeAIMS)
+                {
+                    [[LoginManager sharedManager] authenticateWithAIMSOnPremiseAccount:accountManager.selectedAccount
+                                                                       completionBlock:loginCompletionBlock];
+                }
+                else
+                {
+                    [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:loginCompletionBlock];
+                }
             });
         }
     }
@@ -273,7 +292,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     AccountsViewController *accountsViewController = [[AccountsViewController alloc] initWithConfiguration:initialConfiguration session:session];
     NavigationViewController *accountsNavigationController = [[NavigationViewController alloc] initWithRootViewController:accountsViewController];
     accountsViewController.presentationPickerDelegate = self;
-    
+    self.accountsController = accountsViewController;
     SwitchViewController *switchController = [[SwitchViewController alloc] initWithInitialViewController:accountsNavigationController];
     
     // Main Menu Configuration
