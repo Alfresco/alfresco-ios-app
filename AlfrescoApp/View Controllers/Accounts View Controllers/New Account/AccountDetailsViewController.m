@@ -168,6 +168,7 @@
                 
             case AccountDataSourceTypeNewAccountCredentials:
                 self.formBackupAccount = account;
+                self.formBackupAccount.accountType = UserAccountTypeOnPremise;
                 self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
                 break;
             case AccountDataSourceTypeNewAccountAIMS:
