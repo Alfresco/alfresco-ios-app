@@ -36,6 +36,7 @@
     TextFieldCell *serverCell = [self serverAdressCell];
     TextFieldCell *contentCell = [self contentAdressCell];
     SwitchCell *protocolCell = [self protocolCell];
+    protocolCell.valueSwitch.enabled = NO;
     TextFieldCell *portCell = [self portCell];
     TextFieldCell *serviceDocumentCell = [self serviceDocumentCell];
     TextFieldCell *realmCell = [self realmCell];
@@ -61,6 +62,16 @@
 }
 
 #pragma mark - UITextFieldDelegate Methods
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (textField == self.descriptionTextField)
+    {
+        return YES;
+    }
+    return NO;
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
