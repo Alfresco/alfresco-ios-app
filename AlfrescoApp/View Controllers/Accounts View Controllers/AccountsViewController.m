@@ -84,7 +84,9 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 - (void)showPickerAccountsWithCurrentAccount:(UserAccount*)currentUser onViewController:(UIViewController*)viewController
 {
     AccountPickerViewController *accountPickerViewContoller = [[AccountPickerViewController alloc] initWithAccount:currentUser withDelegate:self];
-    [viewController presentViewController:accountPickerViewContoller animated:NO completion:nil];
+    NavigationViewController *navController = [[NavigationViewController alloc] initWithRootViewController:accountPickerViewContoller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [viewController presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)viewDidLoad
@@ -273,6 +275,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
         {
             accountTypeImage = [[UIImage imageNamed:@"account-type-cloud.png"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
             cell.imageView.tintColor = [UIColor redColor];
+        }
+        else if (account.accountType == UserAccountTypeAIMS)
+        {
+            accountTypeImage = [UIImage imageNamed:@"aims-account"];
         }
         
         cell.imageView.image = accountTypeImage;
@@ -617,7 +623,8 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     
 }
 
-- (void)resigninWithCurrentUser:(UserAccount * _Nullable)currentUser
+
+- (void)resigninWithCurrentUser:(UserAccount * _Nullable)currentUser viewcontroller:(UIViewController * _Nonnull)viewcontroller
 {
     if(currentUser.accountType == UserAccountTypeAIMS)
     {
@@ -630,6 +637,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                     if (alfrescoSession)
                     {
                         [[AccountManager sharedManager] selectAccount:currentUser selectNetwork:nil alfrescoSession:alfrescoSession];
+                        [viewcontroller dismissViewControllerAnimated:YES completion:nil];
                         [weakSelf.tableView reloadData];
                     }
                 }];
@@ -642,8 +650,6 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                                                navigationController:self.presentationPickerDelegate.accountPickerPresentationViewController
                                                     completionBlock:obtainedAIMSCredentialBlock];
         }
-        
-        
     }
     else
     {
