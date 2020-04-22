@@ -524,7 +524,10 @@ static CGFloat kSearchCellHeight = 60.0f;
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        if (UserAccountTypeAIMS != [AccountManager sharedManager].selectedAccount.accountType)
+        {
+            [self.navigationController popToRootViewControllerAnimated:NO];
+        }
     }
 }
 

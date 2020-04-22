@@ -174,6 +174,7 @@ extern NSString * const kAlfrescoLastPaidAccountRemovedNotification;
 extern NSString * const kAlfrescoDefaultAIMSClientIDString;
 extern NSString * const kAlfrescoDefaultAIMSRealmString;
 extern NSString * const kAlfrescoDefaultAIMSRedirectURI;
+extern NSInteger const kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer;
 
 
 // Application policy constants

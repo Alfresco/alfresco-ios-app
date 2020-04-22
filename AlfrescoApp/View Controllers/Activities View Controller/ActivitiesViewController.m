@@ -555,14 +555,16 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
     self.session = session;
     
     [self createAlfrescoServicesWithSession:session];
-    
     if ([self shouldRefresh])
     {
         [self loadActivities];
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        if (UserAccountTypeAIMS != [AccountManager sharedManager].selectedAccount.accountType)
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
 }
 

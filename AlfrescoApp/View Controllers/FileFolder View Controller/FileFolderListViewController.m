@@ -618,13 +618,17 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     [self createAlfrescoServicesWithSession:session];
     
+    
     if (session && [self shouldRefresh])
     {
         [self loadContentOfFolder];
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        if (UserAccountTypeAIMS != [AccountManager sharedManager].selectedAccount.accountType)
+        {
+            [self.navigationController popToRootViewControllerAnimated:NO];
+        }
     }
 }
 

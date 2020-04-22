@@ -180,6 +180,9 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                                 }
                             }
                         }
+                    } else {
+                        // TODO: assess whether to handle this for all calls
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                     }
                     
                     if ([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
@@ -188,8 +191,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                         [[FileHandlerManager sharedManager] handleURL:url sourceApplication:nil annotation:nil session:alfrescoSession];
                         self.mainMenuViewController.autoselectDefaultMenuOption = NO;
                     }
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                 }];
             });
         }

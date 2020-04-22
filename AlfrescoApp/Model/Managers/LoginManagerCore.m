@@ -39,6 +39,9 @@
 @property (nonatomic, strong) AlfrescoOAuthUILoginViewController*loginController;
 @property (nonatomic, strong) AlfrescoSAMLUILoginViewController *samlLoginController;
 
+// AIMS
+@property (nonatomic, strong) NSTimer                           *aimsSessionTimer;
+
 @property (nonatomic, copy) void (^authenticationCompletionBlock)(BOOL success, id<AlfrescoSession> alfrescoSession, NSError *error);
 
 @end
@@ -668,7 +671,10 @@
 - (void)authenticateWithAIMSOnPremiseAccount:(UserAccount *)account
                              completionBlock:(LoginAuthenticationCompletionBlock)authenticationCompletionBlock
 {
+    __weak typeof(self) weakSelf = self;
     void (^handleAuthenticationResponse)(id<AlfrescoSession>, NSError *error) = ^(id<AlfrescoSession> session, NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        
         if (authenticationCompletionBlock)
         {
             account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
@@ -676,6 +682,7 @@
             if (session)
             {
                 authenticationCompletionBlock(YES, session, nil);
+                [strongSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
             }
             else
             {
@@ -690,7 +697,6 @@
     
     if (account.oauthData)
     {
-        __weak typeof(self) weakSelf = self;
         [AlfrescoRepositorySession connectWithUrl:url
                                         oauthData:account.oauthData
                                   completionBlock:^(id<AlfrescoSession> session, NSError *error) {
@@ -705,6 +711,10 @@
                     [strongSelf.delegate refreshSessionForAccount:account
                                                   completionBlock:^(UserAccount *refreshedAccount, NSError *error) {
                         if (!error) {
+                            if ([weakSelf.delegate respondsToSelector:@selector(disableAutoSelectMenuOption)]) {
+                                [weakSelf.delegate disableAutoSelectMenuOption];
+                            }
+                            
                             [AlfrescoRepositorySession connectWithUrl:url
                                                             oauthData:refreshedAccount.oauthData
                                                       completionBlock:handleAuthenticationResponse];
@@ -722,6 +732,48 @@
     {
         authenticationCompletionBlock(NO, nil, nil);
     }
+}
+
+- (void)scheduleAIMSAcessTokenRefreshHandlerCurrentAccount
+{
+    [self.aimsSessionTimer invalidate];
+    
+    UserAccount *currentAccount = [AccountManager sharedManager].selectedAccount;
+    NSTimeInterval aimsAccessTokenRefreshInterval = currentAccount.oauthData.expiresIn.integerValue - [[NSDate date] timeIntervalSince1970] - kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer;
+    __weak typeof(self) weakSelf = self;
+    self.aimsSessionTimer = [NSTimer scheduledTimerWithTimeInterval:aimsAccessTokenRefreshInterval
+                                                            repeats:YES
+                                                              block:^(NSTimer * _Nonnull timer) {
+        __strong typeof(self) strongSelf = weakSelf;
+        
+        if ([strongSelf.delegate respondsToSelector:@selector(refreshSessionForAccount:completionBlock:)]) {
+            [strongSelf.delegate refreshSessionForAccount:currentAccount
+                                          completionBlock:^(UserAccount *refreshedAccount, NSError *error)
+            {
+                if (!error)
+                {
+                    NSString *urlString = [Utilities serverURLAddressStringFromAccount:refreshedAccount];
+                    NSURL *url = [NSURL URLWithString:urlString];
+                    
+                    if ([weakSelf.delegate respondsToSelector:@selector(disableAutoSelectMenuOption)]) {
+                        [weakSelf.delegate disableAutoSelectMenuOption];
+                    }
+                    
+                    [AlfrescoRepositorySession connectWithUrl:url
+                                                    oauthData:refreshedAccount.oauthData
+                                              completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                        [[AccountManager sharedManager] selectAccount:refreshedAccount
+                                                        selectNetwork:refreshedAccount.selectedNetworkId
+                                                      alfrescoSession:session];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification
+                                                                            object:session
+                                                                          userInfo:nil];
+                        [weakSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
+                    }];
+                }
+            }];
+        }
+    }];
 }
 
 #pragma mark - OAuth delegate

@@ -77,6 +77,7 @@
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId
               completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock
 {
+    [self.aimsLoginService updateWith:account];
     [self.loginCore attemptLoginToAccount:account
                                 networkId:networkId
                           completionBlock:loginCompletionBlock];
@@ -328,6 +329,12 @@ navigationController:(UINavigationController *)navigationController
                              completionBlock:completionBlock];
 }
 
+- (void)disableAutoSelectMenuOption
+{
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    delegate.mainMenuViewController.autoselectDefaultMenuOption = NO;
+}
+
 #pragma mark - Private Functions
 
 - (void)showHUDOnView:(UIView *)view
@@ -376,20 +383,24 @@ navigationController:(UINavigationController *)navigationController
 - (void)reachabilityChanged:(NSNotification *)notification
 {
     BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-    
     if(hasInternetConnection)
     {
         UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        
+        __weak typeof(self) weakSelf = self;
         [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-            if(successful && !self.completionBlockCalledFromLoginViewController)
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            if(successful && !strongSelf.completionBlockCalledFromLoginViewController)
             {
-                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                delegate.mainMenuViewController.autoselectDefaultMenuOption = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+                [strongSelf disableAutoSelectMenuOption];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification
+                                                                    object:alfrescoSession
+                                                                  userInfo:nil];
             }
-            else if (self.completionBlockCalledFromLoginViewController)
+            else if (strongSelf.completionBlockCalledFromLoginViewController)
             {
-                self.completionBlockCalledFromLoginViewController = NO;
+                strongSelf.completionBlockCalledFromLoginViewController = NO;
             }
         }];
     }
