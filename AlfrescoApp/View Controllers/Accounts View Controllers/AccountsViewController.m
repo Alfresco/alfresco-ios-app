@@ -398,6 +398,24 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 	    }];
     };
     
+    void (^removeAccountAndCheckAIMS)(void) = ^(){
+           __strong typeof(self) strongSelf = weakSelf;
+           if (account.accountType == UserAccountTypeAIMS) {
+               [[LoginManager sharedManager] showLogOutAIMSWebviewForAccount:account
+                                                        navigationController:strongSelf.navigationController
+                                                             completionBlock:^(BOOL successful, NSError *error) {
+                   
+                   if (successful) {
+                       removeAccount();
+                   }
+               }];
+           }
+           else
+           {
+               removeAccount();
+           }
+       };
+    
     // If this is the last paid account and passcode is enabled, authenticate via passcode before deleting the account.
     if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] && [accountManager numberOfPaidAccounts] == 1 && account.isPaidAccount)
     {
@@ -405,7 +423,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             switch (status)
             {
                 case PinFlowCompletionStatusSuccess:
-                    removeAccount();
+                    removeAccountAndCheckAIMS();
                     break;
                     
                 case PinFlowCompletionStatusCancel:
@@ -430,7 +448,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                     [navController dismissViewControllerAnimated:NO completion:nil];
                     
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        removeAccount();
+                        removeAccountAndCheckAIMS();
                     });
                 }
             }];
@@ -438,9 +456,10 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     }
     else
     {
-        removeAccount();
+        removeAccountAndCheckAIMS();
     }
 }
+
 
 #pragma mark - Add Account
 
