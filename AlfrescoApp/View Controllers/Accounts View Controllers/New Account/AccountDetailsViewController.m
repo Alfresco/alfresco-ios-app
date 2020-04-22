@@ -238,6 +238,13 @@
             [self goToLoginWithAIMSScreen];
         }
             break;
+        case AccountDataSourceTypeAccountSettingAIMS:
+        {
+            [self updateAccountInfoFromAccount:self.formBackupAccount];
+            [[AccountManager sharedManager] saveAccountsToKeychain];
+            [self cancelButtonPressed:nil];
+        }
+            break;
         default:
             break;
     }
