@@ -595,6 +595,17 @@
         {
             strongSelf.saveButton.enabled = YES;
             strongSelf.navigationItem.hidesBackButton = NO;
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"error.host.unreachable.title", "Unreachable title")
+                                                                                     message:NSLocalizedString(@"error.host.unreachable.message", @"Unreachable message")
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", @"Done")
+                                                                 style:UIAlertActionStyleCancel
+                                                               handler:nil];
+            [alertController addAction:doneAction];
+            [strongSelf presentViewController:alertController
+                                     animated:YES
+                                   completion:nil];
         }
     };
 
