@@ -33,29 +33,24 @@
 - (void)setupTableViewData
 {
     TextFieldCell *contentCell = [self contentAdressCell];
-    TextFieldCell *realmCell = [self realmCell];
-    TextFieldCell *clientID = [self clientIDCell];
     TextFieldCell *descriptionCell = [self descriptionCell];
-    CenterLabelCell *needHelpCell = [self needHelpCell];
     
-    self.tableViewData = @[@[contentCell, descriptionCell], @[realmCell, clientID], @[needHelpCell]];
+    self.tableViewData = @[@[contentCell, descriptionCell]];
 }
 
 - (void)setupHeaders
 {
-    self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced", @""];
+    self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced"];
 }
 
 - (void)setupFooters
 {
-    self.tableGroupFooters = @[@"", @"", @""];
+    self.tableGroupFooters = @[@"", @"",];
 }
 
 - (void)setAccessibilityIdentifiers
 {
     self.contentAddressTextField.accessibilityIdentifier = kNewAccountVCContentTextfieldIdentifier;
-    self.realmTextField.accessibilityIdentifier = kNewAccountVCRealmTextfieldIdentifier;
-    self.clientIDTextField.accessibilityIdentifier = kNewAccountVCClientIDTextfieldIdentifier;
     self.descriptionTextField.accessibilityIdentifier = kNewAccountVCDescriptionTextfieldIdentifier;
 }
 
@@ -74,15 +69,7 @@
     }
     else if (textField == self.descriptionTextField)
     {
-        [self.realmTextField becomeFirstResponder];
-    }
-    else if (textField == self.realmTextField)
-    {
-        [self.clientIDTextField becomeFirstResponder];
-    }
-    else if (textField == self.clientIDTextField)
-    {
-        [self.clientIDTextField resignFirstResponder];
+        [self.descriptionTextField resignFirstResponder];
     }
     
     return YES;
@@ -95,10 +82,8 @@
     BOOL valid = YES;
         
     AccountFormFieldValidation content = [self validateContent];
-    AccountFormFieldValidation realm = [self validateRealm];
-    AccountFormFieldValidation clientID = [self validateClientID];
     
-    AccountFormFieldValidation validation =  content | realm | clientID;
+    AccountFormFieldValidation validation =  content;
     
     if ((validation & AccountFormFieldInvalid) == AccountFormFieldInvalid)
     {

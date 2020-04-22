@@ -395,7 +395,7 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     needHelpCell.selectionStyle = UITableViewCellSelectionStyleNone;
     needHelpCell.accessoryType = UITableViewCellAccessoryNone;
     needHelpCell.tag = kTagNeedHelpCell;
-    needHelpCell.titleLabel.text = NSLocalizedString(@"accountdetails.buttons.needHelp", @"Need help");
+    needHelpCell.titleLabel.text = NSLocalizedString(@"help.title", @"Need help");
     [needHelpCell.titleLabel setTextColor:[UIColor colorWithRed:0.22 green:0.67 blue:0.85 alpha:1]];
     return needHelpCell;
 }

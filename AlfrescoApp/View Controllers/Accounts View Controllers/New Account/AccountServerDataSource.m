@@ -41,17 +41,21 @@
     
     TextFieldCell *serviceDocumentCell = [self serviceDocumentCell];
     
-    self.tableViewData = @[@[serverCell, protocolCell], @[portCell, serviceDocumentCell]];
+    TextFieldCell *realmCell = [self realmCell];
+    TextFieldCell *clientID = [self clientIDCell];
+    CenterLabelCell *needHelpCell = [self needHelpCell];
+    
+    self.tableViewData = @[@[serverCell, protocolCell], @[portCell, serviceDocumentCell], @[realmCell, clientID, needHelpCell]];
 }
 
 - (void)setupHeaders
 {
-    self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced"];
+    self.tableGroupHeaders = @[@"accountdetails.header.authentication", @"accountdetails.header.advanced", @"accountdetails.title.aimssettings"];
 }
 
 - (void)setupFooters
 {
-    self.tableGroupFooters = @[@"", @""];
+    self.tableGroupFooters = @[@"", @"", @""];
 }
 
 - (void)setAccessibilityIdentifiers
@@ -60,6 +64,8 @@
     self.protocolSwitch.accessibilityIdentifier = kNewAccountVCHTTPSSwitchIdentifier;
     self.portTextField.accessibilityIdentifier = kNewAccountVCPortTextfieldIdentifier;
     self.serviceDocumentTextField.accessibilityIdentifier = kNewAccountVCServiceTextfieldIdentifier;
+    self.realmTextField.accessibilityIdentifier = kNewAccountVCRealmTextfieldIdentifier;
+    self.clientIDTextField.accessibilityIdentifier = kNewAccountVCClientIDTextfieldIdentifier;
 }
 
 #pragma mark - UITextFieldDelegate Methods
@@ -81,7 +87,15 @@
     }
     else if (textField == self.serviceDocumentTextField)
     {
-        [self.serviceDocumentTextField resignFirstResponder];
+        [self.clientIDTextField becomeFirstResponder];
+    }
+    else if (textField == self.realmTextField)
+    {
+        [self.clientIDTextField becomeFirstResponder];
+    }
+    else if (textField == self.clientIDTextField)
+    {
+        [self.clientIDTextField resignFirstResponder];
     }
     
     return YES;
@@ -96,8 +110,10 @@
     AccountFormFieldValidation hostname = [self validateHostname];
     AccountFormFieldValidation port = [self validatePort];
     AccountFormFieldValidation serviceDocument = [self validateServiceDocument];
+    AccountFormFieldValidation realm = [self validateRealm];
+    AccountFormFieldValidation clientID = [self validateClientID];
     
-    AccountFormFieldValidation validation =  hostname | port | serviceDocument;
+    AccountFormFieldValidation validation =  hostname | port | serviceDocument | realm | clientID;
     
     if ((validation & AccountFormFieldInvalid) == AccountFormFieldInvalid)
     {

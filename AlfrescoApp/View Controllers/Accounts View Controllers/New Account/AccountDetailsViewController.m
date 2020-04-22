@@ -559,7 +559,8 @@
 - (void)goToLoginWithAIMSScreen
 {
     __weak typeof(self) weakSelf = self;
-    
+    self.saveButton.enabled = NO;
+    self.navigationItem.hidesBackButton = YES;
     void (^receivedSessionBlock)(BOOL, id<AlfrescoSession>, NSError *) = ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
         if (alfrescoSession) {
@@ -583,12 +584,22 @@
             
             [strongSelf dismiss];
         }
+        else
+        {
+            strongSelf.saveButton.enabled = YES;
+            strongSelf.navigationItem.hidesBackButton = NO;
+        }
     };
 
     void (^obtainedAIMSCredentialBlock)(UserAccount *, NSError *) = ^void(UserAccount *account, NSError *error){
+        __strong typeof(self) strongSelf = weakSelf;
         if (!error) {
             [[LoginManager sharedManager] authenticateWithAIMSOnPremiseAccount:account
                                                                completionBlock:receivedSessionBlock];
+        }
+        else {
+            strongSelf.saveButton.enabled = YES;
+            strongSelf.navigationItem.hidesBackButton = NO;
         }
     };
     
