@@ -148,6 +148,7 @@ extern NSString * const kAlfrescoDocumentUpdatedLocallyNotification;
 extern NSString * const kAlfrescoDocumentDeletedOnServerNotification;
 extern NSString * const kAlfrescoNodeAddedOnServerNotification;
 extern NSString * const kAlfrescoEnableMainMenuAutoItemSelection;
+extern NSString * const kAlfrescoShowAccountPickerNotification;
 // parameter keys used in the dictionary of notification object
 extern NSString * const kAlfrescoDocumentUpdatedFromDocumentParameterKey;
 extern NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey;
@@ -173,6 +174,7 @@ extern NSString * const kAlfrescoLastPaidAccountRemovedNotification;
 extern NSString * const kAlfrescoDefaultAIMSClientIDString;
 extern NSString * const kAlfrescoDefaultAIMSRealmString;
 extern NSString * const kAlfrescoDefaultAIMSRedirectURI;
+extern NSInteger const kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer;
 
 
 // Application policy constants

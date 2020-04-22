@@ -19,7 +19,9 @@
 #import "ParentListViewController.h"
 
 @protocol AccountPickerPresentationDelegate <NSObject>
-    - (UIViewController*)accountPickerPresentationViewController;
+
+- (UIViewController*)accountPickerPresentationViewController;
+
 @end
 
 @interface AccountsViewController : ParentListViewController

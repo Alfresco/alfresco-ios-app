@@ -162,22 +162,27 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                 [[LoginManager sharedManager] attemptLoginToAccount:accountManager.selectedAccount networkId:accountManager.selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
                     if (!successful)
                     {
-                        if (accountManager.selectedAccount.password.length > 0)
-                        {
-                            displayErrorMessage([ErrorDescriptions descriptionForError:error]);
-                        }
-                        else
-                        {
-                            // Missing details - possibly first launch of an MDM-configured account
-                            if ([accountManager.selectedAccount.username length] == 0)
+                        if (UserAccountTypeAIMS != accountManager.selectedAccount.accountType) {
+                            if (accountManager.selectedAccount.password.length > 0)
                             {
-                                displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.accountSettings", @"Enter user name and password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                                displayErrorMessage([ErrorDescriptions descriptionForError:error]);
                             }
                             else
                             {
-                                displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                                // Missing details - possibly first launch of an MDM-configured account
+                                if ([accountManager.selectedAccount.username length] == 0)
+                                {
+                                    displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.accountSettings", @"Enter user name and password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                                }
+                                else
+                                {
+                                    displayWarningMessageWithTitle(NSLocalizedString(@"accountdetails.fields.confirmPassword", @"Confirm password"), NSLocalizedString(@"accountdetails.header.authentication", "Account Details"));
+                                }
                             }
                         }
+                    } else {
+                        // TODO: assess whether to handle this for all calls
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                     }
                     
                     if ([launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
@@ -186,8 +191,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                         [[FileHandlerManager sharedManager] handleURL:url sourceApplication:nil annotation:nil session:alfrescoSession];
                         self.mainMenuViewController.autoselectDefaultMenuOption = NO;
                     }
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                 }];
             });
         }

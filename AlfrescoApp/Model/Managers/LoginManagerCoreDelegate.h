@@ -41,5 +41,8 @@
                                   label:(NSString *)eventLabel
                                   value:(NSNumber *)value;
 - (void)trackAnalyticsScreenWithName:(NSString *)screenName;
+- (void)refreshSessionForAccount:(UserAccount *)account
+                 completionBlock:(LoginAIMSCompletionBlock)completionBlock;
+- (void)disableAutoSelectMenuOption;
 
 @end

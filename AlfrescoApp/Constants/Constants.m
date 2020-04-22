@@ -107,6 +107,8 @@ NSString * const kAlfrescoNodeAddedOnServerContentLocationLocally = @"AlfrescoNo
 NSString * const kAlfrescoWorkflowTaskListDidChangeNotification = @"AlfrescoWorkflowTaskListDidChange";
 NSString * const kAlfrescoDocumentEditedNotification = @"AlfrescoDocumentEditedNotification";
 NSString * const kAlfrescoEnableMainMenuAutoItemSelection = @"AlfrescoEnableMainMenuAutoItemSelection";
+NSString * const kAlfrescoShowAccountPickerNotification = @"AlfrescoShowAccountPickerNotification";
+
 // Saveback
 NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplete";
 NSString * const kAlfrescoSaveBackRemoteComplete = @"AlfrescoSaveBackRemoteComplete";
@@ -123,6 +125,7 @@ NSString * const kAlfrescoLastPaidAccountRemovedNotification = @"AlfrescoLastPai
 NSString * const kAlfrescoDefaultAIMSClientIDString = @"alfresco-ios-acs-app";
 NSString * const kAlfrescoDefaultAIMSRealmString = @"alfresco";
 NSString * const kAlfrescoDefaultAIMSRedirectURI = @"iosacsapp://aims/auth";
+NSInteger const kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer = 10;
 
 // Application policy constants
 NSString * const kApplicationPolicySettings = @"ApplicationPolicySettings";
