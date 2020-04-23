@@ -740,39 +740,46 @@
     
     UserAccount *currentAccount = [AccountManager sharedManager].selectedAccount;
     NSTimeInterval aimsAccessTokenRefreshInterval = currentAccount.oauthData.expiresIn.integerValue - [[NSDate date] timeIntervalSince1970] - kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer;
+    
+    if (aimsAccessTokenRefreshInterval < kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer / 2) {
+        return;
+    }
     __weak typeof(self) weakSelf = self;
     self.aimsSessionTimer = [NSTimer scheduledTimerWithTimeInterval:aimsAccessTokenRefreshInterval
                                                             repeats:YES
                                                               block:^(NSTimer * _Nonnull timer) {
-        __strong typeof(self) strongSelf = weakSelf;
-        
-        if ([strongSelf.delegate respondsToSelector:@selector(refreshSessionForAccount:completionBlock:)]) {
-            [strongSelf.delegate refreshSessionForAccount:currentAccount
-                                          completionBlock:^(UserAccount *refreshedAccount, NSError *error)
-            {
-                if (!error)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, kNilOptions), ^{
+            if ([weakSelf.delegate respondsToSelector:@selector(refreshSessionForAccount:completionBlock:)]) {
+                [weakSelf.delegate refreshSessionForAccount:currentAccount
+                                              completionBlock:^(UserAccount *refreshedAccount, NSError *error)
                 {
-                    NSString *urlString = [Utilities serverURLAddressStringFromAccount:refreshedAccount];
-                    NSURL *url = [NSURL URLWithString:urlString];
-                    
-                    if ([weakSelf.delegate respondsToSelector:@selector(disableAutoSelectMenuOption)]) {
-                        [weakSelf.delegate disableAutoSelectMenuOption];
+                    if (!error)
+                    {
+                        NSString *urlString = [Utilities serverURLAddressStringFromAccount:refreshedAccount];
+                        NSURL *url = [NSURL URLWithString:urlString];
+                        
+                        if ([weakSelf.delegate respondsToSelector:@selector(disableAutoSelectMenuOption)])
+                        {
+                            [weakSelf.delegate disableAutoSelectMenuOption];
+                        }
+                        
+                        [AlfrescoRepositorySession connectWithUrl:url
+                                                        oauthData:refreshedAccount.oauthData
+                                                  completionBlock:^(id<AlfrescoSession> session, NSError *error) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [[AccountManager sharedManager] selectAccount:refreshedAccount
+                                                                selectNetwork:refreshedAccount.selectedNetworkId
+                                                              alfrescoSession:session];
+                                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification
+                                                                                    object:session
+                                                                                  userInfo:nil];
+                                [weakSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
+                            });
+                        }];
                     }
-                    
-                    [AlfrescoRepositorySession connectWithUrl:url
-                                                    oauthData:refreshedAccount.oauthData
-                                              completionBlock:^(id<AlfrescoSession> session, NSError *error) {
-                        [[AccountManager sharedManager] selectAccount:refreshedAccount
-                                                        selectNetwork:refreshedAccount.selectedNetworkId
-                                                      alfrescoSession:session];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification
-                                                                            object:session
-                                                                          userInfo:nil];
-                        [weakSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
-                    }];
-                }
-            }];
-        }
+                }];
+            }
+        });
     }];
 }
 
