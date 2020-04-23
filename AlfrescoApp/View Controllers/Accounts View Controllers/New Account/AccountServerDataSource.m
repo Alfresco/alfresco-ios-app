@@ -87,7 +87,7 @@
     }
     else if (textField == self.serviceDocumentTextField)
     {
-        [self.clientIDTextField becomeFirstResponder];
+        [self.realmTextField becomeFirstResponder];
     }
     else if (textField == self.realmTextField)
     {
@@ -110,10 +110,8 @@
     AccountFormFieldValidation hostname = [self validateHostname];
     AccountFormFieldValidation port = [self validatePort];
     AccountFormFieldValidation serviceDocument = [self validateServiceDocument];
-    AccountFormFieldValidation realm = [self validateRealm];
-    AccountFormFieldValidation clientID = [self validateClientID];
     
-    AccountFormFieldValidation validation =  hostname | port | serviceDocument | realm | clientID;
+    AccountFormFieldValidation validation =  hostname | port | serviceDocument;
     
     if ((validation & AccountFormFieldInvalid) == AccountFormFieldInvalid)
     {
