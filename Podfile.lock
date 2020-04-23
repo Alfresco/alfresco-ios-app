@@ -8,6 +8,7 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.3.0)
   - AppAuth/Core (1.3.0)
   - AppAuth/ExternalUserAgent (1.3.0)
+  - Base64 (1.1.2)
   - Firebase/Analytics (6.20.0):
     - Firebase/Core
   - Firebase/Core (6.20.0):
@@ -77,6 +78,8 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.5.2):
     - GoogleUtilities/Logger
+  - JWT (2.2.0):
+    - Base64 (~> 1.1.2)
   - MBProgressHUD (1.0.0)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
@@ -97,16 +100,19 @@ DEPENDENCIES:
   - AlfrescoAuth
   - Firebase/Analytics
   - Firebase/Crashlytics
+  - JWT
   - MBProgressHUD (~> 1.0)
   - NJKWebViewProgress (~> 0.2)
   - Realm (~> 3.11)
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk:
+  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
     - AlfrescoAuth
     - AlfrescoCore
   https://github.com/CocoaPods/Specs.git:
     - AppAuth
+    - Base64
+    - JWT
     - MBProgressHUD
     - NJKWebViewProgress
     - Realm
@@ -130,6 +136,7 @@ SPEC CHECKSUMS:
   AlfrescoAuth: 25ba9f246c6440a9ee27da8348d8901d91d3fc8d
   AlfrescoCore: d28a8593e87b52952f70a5378b4047770f404af5
   AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
+  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   Firebase: fe7f74012742ab403451dd283e6909b8f1fb348a
   FirebaseAnalytics: 572e467f3d977825266e8ccd52674aa3e6f47eac
   FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
@@ -142,12 +149,13 @@ SPEC CHECKSUMS:
   GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
   GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
   GoogleUtilities: ad0f3b691c67909d03a3327cc205222ab8f42e0e
+  JWT: cf73c0ab0dac762df3de8a3f1164352089d97780
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Realm: 864477d028db77f7c5a0cba64a4892ad53db128a
 
-PODFILE CHECKSUM: bde6c6feb7e5efe9b2a9f8041de29e1fd3762d58
+PODFILE CHECKSUM: 23d3d92fcc6418c5a564752bdd9dea82d4c37239
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4

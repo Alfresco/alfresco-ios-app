@@ -11,6 +11,7 @@ target 'AlfrescoApp' do
     pod 'Firebase/Analytics'
     pod 'Firebase/Crashlytics'
     pod 'AlfrescoAuth'
+    pod 'JWT'
 end
 
 post_install do |installer|

@@ -18,6 +18,7 @@
 
 import Foundation
 import AlfrescoAuth
+import JWT
 
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
@@ -160,12 +161,14 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         case .success(let alfrescoCredential):
             self.session = session
             self.alfrescoCredential = alfrescoCredential
+            let decode = self.decodeJWTPayloadToken()
             self.account?.oauthData = AlfrescoOAuthData(tokenType: alfrescoCredential.tokenType,
                                                         accessToken: alfrescoCredential.accessToken,
                                                         accessTokenExpiresIn: alfrescoCredential.accessTokenExpiresIn as NSNumber?,
                                                         refreshToken: alfrescoCredential.refreshToken,
                                                         refreshTokenExpiresIn: alfrescoCredential.refreshTokenExpiresIn as NSNumber?,
-                                                        sessionState: alfrescoCredential.sessionState)
+                                                        sessionState: alfrescoCredential.sessionState,
+                                                        payloadToken: decode)
             self.saveToKeychain(session: session, credential: alfrescoCredential)
             if let loginCompletionBlock = self.loginCompletionBlock {
                 loginCompletionBlock(self.account, nil)
@@ -221,5 +224,16 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
             fullFormatURL.append(contentsOf: String(format:":%@", account.serverPort))
         }
         return fullFormatURL
+    }
+    
+    private func decodeJWTPayloadToken() -> [AnyHashable: Any]? {
+        if let jwtToken = alfrescoCredential?.accessToken {
+            if let decodeBuilder = JWT.decodeMessage(jwtToken) {
+                let options = NSNumber(booleanLiteral: true)
+                let result = decodeBuilder.message(jwtToken)?.options(options)?.decode
+                return result
+            }
+        }
+        return nil
     }
 }
