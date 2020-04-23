@@ -23,5 +23,6 @@
 - (instancetype)initWithType:(SiteListTypeSelection)listType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController listingContext:(AlfrescoListingContext *)listingContext;
 - (void)search:(NSString *)searchString listingContext:(AlfrescoListingContext *)listingContext;
 - (void)clearDataSource;
+- (void)updateSession:(id<AlfrescoSession>)session;
 
 @end

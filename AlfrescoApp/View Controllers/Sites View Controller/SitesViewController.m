@@ -55,6 +55,10 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
         self.session = session;
         self.title = NSLocalizedString(@"sites.title", @"Sites Title");
         self.activeAccountOnPremise = [AccountManager sharedManager].selectedAccount.accountType == UserAccountTypeOnPremise;
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(sessionRefreshed:)
+                                                     name:kAlfrescoSessionRefreshedNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -152,8 +156,6 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sessionRefreshed:) name:kAlfrescoSessionRefreshedNotification object:nil];
     
     self.favoritesVC = [[SitesTableListViewController alloc] initWithType:SiteListTypeSelectionFavouriteSites session:self.session pushHandler:self listingContext:self.defaultListingContext];
     self.favoritesVC.view.frame = self.favoritesContainerView.bounds;
@@ -300,6 +302,9 @@ static CGFloat const kSegmentToSearchControlPadding = 8.0f;
 - (void)sessionRefreshed:(NSNotification *)notification
 {
     self.session = notification.object;
+    [self.favoritesVC updateSession:self.session];
+    [self.mySitesVC updateSession:self.session];
+    [self.allSitesVC updateSession:self.session];
 }
 
 @end

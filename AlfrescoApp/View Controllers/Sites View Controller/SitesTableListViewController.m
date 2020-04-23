@@ -652,6 +652,11 @@
     [self.dataSource clearDataSource];
 }
 
+- (void)updateSession:(id<AlfrescoSession>)session {
+    self.session = session;
+    [self createAlfrescoServicesWithSession:session];
+}
+
 #pragma mark - SearchResultsTableViewDataSourceDelegate
 
 - (void)dataSourceUpdated
