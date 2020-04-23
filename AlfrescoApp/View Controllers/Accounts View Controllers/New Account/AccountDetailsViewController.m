@@ -242,7 +242,7 @@
         {
             [self updateAccountInfoFromAccount:self.formBackupAccount];
             [[AccountManager sharedManager] saveAccountsToKeychain];
-            [self cancelButtonPressed:nil];
+            [self.navigationController popViewControllerAnimated:YES];
         }
             break;
         default:
@@ -566,8 +566,7 @@
 - (void)goToLoginWithAIMSScreen
 {
     __weak typeof(self) weakSelf = self;
-    self.saveButton.enabled = NO;
-    self.navigationItem.hidesBackButton = YES;
+    [self showHUD];
     void (^receivedSessionBlock)(BOOL, id<AlfrescoSession>, NSError *) = ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
         if (alfrescoSession) {
@@ -588,14 +587,12 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
                 }];
             }
-            
+            [strongSelf hideHUD];
             [strongSelf dismiss];
         }
         else
         {
-            strongSelf.saveButton.enabled = YES;
-            strongSelf.navigationItem.hidesBackButton = NO;
-            
+            [strongSelf hideHUD];
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"error.host.unreachable.title", "Unreachable title")
                                                                                      message:NSLocalizedString(@"error.host.unreachable.message", @"Unreachable message")
                                                                               preferredStyle:UIAlertControllerStyleAlert];
@@ -616,8 +613,7 @@
                                                                completionBlock:receivedSessionBlock];
         }
         else {
-            strongSelf.saveButton.enabled = YES;
-            strongSelf.navigationItem.hidesBackButton = NO;
+            [strongSelf hideHUD];
         }
     };
     

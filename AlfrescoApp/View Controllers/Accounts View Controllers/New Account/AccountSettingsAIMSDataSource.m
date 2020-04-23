@@ -36,7 +36,6 @@
     TextFieldCell *serverCell = [self serverAdressCell];
     TextFieldCell *contentCell = [self contentAdressCell];
     SwitchCell *protocolCell = [self protocolCell];
-    protocolCell.valueSwitch.enabled = NO;
     TextFieldCell *portCell = [self portCell];
     TextFieldCell *serviceDocumentCell = [self serviceDocumentCell];
     TextFieldCell *realmCell = [self realmCell];
@@ -44,6 +43,20 @@
     CenterLabelCell *needHelpCell = [self needHelpCell];
     
     self.tableViewData = @[@[descriptionCell], @[serverCell, contentCell, protocolCell], @[portCell, serviceDocumentCell, realmCell, clientIDCell], @[needHelpCell]];
+    
+    protocolCell.userInteractionEnabled = NO;
+    [self disableDarkGray:serverCell];
+    [self disableDarkGray:contentCell];
+    [self disableDarkGray:portCell];
+    [self disableDarkGray:serviceDocumentCell];
+    [self disableDarkGray:realmCell];
+    [self disableDarkGray:clientIDCell];
+}
+
+- (void)disableDarkGray:(TextFieldCell *)cell
+{
+    cell.userInteractionEnabled = NO;
+    cell.valueTextField.textColor = [UIColor lightGrayColor];
 }
 
 - (void)setupHeaders
@@ -71,7 +84,6 @@
     }
     return NO;
 }
-
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
