@@ -62,8 +62,14 @@
     LabelCell *editMainMenuCell = [self editMainMenuCell];
     LabelCell *accountDetailsCell = [self accountDetailsCell];
     CenterLabelCell *logout = [self logoutCell];
-    
-    self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[logout]];
+    if ([AccountManager sharedManager].selectedAccount != self.account)
+    {
+        self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[logout]];
+    }
+    else
+    {
+        self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[]];
+    }
 }
 
 - (void)setupHeaders
