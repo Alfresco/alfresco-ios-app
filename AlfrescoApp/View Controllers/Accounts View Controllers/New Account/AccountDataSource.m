@@ -490,6 +490,10 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     if (self.serviceDocumentTextField)
     {
         self.formBackupAccount.serviceDocument = [self.serviceDocumentTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if (![[self.formBackupAccount.serviceDocument substringToIndex:1] isEqual: @"/"])
+        {
+            self.formBackupAccount.serviceDocument = [NSString stringWithFormat:@"/%@", self.formBackupAccount.serviceDocument];
+        }
     }
     
     if (self.contentAddressTextField) {
