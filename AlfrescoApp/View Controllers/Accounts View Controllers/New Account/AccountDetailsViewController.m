@@ -593,18 +593,20 @@
         }
         else
         {
-            [strongSelf hideHUD];
-            strongSelf.saveButton.enabled = YES;
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"error.host.unreachable.title", "Unreachable title")
-                                                                                     message:NSLocalizedString(@"error.host.unreachable.message", @"Unreachable message")
-                                                                              preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", @"Done")
-                                                                 style:UIAlertActionStyleCancel
-                                                               handler:nil];
-            [alertController addAction:doneAction];
-            [strongSelf presentViewController:alertController
-                                     animated:YES
-                                   completion:nil];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf hideHUD];
+                weakSelf.saveButton.enabled = YES;
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"error.host.unreachable.title", "Unreachable title")
+                                                                                         message:NSLocalizedString(@"error.host.unreachable.message", @"Unreachable message")
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", @"Done")
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:nil];
+                [alertController addAction:doneAction];
+                [weakSelf presentViewController:alertController
+                                       animated:YES
+                                     completion:nil];
+            });
         }
     };
 
