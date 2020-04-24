@@ -106,7 +106,7 @@ DEPENDENCIES:
   - Realm (~> 3.11)
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
+  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk:
     - AlfrescoAuth
     - AlfrescoCore
   https://github.com/CocoaPods/Specs.git:
@@ -158,4 +158,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 23d3d92fcc6418c5a564752bdd9dea82d4c37239
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1
