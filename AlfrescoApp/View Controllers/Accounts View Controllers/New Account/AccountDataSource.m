@@ -498,6 +498,7 @@ static NSString * const kServerPlaceholder = @"www.example.com";
     
     if (self.realmTextField) {
         self.formBackupAccount.realm = [self.realmTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        self.formBackupAccount.realm = ([self.formBackupAccount.realm isEqual:@""]) ? kAlfrescoDefaultAIMSRealmString : self.formBackupAccount.realm;
     }
     
     if (self.clientIDTextField) {
