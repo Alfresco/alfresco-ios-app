@@ -40,9 +40,8 @@
     TextFieldCell *serviceDocumentCell = [self serviceDocumentCell];
     TextFieldCell *realmCell = [self realmCell];
     TextFieldCell *clientIDCell = [self clientIDCell];
-    CenterLabelCell *needHelpCell = [self needHelpCell];
     
-    self.tableViewData = @[@[descriptionCell], @[serverCell, contentCell, protocolCell], @[portCell, serviceDocumentCell, realmCell, clientIDCell], @[needHelpCell]];
+    self.tableViewData = @[@[descriptionCell], @[serverCell, contentCell, protocolCell], @[portCell, serviceDocumentCell, realmCell, clientIDCell], @[]];
     
     protocolCell.userInteractionEnabled = NO;
     [self disableDarkGray:serverCell];
