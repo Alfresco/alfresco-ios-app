@@ -567,6 +567,7 @@
 {
     __weak typeof(self) weakSelf = self;
     [self showHUD];
+    self.saveButton.enabled = NO;
     void (^receivedSessionBlock)(BOOL, id<AlfrescoSession>, NSError *) = ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
         __strong typeof(self) strongSelf = weakSelf;
         if (alfrescoSession) {
@@ -593,6 +594,7 @@
         else
         {
             [strongSelf hideHUD];
+            strongSelf.saveButton.enabled = YES;
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"error.host.unreachable.title", "Unreachable title")
                                                                                      message:NSLocalizedString(@"error.host.unreachable.message", @"Unreachable message")
                                                                               preferredStyle:UIAlertControllerStyleAlert];
@@ -614,6 +616,7 @@
         }
         else {
             [strongSelf hideHUD];
+            strongSelf.saveButton.enabled = YES;
         }
     };
     
