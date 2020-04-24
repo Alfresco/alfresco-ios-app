@@ -137,7 +137,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     searchController.delegate = self;
     searchController.searchBar.delegate = self;
     
-    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.obscuresBackgroundDuringPresentation = NO;
     searchController.hidesNavigationBarDuringPresentation = YES;
     
     // search bar
