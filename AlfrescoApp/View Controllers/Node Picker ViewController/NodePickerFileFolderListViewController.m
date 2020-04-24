@@ -59,7 +59,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     
     UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     searchController.searchBar.delegate = self;
-    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.obscuresBackgroundDuringPresentation = NO;
     searchController.hidesNavigationBarDuringPresentation = YES;
     searchController.delegate = self;
     self.searchController = searchController;
