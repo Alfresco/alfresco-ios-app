@@ -770,9 +770,6 @@
                                 [[AccountManager sharedManager] selectAccount:refreshedAccount
                                                                 selectNetwork:refreshedAccount.selectedNetworkId
                                                               alfrescoSession:session];
-                                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification
-                                                                                    object:session
-                                                                                  userInfo:nil];
                                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification
                                                                                     object:session
                                                                                   userInfo:nil];

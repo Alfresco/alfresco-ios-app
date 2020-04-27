@@ -555,7 +555,7 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
     self.session = session;
     
     [self createAlfrescoServicesWithSession:session];
-    if ([self shouldRefresh])
+    if ([self shouldRefresh] && [notification.name isEqualToString:kAlfrescoSessionReceivedNotification])
     {
         [self loadActivities];
     }

@@ -444,7 +444,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     id<AlfrescoSession> session = notification.object;
     self.session = session;
     
-    if (session && [self shouldRefresh])
+    if (session && [self shouldRefresh] && [notification.name isEqualToString:kAlfrescoSessionReceivedNotification])
     {
         [self.inUseDataSource reloadDataSource];
     }
