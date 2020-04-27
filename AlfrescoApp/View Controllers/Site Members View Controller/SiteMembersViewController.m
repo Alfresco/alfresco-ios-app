@@ -169,6 +169,17 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
 }
 
 #pragma mark - Private methods
+
+- (void)sessionReceived:(NSNotification *)notification
+{
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
+    self.siteService = [[AlfrescoSiteService alloc] initWithSession:session];
+    if ([self shouldRefresh])
+    {
+        [self loadData];
+    }
+}
 - (void)loadData
 {
     void (^retrieveSiteMembers)(AlfrescoSite *site, AlfrescoListingContext *listingContext) = ^(AlfrescoSite *site, AlfrescoListingContext *listingContext)
