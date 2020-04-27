@@ -570,6 +570,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
 
 - (void)selectAccount:(UserAccount*)account andNetworkId:(NSString*)networkId
 {
+    [[LoginManager sharedManager] cancelActiveSessionRefreshTasks];
     if (account.accountType == UserAccountTypeOnPremise || networkId != nil)
     {
         if(account.accountType == UserAccountTypeCloud)

@@ -873,4 +873,9 @@
     self.currentLoginURLString = nil;
 }
 
+- (void)cancelAIMSActiveSessionRefreshTask
+{
+    [self.aimsSessionTimer invalidate];
+}
+
 @end

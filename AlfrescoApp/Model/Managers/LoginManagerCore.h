@@ -51,5 +51,6 @@
 - (void)cancelSamlAuthentication;
 - (void)cancelCloudAuthentication;
 - (void)cancelLoginRequest;
+- (void)cancelAIMSActiveSessionRefreshTask;
 
 @end

@@ -55,5 +55,6 @@
 - (void)showSignInAlertWithSignedInBlock:(void (^)(void))completionBlock;
 - (void)availableAuthTypeForAccount:(UserAccount *)account
                     completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock;
+- (void)cancelActiveSessionRefreshTasks;
 
 @end
