@@ -153,6 +153,11 @@ navigationController:(UINavigationController *)navigationController
     [self.aimsLoginService availableAuthTypeWithCompletionBlock:completionBlock];
 }
 
+- (void)cancelActiveSessionRefreshTasks
+{
+    [self.loginCore cancelAIMSActiveSessionRefreshTask];
+}
+
 #pragma mark - LoginViewControllerDelegate Functions
 
 - (void)loginViewController:(LoginViewController *)loginViewController didPressRequestLoginToAccount:(UserAccount *)account username:(NSString *)username password:(NSString *)password
