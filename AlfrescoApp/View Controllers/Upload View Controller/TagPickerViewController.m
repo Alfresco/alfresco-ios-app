@@ -232,4 +232,13 @@
     }];
 }
 
+#pragma mark - Session Received
+
+- (void)sessionReceived:(NSNotification *)notification
+{
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
+    self.tagService = [[AlfrescoTaggingService alloc] initWithSession:self.session];
+}
+
 @end

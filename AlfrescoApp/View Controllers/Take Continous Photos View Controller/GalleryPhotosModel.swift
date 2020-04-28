@@ -77,6 +77,10 @@ protocol GalleryPhotosDelegate: class {
         self.uploadToFolder = folder
     }
     
+    func refresh(session: AlfrescoSession) {
+        self.documentServices = AlfrescoPlaceholderDocumentFolderService.init(session: session)
+    }
+    
     //MARK: Upload
 
     func uploadPhotosWithContentStream() {

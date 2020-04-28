@@ -71,6 +71,14 @@ import AVFoundation
         make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
         make(button: navigationItem.leftBarButtonItem, enable: true)
 
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionReceived(notification:)),
+                                               name: NSNotification.Name.alfrescoSessionReceived, object: nil)
+    }
+    
+    @objc private func sessionReceived(notification: NSNotification) {
+        if let session = notification.object as? AlfrescoSession {
+            self.model.refresh(session: session)
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -78,6 +86,7 @@ import AVFoundation
     }
     
     //MARK: - IBActions
+    
     @IBAction func infoButtonTapped(_ sender: Any) {
         showAlertInfoNaming()
     }

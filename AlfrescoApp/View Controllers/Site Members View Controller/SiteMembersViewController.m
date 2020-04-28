@@ -180,6 +180,7 @@ static CGFloat const kEstimatedCellHeight = 60.0f;
         [self loadData];
     }
 }
+
 - (void)loadData
 {
     void (^retrieveSiteMembers)(AlfrescoSite *site, AlfrescoListingContext *listingContext) = ^(AlfrescoSite *site, AlfrescoListingContext *listingContext)
