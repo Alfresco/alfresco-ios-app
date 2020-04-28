@@ -1112,4 +1112,14 @@ static NSString * const kAudioFileName = @"audio.m4a";
     AlfrescoLogError(@"AVAudioRecorder decoder error: %@", [ErrorDescriptions descriptionForError:error]);
 }
 
+#pragma mark - Session Received
+
+- (void)sessionReceived:(NSNotification *)notification
+{
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:self.session];
+    self.tagService = [[AlfrescoTaggingService alloc] initWithSession:self.session];
+}
+
 @end

@@ -64,6 +64,15 @@ import CoreMotion
         
         prepareCamera()
         initializeMotionManager()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionReceived(notification:)),
+                                                      name: NSNotification.Name.alfrescoSessionReceived, object: nil)
+    }
+    
+    @objc private func sessionReceived(notification: NSNotification) {
+        if let session = notification.object as? AlfrescoSession {
+            self.model.refresh(session: session)
+        }
     }
     
     func makeShadow(button: UIButton) {
