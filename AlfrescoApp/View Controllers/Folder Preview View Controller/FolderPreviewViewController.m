@@ -322,6 +322,8 @@ typedef NS_ENUM(NSUInteger, PagingScrollViewSegmentFolderType)
 - (void)sessionRefreshed:(NSNotification *)notification
 {
     self.session = notification.object;
+    self.ratingService = [[AlfrescoRatingService alloc] initWithSession:self.session];
+    self.actionHandler = [[ActionViewHandler alloc] initWithAlfrescoNode:self.folder session:self.session controller:self];
 }
 
 #pragma mark - IBActions
