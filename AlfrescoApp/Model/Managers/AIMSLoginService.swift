@@ -175,7 +175,11 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
             }
         case .failure(let error):
             if let loginCompletionBlock = self.loginCompletionBlock {
-                loginCompletionBlock(nil, error)
+                if error.responseCode == kAFALoginSSOViewModelCancelErrorCode {
+                    loginCompletionBlock(nil, nil)
+                } else {
+                    loginCompletionBlock(nil, error)
+                }
             }
         }
     }

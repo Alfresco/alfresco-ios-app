@@ -643,13 +643,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     
 }
 
-
 - (void)resigninWithCurrentUser:(UserAccount * _Nullable)currentUser viewcontroller:(UIViewController * _Nonnull)viewcontroller
 {
     if(currentUser.accountType == UserAccountTypeAIMS)
     {
         __weak typeof(self) weakSelf = self;
-        
         void (^obtainedAIMSCredentialBlock)(UserAccount *, NSError *) = ^void(UserAccount *account, NSError *error){
             if (!error) {
                 [[LoginManager sharedManager] authenticateWithAIMSOnPremiseAccount:account
@@ -657,8 +655,11 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
                     if (alfrescoSession)
                     {
                         [[AccountManager sharedManager] selectAccount:currentUser selectNetwork:nil alfrescoSession:alfrescoSession];
-                        [viewcontroller dismissViewControllerAnimated:YES completion:nil];
-                        [weakSelf.tableView reloadData];
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [viewcontroller dismissViewControllerAnimated:YES
+                                                               completion:nil];
+                            [weakSelf.tableView reloadData];
+                        });
                     }
                 }];
             }
