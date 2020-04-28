@@ -188,6 +188,14 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     return currentNode;
 }
 
+- (void)sessionReceived:(NSNotification *)notification
+{
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
+    
+    [self createAlfrescoServicesWithSession:session];
+}
+
 #pragma mark - Notification Methods
 
 - (void)deselectAllSelectedNodes:(id)sender
