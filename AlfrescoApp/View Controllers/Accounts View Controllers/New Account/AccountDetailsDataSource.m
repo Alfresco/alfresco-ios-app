@@ -62,7 +62,7 @@
     LabelCell *editMainMenuCell = [self editMainMenuCell];
     LabelCell *accountDetailsCell = [self accountDetailsCell];
     CenterLabelCell *logout = [self logoutCell];
-    if ([AccountManager sharedManager].selectedAccount != self.account)
+    if ([AccountManager sharedManager].selectedAccount != self.account || [[AccountManager sharedManager] allAccounts].count == 1)
     {
         self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[logout]];
     }
