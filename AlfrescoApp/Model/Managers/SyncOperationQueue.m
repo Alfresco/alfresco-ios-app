@@ -263,6 +263,7 @@
                                                                             }
                                                                             else if(!((error.code == kAlfrescoErrorCodeNetworkRequestCancelled) && (syncProgressType == SyncProgressTypeUnsyncRequested || syncProgressType == SyncProgressTypeInUnsyncProcessing)))
                                                                             {
+                                                                                [Notifier notifyWithAlfrescoError:error];
                                                                                 SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
                                                                                 if(syncProgressType == SyncProgressTypeInProcessing)
                                                                                 {

@@ -64,8 +64,7 @@
     {
         self.node = node;
         self.session = session;
-        self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
-        self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
+        [self setupServicesForSession:session];
         self.controller = controller;
         self.queuedCompletionBlocks = [NSMutableArray array];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadComplete:) name:kDocumentPreviewManagerDocumentDownloadCompletedNotification object:nil];
@@ -79,6 +78,12 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)setupServicesForSession:(id<AlfrescoSession>)session
+{
+    self.documentService = [[AlfrescoDocumentFolderService alloc] initWithSession:session];
+    self.ratingService = [[AlfrescoRatingService alloc] initWithSession:session];
 }
 
 - (void)editingDocumentCompleted:(NSNotification *)notification
@@ -103,6 +108,10 @@
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-unlike.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierLike userInfo:userInfo];
         }
+        else
+        {
+            [Notifier notifyWithAlfrescoError:error];
+        }
     }];
 }
 
@@ -122,6 +131,10 @@
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.like", @"Like Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-like.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnlike userInfo:userInfo];
+        }
+        else
+        {
+            [Notifier notifyWithAlfrescoError:error];
         }
     }];
 }
@@ -145,6 +158,10 @@
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierFavourite userInfo:userInfo];
             
         }
+        else
+        {
+            [Notifier notifyWithAlfrescoError:error];
+        }
     }];
 }
 
@@ -165,6 +182,10 @@
                                        kActionCollectionItemUpdateItemTitleKey : NSLocalizedString(@"action.favourite", @"Favourite Action"),
                                        kActionCollectionItemUpdateItemImageKey : @"actionsheet-favorite.png"};
             [[NSNotificationCenter defaultCenter] postNotificationName:kActionCollectionItemUpdateNotification object:kActionCollectionIdentifierUnfavourite userInfo:userInfo];
+        }
+        else
+        {
+            [Notifier notifyWithAlfrescoError:error];
         }
     }];
 }
@@ -766,7 +787,9 @@
 
 - (void)sessionRefreshed:(NSNotification *)notification
 {
-    self.session = notification.object;
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
+    [self setupServicesForSession:session];
 }
 
 - (void)addCompletionBlock:(DocumentPreviewManagerFileSavedBlock)completionBlock
