@@ -1,39 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NodePickerFileFolderListViewController">
             <connections>
-                <outlet property="searchDisplayController" destination="r1P-pH-Ysx" id="N6p-5x-KFB"/>
                 <outlet property="tableView" destination="nDq-sW-bG5" id="G7x-6x-2yM"/>
                 <outlet property="view" destination="BJI-ep-fhY" id="Bb0-lt-QZa"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="BJI-ep-fhY">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="nDq-sW-bG5" customClass="ALFTableView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="BJI-ep-fhY" id="B5S-dO-DVN"/>
                         <outlet property="delegate" destination="BJI-ep-fhY" id="1jE-aL-Jpa"/>
                     </connections>
                 </tableView>
                 <searchBar hidden="YES" contentMode="redraw" searchBarStyle="minimal" placeholder="Search" translatesAutoresizingMaskIntoConstraints="NO" id="VVJ-ZV-at9">
-                    <rect key="frame" x="0.0" y="2" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="2" width="414" height="56"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="2Vq-vk-Z1E"/>
                     </connections>
                 </searchBar>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="nDq-sW-bG5" secondAttribute="bottom" id="2ku-TQ-3O3"/>
                 <constraint firstItem="VVJ-ZV-at9" firstAttribute="top" secondItem="BJI-ep-fhY" secondAttribute="top" constant="2" id="HJU-JG-aub"/>
@@ -43,15 +44,7 @@
                 <constraint firstItem="nDq-sW-bG5" firstAttribute="leading" secondItem="BJI-ep-fhY" secondAttribute="leading" id="sI2-kt-nI9"/>
                 <constraint firstAttribute="trailing" secondItem="nDq-sW-bG5" secondAttribute="trailing" id="tbe-5S-TaC"/>
             </constraints>
+            <point key="canvasLocation" x="139" y="147"/>
         </view>
-        <searchDisplayController id="r1P-pH-Ysx">
-            <connections>
-                <outlet property="delegate" destination="-1" id="Ygs-m6-H9e"/>
-                <outlet property="searchBar" destination="VVJ-ZV-at9" id="Nfl-dx-rMi"/>
-                <outlet property="searchContentsController" destination="-1" id="Lvx-Vi-uJo"/>
-                <outlet property="searchResultsDataSource" destination="-1" id="5gx-Bg-j6g"/>
-                <outlet property="searchResultsDelegate" destination="-1" id="4sT-mI-fZ8"/>
-            </connections>
-        </searchDisplayController>
     </objects>
 </document>

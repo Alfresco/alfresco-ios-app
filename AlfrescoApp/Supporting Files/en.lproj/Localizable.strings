@@ -942,6 +942,7 @@
 "gallery.photos.retryMode" = "Some of your photos did not upload to Alfresco. Press retry to prevent losing them.";
 "gallery.photos.upload.cellular.title" = "Use data for upload multiple photo";
 "gallery.photos.upload.cellular.description" = "Do you want to switch to WI-FI connection to upload these photos?";
+"gallery.photos.uploadTitleScreen" = "Upload Photos";
 
 /**
 * AIMS Views

@@ -942,3 +942,4 @@
 "gallery.photos.retryMode" = "Alcune foto non sono state caricate su Alfresco. Premi Riprova per non perderle.";
 "gallery.photos.upload.cellular.title" = "Usa i dati per caricare le foto multiple";
 "gallery.photos.upload.cellular.description" = "Passare alla connessione WI-FI per caricare queste foto?";
+"gallery.photos.uploadTitleScreen" = "Caricare foto";
