@@ -19,9 +19,9 @@ Alternatively, use one of the [tags](https://github.com/Alfresco/alfresco-ios-ap
 License
 ---
 
-Alfresco Mobile for iOS 2.4
+Alfresco Mobile for iOS 2.7.2
 
-Copyright © 2016 Alfresco Software, Ltd.
+Copyright © 2020 Alfresco Software, Ltd.
 
 This product distribution is made available under the [Apache 2.0 license](http://www.apache.org/licenses/LICENSE-2.0.html). 
 
