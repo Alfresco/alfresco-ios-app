@@ -137,6 +137,7 @@ navigationController:(UINavigationController *)navigationController
 navigationController:(UINavigationController *)navigationController
                         completionBlock:(LogoutAIMSCompletionBlock)completionBlock {
     [self.aimsLoginService updateWith:account];
+    [self.loginCore cancelAIMSActiveSessionRefreshTask];
     [self.aimsLoginService logoutOnViewController:navigationController
                                   completionBlock:completionBlock];
 }
