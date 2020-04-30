@@ -122,7 +122,11 @@ import AVFoundation
     
     func showAlertRetryMode() {
         let alert = UIAlertController(title: "", message: model.retryModeText, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { [weak self]  action in
+            guard let sSelf = self else { return }
+            if let error = sSelf.model.errorUpload {
+                Notifier.notify(withAlfrescoError: error)
+            }
         }))
         self.present(alert, animated: true, completion: nil)
     }
