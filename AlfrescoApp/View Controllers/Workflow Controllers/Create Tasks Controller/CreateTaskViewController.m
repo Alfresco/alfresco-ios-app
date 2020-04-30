@@ -250,6 +250,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
         {
             [progressHUD hideAnimated:YES];
             displayErrorMessageWithTitle(NSLocalizedString(@"task.create.error", @"Failed to create Task"), [ErrorDescriptions descriptionForError:error]);
+            [Notifier notifyWithAlfrescoError:error];
         }
     }];
 }
