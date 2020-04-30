@@ -578,11 +578,10 @@
             AccountManager *accountManager = [AccountManager sharedManager];
             [[RealmSyncManager sharedManager] realmForAccount:strongSelf.account.accountIdentifier];
             
-            if (accountManager.totalNumberOfAddedAccounts == 0)
-            {
-                [accountManager selectAccount:strongSelf.account selectNetwork:nil alfrescoSession:alfrescoSession];
-            }
-            else if (accountManager.selectedAccount == strongSelf.account)
+            [[LoginManager sharedManager] cancelActiveSessionRefreshTasks];
+            [accountManager selectAccount:strongSelf.account selectNetwork:nil alfrescoSession:alfrescoSession];
+            
+            if (accountManager.selectedAccount == strongSelf.account)
             {
                 [[RealmManager sharedManager] changeDefaultConfigurationForAccount:strongSelf.account completionBlock:^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
@@ -692,11 +691,10 @@
             AccountManager *accountManager = [AccountManager sharedManager];
             [[RealmSyncManager sharedManager] realmForAccount:self.account.accountIdentifier];
             
-            if (accountManager.totalNumberOfAddedAccounts == 0)
-            {
-                [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
-            }
-            else if (accountManager.selectedAccount == self.account)
+            [[LoginManager sharedManager] cancelActiveSessionRefreshTasks];
+            [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
+
+            if (accountManager.selectedAccount == self.account)
             {
                 [[RealmManager sharedManager] changeDefaultConfigurationForAccount:self.account completionBlock:^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
