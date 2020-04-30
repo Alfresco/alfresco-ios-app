@@ -14,3 +14,4 @@
 #import "LocationManager.h"
 #import "KeychainUtils.h"
 #import "AccountManager.h"
+#import "Notifier.h"

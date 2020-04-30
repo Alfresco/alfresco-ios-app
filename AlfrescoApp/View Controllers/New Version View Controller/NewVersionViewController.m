@@ -138,6 +138,7 @@
             NSString *checkoutErrorTitle = NSLocalizedString(@"error.new.version.unable.to.checkout.title", @"Checkout Title");
             NSString *checkoutErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.new.version.unable.to.checkout.message", @"Checkout Error Message"), self.document.name, checkoutError.localizedDescription];
             displayErrorMessageWithTitle(checkoutErrorMessage, checkoutErrorTitle);
+            [Notifier notifyWithAlfrescoError:checkoutError];
         }
         else
         {

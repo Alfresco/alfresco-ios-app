@@ -683,6 +683,10 @@
             {
                 [self removeTopLevelNodeFlagFomNodeWithIdentifier:[[RealmSyncCore sharedSyncCore] syncIdentifierForNode:node]];
             }
+            else if (error)
+            {
+                [Notifier notifyWithAlfrescoError:error];
+            }
             self.nodeRequestsInProgressCount--;
             
             if (completionBlock != NULL)
