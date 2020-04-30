@@ -44,7 +44,7 @@
                 
                 NSMutableArray *sectionDataSource = nil;
                 
-                if(account.accountType == UserAccountTypeOnPremise)
+                if(account.accountType == UserAccountTypeOnPremise || account.accountType == UserAccountTypeAIMS)
                 {
                     sectionDataSource = [[NSMutableArray alloc] initWithObjects:
                                          [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.files", @"Files"), kCellTextKey, @"mainmenu-document", kCellImageKey, nil],
