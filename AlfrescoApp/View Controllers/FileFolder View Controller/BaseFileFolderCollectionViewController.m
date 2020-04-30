@@ -655,6 +655,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 - (void)failedToDeleteItems:(NSError *)error
 {
     displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.unable.to.delete", @"Unable to delete file/folder"), [ErrorDescriptions descriptionForError:error]]);
+    [Notifier notifyWithAlfrescoError: error];
 }
 
 - (void)didAddNodes:(NSArray *)items atIndexPath:(NSArray *)indexPathsOfAddedItems
@@ -1235,6 +1236,7 @@ static const CGSize kUploadPopoverPreferedSize = {320, 640};
 - (void)didFailUploadingDocumentWithName:(NSString *)name withError:(NSError *)error
 {
     displayInformationMessage([NSString stringWithFormat:NSLocalizedString(@"saveback.failed.message", @"Document saved in Local Files"), name]);
+    [Notifier notifyWithAlfrescoError:error];
 }
 
 #pragma mark - MultiplePhotosUpload Delegate
