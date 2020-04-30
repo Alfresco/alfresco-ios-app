@@ -132,7 +132,7 @@
     {
         [UniversalDevice pushToDisplayViewController:menuItem.associatedObject usingNavigationController:(UINavigationController *)self.displayedViewController animated:YES];
     }
-    else if (menuItem.displayType == MainMenuDisplayTypeModal)
+    else if (menuItem.displayType == MainMenuDisplayTypeModal && self.displayedViewController.presentedViewController == nil)
     {
         [UniversalDevice displayModalViewController:menuItem.associatedObject onController:self.displayedViewController withCompletionBlock:nil];
     }
