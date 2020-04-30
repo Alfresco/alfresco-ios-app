@@ -187,6 +187,11 @@ static UILayoutPriority const kLowPriority = 250;
             {
                 self.taskHeaderView.taskInitiator = process.initiatorUsername;
             }
+            else
+            {
+                displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                [Notifier notifyWithAlfrescoError:error];
+            }
         }];
         
         // configure the header view for the task

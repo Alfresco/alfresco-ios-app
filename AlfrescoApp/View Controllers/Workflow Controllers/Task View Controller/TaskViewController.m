@@ -376,6 +376,11 @@ static NSString * const kTaskCellIdentifier = @"TaskCell";
         
         [self.tableView reloadData];
     }
+    else
+    {
+         displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+         [Notifier notifyWithAlfrescoError:error];
+    }
 }
 
 - (void)addMoreToTableViewWithPagingResult:(AlfrescoPagingResult *)pagingResult error:(NSError *)error

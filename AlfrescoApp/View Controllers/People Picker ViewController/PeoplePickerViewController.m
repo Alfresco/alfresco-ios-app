@@ -286,6 +286,8 @@ static NSInteger const kSearchResultsIndex = 0;
         if (error || array.count == 0)
         {
             [searchResults addObject:NSLocalizedString(@"people.picker.search.no.results", @"No Search Results")];
+            displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+            [Notifier notifyWithAlfrescoError:error];
         }
         else
         {
