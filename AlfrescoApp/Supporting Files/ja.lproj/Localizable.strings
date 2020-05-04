@@ -942,3 +942,20 @@
 "gallery.photos.retryMode" = "一部の写真が Alfresco にアップロードされませんでした。写真が失われないようにするには、再試行ボタンを押してください。";
 "gallery.photos.upload.cellular.title" = "複数の写真のアップロードにモバイルデータ通信を使用";
 "gallery.photos.upload.cellular.description" = "これらの写真をアップロードするために、Wi-Fi 接続に切り替えますか?";
+"gallery.photos.uploadTitleScreen" = "写真のアップロード";
+
+/**
+* AIMS Views
+*/
+"accountdetails.title.aims" = "シングルサインオン";
+"accountdetails.title.aimssettings" = "シングルサインオンの設定";
+"accountdetails.fields.contentAdress" = "コンテンツの URL";
+"accountdetails.fields.realm" = "領域";
+"accountdetails.fields.clientID" = "クライアント ID";
+"accountdetails.buttons.logout" = "ログアウト";
+"accountdetails.needHelp.title" = "サインインの方法";
+"accountdetails.needHelp.text" = "Alfresco Content Services インスタンスの URL を入力できます。\n\n• 認証するためにユーザー名とパスワードを入力する必要があります。\n\n• 所属組織の ID プロバイダを使って認証する場合 (SSO) は、Identity Service の URL を入力することもできます。次の画面で Alfresco Content Services インスタンスの URL を入力する必要があります。\n\n• 不明な点がある場合は、Alfresco 管理者にお尋ねください。";
+"accountpicker.title" = "セッションの期限切れ";
+"accountpicker.subtitle" = "ログインしていません。再度サインインするか。";
+"accountpicker.info.other" = "別のアカウントを試してください。";
+"accountpicker.button.addaccount" = "アカウントの追加";

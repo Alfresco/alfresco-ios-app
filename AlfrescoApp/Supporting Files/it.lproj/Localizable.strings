@@ -942,3 +942,20 @@
 "gallery.photos.retryMode" = "Alcune foto non sono state caricate su Alfresco. Premi Riprova per non perderle.";
 "gallery.photos.upload.cellular.title" = "Usa i dati per caricare le foto multiple";
 "gallery.photos.upload.cellular.description" = "Passare alla connessione WI-FI per caricare queste foto?";
+"gallery.photos.uploadTitleScreen" = "Caricare foto";
+
+/**
+* AIMS Views
+*/
+"accountdetails.title.aims" = "Single Sign-On";
+"accountdetails.title.aimssettings" = "Impostazioni Single Sign-On";
+"accountdetails.fields.contentAdress" = "URL dei contenuti";
+"accountdetails.fields.realm" = "Area di autenticazione";
+"accountdetails.fields.clientID" = "ID client";
+"accountdetails.buttons.logout" = "Esci";
+"accountdetails.needHelp.title" = "Come accedere";
+"accountdetails.needHelp.text" = "Puoi immettere l’URL della tua istanza di Alfresco Content Services.\n\n • Ti verrà chiesto di immettere i tuoi nome utente e password per l’autenticazione.\n\n • Puoi anche autenticarti con il fornitore di identità (SSO) della tua organizzazione immettendo l’URL del tuo Identity Service. Nella successiva schermata dovrai fornire l’URL della tua istanza di Alfresco Content Services.\n\n • Se hai bisogno di assistenza contatta l’amministratore di Alfresco.";
+"accountpicker.title" = "Sessione scaduta";
+"accountpicker.subtitle" = "Non hai più effettuato l'accesso. Per continuare accedi nuovamente.";
+"accountpicker.info.other" = "Prova un altro account";
+"accountpicker.button.addaccount" = "Aggiungi account";
