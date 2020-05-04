@@ -150,8 +150,8 @@ navigationController:(UINavigationController *)navigationController
 - (void)availableAuthTypeForAccount:(UserAccount *)account
                     completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock
 {
-    [self.aimsLoginService updateWith:account];
-    [self.aimsLoginService availableAuthTypeWithCompletionBlock:completionBlock];
+    [self.aimsLoginService availableAuthTypeForAccount:account
+                                       completionBlock:completionBlock];
 }
 
 - (void)cancelActiveSessionRefreshTasks

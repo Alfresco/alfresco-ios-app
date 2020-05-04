@@ -25,7 +25,11 @@ public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIErro
 class AIMSLoginService: NSObject, AlfrescoAuthDelegate {    
     // Public variables
     var session: AlfrescoAuthSession?
-    private (set) var account: UserAccount?
+    private (set) var account: UserAccount? {
+        didSet {
+            print("test")
+        }
+    }
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
         let authConfig = authConfiguration()
         return AlfrescoAuth.init(configuration: authConfig)
@@ -47,8 +51,8 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         self.account = newAccount;
     }
     
-    @objc func availableAuthType(completionBlock: @escaping AvailableAuthenticationTypeCompletionBlock) {
-        let authConfig = authConfiguration()
+    @objc func availableAuthType(forAccount account: UserAccount?, completionBlock: @escaping AvailableAuthenticationTypeCompletionBlock) {
+        let authConfig = authConfiguration(for: account)
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.availableAuthType(handler: { (result) in
             DispatchQueue.main.async {
@@ -208,18 +212,22 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     
     // MARK: - Private
     
-    private func authConfiguration() -> AuthConfiguration {
-        guard let account = self.account else { return AuthConfiguration(baseUrl: "",
-                                                                         clientID: kAlfrescoDefaultAIMSClientIDString,
-                                                                         realm: kAlfrescoDefaultAIMSRealmString,
-                                                                         redirectURI: kAlfrescoDefaultAIMSRedirectURI) }
-        
+    private func authConfiguration(for account: UserAccount?) -> AuthConfiguration {
+        guard let account = account else { return AuthConfiguration(baseUrl: "",
+                                                                    clientID: kAlfrescoDefaultAIMSClientIDString,
+                                                                    realm: kAlfrescoDefaultAIMSRealmString,
+                                                                    redirectURI: kAlfrescoDefaultAIMSRedirectURI) }
+        let redirectURI: String? = account.redirectURI?.encoding()
         let authConfig = AuthConfiguration(baseUrl: fullFormatURL(for: account),
-                                           clientID: account.clientID,
-                                           realm: account.realm,
-                                           redirectURI: account.redirectURI.encoding())
+                                           clientID: account.clientID ?? kAlfrescoDefaultAIMSClientIDString,
+                                           realm: account.realm ?? kAlfrescoDefaultAIMSRealmString,
+                                           redirectURI: redirectURI ?? kAlfrescoDefaultAIMSRedirectURI)
         
         return authConfig
+    }
+    
+    private func authConfiguration() -> AuthConfiguration {
+        return authConfiguration(for: self.account)
     }
     
     private func fullFormatURL(for account: UserAccount) -> String {
