@@ -1,7 +1,5 @@
 trigger:
-  branches:
-    include:
-    - master
+  - master
 
 pr: none
 
@@ -10,7 +8,6 @@ pool:
 
 variables:
   - group: cs-ios-signing
-  - group: source-clear-credentials 
   - name: configuration
     value: 'Release'
   - name: sdk
@@ -21,16 +18,23 @@ steps:
   submodules: true
 
 - task: CmdLine@2
+  displayName: Adding Alfresco private podspec repository
+  inputs:
+    script: |
+      pod repo add AlfrescoPodspec https://$(gitUser):$(gitPAT)@github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git
+      
+- task: CmdLine@2
+  displayName: Installing pods
+  inputs:
+    script: |
+      pod repo update
+      pod install
+
+- task: CmdLine@2
+  displayName: Variable substitution for GoogleAnalytics
   inputs:
     script: 'plutil -replace API_KEY -string $(GA_API_KEY) GoogleService-Info.plist'
     workingDirectory: '$(System.DefaultWorkingDirectory)/AlfrescoApp/Supporting Files/'
-
-- task: FileTransform@1
-  displayName: Variable substitution for GoogleAnalytics
-  inputs:
-    folderPath: '$(System.DefaultWorkingDirectory)/AlfrescoApp/Supporting Files/'
-    fileType: 'xml'
-    targetFiles: '**/GoogleService-Info.plist'
 
 - task: InstallAppleCertificate@2
   inputs:
@@ -99,7 +103,7 @@ steps:
     script: 'curl -sSL https://download.sourceclear.com/ci.sh | sh'
   displayName: 'Performing Source Clear checks'
   env:
-    SRCCLR_API_TOKEN: $(source_clear_token)
+    SRCCLR_API_TOKEN: $(SOURCE_CLEAR_API_TOKEN)
 
 - task: AppStoreRelease@1
   inputs:
