@@ -943,3 +943,19 @@
 "gallery.photos.upload.cellular.title" = "使用数据流量上传多张照片";
 "gallery.photos.upload.cellular.description" = "您要切换到 WI-FI 连接来上传这些照片吗？";
 "gallery.photos.uploadTitleScreen" = "上传照片";
+
+/**
+* AIMS Views
+*/
+"accountdetails.title.aims" = "单点登录";
+"accountdetails.title.aimssettings" = "单点登录设置";
+"accountdetails.fields.contentAdress" = "URL 内容";
+"accountdetails.fields.realm" = "领域";
+"accountdetails.fields.clientID" = "客户 ID";
+"accountdetails.buttons.logout" = "登出";
+"accountdetails.needHelp.title" = "如何登录";
+"accountdetails.needHelp.text" = "您可以输入 Alfresco Content Services 实例的 URL。\n\n• 您将需要输入用户名和密码进行身份验证。\n\n• 您也可以输入进行Identity Service的 URL，以便向您的组织身份提供程序（SSO）进行身份验证。您必须在下一屏幕上提供 Alfresco Content Services 实例的 URL。\n\n• 如需帮助，请与 Alfresco 管理员联系。";
+"accountpicker.title" = "会话已过期";
+"accountpicker.subtitle" = "您不再登录。请再次登录以继续。";
+"accountpicker.info.other" = "尝试另一个账户。";
+"accountpicker.button.addaccount" = "新增账户";

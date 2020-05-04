@@ -943,3 +943,19 @@
 "gallery.photos.upload.cellular.title" = "Mehrere Fotos über Datenverbindung hochladen";
 "gallery.photos.upload.cellular.description" = "Möchten Sie zum Hochladen dieser Fotos zu einer WLAN-Verbindung wechseln?";
 "gallery.photos.uploadTitleScreen" = "Fotos hochladen";
+
+/**
+* AIMS Views
+*/
+"accountdetails.title.aims" = "Single Sign-On";
+"accountdetails.title.aimssettings" = "Single Sign-On-Einstellungen";
+"accountdetails.fields.contentAdress" = "Content-URL";
+"accountdetails.fields.realm" = "Bereich";
+"accountdetails.fields.clientID" = "Client-ID";
+"accountdetails.buttons.logout" = "Abmelden";
+"accountdetails.needHelp.title" = "So melden Sie sich an";
+"accountdetails.needHelp.text" = "Sie können die URL Ihrer Instanz von Alfresco Content Services eingeben.\n\n • Sie müssen Ihren Benutzernamen und Ihr Passwort eingeben, um sich zu authentifizieren.\n\n • Sie können auch die URL Ihres Identity Service angeben, um sich über den Identitätsanbieter Ihrer Organisation anzumelden (SSO). Im nächsten Bildschirm müssen Sie die URL Ihrer Instanz von Alfresco Content Services angeben.\n\n • Wenn Sie Hilfe benötigen, wenden Sie sich an Ihren Alfresco-Administrator.";
+"accountpicker.title" = "Sitzung abgelaufen";
+"accountpicker.subtitle" = "Sie sind nicht mehr angemeldet. Melden Sie sich zum Fortsetzen erneut an.";
+"accountpicker.info.other" = "Versuchen Sie es mit einem anderen Account.";
+"accountpicker.button.addaccount" = "Account hinzufügen";
