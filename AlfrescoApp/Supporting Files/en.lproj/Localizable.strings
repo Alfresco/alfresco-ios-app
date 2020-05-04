@@ -954,7 +954,7 @@
 "accountdetails.buttons.logout" = "Log out";
 "accountdetails.needHelp.title" = "How to sign in";
 "accountdetails.needHelp.text" = "You can enter the URL of your Alfresco Content Services instance.\n\n • You will be required to enter your username and password to authenticate.\n\n • You can also enter the URL of your Identity Service in order to authenticate with your organizations identity provider (SSO). You will have to provide the URL of your Alfresco Content Services instance on the next screen.\n\n • Speak to your Alfresco administrator if you require help.";
-"accountpicker.title" = "Expired Session";
+"accountpicker.title" = "Session Expired";
 "accountpicker.subtitle" = "You are no longer signed in. Please Sign In again to continue.";
 "accountpicker.info.other" = "Try another account.";
 "accountpicker.button.addaccount" = "Add account";
