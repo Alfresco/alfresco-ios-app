@@ -767,13 +767,16 @@
                                                         oauthData:refreshedAccount.oauthData
                                                   completionBlock:^(id<AlfrescoSession> session, NSError *error) {
                             dispatch_async(dispatch_get_main_queue(), ^{
-                                [[AccountManager sharedManager] selectAccount:refreshedAccount
-                                                                selectNetwork:refreshedAccount.selectedNetworkId
-                                                              alfrescoSession:session];
-                                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification
-                                                                                    object:session
-                                                                                  userInfo:nil];
-                                [weakSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
+                                UserAccount *currentAccount = [AccountManager sharedManager].selectedAccount;
+                                if (currentAccount == refreshedAccount) {
+                                    [[AccountManager sharedManager] selectAccount:refreshedAccount
+                                                                    selectNetwork:refreshedAccount.selectedNetworkId
+                                                                  alfrescoSession:session];
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionRefreshedNotification
+                                                                                        object:session
+                                                                                      userInfo:nil];
+                                    [weakSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
+                                }
                             });
                         }];
                     }
