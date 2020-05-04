@@ -25,11 +25,7 @@ public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIErro
 class AIMSLoginService: NSObject, AlfrescoAuthDelegate {    
     // Public variables
     var session: AlfrescoAuthSession?
-    private (set) var account: UserAccount? {
-        didSet {
-            print("test")
-        }
-    }
+    private (set) var account: UserAccount?
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
         let authConfig = authConfiguration()
         return AlfrescoAuth.init(configuration: authConfig)
