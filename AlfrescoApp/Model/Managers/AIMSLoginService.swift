@@ -35,6 +35,8 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     // Private variables
     private var loginCompletionBlock: LoginAIMSCompletionBlock?
     private var logoutCompletionBlock: LogoutAIMSCompletionBlock?
+    private var refreshSessionCompletionBlock: LoginAIMSCompletionBlock?
+    private var refreshSessionInProgress: Bool = false
     
     override init() {
     }
@@ -80,7 +82,8 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     }
     
     @objc func refreshSession(for account: UserAccount, completionBlock: @escaping LoginAIMSCompletionBlock) {
-        loginCompletionBlock = completionBlock
+        refreshSessionCompletionBlock = completionBlock
+        self.refreshSessionInProgress = true
         session = obtainAlfrescoAuthSession(for: account)
         guard let activeSession = session else { return }
         
@@ -170,16 +173,32 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
                                                         sessionState: alfrescoCredential.sessionState,
                                                         payloadToken: decode)
             self.saveToKeychain(session: session, credential: alfrescoCredential)
-            if let loginCompletionBlock = self.loginCompletionBlock {
-                loginCompletionBlock(self.account, nil)
+            if !self.refreshSessionInProgress {
+                if let loginCompletionBlock = self.loginCompletionBlock {
+                    loginCompletionBlock(self.account, nil)
+                    self.loginCompletionBlock = nil
+                }
+            }
+            if let refreshCompletionBlock = self.refreshSessionCompletionBlock {
+                refreshCompletionBlock(self.account, nil)
+                self.refreshSessionCompletionBlock = nil
+                self.refreshSessionInProgress = false
             }
         case .failure(let error):
-            if let loginCompletionBlock = self.loginCompletionBlock {
-                if error.responseCode == kAFALoginSSOViewModelCancelErrorCode {
-                    loginCompletionBlock(nil, nil)
-                } else {
-                    loginCompletionBlock(nil, error)
+            if !self.refreshSessionInProgress {
+                if let loginCompletionBlock = self.loginCompletionBlock {
+                    if error.responseCode == kAFALoginSSOViewModelCancelErrorCode {
+                        loginCompletionBlock(nil, nil)
+                    } else {
+                        loginCompletionBlock(nil, error)
+                    }
+                    self.loginCompletionBlock = nil
                 }
+            }
+            if let refreshCompletionBlock = self.refreshSessionCompletionBlock {
+                refreshCompletionBlock(nil, error)
+                self.refreshSessionCompletionBlock = nil
+                self.refreshSessionInProgress = false
             }
         }
     }

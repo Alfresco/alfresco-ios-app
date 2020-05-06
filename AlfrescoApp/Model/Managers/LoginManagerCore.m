@@ -753,8 +753,11 @@
                 [weakSelf.delegate refreshSessionForAccount:currentAccount
                                               completionBlock:^(UserAccount *refreshedAccount, NSError *error)
                 {
-                    if (!error)
+                    if (!error && refreshedAccount)
                     {
+                        if (currentAccount.accountIdentifier != refreshedAccount.accountIdentifier) {
+                            NSLog(@"MAJOR PROBLEM");
+                        }
                         NSString *urlString = [Utilities serverURLAddressStringFromAccount:refreshedAccount];
                         NSURL *url = [NSURL URLWithString:urlString];
                         
