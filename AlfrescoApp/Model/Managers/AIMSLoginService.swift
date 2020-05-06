@@ -25,7 +25,8 @@ public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIErro
 class AIMSLoginService: NSObject, AlfrescoAuthDelegate {    
     // Public variables
     var session: AlfrescoAuthSession?
-    private (set) var account: UserAccount?
+    private (set) var activeAccount: UserAccount?
+    private (set) var accountToBeRefreshed: UserAccount?
     private (set) lazy var alfrescoAuth: AlfrescoAuth = {
         let authConfig = authConfiguration()
         return AlfrescoAuth.init(configuration: authConfig)
@@ -36,17 +37,13 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     private var loginCompletionBlock: LoginAIMSCompletionBlock?
     private var logoutCompletionBlock: LogoutAIMSCompletionBlock?
     private var refreshSessionCompletionBlock: LoginAIMSCompletionBlock?
-    private var refreshSessionInProgress: Bool = false
+    private var isSessionRefreshInProgress: Bool = false
     
     override init() {
     }
     
-    @objc init(with account: UserAccount?) {
-        self.account = account
-    }
-    
     @objc func update(with newAccount: UserAccount?) {
-        self.account = newAccount;
+        self.activeAccount = newAccount
     }
     
     @objc func availableAuthType(forAccount account: UserAccount?, completionBlock: @escaping AvailableAuthenticationTypeCompletionBlock) {
@@ -82,12 +79,14 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     }
     
     @objc func refreshSession(for account: UserAccount, completionBlock: @escaping LoginAIMSCompletionBlock) {
+        accountToBeRefreshed = account
         refreshSessionCompletionBlock = completionBlock
-        self.refreshSessionInProgress = true
+        isSessionRefreshInProgress = true
+        
         session = obtainAlfrescoAuthSession(for: account)
         guard let activeSession = session else { return }
         
-        let authConfig = authConfiguration()
+        let authConfig = authConfiguration(for: account)
         alfrescoAuth.update(configuration: authConfig)
         alfrescoAuth.pkceRefresh(session: activeSession, delegate: self)
     }
@@ -107,7 +106,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     }
     
     func obtainAlfrescoCredential() -> AlfrescoCredential? {
-        if let account = self.account {
+        if let account = activeAccount {
             let credentialIdentifier = String(format: "%@-%@", account.accountIdentifier, kPersistenceStackCredentialParameter)
             if let data =  KeychainUtils.dataFor(matchingIdentifier: credentialIdentifier) {
                 do {
@@ -151,7 +150,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
             AlfrescoLog.logError("Unable to persist credentials to Keychain.")
         }
         
-        if let cData = credentialData, let sData = sessionData, let account = self.account {
+        if let cData = credentialData, let sData = sessionData, let account = activeAccount {
             KeychainUtils.createKeychainData(cData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackCredentialParameter))
             KeychainUtils.createKeychainData(sData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackSessionParameter))
         }
@@ -165,27 +164,33 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
             self.session = session
             self.alfrescoCredential = alfrescoCredential
             let decode = self.decodeJWTPayloadToken()
-            self.account?.oauthData = AlfrescoOAuthData(tokenType: alfrescoCredential.tokenType,
-                                                        accessToken: alfrescoCredential.accessToken,
-                                                        accessTokenExpiresIn: alfrescoCredential.accessTokenExpiresIn as NSNumber?,
-                                                        refreshToken: alfrescoCredential.refreshToken,
-                                                        refreshTokenExpiresIn: alfrescoCredential.refreshTokenExpiresIn as NSNumber?,
-                                                        sessionState: alfrescoCredential.sessionState,
-                                                        payloadToken: decode)
             self.saveToKeychain(session: session, credential: alfrescoCredential)
-            if !self.refreshSessionInProgress {
+            
+            let oauthData = AlfrescoOAuthData(tokenType: alfrescoCredential.tokenType,
+                                              accessToken: alfrescoCredential.accessToken,
+                                              accessTokenExpiresIn: alfrescoCredential.accessTokenExpiresIn as NSNumber?,
+                                              refreshToken: alfrescoCredential.refreshToken,
+                                              refreshTokenExpiresIn: alfrescoCredential.refreshTokenExpiresIn as NSNumber?,
+                                              sessionState: alfrescoCredential.sessionState,
+                                              payloadToken: decode)
+            if isSessionRefreshInProgress {
+                accountToBeRefreshed?.oauthData = oauthData
+                
+                if let refreshCompletionBlock = self.refreshSessionCompletionBlock {
+                    refreshCompletionBlock(accountToBeRefreshed, nil)
+                    self.refreshSessionCompletionBlock = nil
+                    isSessionRefreshInProgress = false
+                }
+            } else {
+                activeAccount?.oauthData = oauthData
+                
                 if let loginCompletionBlock = self.loginCompletionBlock {
-                    loginCompletionBlock(self.account, nil)
+                    loginCompletionBlock(self.activeAccount, nil)
                     self.loginCompletionBlock = nil
                 }
             }
-            if let refreshCompletionBlock = self.refreshSessionCompletionBlock {
-                refreshCompletionBlock(self.account, nil)
-                self.refreshSessionCompletionBlock = nil
-                self.refreshSessionInProgress = false
-            }
         case .failure(let error):
-            if !self.refreshSessionInProgress {
+            if !isSessionRefreshInProgress {
                 if let loginCompletionBlock = self.loginCompletionBlock {
                     if error.responseCode == kAFALoginSSOViewModelCancelErrorCode {
                         loginCompletionBlock(nil, nil)
@@ -198,7 +203,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
             if let refreshCompletionBlock = self.refreshSessionCompletionBlock {
                 refreshCompletionBlock(nil, error)
                 self.refreshSessionCompletionBlock = nil
-                self.refreshSessionInProgress = false
+                isSessionRefreshInProgress = false
             }
         }
     }
@@ -242,7 +247,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     }
     
     private func authConfiguration() -> AuthConfiguration {
-        return authConfiguration(for: self.account)
+        return authConfiguration(for: activeAccount)
     }
     
     private func fullFormatURL(for account: UserAccount) -> String {
