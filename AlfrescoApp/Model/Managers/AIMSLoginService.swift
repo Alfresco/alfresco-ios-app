@@ -149,8 +149,8 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         } catch {
             AlfrescoLog.logError("Unable to persist credentials to Keychain.")
         }
-        
-        if let cData = credentialData, let sData = sessionData, let account = activeAccount {
+        let saveAccount = (isSessionRefreshInProgress) ? accountToBeRefreshed : activeAccount
+        if let cData = credentialData, let sData = sessionData, let account = saveAccount {
             KeychainUtils.createKeychainData(cData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackCredentialParameter))
             KeychainUtils.createKeychainData(sData, forIdentifier: String(format: "%@-%@", account.accountIdentifier, kPersistenceStackSessionParameter))
         }
