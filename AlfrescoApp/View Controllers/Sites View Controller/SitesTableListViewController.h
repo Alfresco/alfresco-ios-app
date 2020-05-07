@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -23,5 +23,6 @@
 - (instancetype)initWithType:(SiteListTypeSelection)listType session:(id<AlfrescoSession>)session pushHandler:(UIViewController *)viewController listingContext:(AlfrescoListingContext *)listingContext;
 - (void)search:(NSString *)searchString listingContext:(AlfrescoListingContext *)listingContext;
 - (void)clearDataSource;
+- (void)updateSession:(id<AlfrescoSession>)session;
 
 @end

@@ -1,74 +1,91 @@
 PODS:
-  - Firebase/Analytics (6.20.0):
+  - AlfrescoAuth (2.1.0):
+    - AlfrescoCore
+    - AppAuth
+  - AlfrescoCore (2.0.0)
+  - AppAuth (1.3.0):
+    - AppAuth/Core (= 1.3.0)
+    - AppAuth/ExternalUserAgent (= 1.3.0)
+  - AppAuth/Core (1.3.0)
+  - AppAuth/ExternalUserAgent (1.3.0)
+  - Base64 (1.1.2)
+  - Firebase/Analytics (6.23.0):
     - Firebase/Core
-  - Firebase/Core (6.20.0):
+  - Firebase/Core (6.23.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 6.3.1)
-  - Firebase/CoreOnly (6.20.0):
-    - FirebaseCore (= 6.6.4)
-  - Firebase/Crashlytics (6.20.0):
+    - FirebaseAnalytics (= 6.4.2)
+  - Firebase/CoreOnly (6.23.0):
+    - FirebaseCore (= 6.6.7)
+  - Firebase/Crashlytics (6.23.0):
     - Firebase/CoreOnly
-    - FirebaseCrashlytics (~> 4.0.0-beta.5)
-  - FirebaseAnalytics (6.3.1):
+    - FirebaseCrashlytics (~> 4.0.0)
+  - FirebaseAnalytics (6.4.2):
     - FirebaseCore (~> 6.6)
-    - FirebaseInstallations (~> 1.1)
-    - GoogleAppMeasurement (= 6.3.1)
+    - FirebaseInstallations (~> 1.2)
+    - GoogleAppMeasurement (= 6.4.2)
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (= 0.3.9011)
   - FirebaseAnalyticsInterop (1.5.0)
-  - FirebaseCore (6.6.4):
+  - FirebaseCore (6.6.7):
     - FirebaseCoreDiagnostics (~> 1.2)
     - FirebaseCoreDiagnosticsInterop (~> 1.2)
     - GoogleUtilities/Environment (~> 6.5)
     - GoogleUtilities/Logger (~> 6.5)
-  - FirebaseCoreDiagnostics (1.2.2):
+  - FirebaseCoreDiagnostics (1.2.4):
     - FirebaseCoreDiagnosticsInterop (~> 1.2)
-    - GoogleDataTransportCCTSupport (~> 2.0)
+    - GoogleDataTransportCCTSupport (~> 3.0)
     - GoogleUtilities/Environment (~> 6.5)
     - GoogleUtilities/Logger (~> 6.5)
     - nanopb (~> 0.3.901)
   - FirebaseCoreDiagnosticsInterop (1.2.0)
-  - FirebaseCrashlytics (4.0.0-beta.5):
+  - FirebaseCrashlytics (4.0.0):
     - FirebaseAnalyticsInterop (~> 1.2)
     - FirebaseCore (~> 6.6)
     - FirebaseInstallations (~> 1.1)
+    - GoogleDataTransport (~> 6.0)
+    - GoogleDataTransportCCTSupport (~> 3.0)
+    - nanopb (~> 0.3.901)
     - PromisesObjC (~> 1.2)
-  - FirebaseInstallations (1.1.0):
+  - FirebaseInstallations (1.2.0):
     - FirebaseCore (~> 6.6)
-    - GoogleUtilities/UserDefaults (~> 6.5)
+    - GoogleUtilities/Environment (~> 6.6)
+    - GoogleUtilities/UserDefaults (~> 6.6)
     - PromisesObjC (~> 1.2)
-  - GoogleAppMeasurement (6.3.1):
+  - GoogleAppMeasurement (6.4.2):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (= 0.3.9011)
-  - GoogleDataTransport (5.0.0)
-  - GoogleDataTransportCCTSupport (2.0.0):
-    - GoogleDataTransport (~> 5.0)
+  - GoogleDataTransport (6.0.0)
+  - GoogleDataTransportCCTSupport (3.0.0):
+    - GoogleDataTransport (~> 6.0)
     - nanopb (~> 0.3.901)
-  - GoogleUtilities/AppDelegateSwizzler (6.5.2):
+  - GoogleUtilities/AppDelegateSwizzler (6.6.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (6.5.2)
-  - GoogleUtilities/Logger (6.5.2):
+  - GoogleUtilities/Environment (6.6.0):
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/Logger (6.6.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (6.5.2):
+  - GoogleUtilities/MethodSwizzler (6.6.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (6.5.2):
+  - GoogleUtilities/Network (6.6.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (6.5.2)"
-  - GoogleUtilities/Reachability (6.5.2):
+  - "GoogleUtilities/NSData+zlib (6.6.0)"
+  - GoogleUtilities/Reachability (6.6.0):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (6.5.2):
+  - GoogleUtilities/UserDefaults (6.6.0):
     - GoogleUtilities/Logger
-  - MBProgressHUD (1.0.0)
+  - JWT (2.2.0):
+    - Base64 (~> 1.1.2)
+  - MBProgressHUD (1.2.0)
   - nanopb (0.3.9011):
     - nanopb/decode (= 0.3.9011)
     - nanopb/encode (= 0.3.9011)
@@ -80,23 +97,26 @@ PODS:
   - NJKWebViewProgress/Core (0.2.3)
   - NJKWebViewProgress/ProgressView (0.2.3)
   - PromisesObjC (1.2.8)
-  - Realm (3.11.2):
-    - Realm/Headers (= 3.11.2)
-  - Realm/Headers (3.11.2)
+  - Realm (3.21.0):
+    - Realm/Headers (= 3.21.0)
+  - Realm/Headers (3.21.0)
 
 DEPENDENCIES:
+  - AlfrescoAuth
   - Firebase/Analytics
   - Firebase/Crashlytics
+  - JWT
   - MBProgressHUD (~> 1.0)
   - NJKWebViewProgress (~> 0.2)
   - Realm (~> 3.11)
 
 SPEC REPOS:
+  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
+    - AlfrescoAuth
+    - AlfrescoCore
   https://github.com/CocoaPods/Specs.git:
-    - MBProgressHUD
-    - NJKWebViewProgress
-    - Realm
-  trunk:
+    - AppAuth
+    - Base64
     - Firebase
     - FirebaseAnalytics
     - FirebaseAnalyticsInterop
@@ -109,28 +129,37 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
+    - JWT
+    - MBProgressHUD
     - nanopb
+    - NJKWebViewProgress
     - PromisesObjC
+    - Realm
 
 SPEC CHECKSUMS:
-  Firebase: fe7f74012742ab403451dd283e6909b8f1fb348a
-  FirebaseAnalytics: 572e467f3d977825266e8ccd52674aa3e6f47eac
+  AlfrescoAuth: 0e4d598845d5efd41eaadf2d16981bf59fdc5095
+  AlfrescoCore: d28a8593e87b52952f70a5378b4047770f404af5
+  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
+  Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
+  Firebase: 585ae467b3edda6a5444e788fda6888f024d8d6f
+  FirebaseAnalytics: 558f7a03d19de451093032c806f39d5f9dff096e
   FirebaseAnalyticsInterop: 3f86269c38ae41f47afeb43ebf32a001f58fcdae
-  FirebaseCore: ed0a24c758a57c2b88c5efa8e6a8195e868af589
-  FirebaseCoreDiagnostics: e9b4cd8ba60dee0f2d13347332e4b7898cca5b61
+  FirebaseCore: a2788a0d5f6c1dff17b8f79b4a73654a8d4bfdbd
+  FirebaseCoreDiagnostics: b59c024493a409f8aecba02c99928d0d8431d159
   FirebaseCoreDiagnosticsInterop: 296e2c5f5314500a850ad0b83e9e7c10b011a850
-  FirebaseCrashlytics: 7c95218730d1debf493e987233c7b41dd7ba1329
-  FirebaseInstallations: 575cd32f2aec0feeb0e44f5d0110a09e5e60b47b
-  GoogleAppMeasurement: c29d405ff76e18551b5d158eaba6753fda8c7542
-  GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
-  GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862
-  GoogleUtilities: ad0f3b691c67909d03a3327cc205222ab8f42e0e
-  MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
+  FirebaseCrashlytics: 941608d2a3475b48fb7010b998703d07696b8db1
+  FirebaseInstallations: 2119fb3e46b0a88bfdbf12562f855ee3252462fa
+  GoogleAppMeasurement: 2253e99c1f22638cf234c059144660c338ad76c3
+  GoogleDataTransport: 061fe7d9b476710e3cd8ea51e8e07d8b67c2b420
+  GoogleDataTransportCCTSupport: 0f39025e8cf51f168711bd3fb773938d7e62ddb5
+  GoogleUtilities: 39530bc0ad980530298e9c4af8549e991fd033b1
+  JWT: cf73c0ab0dac762df3de8a3f1164352089d97780
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
-  Realm: 864477d028db77f7c5a0cba64a4892ad53db128a
+  Realm: 38e9dcb19104b58407167d99f70d4995f7c16023
 
-PODFILE CHECKSUM: a026de84988fb1f79fb1509601a3dc9fb7e4cc0a
+PODFILE CHECKSUM: 23d3d92fcc6418c5a564752bdd9dea82d4c37239
 
 COCOAPODS: 1.8.4

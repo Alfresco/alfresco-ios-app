@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SharedConstants.h"
+#import "UserAccount.h"
 
 typedef NS_ENUM(NSInteger, InAppDocumentLocation)
 {
@@ -57,8 +58,17 @@ typedef NS_ENUM(NSUInteger, SitesListViewFilter)
     SitesListViewFilterAllSites
 };
 
+typedef NS_ENUM(NSUInteger, AvailableAuthenticationType) {
+    AvailableAuthenticationTypeUndefined = -1,
+    AvailableAuthenticationTypeBasic = 0,
+    AvailableAuthenticationTypeAIMS
+};
+
 typedef void (^ImageCompletionBlock)(UIImage *image, NSError *error);
 typedef void (^LoginAuthenticationCompletionBlock)(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error);
+typedef void (^LoginAIMSCompletionBlock)(UserAccount *account, NSError *error);
+typedef void (^LogoutAIMSCompletionBlock)(BOOL successful, NSError *error);
+typedef void (^AvailableAuthenticationTypeCompletionBlock)(AvailableAuthenticationType authType, NSError *error);
 
 extern NSTimeInterval const kRateLimitForRequestsOnCloud;
 
@@ -111,6 +121,11 @@ extern NSString * const kWasSyncInfoPanelShown;
 extern NSString * const kVersionOfLastRun;
 extern NSString * const kCloudTerminationAlertShownKey;
 extern NSString * const kHasAccountMigrationOccured;
+extern NSString * const kPersistenceStackSessionParameter;
+extern NSString * const kPersistenceStackCredentialParameter;
+
+// errors
+extern int const kAFALoginSSOViewModelCancelErrorCode;
 
 // Settings Bundle Keys
 extern NSString * const kSettingsBundlePreferenceAppVersionKey;
@@ -133,6 +148,7 @@ extern NSString * const kAlfrescoDocumentUpdatedLocallyNotification;
 extern NSString * const kAlfrescoDocumentDeletedOnServerNotification;
 extern NSString * const kAlfrescoNodeAddedOnServerNotification;
 extern NSString * const kAlfrescoEnableMainMenuAutoItemSelection;
+extern NSString * const kAlfrescoShowAccountPickerNotification;
 // parameter keys used in the dictionary of notification object
 extern NSString * const kAlfrescoDocumentUpdatedFromDocumentParameterKey;
 extern NSString * const kAlfrescoDocumentUpdatedFilenameParameterKey;
@@ -155,6 +171,11 @@ extern NSString * const kAlfrescoAccountUpdatedNotification;
 extern NSString * const kAlfrescoAccountsListEmptyNotification;
 extern NSString * const kAlfrescoFirstPaidAccountAddedNotification;
 extern NSString * const kAlfrescoLastPaidAccountRemovedNotification;
+extern NSString * const kAlfrescoDefaultAIMSClientIDString;
+extern NSString * const kAlfrescoDefaultAIMSRealmString;
+extern NSString * const kAlfrescoDefaultAIMSRedirectURI;
+extern NSInteger const kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer;
+
 
 // Application policy constants
 extern NSString * const kApplicationPolicySettings;

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (C) 2005-2014 Alfresco Software Limited.
+* Copyright (C) 2005-2020 Alfresco Software Limited.
 *
 * This file is part of the Alfresco Mobile iOS App.
 *
@@ -71,6 +71,14 @@ import AVFoundation
         make(button: navigationItem.rightBarButtonItem, enable: !model.isAllPhoto(selected: false))
         make(button: navigationItem.leftBarButtonItem, enable: true)
 
+        NotificationCenter.default.addObserver(self, selector: #selector(sessionReceived(notification:)),
+                                               name: NSNotification.Name.alfrescoSessionReceived, object: nil)
+    }
+    
+    @objc private func sessionReceived(notification: NSNotification) {
+        if let session = notification.object as? AlfrescoSession {
+            self.model.refresh(session: session)
+        }
     }
     
     override var prefersStatusBarHidden: Bool {
@@ -78,6 +86,7 @@ import AVFoundation
     }
     
     //MARK: - IBActions
+    
     @IBAction func infoButtonTapped(_ sender: Any) {
         showAlertInfoNaming()
     }
@@ -113,7 +122,11 @@ import AVFoundation
     
     func showAlertRetryMode() {
         let alert = UIAlertController(title: "", message: model.retryModeText, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { action in
+        alert.addAction(UIAlertAction(title: model.okText, style: .default, handler: { [weak self]  action in
+            guard let sSelf = self else { return }
+            if let error = sSelf.model.errorUpload {
+                Notifier.notify(withAlfrescoError: error)
+            }
         }))
         self.present(alert, animated: true, completion: nil)
     }

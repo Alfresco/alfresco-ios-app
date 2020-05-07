@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -186,6 +186,11 @@ static UILayoutPriority const kLowPriority = 250;
             if (process && self.taskHeaderView)
             {
                 self.taskHeaderView.taskInitiator = process.initiatorUsername;
+            }
+            else
+            {
+                displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+                [Notifier notifyWithAlfrescoError:error];
             }
         }];
         

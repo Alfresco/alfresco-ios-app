@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -40,6 +40,10 @@
         self.serverPort = userAccount.serverPort;
         self.protocol = userAccount.protocol;
         self.serviceDocument = userAccount.serviceDocument;
+        self.contentAddress = userAccount.contentAddress;
+        self.realm = userAccount.realm;
+        self.clientID = userAccount.clientID;
+        self.redirectURI = userAccount.redirectURI;
         self.selectedNetworkIdentifier = userAccount.selectedNetworkId;
         self.networkIdentifiers = userAccount.accountNetworks;
         self.oAuthData = userAccount.oauthData;

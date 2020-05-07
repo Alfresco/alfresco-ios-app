@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -943,3 +943,19 @@
 "gallery.photos.upload.cellular.title" = "Utilizar datos para cargar fotos";
 "gallery.photos.upload.cellular.description" = "¿Quiere pasar a conexión wifi para cargar estas fotos?";
 "gallery.photos.uploadTitleScreen" = "Cargar fotos";
+
+/**
+* AIMS Views
+*/
+"accountdetails.title.aims" = "Inicio de sesión único";
+"accountdetails.title.aimssettings" = "Config. inicio de sesión único";
+"accountdetails.fields.contentAdress" = "URL de contenido";
+"accountdetails.fields.realm" = "Dominio";
+"accountdetails.fields.clientID" = "ID de cliente";
+"accountdetails.buttons.logout" = "Cerrar sesión";
+"accountdetails.needHelp.title" = "Cómo iniciar sesión";
+"accountdetails.needHelp.text" = "Puede introducir la URL de su instancia de Alfresco Content Services.\n\n • Deberá introducir su nombre de usuario y contraseña para autenticarse.\n\n • También puede introducir la URL de su Identity Service para autenticarse por medio del proveedor de identidad de su empresa (SSO). Deberá introducir la URL de su instancia de Alfresco Content Services en la siguiente pantalla.\n\n • Hable con su administrador de Alfresco si necesita ayuda.";
+"accountpicker.title" = "Sesión caducada";
+"accountpicker.subtitle" = "Ya no has iniciado sesión. Vuelva a iniciar sesión para continuar.";
+"accountpicker.info.other" = "Pruebe con otra cuenta.";
+"accountpicker.button.addaccount" = "Añadir cuenta";

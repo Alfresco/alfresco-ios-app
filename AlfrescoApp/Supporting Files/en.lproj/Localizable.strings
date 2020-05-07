@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -943,3 +943,19 @@
 "gallery.photos.upload.cellular.title" = "Use data for upload multiple photo";
 "gallery.photos.upload.cellular.description" = "Do you want to switch to WI-FI connection to upload these photos?";
 "gallery.photos.uploadTitleScreen" = "Upload Photos";
+
+/**
+* AIMS Views
+*/
+"accountdetails.title.aims" = "Single Sign-On";
+"accountdetails.title.aimssettings" = "Single Sign-On Settings";
+"accountdetails.fields.contentAdress" = "Content URL";
+"accountdetails.fields.realm" = "Realm";
+"accountdetails.fields.clientID" = "Client ID";
+"accountdetails.buttons.logout" = "Log out";
+"accountdetails.needHelp.title" = "How to sign in";
+"accountdetails.needHelp.text" = "You can enter the URL of your Alfresco Content Services instance.\n\n • You will be required to enter your username and password to authenticate.\n\n • You can also enter the URL of your Identity Service in order to authenticate with your organizations identity provider (SSO). You will have to provide the URL of your Alfresco Content Services instance on the next screen.\n\n • Speak to your Alfresco administrator if you require help.";
+"accountpicker.title" = "Session Expired";
+"accountpicker.subtitle" = "You are no longer signed in. Please Sign In again to continue.";
+"accountpicker.info.other" = "Try another account.";
+"accountpicker.button.addaccount" = "Add account";

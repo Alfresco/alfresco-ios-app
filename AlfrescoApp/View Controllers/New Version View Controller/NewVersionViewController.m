@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -138,6 +138,7 @@
             NSString *checkoutErrorTitle = NSLocalizedString(@"error.new.version.unable.to.checkout.title", @"Checkout Title");
             NSString *checkoutErrorMessage = [NSString stringWithFormat:NSLocalizedString(@"error.new.version.unable.to.checkout.message", @"Checkout Error Message"), self.document.name, checkoutError.localizedDescription];
             displayErrorMessageWithTitle(checkoutErrorMessage, checkoutErrorTitle);
+            [Notifier notifyWithAlfrescoError:checkoutError];
         }
         else
         {

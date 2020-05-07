@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -40,6 +40,9 @@ extern NSString * const kNewAccountVCHostnameTextfieldIdentifier;
 extern NSString * const kNewAccountVCDescriptionTextfieldIdentifier;
 extern NSString * const kNewAccountVCHTTPSSwitchIdentifier;
 extern NSString * const kNewAccountVCPortTextfieldIdentifier;
+extern NSString * const kNewAccountVCContentTextfieldIdentifier;
+extern NSString * const kNewAccountVCRealmTextfieldIdentifier;
+extern NSString * const kNewAccountVCClientIDTextfieldIdentifier;
 extern NSString * const kNewAccountVCServiceTextfieldIdentifier;
 extern NSString * const kNewAccountVCClientCetificateCellIdentifier;
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -650,6 +650,11 @@
 - (void)clearDataSource
 {
     [self.dataSource clearDataSource];
+}
+
+- (void)updateSession:(id<AlfrescoSession>)session {
+    self.session = session;
+    [self createAlfrescoServicesWithSession:session];
 }
 
 #pragma mark - SearchResultsTableViewDataSourceDelegate

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -43,6 +43,18 @@
 - (void)showSAMLWebViewForAccount:(UserAccount *)account
              navigationController:(UINavigationController *)navigationController
                   completionBlock:(AlfrescoSAMLAuthCompletionBlock)completionBlock;
+- (void)authenticateWithAIMSOnPremiseAccount:(UserAccount *)account
+                             completionBlock:(LoginAuthenticationCompletionBlock)completionBlock;
+- (void)showAIMSWebviewForAccount:(UserAccount *)account
+             navigationController:(UINavigationController *)navigationController
+                  completionBlock:(LoginAIMSCompletionBlock)completionBlock;
+- (void)showLogOutAIMSWebviewForAccount:(UserAccount *)account
+                   navigationController:(UINavigationController *)navigationController
+                        completionBlock:(LogoutAIMSCompletionBlock)completionBlock;
+- (void)saveInKeychainAIMSDataForAccount:(UserAccount *)account;
 - (void)showSignInAlertWithSignedInBlock:(void (^)(void))completionBlock;
+- (void)availableAuthTypeForAccount:(UserAccount *)account
+                    completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock;
+- (void)cancelActiveSessionRefreshTasks;
 
 @end

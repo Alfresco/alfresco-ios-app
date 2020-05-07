@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,19 +13,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6m1-jS-SI3" id="4bz-Vo-ZDx">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1C-3q-825">
-                        <rect key="frame" x="12" y="9" width="42" height="23"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L1C-3q-825">
+                        <rect key="frame" x="12" y="9" width="155" height="24"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CBP-G3-7ak">
-                        <rect key="frame" x="67" y="6" width="241" height="30"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <rect key="frame" x="180" y="6" width="128" height="31"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                     </textField>
@@ -32,6 +32,7 @@
                     <constraint firstAttribute="trailing" secondItem="CBP-G3-7ak" secondAttribute="trailing" constant="12" id="6Gl-JV-yQn"/>
                     <constraint firstItem="CBP-G3-7ak" firstAttribute="top" secondItem="4bz-Vo-ZDx" secondAttribute="top" constant="6" id="RKn-vQ-uml"/>
                     <constraint firstItem="L1C-3q-825" firstAttribute="top" secondItem="4bz-Vo-ZDx" secondAttribute="top" constant="9" id="Sth-yL-obb"/>
+                    <constraint firstItem="CBP-G3-7ak" firstAttribute="width" relation="greaterThanOrEqual" secondItem="4bz-Vo-ZDx" secondAttribute="width" multiplier="0.4" id="Vl8-mO-SJK"/>
                     <constraint firstAttribute="bottom" secondItem="CBP-G3-7ak" secondAttribute="bottom" constant="7" id="W2N-za-mxs"/>
                     <constraint firstItem="L1C-3q-825" firstAttribute="leading" secondItem="4bz-Vo-ZDx" secondAttribute="leading" constant="12" id="WHR-dc-V80"/>
                     <constraint firstAttribute="bottom" secondItem="L1C-3q-825" secondAttribute="bottom" constant="11" id="Yel-Ek-5hc"/>
@@ -42,6 +43,7 @@
                 <outlet property="titleLabel" destination="L1C-3q-825" id="Zht-Rh-UJn"/>
                 <outlet property="valueTextField" destination="CBP-G3-7ak" id="pAX-J1-T27"/>
             </connections>
+            <point key="canvasLocation" x="139" y="131"/>
         </tableViewCell>
     </objects>
 </document>

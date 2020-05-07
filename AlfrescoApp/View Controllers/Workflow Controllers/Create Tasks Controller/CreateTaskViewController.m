@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -250,6 +250,7 @@ typedef NS_ENUM(NSInteger, CreateTaskRowType)
         {
             [progressHUD hideAnimated:YES];
             displayErrorMessageWithTitle(NSLocalizedString(@"task.create.error", @"Failed to create Task"), [ErrorDescriptions descriptionForError:error]);
+            [Notifier notifyWithAlfrescoError:error];
         }
     }];
 }

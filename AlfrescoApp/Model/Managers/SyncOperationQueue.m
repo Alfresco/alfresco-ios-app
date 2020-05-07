@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -263,6 +263,7 @@
                                                                             }
                                                                             else if(!((error.code == kAlfrescoErrorCodeNetworkRequestCancelled) && (syncProgressType == SyncProgressTypeUnsyncRequested || syncProgressType == SyncProgressTypeInUnsyncProcessing)))
                                                                             {
+                                                                                [Notifier notifyWithAlfrescoError:error];
                                                                                 SyncProgressType syncProgressType = [self syncProgressTypeForNode:document];
                                                                                 if(syncProgressType == SyncProgressTypeInProcessing)
                                                                                 {

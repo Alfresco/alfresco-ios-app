@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -65,6 +65,11 @@ NSString * const kWasSyncInfoPanelShown = @"wasSyncInfoPanelShown";
 NSString * const kVersionOfLastRun = @"kVersionOfLastRun";
 NSString * const kCloudTerminationAlertShownKey = @"CloudTerminationAlertShown";
 NSString * const kHasAccountMigrationOccured = @"hasAccountMigrationOccured";
+NSString * const kPersistenceStackSessionParameter = @"AlfrescoSession";
+NSString * const kPersistenceStackCredentialParameter = @"AlfrescoCredential";
+
+// errors
+int const kAFALoginSSOViewModelCancelErrorCode = -3;
 
 // Settings Bundle Keys
 NSString * const kSettingsBundlePreferenceAppVersionKey = @"Prefs_AppVersion";
@@ -102,6 +107,8 @@ NSString * const kAlfrescoNodeAddedOnServerContentLocationLocally = @"AlfrescoNo
 NSString * const kAlfrescoWorkflowTaskListDidChangeNotification = @"AlfrescoWorkflowTaskListDidChange";
 NSString * const kAlfrescoDocumentEditedNotification = @"AlfrescoDocumentEditedNotification";
 NSString * const kAlfrescoEnableMainMenuAutoItemSelection = @"AlfrescoEnableMainMenuAutoItemSelection";
+NSString * const kAlfrescoShowAccountPickerNotification = @"AlfrescoShowAccountPickerNotification";
+
 // Saveback
 NSString * const kAlfrescoSaveBackLocalComplete = @"AlfrescoSaveBackLocalComplete";
 NSString * const kAlfrescoSaveBackRemoteComplete = @"AlfrescoSaveBackRemoteComplete";
@@ -115,6 +122,10 @@ NSString * const kAlfrescoAccountUpdatedNotification = @"AlfrescoAccountUpdatedN
 NSString * const kAlfrescoAccountsListEmptyNotification = @"AlfrescoAccountsListEmptyNotification";
 NSString * const kAlfrescoFirstPaidAccountAddedNotification = @"AlfrescoFirstPaidAccountAddedNotification";
 NSString * const kAlfrescoLastPaidAccountRemovedNotification = @"AlfrescoLastPaidAccountRemovedNotification";
+NSString * const kAlfrescoDefaultAIMSClientIDString = @"alfresco-ios-acs-app";
+NSString * const kAlfrescoDefaultAIMSRealmString = @"alfresco";
+NSString * const kAlfrescoDefaultAIMSRedirectURI = @"iosacsapp://aims/auth";
+NSInteger const kAlfrescoDefaultAIMSAccessTokenRefreshTimeBuffer = 10;
 
 // Application policy constants
 NSString * const kApplicationPolicySettings = @"ApplicationPolicySettings";

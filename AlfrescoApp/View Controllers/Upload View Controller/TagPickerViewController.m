@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -230,6 +230,15 @@
     } completion:^(BOOL finished) {
         [[self.tableView cellForRowAtIndexPath:indexPath] setHighlighted:NO animated:YES];
     }];
+}
+
+#pragma mark - Session Received
+
+- (void)sessionReceived:(NSNotification *)notification
+{
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
+    self.tagService = [[AlfrescoTaggingService alloc] initWithSession:self.session];
 }
 
 @end

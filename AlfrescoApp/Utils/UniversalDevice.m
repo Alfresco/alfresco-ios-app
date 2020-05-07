@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -190,15 +190,12 @@ static DownloadsDocumentPreviewViewController *downloadDocumentPreviewController
     {
         viewController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
-    if(controller.presentedViewController == nil)
-    {
-        [controller presentViewController:viewController animated:YES completion:^{
-            if (completionBlock != NULL)
-            {
-                completionBlock();
-            }
-        }];
-    }
+    [controller presentViewController:viewController animated:YES completion:^{
+        if (completionBlock != NULL)
+        {
+            completionBlock();
+        }
+    }];
 }
 
 + (void)clearDetailViewController

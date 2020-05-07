@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -286,6 +286,8 @@ static NSInteger const kSearchResultsIndex = 0;
         if (error || array.count == 0)
         {
             [searchResults addObject:NSLocalizedString(@"people.picker.search.no.results", @"No Search Results")];
+            displayErrorMessage([ErrorDescriptions descriptionForError:error]);
+            [Notifier notifyWithAlfrescoError:error];
         }
         else
         {

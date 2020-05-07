@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -24,7 +24,8 @@
 typedef NS_ENUM(NSInteger, UserAccountType)
 {
     UserAccountTypeOnPremise = 0,
-    UserAccountTypeCloud
+    UserAccountTypeCloud,
+    UserAccountTypeAIMS
 };
 
 typedef NS_ENUM(NSInteger, UserAccountStatus)
@@ -45,8 +46,13 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 @property (nonatomic, strong) NSString *serverPort;
 @property (nonatomic, strong) NSString *protocol;
 @property (nonatomic, strong) NSString *serviceDocument;
+@property (nonatomic, strong) NSString *contentAddress;
+@property (nonatomic, strong) NSString *realm;
+@property (nonatomic, strong) NSString *clientID;
+@property (nonatomic, strong) NSString *redirectURI;
 @property (nonatomic, assign) UserAccountType accountType;
 @property (nonatomic, strong) AlfrescoOAuthData *oauthData;
+
 @property (nonatomic, strong) AccountCertificate *accountCertificate;
 @property (nonatomic, assign) BOOL isSelectedAccount;
 @property (nonatomic, assign) BOOL isSyncOn;
@@ -54,6 +60,7 @@ typedef NS_ENUM(NSInteger, UserAccountStatus)
 @property (nonatomic, strong) NSString *selectedNetworkId;
 @property (nonatomic, strong) NSArray *accountNetworks;
 @property (nonatomic, assign) UserAccountStatus accountStatus;
+
 
 // Cloud sign-up properties, needed for refreshing Account Statuses and resending sign-up request
 @property (nonatomic, strong) NSString *firstName;

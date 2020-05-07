@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -452,6 +452,7 @@ static NSUInteger const kStreamCopyBufferSize = 16 * 1024;
         {
             // Display an error
             displayErrorMessage([NSString stringWithFormat:NSLocalizedString(@"error.filefolder.content.failedtodownload", @"Failed to download the file"), error.localizedDescription]);
+            [Notifier notifyWithAlfrescoError:error];
         }
     } progressBlock:^(unsigned long long bytesTransferred, unsigned long long bytesTotal) {
         // TODO: Progress indicator update

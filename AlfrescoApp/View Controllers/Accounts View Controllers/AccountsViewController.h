@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -18,8 +18,17 @@
   
 #import "ParentListViewController.h"
 
+@protocol AccountPickerPresentationDelegate <NSObject>
+
+- (UIViewController*)accountPickerPresentationViewController;
+
+@end
+
 @interface AccountsViewController : ParentListViewController
 
+@property (nonatomic, weak) id <AccountPickerPresentationDelegate> presentationPickerDelegate;
+
 - (instancetype)initWithConfiguration:(NSDictionary *)configuration session:(id<AlfrescoSession>)session;
+- (void)showPickerAccountsWithCurrentAccount:(UserAccount*)currentUser onViewController:(UIViewController*)viewController;
 
 @end

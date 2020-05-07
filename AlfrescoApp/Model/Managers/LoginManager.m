@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -26,10 +26,12 @@
 #import "AccountManager.h"
 #import "NavigationViewController.h"
 #import "LoginManagerCore.h"
+#import "AlfrescoApp-Swift.h"
 
 @interface LoginManager()
 @property (nonatomic, strong) MBProgressHUD     *progressHUD;
 @property (nonatomic, strong) LoginManagerCore  *loginCore;
+@property (nonatomic, strong) AIMSLoginService  *aimsLoginService;
 
 @property (nonatomic, strong) AlfrescoOAuthUILoginViewController *loginController;
 @property (nonatomic, strong) AlfrescoSAMLUILoginViewController *samlLoginController;
@@ -57,10 +59,11 @@
     {
         _loginCore = [LoginManagerCore new];
         _loginCore.delegate = self;
+        _aimsLoginService = [AIMSLoginService new];
         
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoAccessDeniedNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(unauthorizedAccessNotificationReceived:) name:kAlfrescoTokenExpiredNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kAlfrescoConnectivityChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tokenExpired:) name:kAlfrescoTokenExpiredNotification object:nil];
     }
     return self;
 }
@@ -74,6 +77,7 @@
 - (void)attemptLoginToAccount:(UserAccount *)account networkId:(NSString *)networkId
               completionBlock:(LoginAuthenticationCompletionBlock)loginCompletionBlock
 {
+    [self.aimsLoginService updateWith:account];
     [self.loginCore attemptLoginToAccount:account
                                 networkId:networkId
                           completionBlock:loginCompletionBlock];
@@ -111,6 +115,48 @@
     [self.loginCore showSAMLWebViewForAccount:account
                          navigationController:navigationController
                               completionBlock:completionBlock];
+}
+
+- (void)authenticateWithAIMSOnPremiseAccount:(UserAccount *)account
+                             completionBlock:(LoginAuthenticationCompletionBlock)completionBlock
+{
+    [self.loginCore authenticateWithAIMSOnPremiseAccount:account
+                                         completionBlock:completionBlock];
+}
+
+- (void)showAIMSWebviewForAccount:(UserAccount *)account
+navigationController:(UINavigationController *)navigationController
+                  completionBlock:(LoginAIMSCompletionBlock)completionBlock
+{
+    [self.aimsLoginService updateWith:account];
+    [self.aimsLoginService loginOnViewController:navigationController
+                                 completionBlock:completionBlock];
+}
+
+- (void)showLogOutAIMSWebviewForAccount:(UserAccount *)account
+navigationController:(UINavigationController *)navigationController
+                        completionBlock:(LogoutAIMSCompletionBlock)completionBlock {
+    [self.aimsLoginService updateWith:account];
+    [self.loginCore cancelAIMSActiveSessionRefreshTask];
+    [self.aimsLoginService logoutOnViewController:navigationController
+                                  completionBlock:completionBlock];
+}
+
+- (void)saveInKeychainAIMSDataForAccount:(UserAccount *)account {
+    [self.aimsLoginService updateWith:account];
+    [self.aimsLoginService saveInKeychain];
+}
+
+- (void)availableAuthTypeForAccount:(UserAccount *)account
+                    completionBlock:(AvailableAuthenticationTypeCompletionBlock)completionBlock
+{
+    [self.aimsLoginService availableAuthTypeForAccount:account
+                                       completionBlock:completionBlock];
+}
+
+- (void)cancelActiveSessionRefreshTasks
+{
+    [self.loginCore cancelAIMSActiveSessionRefreshTask];
 }
 
 #pragma mark - LoginViewControllerDelegate Functions
@@ -282,6 +328,19 @@
     [[AnalyticsManager sharedManager] trackScreenWithName:screenName];
 }
 
+- (void)refreshSessionForAccount:(UserAccount *)account
+                 completionBlock:(LoginAIMSCompletionBlock)completionBlock
+{
+    [self.aimsLoginService refreshSessionFor:account
+                             completionBlock:completionBlock];
+}
+
+- (void)disableAutoSelectMenuOption
+{
+    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    delegate.mainMenuViewController.autoselectDefaultMenuOption = NO;
+}
+
 #pragma mark - Private Functions
 
 - (void)showHUDOnView:(UIView *)view
@@ -323,42 +382,33 @@
 - (void)unauthorizedAccessNotificationReceived:(NSNotification *)notification
 {
     // try logging again
-    NSError *error = (NSError *)notification.object;
-    
-    if (error.code == kAlfrescoErrorCodeUnauthorisedAccess)
-    {
-        UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
-        [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
-    }
+    UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+    [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:nil];
 }
 
 - (void)reachabilityChanged:(NSNotification *)notification
 {
     BOOL hasInternetConnection = [[ConnectivityManager sharedManager] hasInternetConnection];
-    
     if(hasInternetConnection)
     {
         UserAccount *selectedAccount = [AccountManager sharedManager].selectedAccount;
+        
+        __weak typeof(self) weakSelf = self;
         [self attemptLoginToAccount:selectedAccount networkId:selectedAccount.selectedNetworkId completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-            if(successful && !self.completionBlockCalledFromLoginViewController)
+            __strong typeof(self) strongSelf = weakSelf;
+            
+            if(successful && !strongSelf.completionBlockCalledFromLoginViewController)
             {
-                AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                delegate.mainMenuViewController.autoselectDefaultMenuOption = NO;
-                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+                [strongSelf disableAutoSelectMenuOption];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification
+                                                                    object:alfrescoSession
+                                                                  userInfo:nil];
             }
-            else if (self.completionBlockCalledFromLoginViewController)
+            else if (strongSelf.completionBlockCalledFromLoginViewController)
             {
-                self.completionBlockCalledFromLoginViewController = NO;
+                strongSelf.completionBlockCalledFromLoginViewController = NO;
             }
         }];
-    }
-}
-
-- (void)tokenExpired:(NSNotification *)notification
-{
-    if([AccountManager sharedManager].selectedAccount)
-    {
-        [[LoginManager sharedManager] attemptLoginToAccount:[AccountManager sharedManager].selectedAccount networkId:[AccountManager sharedManager].selectedAccount.selectedNetworkId completionBlock:nil];
     }
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -21,6 +21,7 @@
 #import "AvatarManager.h"
 #import "TextView.h"
 #import "Constants.h"
+#import "AccountManager.h"
 
 static CGFloat const kMaxCommentTextViewHeight = 100.0f;
 
@@ -159,7 +160,6 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     self.session = session;
     
     [self createAlfrescoServicesWithSession:session];
-    
     if ([self shouldRefresh])
     {
         [self showHUD];
@@ -178,7 +178,10 @@ static CGFloat const kMaxCommentTextViewHeight = 100.0f;
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        if (UserAccountTypeAIMS != [AccountManager sharedManager].selectedAccount.accountType)
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
 }
 

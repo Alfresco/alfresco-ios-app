@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -44,7 +44,7 @@
                 
                 NSMutableArray *sectionDataSource = nil;
                 
-                if(account.accountType == UserAccountTypeOnPremise)
+                if(account.accountType == UserAccountTypeOnPremise || account.accountType == UserAccountTypeAIMS)
                 {
                     sectionDataSource = [[NSMutableArray alloc] initWithObjects:
                                          [NSDictionary dictionaryWithObjectsAndKeys:NSLocalizedString(@"search.files", @"Files"), kCellTextKey, @"mainmenu-document", kCellImageKey, nil],

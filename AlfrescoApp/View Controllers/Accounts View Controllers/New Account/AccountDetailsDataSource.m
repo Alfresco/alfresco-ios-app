@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -61,19 +61,25 @@
     LabelCell *profileCell = [self profileCell];
     LabelCell *editMainMenuCell = [self editMainMenuCell];
     LabelCell *accountDetailsCell = [self accountDetailsCell];
-    
-    self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell]];
+    CenterLabelCell *logout = [self logoutCell];
+    if ([AccountManager sharedManager].selectedAccount != self.account || [[AccountManager sharedManager] allAccounts].count == 1)
+    {
+        self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[logout]];
+    }
+    else
+    {
+        self.tableViewData = @[@[profileCell], @[editMainMenuCell], @[accountDetailsCell] , @[]];
+    }
 }
 
 - (void)setupHeaders
 {
-    self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"accountdetails.header.setting", @"accountdetails.header.authentication"];
-
+    self.tableGroupHeaders = @[@"accountdetails.header.profile", @"accountdetails.header.main.menu.config", @"", @""];
 }
 
 - (void)setupFooters
 {
-    self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @""];
+    self.tableGroupFooters = @[@"", (self.canReorderMainMenuItems) ? @"" : @"accountdetails.footer.main.menu.config.disabled", @"", @""];
 }
 
 - (void)setAccessibilityIdentifiers

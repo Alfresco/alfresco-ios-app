@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -26,5 +26,6 @@
 + (NSString *)nodeGUIDFromNodeIdentifierWithVersion:(NSString *)nodeIdentifier;
 + (NSString *)serverURLAddressStringFromAccount:(UserAccount *)account;
 + (NSString *)serverURLStringFromAccount:(id<AKUserAccount>)account;
++ (NSString *)serverURLStringFromAccountAIMS:(UserAccount *)account;
 
 @end

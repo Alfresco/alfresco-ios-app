@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2016 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -555,14 +555,16 @@ typedef NS_ENUM(NSUInteger, ActivitiesViewControllerType)
     self.session = session;
     
     [self createAlfrescoServicesWithSession:session];
-    
-    if ([self shouldRefresh])
+    if ([self shouldRefresh] && [notification.name isEqualToString:kAlfrescoSessionReceivedNotification])
     {
         [self loadActivities];
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        if (UserAccountTypeAIMS != [AccountManager sharedManager].selectedAccount.accountType)
+        {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
     }
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -59,7 +59,7 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
     
     UISearchController *searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
     searchController.searchBar.delegate = self;
-    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.obscuresBackgroundDuringPresentation = NO;
     searchController.hidesNavigationBarDuringPresentation = YES;
     searchController.delegate = self;
     self.searchController = searchController;
@@ -186,6 +186,14 @@ static NSString * const kFolderSearchCMISQuery = @"SELECT * FROM cmis:folder WHE
 {
     AlfrescoNode *currentNode = self.isDisplayingSearch ? self.searchResults[indexPath.row] : self.tableViewData[indexPath.row];
     return currentNode;
+}
+
+- (void)sessionReceived:(NSNotification *)notification
+{
+    id<AlfrescoSession> session = notification.object;
+    self.session = session;
+    
+    [self createAlfrescoServicesWithSession:session];
 }
 
 #pragma mark - Notification Methods

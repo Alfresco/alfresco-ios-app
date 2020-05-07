@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -132,7 +132,7 @@
     {
         [UniversalDevice pushToDisplayViewController:menuItem.associatedObject usingNavigationController:(UINavigationController *)self.displayedViewController animated:YES];
     }
-    else if (menuItem.displayType == MainMenuDisplayTypeModal)
+    else if (menuItem.displayType == MainMenuDisplayTypeModal && self.displayedViewController.presentedViewController == nil)
     {
         [UniversalDevice displayModalViewController:menuItem.associatedObject onController:self.displayedViewController withCompletionBlock:nil];
     }

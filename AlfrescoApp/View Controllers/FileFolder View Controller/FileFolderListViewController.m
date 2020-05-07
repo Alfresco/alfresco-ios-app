@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2014 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -137,7 +137,7 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     searchController.delegate = self;
     searchController.searchBar.delegate = self;
     
-    searchController.dimsBackgroundDuringPresentation = NO;
+    searchController.obscuresBackgroundDuringPresentation = NO;
     searchController.hidesNavigationBarDuringPresentation = YES;
     
     // search bar
@@ -618,13 +618,17 @@ static CGFloat const kSearchBarAnimationDuration = 0.2f;
     
     [self createAlfrescoServicesWithSession:session];
     
+    
     if (session && [self shouldRefresh])
     {
         [self loadContentOfFolder];
     }
     else if (self == [self.navigationController.viewControllers lastObject])
     {
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        if (UserAccountTypeAIMS != [AccountManager sharedManager].selectedAccount.accountType)
+        {
+            [self.navigationController popToRootViewControllerAnimated:NO];
+        }
     }
 }
 

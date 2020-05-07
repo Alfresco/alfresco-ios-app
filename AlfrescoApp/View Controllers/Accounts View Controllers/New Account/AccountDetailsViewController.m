@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -26,6 +26,10 @@
 #import "RealmSyncManager.h"
 #import "MainMenuReorderViewController.h"
 #import "ProfileSelectionViewController.h"
+#import "PreferenceManager.h"
+#import "PinViewController.h"
+#import "SecurityManager.h"
+#import "TouchIDManager.h"
 
 @interface AccountDetailsViewController () <AccountDataSourceDelegate, AccountFlowDelegate>
 
@@ -66,6 +70,7 @@
     {
         case AccountDataSourceTypeNewAccountServer:
         case AccountDataSourceTypeNewAccountCredentials:
+        case AccountDataSourceTypeNewAccountAIMS:
         {
             UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
             
@@ -79,6 +84,20 @@
             
         default:
             break;
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if(self.navigationController.viewControllers.count == 1)
+    {
+        self.navigationItem.hidesBackButton = YES;
+    }
+    else
+    {
+        self.navigationItem.hidesBackButton = NO;
     }
 }
 
@@ -99,10 +118,11 @@
     switch (self.dataSourcetype)
     {
         case AccountDataSourceTypeNewAccountServer:
+        case AccountDataSourceTypeNewAccountAIMS:
         {
             NSString *rightBarButtonTitle =  NSLocalizedString(@"Next", @"Next");
             self.saveButton = [[UIBarButtonItem alloc] initWithTitle:rightBarButtonTitle style:UIBarButtonItemStylePlain target:self action:@selector(saveButtonPressed:)];
-            self.saveButton.enabled = NO;
+            self.saveButton.enabled = [self.dataSource validateAccountFieldsValues];
         }
             break;
             
@@ -115,14 +135,14 @@
         default:
         {
             self.saveButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveButtonPressed:)];
-            self.saveButton.enabled = NO;
+            self.saveButton.enabled = [self.dataSource validateAccountFieldsValues];
         }
             break;
     }
     
     [self.navigationItem setRightBarButtonItem:self.saveButton];
     
-    if (self.dataSourcetype != AccountDataSourceTypeAccountDetails)
+    if (self.dataSourcetype != AccountDataSourceTypeAccountDetails && self.navigationController.viewControllers.count == 1)
     {
         self.cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
         self.navigationItem.leftBarButtonItem = self.cancelButton;
@@ -148,9 +168,14 @@
                 
             case AccountDataSourceTypeNewAccountCredentials:
                 self.formBackupAccount = account;
+                self.formBackupAccount.accountType = UserAccountTypeOnPremise;
                 self.account = [[UserAccount alloc] initWithAccountType:UserAccountTypeOnPremise];
                 break;
-                
+            case AccountDataSourceTypeNewAccountAIMS:
+                self.account.accountType = UserAccountTypeAIMS;
+                self.formBackupAccount = account;
+                self.formBackupAccount.accountType = UserAccountTypeAIMS;
+                break;
             default:
                 self.account = account;
                 self.formBackupAccount = [self.account copy];
@@ -181,7 +206,7 @@
     {
         case AccountDataSourceTypeNewAccountServer:
         {
-            [self checkIfSamlIsEnabled];
+            [self checkIfAIMSEnabled];
         }
             break;
             
@@ -208,7 +233,18 @@
             [self cancelButtonPressed:nil];
         }
             break;
-            
+        case AccountDataSourceTypeNewAccountAIMS:
+        {
+            [self goToLoginWithAIMSScreen];
+        }
+            break;
+        case AccountDataSourceTypeAccountSettingAIMS:
+        {
+            [self updateAccountInfoFromAccount:self.formBackupAccount];
+            [[AccountManager sharedManager] saveAccountsToKeychain];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+            break;
         default:
             break;
     }
@@ -285,10 +321,26 @@
     }
     else if (cell.tag == kTagAccountDetailsCell)
     {
-        AccountDataSourceType type = [self.account.samlData isSamlEnabled] ? AccountDataSourceTypeAccountSettingSAML : AccountDataSourceTypeAccountSettings;
+        AccountDataSourceType type = AccountDataSourceTypeAccountSettings;
+        if ([self.account.samlData isSamlEnabled])
+        {
+            type  = AccountDataSourceTypeAccountSettingSAML;
+        }
+        else if (self.account.accountType == UserAccountTypeAIMS)
+        {
+            type  = AccountDataSourceTypeAccountSettingAIMS;
+        }
         AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:type account:self.account configuration:self.configuration session:self.session];
         accountDetailsViewController.delegate = self;
         [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+    }
+    else if (cell.tag == kTagLogOutCell)
+    {
+        [self goToLogout];
+    }
+    else if (cell.tag == kTagNeedHelpCell)
+    {
+        [self goToNeedHelpAlert];
     }
 }
 
@@ -370,11 +422,213 @@
     }];
 }
 
+- (void)checkIfAIMSEnabled
+{
+    [self showHUD];
+    
+    __weak typeof(self) weakSelf = self;
+    [[LoginManager sharedManager] availableAuthTypeForAccount:self.formBackupAccount
+                                              completionBlock:^(AvailableAuthenticationType authType, NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        
+        if (AvailableAuthenticationTypeAIMS == authType) {
+            [strongSelf goToEnterAIMSCredentialsScreen];
+        } else {
+            [strongSelf checkIfSamlIsEnabled];
+        }
+
+        [self hideHUD];
+    }];
+}
+
 - (void)goToEnterCredentialsScreen
 {
     AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountCredentials account:self.formBackupAccount configuration:nil session:nil];
     accountDetailsViewController.delegate = self.delegate;
     [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+}
+
+- (void)goToEnterAIMSCredentialsScreen
+{
+    AccountDetailsViewController *accountDetailsViewController = [[AccountDetailsViewController alloc] initWithDataSourceType:AccountDataSourceTypeNewAccountAIMS account:self.formBackupAccount configuration:nil session:nil];
+    accountDetailsViewController.delegate = self.delegate;
+    [self.navigationController pushViewController:accountDetailsViewController animated:YES];
+}
+
+- (void)goToNeedHelpAlert
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"accountdetails.needHelp.title", @"Need help")
+                                                                   message:NSLocalizedString(@"accountdetails.needHelp.text", @"Need help")
+                                                            preferredStyle: UIAlertControllerStyleAlert];
+    UIAlertAction *okButton = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK", @"OK")
+                                                       style: UIAlertActionStyleCancel
+                                                     handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    
+    NSMutableParagraphStyle *paraStyle = [[NSMutableParagraphStyle alloc] init];
+    paraStyle.alignment = NSTextAlignmentLeft;
+
+    NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc]
+                                         initWithString: NSLocalizedString(@"accountdetails.needHelp.text", @"Need help")
+                                         attributes: @{NSParagraphStyleAttributeName: paraStyle,
+                                                       NSFontAttributeName:[UIFont systemFontOfSize:13.0]}];
+
+    [alert setValue:atrStr forKey:@"attributedMessage"];
+    
+    [alert addAction:okButton];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+}
+
+- (void)goToLogout
+{
+    __weak typeof(self) weakSelf = self;
+    
+    void (^removeAccount)(void) = ^(){
+        __strong typeof(self) strongSelf = weakSelf;
+        
+        [[RealmSyncManager sharedManager] disableSyncForAccount:strongSelf.formBackupAccount
+                                             fromViewController:strongSelf.navigationController
+                                                    cancelBlock:^{
+        } completionBlock:^{
+            [strongSelf updateAccountInfoFromAccount:strongSelf.formBackupAccount];
+            [[AccountManager sharedManager] removeAccount:strongSelf.account];
+            [strongSelf dismissViewControllerAnimated:YES completion:nil];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+               [weakSelf dismissViewControllerAnimated:YES completion:nil];
+            });
+        }];
+    };
+    
+    void (^removeAccountAndCheckAIMS)(void) = ^(){
+        __strong typeof(self) strongSelf = weakSelf;
+        if (strongSelf.formBackupAccount.accountType == UserAccountTypeAIMS) {
+            [[LoginManager sharedManager] showLogOutAIMSWebviewForAccount:strongSelf.formBackupAccount
+                                                     navigationController:strongSelf.navigationController
+                                                          completionBlock:^(BOOL successful, NSError *error) {
+                
+                if (successful) {
+                    removeAccount();
+                }
+            }];
+        }
+        else
+        {
+            removeAccount();
+        }
+    };
+    
+    // If this is the last paid account and passcode is enabled, authenticate via passcode before deleting the account.
+    if ([[PreferenceManager sharedManager] shouldUsePasscodeLock] &&
+        [[AccountManager sharedManager] numberOfPaidAccounts] == 1 &&
+        self.formBackupAccount.isPaidAccount)
+    {
+        UINavigationController *navController = [PinViewController pinNavigationViewControllerWithFlow:PinFlowVerify completionBlock:^(PinFlowCompletionStatus status){
+            switch (status)
+            {
+                case PinFlowCompletionStatusSuccess:
+                    removeAccountAndCheckAIMS();
+                    break;
+                    
+                case PinFlowCompletionStatusCancel:
+                    [self.tableView setEditing:NO animated:YES];
+                    break;
+                    
+                case PinFlowCompletionStatusReset:
+                    [SecurityManager resetWithType:ResetTypeEntireApp];
+                    break;
+                    
+                default:
+                    break;
+            }
+        }];
+        [self presentViewController:navController animated:YES completion:nil];
+        
+        if ([TouchIDManager shouldUseTouchID])
+        {
+            [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
+                if (success)
+                {
+                    [navController dismissViewControllerAnimated:NO completion:nil];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        removeAccountAndCheckAIMS();
+                    });
+                }
+            }];
+        }
+    }
+    else
+    {
+        removeAccountAndCheckAIMS();
+    }
+}
+
+- (void)goToLoginWithAIMSScreen
+{
+    __weak typeof(self) weakSelf = self;
+    [self showHUD];
+    self.saveButton.enabled = NO;
+    void (^receivedSessionBlock)(BOOL, id<AlfrescoSession>, NSError *) = ^void(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+        __strong typeof(self) strongSelf = weakSelf;
+        if (alfrescoSession) {
+            strongSelf.account = [strongSelf.formBackupAccount copy];
+            [strongSelf updateAccountInfoFromAccount:strongSelf.formBackupAccount];
+            
+            [[LoginManager sharedManager] saveInKeychainAIMSDataForAccount: strongSelf.account];
+            AccountManager *accountManager = [AccountManager sharedManager];
+            [[RealmSyncManager sharedManager] realmForAccount:strongSelf.account.accountIdentifier];
+            
+            [[LoginManager sharedManager] cancelActiveSessionRefreshTasks];
+            [accountManager selectAccount:strongSelf.account selectNetwork:nil alfrescoSession:alfrescoSession];
+            
+            if (accountManager.selectedAccount == strongSelf.account)
+            {
+                [[RealmManager sharedManager] changeDefaultConfigurationForAccount:strongSelf.account completionBlock:^{
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:alfrescoSession userInfo:nil];
+                }];
+            }
+            [strongSelf hideHUD];
+            [strongSelf dismiss];
+        }
+        else if (error)
+        {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [weakSelf hideHUD];
+                weakSelf.saveButton.enabled = YES;
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:NSLocalizedString(@"error.host.unreachable.title", "Unreachable title")
+                                                                                         message:NSLocalizedString(@"error.host.unreachable.message", @"Unreachable message")
+                                                                                  preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *doneAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"Done", @"Done")
+                                                                     style:UIAlertActionStyleCancel
+                                                                   handler:nil];
+                [alertController addAction:doneAction];
+                [weakSelf presentViewController:alertController
+                                       animated:YES
+                                     completion:nil];
+            });
+        }
+        else
+        {
+            [weakSelf hideHUD];
+            weakSelf.saveButton.enabled = YES;
+        }
+    };
+
+    void (^obtainedAIMSCredentialBlock)(UserAccount *, NSError *) = ^void(UserAccount *account, NSError *error){
+        __strong typeof(self) strongSelf = weakSelf;
+        if (!error) {
+            [[LoginManager sharedManager] authenticateWithAIMSOnPremiseAccount:account
+                                                               completionBlock:receivedSessionBlock];
+        }
+        else {
+            [strongSelf hideHUD];
+            strongSelf.saveButton.enabled = YES;
+        }
+    };
+    
+    [[LoginManager sharedManager] showAIMSWebviewForAccount:self.formBackupAccount
+                                       navigationController:self.navigationController
+                                            completionBlock:obtainedAIMSCredentialBlock];
 }
 
 - (void)goToLoginWithSamlScreen
@@ -437,11 +691,10 @@
             AccountManager *accountManager = [AccountManager sharedManager];
             [[RealmSyncManager sharedManager] realmForAccount:self.account.accountIdentifier];
             
-            if (accountManager.totalNumberOfAddedAccounts == 0)
-            {
-                [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
-            }
-            else if (accountManager.selectedAccount == self.account)
+            [[LoginManager sharedManager] cancelActiveSessionRefreshTasks];
+            [accountManager selectAccount:self.account selectNetwork:nil alfrescoSession:session];
+
+            if (accountManager.selectedAccount == self.account)
             {
                 [[RealmManager sharedManager] changeDefaultConfigurationForAccount:self.account completionBlock:^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
@@ -466,7 +719,7 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoSessionReceivedNotification object:session userInfo:nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kAlfrescoAccountUpdatedNotification object:self.account];
             }
-
+            
             [self.navigationController popViewControllerAnimated:YES];
         }
     }];
@@ -497,40 +750,40 @@
             [[LoginManager sharedManager] authenticateOnPremiseAccount:self.formBackupAccount
                                                               password:self.formBackupAccount.password
                                                        completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                                                           authenticationCompletionBlock(successful, alfrescoSession);
-                                                       }];
+                authenticationCompletionBlock(successful, alfrescoSession);
+            }];
         }
             break;
-        
+            
         case AccountDataSourceTypeAccountSettingSAML:
         {
             
             [[LoginManager sharedManager] authenticateWithSAMLOnPremiseAccount:self.formBackupAccount
                                                           navigationController:self.navigationController
                                                                completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                                                                   if (successful)
-                                                                   {
-                                                                       authenticationCompletionBlock(successful, alfrescoSession);
-                                                                   }
-                                                                   else
-                                                                   {
-                                                                       [[LoginManager sharedManager] showSAMLWebViewForAccount:self.formBackupAccount navigationController:self.navigationController completionBlock:^(AlfrescoSAMLData *samlData, NSError *error) {
-                                                                           if (samlData)
-                                                                           {
-                                                                               self.formBackupAccount.samlData.samlTicket = samlData.samlTicket;
-                                                                               [self.navigationController popViewControllerAnimated:YES];
-                                                                               
-                                                                               [[LoginManager sharedManager] authenticateWithSAMLOnPremiseAccount:self.formBackupAccount navigationController:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
-                                                                                   authenticationCompletionBlock(successful, alfrescoSession);
-                                                                               }];
-                                                                           }
-                                                                           else
-                                                                           {
-                                                                               authenticationCompletionBlock(NO, nil);
-                                                                           }
-                                                                       }];
-                                                                   }
-                                                       }];
+                if (successful)
+                {
+                    authenticationCompletionBlock(successful, alfrescoSession);
+                }
+                else
+                {
+                    [[LoginManager sharedManager] showSAMLWebViewForAccount:self.formBackupAccount navigationController:self.navigationController completionBlock:^(AlfrescoSAMLData *samlData, NSError *error) {
+                        if (samlData)
+                        {
+                            self.formBackupAccount.samlData.samlTicket = samlData.samlTicket;
+                            [self.navigationController popViewControllerAnimated:YES];
+                            
+                            [[LoginManager sharedManager] authenticateWithSAMLOnPremiseAccount:self.formBackupAccount navigationController:self.navigationController completionBlock:^(BOOL successful, id<AlfrescoSession> alfrescoSession, NSError *error) {
+                                authenticationCompletionBlock(successful, alfrescoSession);
+                            }];
+                        }
+                        else
+                        {
+                            authenticationCompletionBlock(NO, nil);
+                        }
+                    }];
+                }
+            }];
         }
             
         default:
@@ -550,11 +803,11 @@
     UIAlertAction *retryAction = [UIAlertAction actionWithTitle:NSLocalizedString(@"connectiondiagnostic.button.retrywithdiagnostic", @"Retry with diagnostic")
                                                           style:UIAlertActionStyleDefault
                                                         handler:^(UIAlertAction * _Nonnull action) {
-                                                            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
-                                                            ConnectionDiagnosticViewController *viewController = (ConnectionDiagnosticViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
-                                                            [viewController setupWithParent:self andSelector:@selector(retryLoginForConnectionDiagnostic)];
-                                                            [self.navigationController pushViewController:viewController animated:YES];
-                                                        }];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ConnectionDiagnosticStoryboard" bundle:[NSBundle mainBundle]];
+        ConnectionDiagnosticViewController *viewController = (ConnectionDiagnosticViewController *)[storyboard instantiateViewControllerWithIdentifier:@"ConnectionDiagnosticSBID"];
+        [viewController setupWithParent:self andSelector:@selector(retryLoginForConnectionDiagnostic)];
+        [self.navigationController pushViewController:viewController animated:YES];
+    }];
     [alertController addAction:retryAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -581,6 +834,11 @@
     self.account.accountCertificate = temporaryAccount.accountCertificate;
     self.account.paidAccount = temporaryAccount.isPaidAccount;
     self.account.samlData = temporaryAccount.samlData;
+    self.account.clientID = temporaryAccount.clientID;
+    self.account.realm = temporaryAccount.realm;
+    self.account.contentAddress = temporaryAccount.contentAddress;
+    self.account.redirectURI = temporaryAccount.redirectURI;
+    self.account.oauthData = temporaryAccount.oauthData;
     
     if ([self.delegate respondsToSelector:@selector(accountInfoChanged:)])
     {
@@ -594,14 +852,17 @@
     {
         [self.delegate accountFlowWillDismiss:self accountAdded:self.account];
     }
-    
-    [self dismissViewControllerAnimated:YES completion:^{
-        [[AccountManager sharedManager] addAccount:self.account];
-        if ([self.delegate respondsToSelector:@selector(accountFlowDidDismiss:accountAdded:)])
-        {
-            [self.delegate accountFlowDidDismiss:self accountAdded:self.account];
-        }
-    }];
+    __weak typeof(self) weakSelf = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        __strong typeof(self) strongSelf = weakSelf;
+       [strongSelf dismissViewControllerAnimated:YES completion:^{
+           [[AccountManager sharedManager] addAccount:weakSelf.account];
+           if ([weakSelf.delegate respondsToSelector:@selector(accountFlowDidDismiss:accountAdded:)])
+           {
+               [weakSelf.delegate accountFlowDidDismiss:weakSelf accountAdded:weakSelf.account];
+           }
+       }];
+    });
 }
 
 #pragma mark - HUD Methods

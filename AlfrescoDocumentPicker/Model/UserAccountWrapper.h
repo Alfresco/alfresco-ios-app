@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -31,6 +31,10 @@
 @property (nonatomic, strong) NSString *serverPort;
 @property (nonatomic, strong) NSString *protocol;
 @property (nonatomic, strong) NSString *serviceDocument;
+@property (nonatomic, strong) NSString *contentAddress;
+@property (nonatomic, strong) NSString *realm;
+@property (nonatomic, strong) NSString *clientID;
+@property (nonatomic, strong) NSString *redirectURI;
 @property (nonatomic, strong) NSString *selectedNetworkIdentifier;
 @property (nonatomic, strong) NSArray *networkIdentifiers;
 @property (nonatomic, strong) AlfrescoOAuthData *oAuthData;

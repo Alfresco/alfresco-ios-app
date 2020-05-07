@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (C) 2005-2014 Alfresco Software Limited.
+* Copyright (C) 2005-2020 Alfresco Software Limited.
 *
 * This file is part of the Alfresco Mobile iOS App.
 *
@@ -68,6 +68,7 @@ protocol GalleryPhotosDelegate: class {
     @objc var cameraPhotos: [CameraPhoto] = []
     var documents: [AlfrescoDocument] = []
     weak var delegate: GalleryPhotosDelegate?
+    var errorUpload: NSError?
     
     //MARK: Init
   
@@ -75,6 +76,10 @@ protocol GalleryPhotosDelegate: class {
         self.imagesName = folder.name
         self.documentServices = AlfrescoPlaceholderDocumentFolderService.init(session: session)
         self.uploadToFolder = folder
+    }
+    
+    func refresh(session: AlfrescoSession) {
+        self.documentServices = AlfrescoPlaceholderDocumentFolderService.init(session: session)
     }
     
     //MARK: Upload
@@ -151,6 +156,7 @@ protocol GalleryPhotosDelegate: class {
             } else if let error = error {
                 AlfrescoLog.logError(error.localizedDescription)
                 sSelf.delegate?.errorUploading(photo: photo, error: error as NSError)
+                sSelf.errorUpload = error as NSError
                 finishUpload(false)
             } else {
                 sSelf.delegate?.errorUploading(photo: photo, error: nil)

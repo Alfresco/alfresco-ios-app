@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -26,6 +26,10 @@ static NSString * const kAccountServerAddress = @"kAccountServerAddress";
 static NSString * const kAccountServerPort= @"kAccountServerPort";
 static NSString * const kAccountProtocol= @"kAccountProtocol";
 static NSString * const kAccountServiceDocument = @"kAccountServiceDocument";
+static NSString * const kAccountContentAddress = @"kAccountContentAddress";
+static NSString * const kAccountRealm = @"kAccountRealm";
+static NSString * const kAccountClientID = @"kAccountClientID";
+static NSString * const kAccountRedirectURI = @"kAccountRedirectURI";
 static NSString * const kAccountType = @"kAccountType";
 static NSString * const kAlfrescoOAuthData = @"kAlfrescoOAuthData";
 static NSString * const kAccountCertificate = @"kAccountCertificate";
@@ -69,8 +73,11 @@ static NSString * const kAlfrescoSAMLData = @"kAlfrescoSAMLData";
     self = [self init];
     if (self)
     {
-        self.accountType = accountType;
-        self.isSyncOn = YES;
+        _accountType = accountType;
+        _isSyncOn = YES;
+        _realm = kAlfrescoDefaultAIMSRealmString;
+        _clientID = kAlfrescoDefaultAIMSClientIDString;
+        _redirectURI = kAlfrescoDefaultAIMSRedirectURI;
     }
     return self;
 }
@@ -89,6 +96,10 @@ static NSString * const kAlfrescoSAMLData = @"kAlfrescoSAMLData";
     [aCoder encodeObject:self.serverPort forKey:kAccountServerPort];
     [aCoder encodeObject:self.protocol forKey:kAccountProtocol];
     [aCoder encodeObject:self.serviceDocument forKey:kAccountServiceDocument];
+    [aCoder encodeObject:self.contentAddress forKey:kAccountContentAddress];
+    [aCoder encodeObject:self.realm forKey:kAccountRealm];
+    [aCoder encodeObject:self.clientID forKey:kAccountClientID];
+    [aCoder encodeObject:self.redirectURI forKey:kAccountRedirectURI];
     [aCoder encodeInteger:self.accountType forKey:kAccountType];
     [aCoder encodeObject:self.oauthData forKey:kAlfrescoOAuthData];
     [aCoder encodeObject:self.accountCertificate forKey:kAccountCertificate];
@@ -121,6 +132,10 @@ static NSString * const kAlfrescoSAMLData = @"kAlfrescoSAMLData";
         self.serverPort = [aDecoder decodeObjectForKey:kAccountServerPort];
         self.protocol = [aDecoder decodeObjectForKey:kAccountProtocol];
         self.serviceDocument = [aDecoder decodeObjectForKey:kAccountServiceDocument];
+        self.contentAddress = [aDecoder decodeObjectForKey:kAccountContentAddress];
+        self.realm = [aDecoder decodeObjectForKey:kAccountRealm];
+        self.clientID = [aDecoder decodeObjectForKey:kAccountClientID];
+        self.redirectURI = [aDecoder decodeObjectForKey:kAccountRedirectURI];
         self.accountType = [aDecoder decodeIntegerForKey:kAccountType];
         self.oauthData = [aDecoder decodeObjectForKey:kAlfrescoOAuthData];
         self.accountCertificate = [aDecoder decodeObjectForKey:kAccountCertificate];
@@ -156,6 +171,10 @@ static NSString * const kAlfrescoSAMLData = @"kAlfrescoSAMLData";
         account.serverPort = self.serverPort;
         account.protocol = self.protocol;
         account.serviceDocument = self.serviceDocument;
+        account.contentAddress = self.contentAddress;
+        account.realm = self.realm;
+        account.clientID = self.clientID;
+        account.redirectURI = self.redirectURI;
         account.accountType = self.accountType;
         account.accountCertificate = self.accountCertificate;
         account.isSyncOn = self.isSyncOn;
@@ -174,9 +193,13 @@ static NSString * const kAlfrescoSAMLData = @"kAlfrescoSAMLData";
     [string appendFormat:@"username: %@\n", self.username];
     [string appendFormat:@"password: %@\n", self.password];
     [string appendFormat:@"server: %@\n", self.serverAddress];
+    [string appendFormat:@"contentURL: %@\n", self.contentAddress];
     [string appendFormat:@"port: %@\n", self.serverPort];
     [string appendFormat:@"protocol: %@\n", self.protocol];
     [string appendFormat:@"serviceDocument: %@\n", self.serviceDocument];
+    [string appendFormat:@"realm: %@\n", self.realm];
+    [string appendFormat:@"clientID: %@\n", self.clientID];
+    [string appendFormat:@"redirectURI: %@\n", self.redirectURI];
     [string appendFormat:@"clientCertificate: %@\n", self.accountCertificate.summary];
     [string appendFormat:@"accountDescription: %@\n", self.accountDescription];
     [string appendFormat:@"\n%@", self.samlData];

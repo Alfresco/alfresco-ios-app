@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2017 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  *
  * This file is part of the Alfresco Mobile iOS App.
  *
@@ -21,6 +21,8 @@
 #import "TextFieldCell.h"
 #import "SwitchCell.h"
 #import "LabelCell.h"
+#import "CenterLabelCell.h"
+#import "ButtonCell.h"
 #import "AccountManager.h"
 
 @interface AccountDataSource ()
@@ -32,8 +34,11 @@
 @property (nonatomic, strong) NSArray *tableGroupFooters;
 
 @property (nonatomic, weak) UITextField *serverAddressTextField;
+@property (nonatomic, weak) UITextField *contentAddressTextField;
 @property (nonatomic, weak) UITextField *portTextField;
 @property (nonatomic, weak) UITextField *serviceDocumentTextField;
+@property (nonatomic, weak) UITextField *realmTextField;
+@property (nonatomic, weak) UITextField *clientIDTextField;
 @property (nonatomic, weak) UISwitch *protocolSwitch;
 
 @property (nonatomic, weak) UITextField *usernameTextField;
@@ -58,17 +63,25 @@
 - (TextFieldCell *)usernameCell;
 - (TextFieldCell *)passwordCell;
 - (TextFieldCell *)descriptionCell;
+- (TextFieldCell *)contentAdressCell;
+- (TextFieldCell *)clientIDCell;
+- (TextFieldCell *)realmCell;
 - (SwitchCell *)protocolCell;
 - (LabelCell *)clientCertificateCell;
 - (LabelCell *)profileCell;
 - (LabelCell *)editMainMenuCell;
 - (LabelCell *)accountDetailsCell;
+- (CenterLabelCell *)logoutCell;
+- (CenterLabelCell *)needHelpCell;
 
 - (BOOL)validateAccountFieldsValues;
 - (AccountFormFieldValidation)validateDescription;
 - (AccountFormFieldValidation)validateHostname;
 - (AccountFormFieldValidation)validatePort;
 - (AccountFormFieldValidation)validateServiceDocument;
+- (AccountFormFieldValidation)validateRealm;
+- (AccountFormFieldValidation)validateContent;
+- (AccountFormFieldValidation)validateClientID;
 - (AccountFormFieldValidation)validateUsername;
 - (AccountFormFieldValidation)validatePassword;
 - (AccountFormFieldValidation)validateProtocol;

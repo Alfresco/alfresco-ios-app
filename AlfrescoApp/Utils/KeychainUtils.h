@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (C) 2005-2015 Alfresco Software Limited.
+ * Copyright (C) 2005-2020 Alfresco Software Limited.
  * 
  * This file is part of the Alfresco Mobile iOS App.
  * 
@@ -21,6 +21,8 @@
 
 @interface KeychainUtils : NSObject
 
++ (BOOL)createKeychainData:(NSData *)data forIdentifier:(NSString *)identifier;
++ (NSData *)dataForMatchingIdentifier:(NSString *)identifier;
 + (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)error;
 + (NSArray *)savedAccountsForListIdentifier:(NSString *)listIdentifier inGroup:(NSString *)groupID error:(NSError *__autoreleasing *)error;
 + (BOOL)updateSavedAccounts:(NSArray *)accounts forListIdentifier:(NSString *)listIdentifier error:(NSError *__autoreleasing *)updateError;
