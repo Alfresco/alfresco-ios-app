@@ -87,6 +87,7 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
     AccountPickerViewController *accountPickerViewContoller = [[AccountPickerViewController alloc] initWithAccount:currentUser withDelegate:self];
     NavigationViewController *navController = [[NavigationViewController alloc] initWithRootViewController:accountPickerViewContoller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.navigationBar.backgroundColor = [UIColor whiteColor];
     if (viewController.presentedViewController == nil)
     {
         [viewController presentViewController:navController animated:YES completion:nil];
