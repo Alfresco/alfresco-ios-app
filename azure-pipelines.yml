@@ -8,6 +8,7 @@ pool:
 
 variables:
   - group: cs-ios-signing
+  - group: git-credentials
   - name: configuration
     value: 'Release'
   - name: sdk
