@@ -673,22 +673,27 @@
 {
     __weak typeof(self) weakSelf = self;
     void (^handleAuthenticationResponse)(id<AlfrescoSession>, NSError *error) = ^(id<AlfrescoSession> session, NSError *error) {
-        __strong typeof(self) strongSelf = weakSelf;
-        
-        if (authenticationCompletionBlock)
-        {
-            account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            __strong typeof(self) strongSelf = weakSelf;
             
-            if (session)
+            if (authenticationCompletionBlock)
             {
-                authenticationCompletionBlock(YES, session, nil);
-                [strongSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
+                account.paidAccount = [session.repositoryInfo.edition isEqualToString:kRepositoryEditionEnterprise];
+                
+                if (session)
+                {
+                    authenticationCompletionBlock(YES, session, nil);
+                    [[AccountManager sharedManager] selectAccount:account
+                                                    selectNetwork:account.selectedNetworkId
+                                                  alfrescoSession:session];
+                    [strongSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
+                }
+                else
+                {
+                    authenticationCompletionBlock(NO, nil, error);
+                }
             }
-            else
-            {
-                authenticationCompletionBlock(NO, nil, error);
-            }
-        }
+        });
     };
     
     
