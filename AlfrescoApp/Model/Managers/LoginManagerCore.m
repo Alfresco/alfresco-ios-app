@@ -682,11 +682,11 @@
                 
                 if (session)
                 {
-                    authenticationCompletionBlock(YES, session, nil);
                     [[AccountManager sharedManager] selectAccount:account
                                                     selectNetwork:account.selectedNetworkId
                                                   alfrescoSession:session];
                     [strongSelf scheduleAIMSAcessTokenRefreshHandlerCurrentAccount];
+                    authenticationCompletionBlock(YES, session, nil);
                 }
                 else
                 {
