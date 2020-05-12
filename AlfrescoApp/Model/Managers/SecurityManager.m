@@ -427,17 +427,18 @@
 
 - (void)evaluatePolicy
 {
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
         [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
             if (success)
             {
-                [self hideCurrentPinViewScreenWithFlow:PinFlowEnter animated:YES completionBlock:^{
-                    [self showBlankScreen:NO];
+                [weakSelf hideCurrentPinViewScreenWithFlow:PinFlowEnter animated:YES completionBlock:^{
+                    [weakSelf showBlankScreen:NO];
                 }];
                 
-                if (self.pinScreenWindow && [self.pinScreenWindow isKeyWindow])
+                if (weakSelf.pinScreenWindow && [weakSelf.pinScreenWindow isKeyWindow])
                 {
-                    [self switchToMainWindowWithCompletionBlock:nil];
+                    [weakSelf switchToMainWindowWithCompletionBlock:nil];
                 }
                 [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
                 
@@ -447,8 +448,8 @@
             {
                 AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
                 
-                [self showPinScreenAnimated:NO inOwnWindow: self.pinScreenWindow ? YES : NO completionBlock:^{
-                    [self showBlankScreen:NO];
+                [weakSelf showPinScreenAnimated:NO inOwnWindow: weakSelf.pinScreenWindow ? YES : NO completionBlock:^{
+                    [weakSelf showBlankScreen:NO];
                 }];
             }
         }];
