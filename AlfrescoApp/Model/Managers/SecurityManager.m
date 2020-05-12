@@ -339,7 +339,9 @@
     {
         if (self.pinScreenWindow == nil)
         {
-            [[UniversalDevice topPresentedViewController] presentViewController:navController animated:animated completion:completionBlock];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[UniversalDevice topPresentedViewController] presentViewController:navController animated:animated completion:completionBlock];
+            });
         }
         else
         {
@@ -425,30 +427,32 @@
 
 - (void)evaluatePolicy
 {
-    [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
-        if (success)
-        {
-            [self hideCurrentPinViewScreenWithFlow:PinFlowEnter animated:YES completionBlock:^{
-                [self showBlankScreen:NO];
-            }];
-            
-            if (self.pinScreenWindow && [self.pinScreenWindow isKeyWindow])
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
+            if (success)
             {
-                [self switchToMainWindowWithCompletionBlock:nil];
+                [self hideCurrentPinViewScreenWithFlow:PinFlowEnter animated:YES completionBlock:^{
+                    [self showBlankScreen:NO];
+                }];
+                
+                if (self.pinScreenWindow && [self.pinScreenWindow isKeyWindow])
+                {
+                    [self switchToMainWindowWithCompletionBlock:nil];
+                }
+                [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
+                
+                [[FileHandlerManager sharedManager] handleCachedPackage];
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kShowKeyboardInPinScreenNotification object:nil];
-            
-            [[FileHandlerManager sharedManager] handleCachedPackage];
-        }
-        else
-        {
-            AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
-            
-            [self showPinScreenAnimated:NO inOwnWindow: self.pinScreenWindow ? YES : NO completionBlock:^{
-                [self showBlankScreen:NO];
-            }];
-        }
-    }];
+            else
+            {
+                AlfrescoLogDebug(@"Touch ID error: %@", authenticationError.localizedDescription);
+                
+                [self showPinScreenAnimated:NO inOwnWindow: self.pinScreenWindow ? YES : NO completionBlock:^{
+                    [self showBlankScreen:NO];
+                }];
+            }
+        }];
+    });
 }
 
 - (void)switchToMainWindowWithCompletionBlock:(void (^)(void))completionBlock
