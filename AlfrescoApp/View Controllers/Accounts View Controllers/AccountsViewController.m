@@ -455,9 +455,8 @@ static CGFloat const kAccountNetworkCellHeight = 50.0f;
             [TouchIDManager evaluatePolicyWithCompletionBlock:^(BOOL success, NSError *authenticationError){
                 if (success)
                 {
-                    [navController dismissViewControllerAnimated:NO completion:nil];
-                    
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        [navController dismissViewControllerAnimated:NO completion:nil];
                         removeAccountAndCheckAIMS();
                     });
                 }
