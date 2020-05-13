@@ -5514,6 +5514,7 @@
 					"$(TARGET_BUILD_DIR)",
 					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
+				MARKETING_VERSION = 2.8.1;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5689,6 +5690,7 @@
 					"$(TARGET_BUILD_DIR)",
 					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
+				MARKETING_VERSION = 2.8.1;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -5730,6 +5732,7 @@
 					"$(TARGET_BUILD_DIR)",
 					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
+				MARKETING_VERSION = 2.8.1;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
