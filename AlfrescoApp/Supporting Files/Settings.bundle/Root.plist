@@ -14,7 +14,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<string>2.5 (dev)</string>
+			<string>2.8.1</string>
 			<key>Key</key>
 			<string>Prefs_AppVersion</string>
 			<key>Title</key>
