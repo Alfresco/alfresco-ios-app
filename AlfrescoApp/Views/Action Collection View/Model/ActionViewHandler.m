@@ -39,6 +39,7 @@
 #import "RealmSyncNodeInfo.h"
 #import "RealmManager.h"
 #import "AFPItemIdentifier.h"
+@import WebKit;
 
 @interface ActionViewHandler () <MFMailComposeViewControllerDelegate, UIDocumentInteractionControllerDelegate, DownloadsPickerDelegate, UploadFormViewControllerDelegate>
 
@@ -332,7 +333,7 @@
             NSURL *fileURL = [NSURL fileURLWithPath:filePath];
 
             // Define a print block
-            void (^innerPrintBlock)(UIWebView *webView) = ^(UIWebView *webView) {
+            void (^innerPrintBlock)(WKWebView *webView) = ^(WKWebView *webView) {
                 UIPrintInteractionController *printController = [UIPrintInteractionController sharedPrintController];
                 
                 UIPrintInfo *printInfo = [UIPrintInfo printInfo];
