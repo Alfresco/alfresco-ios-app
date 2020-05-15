@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +14,7 @@
                 <outlet property="toolBar" destination="qD7-iG-MZa" id="b2o-iN-b2D"/>
                 <outlet property="toolbarHeightConstraint" destination="pJe-9S-EBt" id="osS-u1-1YY"/>
                 <outlet property="view" destination="1" id="MBW-ht-ESP"/>
-                <outlet property="webView" destination="k2i-mN-4eX" id="ua5-WA-GqV"/>
+                <outlet property="webView" destination="44Y-S1-qtI" id="lC2-ph-C7B"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -33,13 +31,14 @@
                     <color key="textColor" red="0.3333333432674408" green="0.3333333432674408" blue="0.3333333432674408" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <webView contentMode="scaleToFill" scalesPageToFit="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k2i-mN-4eX">
+                <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="44Y-S1-qtI">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="623"/>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="7Yz-Cz-uRX"/>
-                    </connections>
-                </webView>
+                    <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <wkWebViewConfiguration key="configuration">
+                        <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                        <wkPreferences key="preferences"/>
+                    </wkWebViewConfiguration>
+                </wkWebView>
                 <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qD7-iG-MZa">
                     <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                     <constraints>
@@ -54,18 +53,18 @@
             <constraints>
                 <constraint firstItem="Wq8-KK-bzM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="YkM-NE-2IK" secondAttribute="leading" constant="10" id="2ip-C7-zdr"/>
                 <constraint firstItem="YkM-NE-2IK" firstAttribute="bottom" secondItem="qD7-iG-MZa" secondAttribute="bottom" id="AC2-0R-HIC"/>
-                <constraint firstItem="qD7-iG-MZa" firstAttribute="top" secondItem="k2i-mN-4eX" secondAttribute="bottom" id="Hdr-An-tc3"/>
-                <constraint firstItem="qD7-iG-MZa" firstAttribute="top" secondItem="k2i-mN-4eX" secondAttribute="bottom" id="Ipl-WC-hKF"/>
+                <constraint firstItem="YkM-NE-2IK" firstAttribute="trailing" secondItem="44Y-S1-qtI" secondAttribute="trailing" id="CGa-L7-7QN"/>
+                <constraint firstItem="44Y-S1-qtI" firstAttribute="top" secondItem="YkM-NE-2IK" secondAttribute="top" id="Gak-nH-4yk"/>
                 <constraint firstItem="YkM-NE-2IK" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Wq8-KK-bzM" secondAttribute="trailing" constant="10" id="O7z-M3-fmz"/>
                 <constraint firstAttribute="centerX" secondItem="Wq8-KK-bzM" secondAttribute="centerX" id="Qhq-nc-giP"/>
+                <constraint firstItem="qD7-iG-MZa" firstAttribute="top" secondItem="44Y-S1-qtI" secondAttribute="bottom" id="WWH-Lv-HuZ"/>
                 <constraint firstItem="YkM-NE-2IK" firstAttribute="trailing" secondItem="qD7-iG-MZa" secondAttribute="trailing" id="X8K-J2-SDa"/>
-                <constraint firstItem="k2i-mN-4eX" firstAttribute="top" secondItem="1" secondAttribute="top" id="Yqb-pW-wlu"/>
                 <constraint firstItem="qD7-iG-MZa" firstAttribute="leading" secondItem="YkM-NE-2IK" secondAttribute="leading" id="Zvd-l0-GIc"/>
-                <constraint firstItem="k2i-mN-4eX" firstAttribute="leading" secondItem="YkM-NE-2IK" secondAttribute="leading" id="dp5-sB-X6F"/>
-                <constraint firstItem="YkM-NE-2IK" firstAttribute="trailing" secondItem="k2i-mN-4eX" secondAttribute="trailing" id="mYG-tB-u7b"/>
+                <constraint firstItem="44Y-S1-qtI" firstAttribute="leading" secondItem="YkM-NE-2IK" secondAttribute="leading" id="isR-my-Bxt"/>
                 <constraint firstAttribute="centerY" secondItem="Wq8-KK-bzM" secondAttribute="centerY" constant="50" id="rtP-AQ-ui4"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="YkM-NE-2IK"/>
+            <point key="canvasLocation" x="140" y="154"/>
         </view>
     </objects>
 </document>

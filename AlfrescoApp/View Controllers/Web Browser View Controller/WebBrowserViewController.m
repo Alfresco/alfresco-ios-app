@@ -19,21 +19,18 @@
 #import "WebBrowserViewController.h"
 #import "ConnectivityManager.h"
 #import "DismissCompletionProtocol.h"
-#import "NJKWebViewProgress.h"
-#import "NJKWebViewProgressView.h"
+@import WebKit;
 
 static CGFloat const kSpacingBetweenButtons = 22.0f;
 static CGFloat const kProgressBarHeight = 2.0f;
 
-@interface WebBrowserViewController () <UIWebViewDelegate, NJKWebViewProgressDelegate>
+@interface WebBrowserViewController () <WKNavigationDelegate>
 
 // Views
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
-@property (nonatomic, weak) IBOutlet UIWebView *webView;
+@property (nonatomic, weak) IBOutlet WKWebView *webView;
 @property (nonatomic, weak) IBOutlet UIToolbar *toolBar;
 @property (nonatomic, weak) IBOutlet UILabel *noInternetLabel;
-@property (nonatomic, strong) NJKWebViewProgressView *progressView;
-@property (nonatomic, strong) NJKWebViewProgress *progressProxy;
 // Data Structure
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSURL *fallbackURL;
@@ -75,11 +72,10 @@ static CGFloat const kProgressBarHeight = 2.0f;
 {
     [super viewDidLoad];
     
+    self.webView.navigationDelegate = self;
     self.title = self.initalTitle;
     
     self.noInternetLabel.text = NSLocalizedString(@"help.no.internet.message", @"No Internet Message");
-    
-    [self setupProgressView];
     
     NSMutableArray *webViewButtons = nil;
     if (!self.url.filePathURL)
@@ -227,12 +223,16 @@ static CGFloat const kProgressBarHeight = 2.0f;
 
 - (void)backButtonPressed:(UIBarButtonItem *)buttonItem
 {
-    [self.webView goBack];
+    if ([self.webView canGoBack]) {
+        [self.webView goBack];
+    }
 }
 
 - (void)forwardButtonPressed:(UIBarButtonItem *)buttonItem
 {
-    [self.webView goForward];
+    if ([self.webView canGoForward]) {
+        [self.webView goForward];
+    }
 }
 
 - (void)dismissHelp:(UIBarButtonItem *)buttonItem
@@ -263,50 +263,47 @@ static CGFloat const kProgressBarHeight = 2.0f;
     });
 }
 
-- (void)setupProgressView
+- (void)addTitleFromWebView:(WKWebView *)webView
 {
-    self.progressProxy = [[NJKWebViewProgress alloc] init];
-    self.webView.delegate = self.progressProxy;
-    self.progressProxy.webViewProxyDelegate = self;
-    self.progressProxy.progressDelegate = self;
-    
-    CGRect navigationBarBounds = self.navigationController.navigationBar.bounds;
-    CGRect progressBarFrame = CGRectMake(0,
-                                         navigationBarBounds.size.height - kProgressBarHeight,
-                                         navigationBarBounds.size.width,
-                                         kProgressBarHeight);
-    self.progressView = [[NJKWebViewProgressView alloc] initWithFrame:progressBarFrame];
-    self.progressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
-    
-    [self.navigationController.navigationBar addSubview:self.progressView];
-}
-
-#pragma mark - UIWebViewDelegate Functions
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
+    self.url = webView.URL;
     if (!self.url.isFileURL)
     {
-        NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-        self.navigationItem.title = title;
+        __weak typeof(self) weakSelf = self;
+        [self.webView evaluateJavaScript:@"document.title" completionHandler:^(id result, NSError * error) {
+            __strong typeof(self) strongSelf = weakSelf;
+            NSString *title = strongSelf.initalTitle;
+            if (error == nil) {
+                if (result != nil) {
+                    title = [NSString stringWithFormat:@"%@", result];
+                    title = ([title length] == 0) ? strongSelf.initalTitle : title;
+                }
+            } else {
+                AlfrescoLogError(@"evaluateJavaScript error : %@", error.localizedDescription);
+            }
+            strongSelf.navigationItem.title = title;
+        }];
     }
-
     [self updateButtons];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+#pragma mark - WKWebViewDelegate Functions
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
+{
+    [self addTitleFromWebView:webView];
+}
+
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
+{
+    [self addTitleFromWebView:webView];
+}
+
+-(void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
     if(error.code != -999)
     {
         [self hideWebView];
     }
-}
-
-#pragma mark - NJKWebViewProgressDelegate Methods
-
-- (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
-{
-    self.progressView.progress = progress;
 }
 
 @end
