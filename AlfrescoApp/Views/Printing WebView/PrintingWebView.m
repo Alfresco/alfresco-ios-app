@@ -18,7 +18,7 @@
 
 #import "PrintingWebView.h"
 
-@interface PrintingWebView () <UIWebViewDelegate>
+@interface PrintingWebView () <WKNavigationDelegate>
 @property (nonatomic, strong) UIView *owningView;
 @property (nonatomic, copy) AlfrescoBOOLCompletionBlock completionBlock;
 @property (nonatomic, strong) NSTimer *timer;
@@ -35,7 +35,7 @@
     if (self)
     {
         self.owningView = view;
-        self.delegate = self;
+        self.navigationDelegate = self;
     }
     return self;
 }
@@ -73,9 +73,9 @@
     [self.hud hideAnimated:YES];
 }
 
-#pragma mark - UIWebViewDelegate
+#pragma mark - WKWebViewDelegate
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
     if (!self.isLoading)
     {
@@ -88,7 +88,12 @@
     }
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation
+{
+    
+}
+
+-(void)webView:(WKWebView *)webView didFailNavigation:(WKNavigation *)navigation withError:(NSError *)error
 {
     [self cleanup];
     

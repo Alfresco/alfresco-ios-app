@@ -17,8 +17,9 @@
  ******************************************************************************/
 
 #import <UIKit/UIKit.h>
+@import WebKit;
 
-@interface PrintingWebView : UIWebView
+@interface PrintingWebView : WKWebView
 - (id)initWithOwningView:(UIView *)view;
 - (void)printFileURL:(NSURL *)fileURL completionBlock:(AlfrescoBOOLCompletionBlock)completionBlock;
 @end
