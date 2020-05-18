@@ -6,7 +6,6 @@ use_modular_headers!
 
 target 'AlfrescoApp' do
     pod 'MBProgressHUD', '~> 1.0'
-    pod 'NJKWebViewProgress', '~> 0.2'
     pod 'Realm', '~>3.11'
     pod 'Firebase/Analytics'
     pod 'Firebase/Crashlytics'

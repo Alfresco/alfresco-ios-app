@@ -91,11 +91,6 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
-  - NJKWebViewProgress (0.2.3):
-    - NJKWebViewProgress/Core (= 0.2.3)
-    - NJKWebViewProgress/ProgressView (= 0.2.3)
-  - NJKWebViewProgress/Core (0.2.3)
-  - NJKWebViewProgress/ProgressView (0.2.3)
   - PromisesObjC (1.2.8)
   - Realm (3.21.0):
     - Realm/Headers (= 3.21.0)
@@ -107,7 +102,6 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - JWT
   - MBProgressHUD (~> 1.0)
-  - NJKWebViewProgress (~> 0.2)
   - Realm (~> 3.11)
 
 SPEC REPOS:
@@ -132,7 +126,6 @@ SPEC REPOS:
     - JWT
     - MBProgressHUD
     - nanopb
-    - NJKWebViewProgress
     - PromisesObjC
     - Realm
 
@@ -156,10 +149,9 @@ SPEC CHECKSUMS:
   JWT: cf73c0ab0dac762df3de8a3f1164352089d97780
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Realm: 38e9dcb19104b58407167d99f70d4995f7c16023
 
-PODFILE CHECKSUM: 23d3d92fcc6418c5a564752bdd9dea82d4c37239
+PODFILE CHECKSUM: 33980f9d4b0523c2478112d4e05130b1783a74c3
 
 COCOAPODS: 1.8.4
