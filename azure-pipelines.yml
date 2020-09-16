@@ -110,7 +110,7 @@ steps:
 
 - task: AppStoreRelease@1
   inputs:
-    serviceEndpoint: 'AppleStore Publisher'
+    serviceEndpoint: 'AppStore'
     appIdentifier: 'com.alfresco.mobile'
     appType: 'iOS'
     ipaPath: '**/*.ipa'
