@@ -1,3 +1,4 @@
+
 Welcome to the Alfresco iOS App
 ===
 
@@ -15,11 +16,14 @@ The `master` branch is used for development of new features so its stability can
 
 Alternatively, use one of the [tags](https://github.com/Alfresco/alfresco-ios-app/tags) to build from source using the latest stable version of Xcode.
 
+Getting started
+---
+In order to successfully run the app we recommend you clone the repo using your git client of choice such that the AlfrescoSDK git submodule is also fetched. Git tags won't usually contain that code and you might encounter compilation errors trying to build against them.
 
 License
 ---
 
-Alfresco Mobile for iOS 2.7.2
+Alfresco Mobile for iOS 2.8
 
 Copyright © 2020 Alfresco Software, Ltd.
 
