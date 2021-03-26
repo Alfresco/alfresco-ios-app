@@ -108,7 +108,7 @@ steps:
       FASTLANE_DISABLE_COLORS: 'true'
       FASTLANE_USER: $(appstore_upload_user)
       FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(appstore_upload_token)
-      PROV_PROFILE: $(provisioning_profile.secureFilePath)
+      PROV_PROFILE: $(prov_profile.secureFilePath)
       SIGNING_IDENTITY: $(signing_identity)
       APPSTORE_APP_ID: $(appstore_app_id)
       CONFIGURATION: $(configuration)
