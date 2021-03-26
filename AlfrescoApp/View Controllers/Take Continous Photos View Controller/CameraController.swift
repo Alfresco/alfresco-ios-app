@@ -147,7 +147,12 @@ extension CameraController {
             if camera.position == .back {
                 self.rearCamera = camera
                 try camera.lockForConfiguration()
-                camera.focusMode = .continuousAutoFocus
+
+                if camera.isFocusModeSupported(.continuousAutoFocus) {
+                    camera.focusMode = .continuousAutoFocus
+                } else if camera.isFocusModeSupported(.autoFocus) {
+                    camera.focusMode = .autoFocus
+                }
                 
                 camera.unlockForConfiguration()
             }

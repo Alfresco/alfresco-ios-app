@@ -4368,7 +4368,8 @@
 				7373B4F217A66E9400869949 /* Frameworks */,
 				7373B4F317A66E9400869949 /* Resources */,
 				734CC4141A70080A005D148E /* Embed App Extensions */,
-				E3589C02242A331300D9A4A6 /* ShellScript */,
+				E3589C02242A331300D9A4A6 /* Crashlytics */,
+				131F285B260CA89900229FF0 /* Upload symbols */,
 			);
 			buildRules = (
 			);
@@ -4907,7 +4908,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		E3589C02242A331300D9A4A6 /* ShellScript */ = {
+		131F285B260CA89900229FF0 /* Upload symbols */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -4916,6 +4917,27 @@
 			);
 			inputPaths = (
 			);
+			name = "Upload symbols";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "find $HOME/Library/Developer/Xcode/DerivedData/AlfrescoApp-*/Build/Products/Debug-iphoneos -name \"*.dSYM\" | xargs -I \\{\\} $PODS_ROOT/FirebaseCrashlytics/upload-symbols -gsp ${PROJECT_DIR}/AlfrescoApp/\"Supporting Files\"/GoogleService-Info.plist -p ios \\{\\}\n";
+		};
+		E3589C02242A331300D9A4A6 /* Crashlytics */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = Crashlytics;
 			outputFileListPaths = (
 			);
 			outputPaths = (
