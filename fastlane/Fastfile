@@ -1,0 +1,22 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and Pilot"
+  lane :build_and_pilot do
+      update_project_provisioning(
+        xcodeproj: "AlfrescoApp.xcodeproj",
+        profile: ENV["PROV_PROFILE"],
+        target_filter: "AlfrescoApp",
+        build_configuration: ENV["CONFIGURATION"],
+        code_signing_identity: ENV["SIGNING_IDENTITY"]
+      )
+      build_app(
+        scheme: "AlfrescoApp",
+        configuration: ENV["CONFIGURATION"]
+      )
+      upload_to_testflight(
+        skip_waiting_for_build_processing: true,
+        apple_id: ENV["APPSTORE_APP_ID"]
+      )
+  end
+end
