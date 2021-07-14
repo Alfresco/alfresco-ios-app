@@ -1,13 +1,13 @@
 PODS:
-  - AlfrescoAuth (2.1.0):
+  - AlfrescoAuth (0.1.2):
     - AlfrescoCore
     - AppAuth
-  - AlfrescoCore (2.0.0)
-  - AppAuth (1.3.0):
-    - AppAuth/Core (= 1.3.0)
-    - AppAuth/ExternalUserAgent (= 1.3.0)
-  - AppAuth/Core (1.3.0)
-  - AppAuth/ExternalUserAgent (1.3.0)
+  - AlfrescoCore (0.1.2)
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
   - Base64 (1.1.2)
   - Firebase/Analytics (6.23.0):
     - Firebase/Core
@@ -97,7 +97,7 @@ PODS:
   - Realm/Headers (3.21.0)
 
 DEPENDENCIES:
-  - AlfrescoAuth
+  - AlfrescoAuth (~> 0)
   - Firebase/Analytics
   - Firebase/Crashlytics
   - JWT
@@ -105,11 +105,7 @@ DEPENDENCIES:
   - Realm (~> 3.11)
 
 SPEC REPOS:
-  https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git:
-    - AlfrescoAuth
-    - AlfrescoCore
   https://github.com/CocoaPods/Specs.git:
-    - AppAuth
     - Base64
     - Firebase
     - FirebaseAnalytics
@@ -128,11 +124,15 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Realm
+  trunk:
+    - AlfrescoAuth
+    - AlfrescoCore
+    - AppAuth
 
 SPEC CHECKSUMS:
-  AlfrescoAuth: 0e4d598845d5efd41eaadf2d16981bf59fdc5095
-  AlfrescoCore: d28a8593e87b52952f70a5378b4047770f404af5
-  AppAuth: 73574f3013a1e65b9601a3ddc8b3158cce68c09d
+  AlfrescoAuth: 65ff558e5d65f82762dfdf54257a57ba413816e3
+  AlfrescoCore: 5b9b48fa22dddeae139877c33baa22b9fa894e69
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   Base64: cecfb41a004124895a7bcee567a89bae5a89d49b
   Firebase: 585ae467b3edda6a5444e788fda6888f024d8d6f
   FirebaseAnalytics: 558f7a03d19de451093032c806f39d5f9dff096e
@@ -152,6 +152,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Realm: 38e9dcb19104b58407167d99f70d4995f7c16023
 
-PODFILE CHECKSUM: 33980f9d4b0523c2478112d4e05130b1783a74c3
+PODFILE CHECKSUM: 3ce64199973ae491ecf5da97e2474f5be5fb8ae1
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.10.1

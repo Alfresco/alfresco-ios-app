@@ -1,5 +1,4 @@
-source 'https://github.com/Alfresco/alfresco-private-podspecs-ios-sdk'
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 platform :ios, '12.0'
 use_modular_headers!
@@ -9,7 +8,7 @@ target 'AlfrescoApp' do
     pod 'Realm', '~>3.11'
     pod 'Firebase/Analytics'
     pod 'Firebase/Crashlytics'
-    pod 'AlfrescoAuth'
+    pod 'AlfrescoAuth', '~> 0'
     pod 'JWT'
 end
 

@@ -22,7 +22,8 @@ import JWT
 
 public typealias AvailableAuthTypeCallback<AuthType> = (Result<AuthType, APIError>) -> Void
 
-class AIMSLoginService: NSObject, AlfrescoAuthDelegate {    
+class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
+
     // Public variables
     var session: AlfrescoAuthSession?
     private (set) var activeAccount: UserAccount?
@@ -96,8 +97,12 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
         self.session = nil
         let authConfig = authConfiguration()
         alfrescoAuth.update(configuration: authConfig)
-        if let credential = obtainAlfrescoCredential() {
-            alfrescoAuth.logout(onViewController: viewController, delegate: self, forCredential: credential)
+        if let credential = obtainAlfrescoCredential(),
+           let session = self.session {
+            alfrescoAuth.logout(onViewController: viewController,
+                                delegate: self,
+                                session: session,
+                                forCredential: credential)
         } else {
             if let logouCompletionBlock = self.logoutCompletionBlock {
                 logouCompletionBlock(false, nil)
@@ -157,21 +162,23 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     }
     
     // MARK: - AlfrescoAuthDelegate
-    
-    func didReceive(result: Result<AlfrescoCredential, APIError>, session: AlfrescoAuthSession?) {
+
+    func didReceive(result: Result<AlfrescoCredential?, APIError>, session: AlfrescoAuthSession?) {
         switch result {
         case .success(let alfrescoCredential):
+            guard let credential = alfrescoCredential else { return }
+
             self.session = session
-            self.alfrescoCredential = alfrescoCredential
+            self.alfrescoCredential = credential
             let decode = self.decodeJWTPayloadToken()
-            self.saveToKeychain(session: session, credential: alfrescoCredential)
+            self.saveToKeychain(session: session, credential: credential)
             
-            let oauthData = AlfrescoOAuthData(tokenType: alfrescoCredential.tokenType,
-                                              accessToken: alfrescoCredential.accessToken,
-                                              accessTokenExpiresIn: alfrescoCredential.accessTokenExpiresIn as NSNumber?,
-                                              refreshToken: alfrescoCredential.refreshToken,
-                                              refreshTokenExpiresIn: alfrescoCredential.refreshTokenExpiresIn as NSNumber?,
-                                              sessionState: alfrescoCredential.sessionState,
+            let oauthData = AlfrescoOAuthData(tokenType: credential.tokenType,
+                                              accessToken: credential.accessToken,
+                                              accessTokenExpiresIn: credential.accessTokenExpiresIn as NSNumber?,
+                                              refreshToken: credential.refreshToken,
+                                              refreshTokenExpiresIn: credential.refreshTokenExpiresIn as NSNumber?,
+                                              sessionState: credential.sessionState,
                                               payloadToken: decode)
             if isSessionRefreshInProgress {
                 accountToBeRefreshed?.oauthData = oauthData
@@ -207,8 +214,8 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
             }
         }
     }
-    
-    func didLogOut(result: Result<Int, APIError>) {
+
+    func didLogOut(result: Result<Int, APIError>, session: AlfrescoAuthSession?) {
         switch result {
         case .success(_):
             AlfrescoLog.logInfo("AIMS session terminated successfully.")
