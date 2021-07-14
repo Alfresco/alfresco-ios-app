@@ -94,11 +94,11 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     
     @objc func logout(onViewController viewController: UIViewController, completionBlock: @escaping LogoutAIMSCompletionBlock) {
         logoutCompletionBlock = completionBlock
+        self.session = nil
         let authConfig = authConfiguration()
         alfrescoAuth.update(configuration: authConfig)
-
         if let credential = obtainAlfrescoCredential(),
-           let session = session{
+           let session = self.session {
             alfrescoAuth.logout(onViewController: viewController,
                                 delegate: self,
                                 session: session,
@@ -108,7 +108,6 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
                 logouCompletionBlock(false, nil)
             }
         }
-        session = nil
     }
     
     func obtainAlfrescoCredential() -> AlfrescoCredential? {
@@ -163,18 +162,14 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
     }
     
     // MARK: - AlfrescoAuthDelegate
-    
+
     func didReceive(result: Result<AlfrescoCredential?, APIError>, session: AlfrescoAuthSession?) {
         switch result {
         case .success(let alfrescoCredential):
-            guard let credential = alfrescoCredential else {
-                self.loginCompletionBlock?(nil, nil)
-
-                return
-            }
+            guard let credential = alfrescoCredential else { return }
 
             self.session = session
-            self.alfrescoCredential = alfrescoCredential
+            self.alfrescoCredential = credential
             let decode = self.decodeJWTPayloadToken()
             self.saveToKeychain(session: session, credential: credential)
             
@@ -219,7 +214,7 @@ class AIMSLoginService: NSObject, AlfrescoAuthDelegate {
             }
         }
     }
-    
+
     func didLogOut(result: Result<Int, APIError>, session: AlfrescoAuthSession?) {
         switch result {
         case .success(_):
