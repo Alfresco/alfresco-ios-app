@@ -15,6 +15,8 @@ variables:
     value: 'Release'
   - name: sdk
     value: 'iphoneos'
+  - name: cocoapods_path
+    value: $(Pipeline.Workspace)/.cocoapods
 
 steps:
 - checkout: self
@@ -25,13 +27,28 @@ steps:
   inputs:
     script: |
       pod repo add AlfrescoPodspec https://$(gitUser):$(gitPAT)@github.com/Alfresco/alfresco-private-podspecs-ios-sdk.git
+
+- task: Cache@2
+  inputs:
+    key: 'cocoapods | Podfile.lock'
+    restoreKeys: cocoapods
+    path: $(cocoapods_path)
+  displayName: Cache CocoaPods Specs
+
+- task: Cache@2
+  inputs:
+    key: 'pods | Podfile.lock'
+    restoreKeys: pods
+    path: Pods
+  displayName: Cache Pods
       
 - task: CmdLine@2
   displayName: Installing pods
   inputs:
     script: |
-      pod repo update
-      pod install
+      pod install || pod install --repo-update
+  env:
+    CP_HOME_DIR: $(cocoapods_path)
 
 - task: CmdLine@2
   displayName: Variable substitution for GoogleAnalytics
@@ -49,8 +66,13 @@ steps:
 - task: InstallAppleProvisioningProfile@1
   inputs:
    provisioningProfileLocation: 'secureFiles'
-   provProfileSecureFile: '$(csReleaseProvisioningProfile)'
+   provProfileSecureFile: '$(provisioning_profile)'
    removeProfile: true 
+
+- task: DownloadSecureFile@1
+  name: prov_profile
+  inputs:
+    secureFile: '$(provisioning_profile)'
 
 - task: Xcode@5
   displayName: 'Generate Content Services IPA'
@@ -66,23 +88,6 @@ steps:
     signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
     provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
 
-- task: Xcode@5
-  displayName: 'Archive Content Services App'
-  inputs:
-    actions: 'build archive'
-    sdk: '$(sdk)'
-    scheme: 'AlfrescoApp'
-    configuration: '$(configuration)'
-    xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
-    useXcpretty: 'false'
-    args: '-archivePath $(agent.buildDirectory)/AlfrescoApp'
-
-- task: ArchiveFiles@2
-  displayName: 'Package .xcarchive into a zip file'
-  inputs:
-    rootFolderOrFile: '$(agent.buildDirectory)/AlfrescoApp.xcarchive/'
-    archiveFile: '$(build.artifactStagingDirectory)/AlfrescoApp.xcarchive.zip'
-
 - task: CopyFiles@2
   inputs:
     contents: '**/*.ipa'
@@ -91,15 +96,22 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(build.artifactStagingDirectory)/AlfrescoApp.xcarchive.zip'
-    artifactName: 'xcarchive-files'
-    artifactType: 'container'
-
-- task: PublishBuildArtifacts@1
-  inputs:
     pathtoPublish: '$(build.artifactStagingDirectory)' 
     artifactName: 'ACS-iOS' 
     publishLocation: 'Container'
+
+- task: CmdLine@2
+  displayName: 'Build and Pilot'
+  inputs:
+    script: 'bundle update && bundle exec fastlane build_and_pilot'
+  env:
+      FASTLANE_DISABLE_COLORS: 'true'
+      FASTLANE_USER: $(appstore_upload_user)
+      FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD: $(appstore_upload_token)
+      PROV_PROFILE: $(prov_profile.secureFilePath)
+      SIGNING_IDENTITY: $(signing_identity)
+      APPSTORE_APP_ID: $(appstore_app_id)
+      CONFIGURATION: $(configuration)
 
 - task: CmdLine@2
   inputs:
@@ -107,14 +119,3 @@ steps:
   displayName: 'Performing Source Clear checks'
   env:
     SRCCLR_API_TOKEN: $(source_clear_token)
-
-- task: AppStoreRelease@1
-  inputs:
-    serviceEndpoint: 'AppStore'
-    appIdentifier: 'com.alfresco.mobile'
-    appType: 'iOS'
-    ipaPath: '**/*.ipa'
-    releaseTrack: 'TestFlight'
-    shouldSkipWaitingForProcessing: true
-    teamId: 'W8N95J537P'
-    teamName: 'Alfresco Software, Inc.'
