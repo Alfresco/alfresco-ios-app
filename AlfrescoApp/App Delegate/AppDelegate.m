@@ -40,6 +40,9 @@
 #import "RealmSyncManager+CoreDataMigration.h"
 #import "RealmSyncCore.h"
 #import "AppConfigurationManager.h"
+#import "AlfrescoApp-Swift.h"
+
+
 @import Firebase;
 
 @import MediaPlayer;
@@ -202,6 +205,8 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
         [[PreferenceManager sharedManager] updateSettingsPreferenceToValue:@NO preferenceIdentifier:kSettingsBundlePreferenceSafeModeKey];
     }
     
+    SunsetAppService *sunsetAppBanner = [[SunsetAppService alloc]init];
+    [sunsetAppBanner showBannerIfRequired];
     return YES;
 }
 

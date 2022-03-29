@@ -698,6 +698,10 @@
 		B3B5F76FDC3948049D636F09 /* libPods-AlfrescoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A20510016BB1BB1690D385 /* libPods-AlfrescoApp.a */; };
 		B9818DD32434CD6E00E0020A /* AIMSLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9818DD22434CD6E00E0020A /* AIMSLoginService.swift */; };
 		B9818DE82435C97300E0020A /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9818DE72435C97300E0020A /* String+Helpers.swift */; };
+		C9DD0E9627EB0F7B00DB714C /* SunsetAppView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9DD0E9527EB0F7B00DB714C /* SunsetAppView.xib */; };
+		C9DD0E9827EB0FD900DB714C /* SunsetAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DD0E9727EB0FD900DB714C /* SunsetAppView.swift */; };
+		C9DD0E9A27EB103800DB714C /* SunsetAppService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DD0E9927EB103800DB714C /* SunsetAppService.swift */; };
+		C9DD0E9C27EB147700DB714C /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DD0E9B27EB147700DB714C /* UIViewExtension.swift */; };
 		E306DBDC2440A862002DB2EE /* AccountPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E306DBDA2440A862002DB2EE /* AccountPickerViewController.swift */; };
 		E306DBDD2440A862002DB2EE /* AccountPickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E306DBDB2440A862002DB2EE /* AccountPickerViewController.xib */; };
 		E30C322B240CE71D00AE025B /* CameraOpenCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */; };
@@ -1924,6 +1928,10 @@
 		73FF557618ACE2370009CA56 /* large_zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "large_zip@2x.png"; sourceTree = "<group>"; };
 		B9818DD22434CD6E00E0020A /* AIMSLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIMSLoginService.swift; sourceTree = "<group>"; };
 		B9818DE72435C97300E0020A /* String+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
+		C9DD0E9527EB0F7B00DB714C /* SunsetAppView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SunsetAppView.xib; sourceTree = "<group>"; };
+		C9DD0E9727EB0FD900DB714C /* SunsetAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunsetAppView.swift; sourceTree = "<group>"; };
+		C9DD0E9927EB103800DB714C /* SunsetAppService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunsetAppService.swift; sourceTree = "<group>"; };
+		C9DD0E9B27EB147700DB714C /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		E306DBDA2440A862002DB2EE /* AccountPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPickerViewController.swift; sourceTree = "<group>"; };
 		E306DBDB2440A862002DB2EE /* AccountPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountPickerViewController.xib; sourceTree = "<group>"; };
 		E30C322A240CE71D00AE025B /* CameraOpenCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraOpenCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -2958,6 +2966,7 @@
 			isa = PBXGroup;
 			children = (
 				73B957C717A673A90099FB84 /* App Delegate */,
+				C9DD0E9027EB0F5600DB714C /* SunsetAppView */,
 				73B957CA17A673A90099FB84 /* Constants */,
 				7379731F18AA8E9B007613B2 /* Data Models */,
 				73B957CF17A6750E0099FB84 /* Model */,
@@ -4315,6 +4324,17 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		C9DD0E9027EB0F5600DB714C /* SunsetAppView */ = {
+			isa = PBXGroup;
+			children = (
+				C9DD0E9527EB0F7B00DB714C /* SunsetAppView.xib */,
+				C9DD0E9727EB0FD900DB714C /* SunsetAppView.swift */,
+				C9DD0E9927EB103800DB714C /* SunsetAppService.swift */,
+				C9DD0E9B27EB147700DB714C /* UIViewExtension.swift */,
+			);
+			path = SunsetAppView;
+			sourceTree = "<group>";
+		};
 		E306DBD92440A805002DB2EE /* Account Picker */ = {
 			isa = PBXGroup;
 			children = (
@@ -4411,7 +4431,6 @@
 					7373B4F417A66E9400869949 = {
 						DevelopmentTeam = W8N95J537P;
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
 								enabled = 1;
@@ -4852,6 +4871,7 @@
 				2B114E611B1F39D4005A05AA /* cell-button-checked-filled@2x.png in Resources */,
 				732DBFA218E1BC6B00F7A0BF /* small_zip.png in Resources */,
 				7366F7471ACAB7A1008DD92E /* MDMLaunchViewController.xib in Resources */,
+				C9DD0E9627EB0F7B00DB714C /* SunsetAppView.xib in Resources */,
 				738664DF1906B2260021D1BD /* ButtonCell.xib in Resources */,
 				73881FDA188FF6B00052C75F /* actionsheet-like@2x.png in Resources */,
 				73B95ABA17A68B7E0099FB84 /* site-action-requesttojoin@2x.png in Resources */,
@@ -5004,6 +5024,7 @@
 				2308BF961DD22828009C3D8B /* UserAccount+FileHandling.m in Sources */,
 				B9818DD32434CD6E00E0020A /* AIMSLoginService.swift in Sources */,
 				7390B36E1B03681E00E7191F /* AlfrescoItemConfig.m in Sources */,
+				C9DD0E9A27EB103800DB714C /* SunsetAppService.swift in Sources */,
 				73B957CE17A673A90099FB84 /* Constants.m in Sources */,
 				272CC7C61946727A0009FADA /* AlfrescoDocument+MapAnnotation.m in Sources */,
 				73632ADB1802C679007172EE /* ActionCollectionViewCell.m in Sources */,
@@ -5094,6 +5115,7 @@
 				73B9585517A6750F0099FB84 /* Notifier.m in Sources */,
 				2BDC6FA51D660731003F9324 /* AlfrescoNode+Networking.m in Sources */,
 				0876A04218D99FF60035370A /* NodePicker.m in Sources */,
+				C9DD0E9C27EB147700DB714C /* UIViewExtension.swift in Sources */,
 				7379733918AA8E9B007613B2 /* SyncNodeInfo.m in Sources */,
 				73A37A3A1B861E64007EEE0D /* PersonProfileViewController.m in Sources */,
 				73B5798F1B15EC4E009D30B6 /* MainMenuGroup.m in Sources */,
@@ -5273,6 +5295,7 @@
 				08E1EA2C18DB057900F9052F /* TaskGroupItem.m in Sources */,
 				73A47E47182268AD00D35FBD /* FavouriteManager.m in Sources */,
 				7390B3671B03681E00E7191F /* AlfrescoConfigScope.m in Sources */,
+				C9DD0E9827EB0FD900DB714C /* SunsetAppView.swift in Sources */,
 				23A681E21CA2A1E200E90D89 /* BulletView.m in Sources */,
 				231C3E5E1EB0EBA500940F6E /* AccountDataSource.m in Sources */,
 				73190196184365AA002C82C1 /* OnboardingViewController.m in Sources */,
@@ -5572,7 +5595,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "2bafb3cc-3501-4577-9062-cef225d63457";
-				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) Ad Hoc Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "ACS App Dev profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WARNING_CFLAGS = "";
@@ -5749,7 +5772,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "25ae4d3b-6c1a-4a27-a511-a09146b86f72";
-				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) Development";
+				PROVISIONING_PROFILE_SPECIFIER = "ACS App Dev profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -5768,6 +5791,7 @@
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -5792,7 +5816,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "da10ba1b-cd14-4657-b520-6d637077845f";
-				PROVISIONING_PROFILE_SPECIFIER = "Alfresco Mobile (X8Q) App Store Profile";
+				PROVISIONING_PROFILE_SPECIFIER = "ACS App Dev profile";
 				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WARNING_CFLAGS = "";
