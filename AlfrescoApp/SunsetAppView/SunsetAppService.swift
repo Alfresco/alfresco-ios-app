@@ -11,11 +11,9 @@ import UIKit
 class SunsetAppService: NSObject {
 
     @objc func showBannerIfRequired() {
-        if let appDelegate = UIApplication.shared.delegate, let controller = appDelegate.window!!.rootViewController {
-            let view = SunsetAppView.loadFromXib()
-            view.frame = CGRect(x: 0, y: 0, width: controller.view.frame.size.width, height: controller.view.frame.size.height)
-            controller.view.addSubview(view)
-        }
+        let view = SunsetAppView.loadFromXib()
+        view.frame = UIApplication.shared.keyWindow!.frame
+        UIApplication.shared.keyWindow!.addSubview(view)
     }
     
     @objc func redirectUserToOpenApp() {
