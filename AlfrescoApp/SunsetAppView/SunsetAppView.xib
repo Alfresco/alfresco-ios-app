@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SunsetAppView" customModule="AlfrescoApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sunset_banner" translatesAutoresizingMaskIntoConstraints="NO" id="4hP-ga-E2m" userLabel="logo">
+                    <rect key="frame" x="82" y="74" width="250" height="250"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="250" id="Dsh-v3-pXe"/>
+                        <constraint firstAttribute="width" constant="250" id="Q8A-jZ-QcZ"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onH-fz-EGJ" userLabel="titleLabel">
+                    <rect key="frame" x="24" y="374" width="366" height="21.5"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Loading..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H8j-Se-t08" userLabel="messageLabel">
+                    <rect key="frame" x="24" y="411.5" width="366" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i50-24-ZOx" userLabel="buttonContinue">
+                    <rect key="frame" x="10" y="461" width="394" height="40"/>
+                    <color key="backgroundColor" red="0.12156862745098039" green="0.45490196078431372" blue="0.85882352941176465" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Cf9-xj-CjI"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Take me there">
+                        <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="6"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="continueButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="3oc-ye-DF5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6PK-tA-zjZ" userLabel="buttonDismiss">
+                    <rect key="frame" x="10" y="525" width="394" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="sov-Rm-41y"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Dismiss">
+                        <color key="titleColor" red="0.12941176470588234" green="0.13725490196078433" blue="0.15686274509803921" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="dismissButtonAction:" destination="iN0-l3-epB" eventType="touchUpInside" id="jRy-Mi-pd1"/>
+                    </connections>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="onH-fz-EGJ" secondAttribute="trailing" constant="24" id="0E8-Lu-QmI"/>
+                <constraint firstItem="onH-fz-EGJ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="14g-iP-yCY"/>
+                <constraint firstItem="H8j-Se-t08" firstAttribute="trailing" secondItem="onH-fz-EGJ" secondAttribute="trailing" id="2EN-P5-QH5"/>
+                <constraint firstItem="6PK-tA-zjZ" firstAttribute="trailing" secondItem="i50-24-ZOx" secondAttribute="trailing" id="5nF-TH-reO"/>
+                <constraint firstItem="4hP-ga-E2m" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="30" id="LCy-w7-2Pe"/>
+                <constraint firstItem="4hP-ga-E2m" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Npg-Em-hDo"/>
+                <constraint firstItem="i50-24-ZOx" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="PXH-JN-Ye3"/>
+                <constraint firstItem="H8j-Se-t08" firstAttribute="top" secondItem="onH-fz-EGJ" secondAttribute="bottom" constant="16" id="QqB-Fe-RUv"/>
+                <constraint firstItem="6PK-tA-zjZ" firstAttribute="leading" secondItem="i50-24-ZOx" secondAttribute="leading" id="W2u-Y8-bxB"/>
+                <constraint firstItem="H8j-Se-t08" firstAttribute="leading" secondItem="onH-fz-EGJ" secondAttribute="leading" id="aHy-Hy-kji"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="i50-24-ZOx" secondAttribute="trailing" constant="10" id="dPZ-cl-6qj"/>
+                <constraint firstItem="onH-fz-EGJ" firstAttribute="top" secondItem="4hP-ga-E2m" secondAttribute="bottom" constant="50" id="hn8-wX-8nI"/>
+                <constraint firstItem="i50-24-ZOx" firstAttribute="top" secondItem="H8j-Se-t08" secondAttribute="bottom" constant="30" id="sqf-Wr-h5J"/>
+                <constraint firstItem="6PK-tA-zjZ" firstAttribute="top" secondItem="i50-24-ZOx" secondAttribute="bottom" constant="24" id="zRq-sq-iXP"/>
+            </constraints>
+            <connections>
+                <outlet property="continueButton" destination="i50-24-ZOx" id="d8x-dV-rbj"/>
+                <outlet property="dismissButton" destination="6PK-tA-zjZ" id="m1j-oR-bCE"/>
+                <outlet property="logoImageView" destination="4hP-ga-E2m" id="NWQ-OV-bKW"/>
+                <outlet property="messageLabel" destination="H8j-Se-t08" id="arZ-ap-r4d"/>
+                <outlet property="titleLabel" destination="onH-fz-EGJ" id="IFr-4x-c5J"/>
+            </connections>
+            <point key="canvasLocation" x="57.971014492753625" y="48.883928571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="sunset_banner" width="250" height="242"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

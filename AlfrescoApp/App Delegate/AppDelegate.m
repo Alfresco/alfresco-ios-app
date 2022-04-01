@@ -40,6 +40,9 @@
 #import "RealmSyncManager+CoreDataMigration.h"
 #import "RealmSyncCore.h"
 #import "AppConfigurationManager.h"
+#import "AlfrescoApp-Swift.h"
+
+
 @import Firebase;
 
 @import MediaPlayer;
@@ -54,7 +57,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
 @property (nonatomic, strong, readwrite) MainMenuConfigurationViewController *mainMenuViewController;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *appleConfigurationHelper;
 @property (nonatomic, strong) MDMUserDefaultsConfigurationHelper *mobileIronConfigurationHelper;
-
 @end
 
 @implementation AppDelegate
@@ -82,7 +84,6 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
      */
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
     /**
      * Note: CFBundleVersion is updated for AdHoc builds by calling the tools/set_build_number.sh script (configured in the build pre-action).
      * The script updates CFBundleVersion from a CF_BUNDLE_VERSION environment variable which we have configured at Alfresco
@@ -192,6 +193,9 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                         self.mainMenuViewController.autoselectDefaultMenuOption = NO;
                     }
                 }];
+                
+                SunsetAppService *sunsetAppBanner = [[SunsetAppService alloc]init];
+                [sunsetAppBanner showBannerIfRequired];
             });
         }
     }
@@ -261,7 +265,7 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     RootRevealViewController *rootRevealViewController = nil;
     
     BOOL isManaged = self.appleConfigurationHelper.isManaged || self.mobileIronConfigurationHelper.isManaged;
-    
+
     // This is currently set to a dictionary that is passed around with appropiate values set.
     // This will probably require rework in the app to support server side configuration
     NSMutableDictionary *initialConfiguration = [NSMutableDictionary dictionary];

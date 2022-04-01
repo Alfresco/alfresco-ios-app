@@ -102,10 +102,13 @@ DEPENDENCIES:
   - Firebase/Crashlytics
   - JWT
   - MBProgressHUD (~> 1.0)
-  - Realm (~> 3.11)
+  - Realm
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
+    - AlfrescoAuth
+    - AlfrescoCore
+    - AppAuth
     - Base64
     - Firebase
     - FirebaseAnalytics
@@ -124,10 +127,6 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Realm
-  trunk:
-    - AlfrescoAuth
-    - AlfrescoCore
-    - AppAuth
 
 SPEC CHECKSUMS:
   AlfrescoAuth: 65ff558e5d65f82762dfdf54257a57ba413816e3
@@ -152,6 +151,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   Realm: 38e9dcb19104b58407167d99f70d4995f7c16023
 
-PODFILE CHECKSUM: 3ce64199973ae491ecf5da97e2474f5be5fb8ae1
+PODFILE CHECKSUM: 4e2322ec5cfbaa599eea0d7abd2f33fef72e8824
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2
