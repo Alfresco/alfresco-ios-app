@@ -194,9 +194,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                     }
                 }];
                 
-                SunsetAppService *sunsetAppBanner = [[SunsetAppService alloc]init];
-                [sunsetAppBanner showBannerIfRequired];
+                [self showSunsetAppView];
             });
+        } else {
+            // user is not logged in
+            [self showSunsetAppView];
         }
     }
     
@@ -207,6 +209,11 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
     }
     
     return YES;
+}
+
+- (void)showSunsetAppView {
+    SunsetAppService *sunsetAppBanner = [[SunsetAppService alloc]init];
+    [sunsetAppBanner showBannerIfRequired];
 }
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey, id> *)options
