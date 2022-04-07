@@ -959,3 +959,12 @@
 "accountpicker.subtitle" = "ログインしていません。再度サインインするか。";
 "accountpicker.info.other" = "別のアカウントを試してください。";
 "accountpicker.button.addaccount" = "アカウントの追加";
+
+/**
+ * SunsetAppView
+ */
+"sunsetAppView.title" = "対応してください！";
+"sunsetAppView.beforeEOL.message" = "Alfresco コンテンツサービスを携帯電話で引き続きご利用いただくには、2022年11月30日までに新しいアプリのダウンロードが必要です。\n\n2022年12月1日以降、App store でのこのアプリのサポートが終了します";
+"sunsetAppView.afterEOL.message" = "このアプリは、App storeでのサポートが終了しています。\n\n新しい Alfresco Mobile workspace App をダウンロードして、快適なユーザーエクスペリエンスをお楽しみください";
+"sunsetAppView.takeMeThere.ButtonTitle" = "移動する";
+"sunsetAppView.dismiss.ButtonTitle" = "閉じる";
