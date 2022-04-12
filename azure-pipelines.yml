@@ -51,7 +51,7 @@ steps:
     CP_HOME_DIR: $(cocoapods_path)
 - task: ios-bundle-version@1
   inputs:
-    sourcePath: 'ContentApp/Supporting Files/Info.plist'
+    sourcePath: 'AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist'
     versionCodeOption: 'buildid'
     versionCode: '$(build_version)'
     versionName: '2.8.1'
