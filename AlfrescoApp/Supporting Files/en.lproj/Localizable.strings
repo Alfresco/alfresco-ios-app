@@ -965,7 +965,7 @@
  * SunsetAppView
  */
 "sunsetAppView.title" = "Action required !";
-"sunsetAppView.beforeEOL.message" = "Download the new App before the 30th of November 2022 to continue using Alfresco content services on your phone. \n\nAfter the 30th of November 2022 this app will no longer be supported on the App store.";
-"sunsetAppView.afterEOL.message" = "This App is no longer supported on the App store. \n\nPlease download the new Alfresco Mobile workspace App for a better user experience.";
+"sunsetAppView.beforeEOL.message" = "Download the new App before the 30th of November 2022 to continue using Alfresco Content Services on your phone. \n\nAfter the 30th of November 2022 this app will no longer be supported on the App store.";
+"sunsetAppView.afterEOL.message" = "This App is no longer supported on the App store. \n\nPlease download the new Alfresco Mobile Workspace App for a better user experience.";
 "sunsetAppView.takeMeThere.ButtonTitle" = "Take me there";
 "sunsetAppView.dismiss.ButtonTitle" = "Dismiss";

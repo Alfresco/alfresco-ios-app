@@ -959,3 +959,12 @@
 "accountpicker.subtitle" = "Non hai più effettuato l'accesso. Per continuare accedi nuovamente.";
 "accountpicker.info.other" = "Prova un altro account";
 "accountpicker.button.addaccount" = "Aggiungi account";
+
+/**
+ * SunsetAppView
+ */
+"sunsetAppView.title" = "Intervento richiesto!";
+"sunsetAppView.beforeEOL.message" = "Scarica la nuova app prima del 30 novembre 2022 per continuare a utilizzare Alfresco Content Services sul tuo smartphone. \n\nDopo il 30 novembre 2022 questa app non sarà più supportata dall’app store.";
+"sunsetAppView.afterEOL.message" = "Questa app non è più supportata dall’app store. \n\nScarica la nuova app Alfresco Mobile Workspace per una migliore esperienza di utilizzo.";
+"sunsetAppView.takeMeThere.ButtonTitle" = "Vai";
+"sunsetAppView.dismiss.ButtonTitle" = "Ignora";
