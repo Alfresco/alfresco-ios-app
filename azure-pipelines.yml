@@ -7,10 +7,10 @@ pool:
   vmImage: 'macos-latest'
 
 variables:
-  - group: acs-ios
   - group: git-credentials
   - group: source-clear-credentials
   - group: ios-signing
+  - group: acs-ios
   - name: configuration
     value: 'Release'
   - name: sdk
