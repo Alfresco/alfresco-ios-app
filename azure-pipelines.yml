@@ -7,10 +7,10 @@ pool:
   vmImage: 'macos-latest'
 
 variables:
+  - group: acs-ios
   - group: git-credentials
   - group: source-clear-credentials
   - group: ios-signing
-  - group: acs-ios
   - name: configuration
     value: 'Release'
   - name: sdk
@@ -49,13 +49,6 @@ steps:
       pod install || pod install --repo-update
   env:
     CP_HOME_DIR: $(cocoapods_path)
-- task: ios-bundle-version@1
-  inputs:
-    sourcePath: 'AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist'
-    versionCodeOption: 'buildid'
-    versionCode: '$(build_version)'
-    versionName: '2.8.1'
-    printFile: true
 
 - task: CmdLine@2
   displayName: Variable substitution for GoogleAnalytics
@@ -81,19 +74,19 @@ steps:
   inputs:
     secureFile: '$(provisioning_profile)'
 
-# - task: Xcode@5
-#   displayName: 'Generate Content Services IPA'
-#   inputs:
-#     actions: 'build'
-#     scheme: 'AlfrescoApp'
-#     sdk: '$(sdk)'
-#     configuration: '$(configuration)'
-#     xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
-#     xcodeVersion: 'default'
-#     packageApp: true
-#     signingOption: 'manual'
-#     signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
-#     provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
+- task: Xcode@5
+  displayName: 'Generate Content Services IPA'
+  inputs:
+    actions: 'build'
+    scheme: 'AlfrescoApp'
+    sdk: '$(sdk)'
+    configuration: '$(configuration)'
+    xcWorkspacePath: '**/AlfrescoApp.xcworkspace'
+    xcodeVersion: 'default'
+    packageApp: true
+    signingOption: 'manual'
+    signingIdentity: '$(APPLE_CERTIFICATE_SIGNING_IDENTITY)'
+    provisioningProfileUuid: '$(APPLE_PROV_PROFILE_UUID)'
 
 - task: CopyFiles@2
   inputs:
