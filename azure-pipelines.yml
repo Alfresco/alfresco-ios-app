@@ -58,8 +58,8 @@ steps:
 
 - task: InstallAppleCertificate@2
   inputs:
-   certSecureFile: '$(p12FileName)'
-   certPwd: '$(p12Password)'
+   certSecureFile: '$(p12CertName)'
+   certPwd: '$(p12CertPassword)'
    keychain: 'temp'
    deleteCert: true 
   
