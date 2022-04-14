@@ -192,9 +192,9 @@ static NSString * const kMDMMissingRequiredKeysKey = @"MDMMissingKeysKey";
                         [[FileHandlerManager sharedManager] handleURL:url sourceApplication:nil annotation:nil session:alfrescoSession];
                         self.mainMenuViewController.autoselectDefaultMenuOption = NO;
                     }
+                    
+                    [self performSelector:@selector(showSunsetAppView) withObject: nil afterDelay:1.0];
                 }];
-                
-                [self showSunsetAppView];
             });
         } else {
             // user is not logged in
