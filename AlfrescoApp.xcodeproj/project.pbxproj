@@ -2942,6 +2942,7 @@
 				C9653B877CC25ED7B10E83D4 /* Pods */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		7373B4F617A66E9400869949 /* Products */ = {
 			isa = PBXGroup;
@@ -5571,9 +5572,9 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 3.1;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = YES;
@@ -5598,8 +5599,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = ACS_AppStore;
 				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WARNING_CFLAGS = "";
@@ -5777,7 +5777,6 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -5796,8 +5795,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AlfrescoApp/Supporting Files/AlfrescoApp.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution: Alfresco Software, Inc. (W8N95J537P)";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 3.1;
 				DEVELOPMENT_TEAM = W8N95J537P;
 				ENABLE_BITCODE = YES;
@@ -5822,8 +5821,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.alfresco.mobile;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = ACS_AppStore;
 				SWIFT_OBJC_BRIDGING_HEADER = "AlfrescoApp-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				WARNING_CFLAGS = "";
