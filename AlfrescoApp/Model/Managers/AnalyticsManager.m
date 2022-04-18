@@ -161,7 +161,8 @@
     }
     
     AlfrescoLogInfo(@"GA_SCREEN: %@", screenName);
-    [FIRAnalytics setScreenName:screenName screenClass:screenName];
+    NSDictionary *dict = @{ @"screenName" : screenName};
+    [FIRAnalytics logEventWithName:@"screenName" parameters:dict];
 }
 
 - (void)trackEventWithCategory:(NSString *)category action:(NSString *)action label:(NSString *)label value:(NSNumber *)value
