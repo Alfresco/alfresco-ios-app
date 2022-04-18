@@ -5591,8 +5591,8 @@
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(TARGET_BUILD_DIR)",
 					"$(inherited)",
+					"$(TARGET_BUILD_DIR)",
 					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				MARKETING_VERSION = 2.8.1;
@@ -5769,8 +5769,8 @@
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(TARGET_BUILD_DIR)",
 					"$(inherited)",
+					"$(TARGET_BUILD_DIR)",
 					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				MARKETING_VERSION = 2.8.1;
@@ -5813,8 +5813,8 @@
 				INFOPLIST_FILE = "AlfrescoApp/Supporting Files/AlfrescoApp-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
-					"$(TARGET_BUILD_DIR)",
 					"$(inherited)",
+					"$(TARGET_BUILD_DIR)",
 					"$(PROJECT_DIR)/AlfrescoApp/Third\\ Party\\ Libraries/Flurry",
 				);
 				MARKETING_VERSION = 2.8.1;
