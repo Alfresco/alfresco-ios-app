@@ -38,6 +38,7 @@
 		0837F299192F69A0006BE40C /* sync-button-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0837F295192F69A0006BE40C /* sync-button-error@2x.png */; };
 		0837F29A192F69A0006BE40C /* sync-button-stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 0837F296192F69A0006BE40C /* sync-button-stop.png */; };
 		0837F29B192F69A0006BE40C /* sync-button-stop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0837F297192F69A0006BE40C /* sync-button-stop@2x.png */; };
+		084D062124E2DFD4C69B4B74 /* libPods-AlfrescoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A20510016BB1BB1690D385 /* libPods-AlfrescoApp.a */; };
 		0871D26717E369CB00F744D0 /* DownloadsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0871D26617E369CB00F744D0 /* DownloadsViewController.xib */; };
 		0876A04218D99FF60035370A /* NodePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03518D99FF60035370A /* NodePicker.m */; };
 		0876A04318D99FF60035370A /* NodePickerFavoritesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0876A03718D99FF60035370A /* NodePickerFavoritesViewController.m */; };
@@ -695,7 +696,6 @@
 		73FF558C18ACE2370009CA56 /* large_xml@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557418ACE2370009CA56 /* large_xml@2x.png */; };
 		73FF558D18ACE2370009CA56 /* large_zip.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557518ACE2370009CA56 /* large_zip.png */; };
 		73FF558E18ACE2370009CA56 /* large_zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73FF557618ACE2370009CA56 /* large_zip@2x.png */; };
-		B3B5F76FDC3948049D636F09 /* libPods-AlfrescoApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04A20510016BB1BB1690D385 /* libPods-AlfrescoApp.a */; };
 		B9818DD32434CD6E00E0020A /* AIMSLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9818DD22434CD6E00E0020A /* AIMSLoginService.swift */; };
 		B9818DE82435C97300E0020A /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9818DE72435C97300E0020A /* String+Helpers.swift */; };
 		C9DD0E9627EB0F7B00DB714C /* SunsetAppView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9DD0E9527EB0F7B00DB714C /* SunsetAppView.xib */; };
@@ -1965,7 +1965,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				734CC3B11A6FBC90005D148E /* libAlfrescoKit.a in Frameworks */,
-				B3B5F76FDC3948049D636F09 /* libPods-AlfrescoApp.a in Frameworks */,
+				084D062124E2DFD4C69B4B74 /* libPods-AlfrescoApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
