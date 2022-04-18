@@ -65,7 +65,7 @@
     if ([[PreferenceManager sharedManager] shouldSendDiagnostics])
     {
         // Firebase Analytics
-         [FIRApp configure];
+        [FIRApp configure];
     }
 }
 
