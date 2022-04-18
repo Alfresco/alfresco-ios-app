@@ -44,13 +44,13 @@ steps:
     path: Pods
   displayName: Cache Pods
       
- - task: CmdLine@2
-   displayName: Installing pods
-   inputs:
-     script: |
-       pod install || pod install --repo-update
-   env:
-     CP_HOME_DIR: $(cocoapods_path)
+- task: CmdLine@2
+  displayName: Installing pods
+  inputs:
+    script: |
+      pod install || pod install --repo-update
+  env:
+    CP_HOME_DIR: $(cocoapods_path)
 
 - task: CmdLine@2
   displayName: Variable substitution for GoogleAnalytics
